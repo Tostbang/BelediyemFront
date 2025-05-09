@@ -2,6 +2,11 @@
   "name": "belediye",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "npm": "please-use-yarn",
+    "yarn": ">= 1.22.15",
+    "node": ">= 20.0.0"
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
