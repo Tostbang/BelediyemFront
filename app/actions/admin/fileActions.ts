@@ -43,7 +43,7 @@ export const uploadImage = async (formData: FormData) => {
         actualFormData.append('file', blob, fileName);
 
         // Don't specify Content-Type header for FormData
-        const data = await apiFetch<{ url: string }>('admin/uploadfile', {
+        const data = await apiFetch<{ url: string }>('fileupload/uploadfile', {
             method: 'POST',
             body: actualFormData,
         });
