@@ -1,4 +1,11 @@
+import { generatePageMetadata } from '@/lib/metadata';
 import Link from 'next/link';
+
+export const dynamic = 'force-dynamic';
+
+export async function generateMetadata() {
+    return generatePageMetadata('Giriş Seçenekleri');
+}
 
 export default function Home() {
     return (

@@ -1,7 +1,7 @@
 "use server"
-import { ApiFetchOptions } from "@/types/types";
 import { cookies } from "next/headers";
 import { getClientCookie } from "./auth";
+import { ApiFetchOptions } from "@/types";
 
 export const apiFetch = async <T>(
   endpoint: string,
