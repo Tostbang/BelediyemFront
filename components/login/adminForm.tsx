@@ -3,9 +3,5 @@
 import LoginForm from './form';
 
 export default function AdminLoginForm() {
-    return (
-        <div className="">
-            <LoginForm type="admin" />
-        </div>
-    );
+    return <LoginForm type="admin" />;
 }
