@@ -50,7 +50,7 @@ export default function Modal({
                                         animate={{ opacity: 1 }}
                                         transition={{ delay: 0.2 }}
                                         onClick={onClose}
-                                        className="absolute right-4 top-4 rounded-sm text-gray-400 hover:text-gray-500"
+                                        className="absolute right-4 top-4 rounded-sm text-gray-400 hover:text-gray-500 cursor-pointer"
                                         aria-label="Close modal">
                                         <IoClose className="size-5" />
                                     </motion.button>

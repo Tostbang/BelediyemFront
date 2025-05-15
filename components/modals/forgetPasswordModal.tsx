@@ -83,7 +83,7 @@ export default function ForgetPasswordModal({
                 <div className="flex justify-between mt-4">
                     <button
                         type="button"
-                        className="bg-gray-300 text-gray-800 py-2 px-4 rounded-lg hover:bg-gray-400 transition-colors"
+                        className="bg-gray-300 text-gray-800 py-2 px-4 rounded-lg hover:bg-gray-400 transition-colors cursor-pointer"
                         onClick={onClose}>
                         İptal
                     </button>
