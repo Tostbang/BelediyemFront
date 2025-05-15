@@ -7,7 +7,7 @@ import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import {
     handleLoginAdmin,
     handleLoginStaff,
-    handleLoginMunicipality,
+    handleLoginMun,
 } from '@/app/actions';
 import ForgetPasswordModal from '@/components/modals/forgetPasswordModal';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
@@ -121,7 +121,7 @@ export default function LoginForm({
                 redirectPath = '/admin/dashboard';
                 break;
             case 'municipality':
-                result = await handleLoginMunicipality(formData);
+                result = await handleLoginMun(formData);
                 redirectPath = '/municipality/dashboard';
                 break;
             case 'staff':
@@ -207,24 +207,27 @@ export default function LoginForm({
                     </div>
                 </div>
 
-                <div>
-                    <button
-                        type="button"
-                        className="text-sm hover:underline cursor-pointer"
-                        onClick={() => setShowForgotPassword(true)}>
-                        Şifremi Unuttum
-                    </button>
-                </div>
+                {type !== 'admin' && (
+                    <div>
+                        <button
+                            type="button"
+                            className="text-sm hover:underline cursor-pointer"
+                            onClick={() => setShowForgotPassword(true)}>
+                            Şifremi Unuttum
+                        </button>
+                    </div>
+                )}
                 <SubmitButton
                     title="Giriş Yap"
                     className={`w-full bg-${color}-600 text-white py-3 rounded-lg hover:bg-${color}-700 transition-all text-center cursor-pointer`}
                 />
             </form>
 
-            {showForgotPassword && (
+            {showForgotPassword && type !== 'admin' && (
                 <ForgetPasswordModal
                     open={showForgotPassword}
                     onClose={() => setShowForgotPassword(false)}
+                    type={type}
                 />
             )}
         </div>

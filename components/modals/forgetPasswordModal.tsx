@@ -2,15 +2,21 @@
 // import { handleForgetPassword } from '@/app/actions';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import Modal from '@/components/common/modal';
-// import SubmitButton from '@/components/common/submitButton';
+import SubmitButton from '@/components/common/submitButton';
 import React, { useActionState } from 'react';
+import {
+    handleForgetPasswordMun,
+    handleForgetPasswordStaff,
+} from '@/app/actions';
 
 export default function ForgetPasswordModal({
     open,
     onClose,
+    type,
 }: {
     open: boolean;
     onClose: () => void;
+    type: 'admin' | 'municipality' | 'staff';
 }) {
     const { handleError, handleSuccess } = useNotificationHandler();
 
@@ -22,12 +28,18 @@ export default function ForgetPasswordModal({
     };
 
     const clientAction = async (_prevState: unknown, formData: FormData) => {
-        // const result = await handleForgetPassword(formData);
-        const result = {
-            success: true,
-            message: 'Şifre sıfırlama bağlantısı gönderildi.',
-            errors: [],
-        };
+        let result;
+
+        switch (type) {
+            case 'municipality':
+                result = await handleForgetPasswordMun(formData);
+                break;
+            case 'staff':
+                result = await handleForgetPasswordStaff(formData);
+                break;
+            default:
+                result = await handleForgetPasswordMun(formData);
+        }
 
         if (result.success) {
             handleSuccess(result.message);
@@ -75,7 +87,7 @@ export default function ForgetPasswordModal({
                         onClick={onClose}>
                         İptal
                     </button>
-                    {/* <SubmitButton title="Gönder" /> */}
+                    <SubmitButton title="Gönder" />
                 </div>
             </form>
         </Modal>

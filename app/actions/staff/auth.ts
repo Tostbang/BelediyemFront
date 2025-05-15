@@ -1,6 +1,6 @@
 "use server"
 
-import { CustomJwtPayload, LoginResponse } from "@/types";
+import { ApiResponse, CustomJwtPayload, LoginResponse } from "@/types";
 import { apiFetch } from "@/utils/api";
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
@@ -49,6 +49,32 @@ export const handleLoginStaff = async (formData: FormData) => {
             success: false,
             message: "",
             errors: error instanceof Error ? error.message : 'Giriş yapılamadı.',
+        };
+    }
+}
+
+export const handleForgetPasswordStaff = async (formData: FormData) => {
+    try {
+        const email = formData.get('email') as string;
+        if (!email) {
+            return { success: false, message: "", errors: 'E-posta gereklidir!' };
+        }
+        const payload = {
+            email,
+        };
+
+        const data = await apiFetch<ApiResponse>('municipalstaff/passwordforgot', {
+            method: 'POST',
+            body: payload
+        });
+
+        return { success: true, message: data.message || 'Şifre sıfırlama bağlantısı gönderildi.', errors: [] };
+    } catch (error) {
+        console.error(error);
+        return {
+            success: false,
+            message: "",
+            errors: error instanceof Error ? error.message : 'Şifre sıfırlama bağlantısı gönderilemedi.',
         };
     }
 }
