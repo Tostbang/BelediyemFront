@@ -83,7 +83,7 @@ const SideBar = ({ items }: { items: SidebarItem[] }) => {
                                         {({ open }) => (
                                             <>
                                                 <DisclosureButton
-                                                    className={`group flex w-full items-center px-2 py-2 text-sm hover:bg-blue-600 hover:text-white font-medium rounded-md focus:outline-none ${
+                                                    className={`group cursor-pointer flex w-full items-center px-2 py-2 text-sm hover:bg-blue-600 hover:text-white font-medium rounded-md focus:outline-none ${
                                                         pathname === item.path
                                                             ? 'bg-blue-600 text-white hover:bg-blue-700'
                                                             : 'text-black'
@@ -132,7 +132,7 @@ const SideBar = ({ items }: { items: SidebarItem[] }) => {
                                                                                     );
                                                                                 }
                                                                             }}
-                                                                            className={`group flex w-full items-center px-2 py-2 text-sm font-medium hover:bg-blue-600 hover:text-white rounded-md focus:outline-none ${
+                                                                            className={`group cursor-pointer flex w-full items-center px-2 py-2 text-sm font-medium hover:bg-blue-600 hover:text-white rounded-md focus:outline-none ${
                                                                                 pathname ===
                                                                                 child.path
                                                                                     ? 'bg-blue-600 text-white hover:bg-blue-700'
@@ -175,7 +175,7 @@ const SideBar = ({ items }: { items: SidebarItem[] }) => {
                                             router.push(item.path);
                                         }
                                     }}
-                                    className={`group flex w-full items-center px-2 py-2 text-sm font-medium rounded-md hover:bg-blue-600 hover:text-white focus:outline-none ${
+                                    className={`group cursor-pointer flex w-full items-center px-2 py-2 text-sm font-medium rounded-md hover:bg-blue-600 hover:text-white focus:outline-none ${
                                         pathname === item.path
                                             ? 'bg-blue-600 text-white hover:bg-blue-700'
                                             : 'text-black'
