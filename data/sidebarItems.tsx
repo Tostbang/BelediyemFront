@@ -12,6 +12,12 @@ import {
     FlagIcon,
     SlideIcon,
     PeopleIcon,
+    ChatIcon,
+    StarIcon,
+    SupportIcon,
+    MoneyIcon,
+    HornIcon,
+    EnvelopeIcon,
 } from '@/components/icons';
 
 export const sidebarItemsAdmin: SidebarItem[] = [
@@ -38,7 +44,7 @@ export const sidebarItemsAdmin: SidebarItem[] = [
     },
     {
         title: 'SSS',
-        icon: <HomeIcon />,
+        icon: <ListIcon />,
         path: '/admin/faq',
     },
     {
@@ -101,6 +107,67 @@ export const sidebarItemsMuni: SidebarItem[] = [
             },
         ],
     },
+    {
+        title: 'Şikayet Talebi',
+        icon: <EnvelopeIcon />,
+        path: '/municipality/complaint-request',
+    },
+    {
+        title: 'Ödeme',
+        icon: <MoneyIcon />,
+        path: '/municipality/payment',
+    },
+    {
+        title: 'Sohbet',
+        icon: <ChatIcon />,
+        path: '/municipality/chat',
+    },
+    {
+        title: 'Personel',
+        icon: <PeopleIcon />,
+        path: '/municipality/staff',
+    },
+    {
+        title: 'Vatandaş',
+        icon: <PeopleIcon />,
+        path: '/municipality/citizen',
+    },
+    {
+        title: 'Değerlendirme',
+        icon: <StarIcon />,
+        path: '/municipality/evaluation',
+    },
+    {
+        title: 'Destek',
+        icon: <SupportIcon />,
+        path: '/municipality/support',
+    },
+    {
+        title: 'SSS',
+        icon: <HornIcon />,
+        path: '/municipality/faq',
+    },
+    {
+        title: 'Ayarlar',
+        icon: <SettingsIcon />,
+        children: [
+            {
+                title: 'Belediye Bilgileri',
+                icon: <UserIcon />,
+                path: '/municipality/profile',
+            },
+            {
+                title: 'Şifre Değiştirme',
+                icon: <LockIcon />,
+                path: '/municipality/change-password',
+            },
+            {
+                title: 'Cihaz Oturumları',
+                icon: <MobileIcon />,
+                path: '/municipality/sessions',
+            },
+        ],
+    },
 ];
 
 export const sidebarItemsStaff: SidebarItem[] = [
@@ -110,17 +177,38 @@ export const sidebarItemsStaff: SidebarItem[] = [
         path: '/staff/dashboard',
     },
     {
-        title: 'Modüle Yönetimi',
-        icon: <ModuleIcon />,
+        title: 'Şikayet Talebi',
+        icon: <EnvelopeIcon />,
+        path: '/staff/complaint-request',
+    },
+    {
+        title: 'Sohbet',
+        icon: <ChatIcon />,
+        path: '/staff/chat',
+    },
+    {
+        title: 'SSS',
+        icon: <HornIcon />,
+        path: '/staff/faq',
+    },
+    {
+        title: 'Ayarlar',
+        icon: <SettingsIcon />,
         children: [
             {
-                title: 'Belediye Listesi',
-                icon: <ListIcon />,
-                path: '/admin/municipality/list',
+                title: 'Personel Bilgileri',
+                icon: <UserIcon />,
+                path: '/staff/profile',
             },
             {
-                title: 'Şifre Sıfırlma Talepleri',
+                title: 'Şifre Değiştirme',
                 icon: <LockIcon />,
+                path: '/staff/change-password',
+            },
+            {
+                title: 'Cihaz Oturumları',
+                icon: <MobileIcon />,
+                path: '/staff/sessions',
             },
         ],
     },

@@ -400,14 +400,14 @@ export const LocationIcon = () => (
             clipRule="evenodd"
             d="M12 21C12 21 18 14.7 18 9C18 5.68629 15.3137 3 12 3C8.68629 3 6 5.68629 6 9C6 14.7 12 21 12 21Z"
             stroke="currentColor"
-            stroke-width="2"
+            strokeWidth="2"
         />
         <path
             fillRule="evenodd"
             clipRule="evenodd"
             d="M12 10C12.5523 10 13 9.55228 13 9C13 8.44772 12.5523 8 12 8C11.4477 8 11 8.44772 11 9C11 9.55228 11.4477 10 12 10Z"
             stroke="currentColor"
-            stroke-width="2"
+            strokeWidth="2"
         />
     </svg>
 );
@@ -430,6 +430,130 @@ export const PeopleIcon = () => (
             stroke="currentColor"
             strokeWidth="2"
             strokeLinecap="round"
+        />
+    </svg>
+);
+
+export const ChatIcon = () => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none">
+        <path
+            d="M8.82617 18.5859L9.08469 17.6199C8.84855 17.5567 8.59744 17.5822 8.37881 17.6916L8.82617 18.5859ZM4 21L3.01005 20.8586C2.95745 21.2268 3.11359 21.5938 3.41537 21.8113C3.71714 22.0288 4.11469 22.0608 4.44736 21.8944L4 21ZM4.65332 16.4258L5.64327 16.5672C5.69136 16.2305 5.56506 15.8925 5.308 15.6699L4.65332 16.4258ZM12 3V4C17.1903 4 21 7.33071 21 11H22H23C23 5.83274 17.8554 2 12 2V3ZM22 11H21C21 14.6693 17.1903 18 12 18V19V20C17.8554 20 23 16.1673 23 11H22ZM12 19V18C10.9787 18 9.99886 17.8646 9.08469 17.6199L8.82617 18.5859L8.56765 19.5519C9.64829 19.8411 10.8019 20 12 20V19ZM8.82617 18.5859L8.37881 17.6916L3.55264 20.1056L4 21L4.44736 21.8944L9.27353 19.4803L8.82617 18.5859ZM4 21L4.98995 21.1414L5.64327 16.5672L4.65332 16.4258L3.66337 16.2844L3.01005 20.8586L4 21ZM4.65332 16.4258L5.308 15.6699C3.84111 14.3994 3 12.7555 3 11H2H1C1 13.4332 2.17254 15.6001 3.99864 17.1817L4.65332 16.4258ZM2 11H3C3 7.33071 6.80967 4 12 4V3V2C6.14463 2 1 5.83274 1 11H2Z"
+            fill="currentColor"
+        />
+    </svg>
+);
+
+export const StarIcon = () => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none">
+        <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M12 17.8441L6.18324 20.9021L7.29414 14.4251L2.58829 9.838L9.09161 8.89301L12 3L14.9084 8.89301L21.4117 9.838L16.7058 14.4251L17.8167 20.9021L12 17.8441Z"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        />
+    </svg>
+);
+
+export const SupportIcon = () => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none">
+        <path
+            d="M21 13H19C17.8954 13 17 13.8954 17 15V17C17 18.1046 17.8954 19 19 19V19C20.1046 19 21 18.1046 21 17V13C21 8.02944 16.9706 4 12 4C7.02944 4 3 8.02944 3 13V17C3 18.1046 3.89543 19 5 19V19C6.10457 19 7 18.1046 7 17V15C7 13.8954 6.10457 13 5 13H3"
+            stroke="currentColor"
+            strokeWidth="2"
+        />
+    </svg>
+);
+
+export const MoneyIcon = () => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none">
+        <path
+            d="M12 4V6"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+        />
+        <path
+            d="M12 18V20"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+        />
+        <path
+            d="M15.5 8C15.5 8 15 6 12 6C9 6 8.5 7.95652 8.5 9C8.5 13.1403 15.5 10.9649 15.5 15C15.5 16.0435 15 18 12 18C9 18 8.5 16 8.5 16"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+        />
+    </svg>
+);
+
+export const HornIcon = () => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none">
+        <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M4 11.5C4 10.1193 5.11827 9 6.49898 9C8.18232 9 10.382 9 12 9C15 9 19 4 19 4V19C19 19 15 14 12 14C10.382 14 8.18232 14 6.49898 14C5.11827 14 4 12.8807 4 11.5V11.5Z"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinejoin="round"
+        />
+        <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M7 14L9 20H13L11 14H7Z"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinejoin="round"
+        />
+        <path d="M11 9V14" stroke="currentColor" strokeWidth="2" />
+    </svg>
+);
+
+export const EnvelopeIcon = () => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none">
+        <path d="M3 6L12 14L21 6" stroke="currentColor" strokeWidth="2" />
+        <rect
+            x="2"
+            y="5"
+            width="20"
+            height="14"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
         />
     </svg>
 );
