@@ -54,3 +54,19 @@ export const sidebarItemsAdmin: SidebarItem[] = [
         ],
     },
 ];
+
+export const sidebarItemsMuni: SidebarItem[] = [
+    {
+        path: '/municipality/dashboard',
+        icon: <HomeIcon />,
+        title: 'Anasayfa',
+    },
+];
+
+export const sidebarItemsStaff: SidebarItem[] = [
+    {
+        path: '/staff/dashboard',
+        icon: <HomeIcon />,
+        title: 'Anasayfa',
+    },
+];

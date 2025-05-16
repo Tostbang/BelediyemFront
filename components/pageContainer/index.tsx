@@ -16,7 +16,7 @@ export default function PageContainer({
     return (
         <div className="flex h-screen">
             <div className="flex-1 p-6 h-full overflow-auto bg-gray-100">
-                <div className="flex justify-between items-center mb-4 ml-10">
+                <div className="flex justify-between items-center mb-4">
                     <div className="flex items-center text-[#343C6A]">
                         {breadcrumb.map((item, index) => (
                             <React.Fragment key={index}>
