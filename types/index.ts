@@ -1,5 +1,14 @@
 import { JwtPayload } from "jwt-decode";
 
+export type SidebarItem = {
+    path?: string;
+    icon: React.ReactNode;
+    title: string;
+    isLogout?: boolean;
+    children?: SidebarItem[];
+};
+
+
 export type ApiFetchOptions = {
     method?: string;
     body?: unknown;
