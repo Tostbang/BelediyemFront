@@ -4,7 +4,12 @@ import { useRouter } from 'next/navigation';
 import { useState, useEffect, useMemo } from 'react';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { SidebarItem } from '@/types';
-import { Disclosure, Transition } from '@headlessui/react';
+import {
+    Disclosure,
+    DisclosureButton,
+    DisclosurePanel,
+    Transition,
+} from '@headlessui/react';
 import { BiChevronDown } from 'react-icons/bi';
 
 const SideBar = ({ items }: { items: SidebarItem[] }) => {
@@ -77,14 +82,14 @@ const SideBar = ({ items }: { items: SidebarItem[] }) => {
                                         className="mb-1">
                                         {({ open }) => (
                                             <>
-                                                <Disclosure.Button
+                                                <DisclosureButton
                                                     className={`group flex w-full items-center px-2 py-2 text-sm hover:bg-blue-600 hover:text-white font-medium rounded-md focus:outline-none ${
                                                         pathname === item.path
                                                             ? 'bg-blue-600 text-white hover:bg-blue-700'
                                                             : 'text-black'
                                                     }`}>
                                                     <span className="flex items-center gap-4 flex-grow">
-                                                        {item.icon}
+                                                        <span>{item.icon}</span>
                                                         <span>
                                                             {item.title}
                                                         </span>
@@ -96,7 +101,7 @@ const SideBar = ({ items }: { items: SidebarItem[] }) => {
                                                                 : ''
                                                         }`}
                                                     />
-                                                </Disclosure.Button>
+                                                </DisclosureButton>
 
                                                 <Transition
                                                     enter="transition duration-100 ease-out"
@@ -105,7 +110,7 @@ const SideBar = ({ items }: { items: SidebarItem[] }) => {
                                                     leave="transition duration-75 ease-out"
                                                     leaveFrom="transform scale-100 opacity-100"
                                                     leaveTo="transform scale-95 opacity-0">
-                                                    <Disclosure.Panel className="pl-4 pt-1 pb-1">
+                                                    <DisclosurePanel className="pl-4 pt-1 pb-1">
                                                         <div className="space-y-1">
                                                             {item.children &&
                                                                 item.children.map(
@@ -134,9 +139,11 @@ const SideBar = ({ items }: { items: SidebarItem[] }) => {
                                                                                     : 'text-black'
                                                                             }`}>
                                                                             <span className="flex items-center gap-4">
-                                                                                {
-                                                                                    child.icon
-                                                                                }
+                                                                                <span>
+                                                                                    {
+                                                                                        item.icon
+                                                                                    }
+                                                                                </span>
                                                                                 <span>
                                                                                     {
                                                                                         child.title
@@ -147,7 +154,7 @@ const SideBar = ({ items }: { items: SidebarItem[] }) => {
                                                                     )
                                                                 )}
                                                         </div>
-                                                    </Disclosure.Panel>
+                                                    </DisclosurePanel>
                                                 </Transition>
                                             </>
                                         )}
@@ -174,7 +181,7 @@ const SideBar = ({ items }: { items: SidebarItem[] }) => {
                                             : 'text-black'
                                     }`}>
                                     <span className="flex items-center gap-4">
-                                        {item.icon}
+                                        <span>{item.icon}</span>
                                         <span>{item.title}</span>
                                     </span>
                                 </button>
