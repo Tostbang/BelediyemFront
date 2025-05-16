@@ -141,7 +141,7 @@ const SideBar = ({ items }: { items: SidebarItem[] }) => {
                                                                             <span className="flex items-center gap-4">
                                                                                 <span>
                                                                                     {
-                                                                                        item.icon
+                                                                                        child.icon
                                                                                     }
                                                                                 </span>
                                                                                 <span>
