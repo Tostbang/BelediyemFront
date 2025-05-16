@@ -7,49 +7,58 @@ import {
     SettingsIcon,
     UserIcon,
     MobileIcon,
+    ModuleIcon,
+    DateIcon,
+    FlagIcon,
+    SlideIcon,
+    PeopleIcon,
 } from '@/components/icons';
 
 export const sidebarItemsAdmin: SidebarItem[] = [
     {
-        path: '/admin/dashboard',
-        icon: <HomeIcon />,
         title: 'Anasayfa',
+        icon: <HomeIcon />,
+        path: '/admin/dashboard',
     },
     {
-        icon: <BuildingIcon />,
         title: 'Belediye',
+        icon: <BuildingIcon />,
         children: [
             {
-                icon: <ListIcon />,
                 title: 'Belediye Listesi',
+                icon: <ListIcon />,
                 path: '/admin/municipality/list',
             },
             {
-                icon: <LockIcon />,
                 title: 'Şifre Sıfırlma Talepleri',
+                icon: <LockIcon />,
+                path: '/admin/password-reset-requests',
             },
         ],
     },
     {
-        path: '/admin/faq',
-        icon: <HomeIcon />,
         title: 'SSS',
+        icon: <HomeIcon />,
+        path: '/admin/faq',
     },
     {
-        icon: <SettingsIcon />,
         title: 'Ayarlar',
+        icon: <SettingsIcon />,
         children: [
             {
-                icon: <UserIcon />,
                 title: 'Admin Bilgileri',
+                icon: <UserIcon />,
+                path: '/admin/profile',
             },
             {
-                icon: <LockIcon />,
                 title: 'Şifre Değiştirme',
+                icon: <LockIcon />,
+                path: '/admin/change-password',
             },
             {
-                icon: <MobileIcon />,
                 title: 'Cihaz Oturumları',
+                icon: <MobileIcon />,
+                path: '/admin/sessions',
             },
         ],
     },
@@ -57,16 +66,62 @@ export const sidebarItemsAdmin: SidebarItem[] = [
 
 export const sidebarItemsMuni: SidebarItem[] = [
     {
-        path: '/municipality/dashboard',
-        icon: <HomeIcon />,
         title: 'Anasayfa',
+        icon: <HomeIcon />,
+        path: '/municipality/dashboard',
+    },
+    {
+        title: 'Modüle Yönetimi',
+        icon: <ModuleIcon />,
+        children: [
+            {
+                title: 'Etkinlik',
+                icon: <DateIcon />,
+                path: '/municipality/event',
+            },
+            {
+                title: 'Slayt',
+                icon: <SlideIcon />,
+                path: '/municipality/slide',
+            },
+            {
+                title: 'Mekan',
+                icon: <FlagIcon />,
+                path: '/municipality/place',
+            },
+            {
+                title: 'Toplanma Alanı',
+                icon: <PeopleIcon />,
+                path: '/municipality/gathering-place',
+            },
+            {
+                title: 'Tesis',
+                icon: <BuildingIcon />,
+                path: '/municipality/facility',
+            },
+        ],
     },
 ];
 
 export const sidebarItemsStaff: SidebarItem[] = [
     {
-        path: '/staff/dashboard',
-        icon: <HomeIcon />,
         title: 'Anasayfa',
+        icon: <HomeIcon />,
+        path: '/staff/dashboard',
+    },
+    {
+        title: 'Modüle Yönetimi',
+        icon: <ModuleIcon />,
+        children: [
+            {
+                title: 'Belediye Listesi',
+                icon: <ListIcon />,
+                path: '/admin/municipality/list',
+            },
+            {
+                title: 'Şifre Sıfırlma Talepleri',
+                icon: <LockIcon />,
+            },
+        ],
     },
 ];

@@ -177,3 +177,259 @@ export const MobileIcon = () => (
         />
     </svg>
 );
+
+export const ModuleIcon = () => (
+    <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <circle
+            cx="6"
+            cy="6"
+            r="1"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+        />
+        <circle
+            cx="12"
+            cy="6"
+            r="1"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+        />
+        <circle
+            cx="18"
+            cy="6"
+            r="1"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+        />
+        <circle
+            cx="6"
+            cy="12"
+            r="1"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+        />
+        <circle
+            cx="12"
+            cy="12"
+            r="1"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+        />
+        <circle
+            cx="18"
+            cy="12"
+            r="1"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+        />
+        <circle
+            cx="6"
+            cy="18"
+            r="1"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+        />
+        <circle
+            cx="12"
+            cy="18"
+            r="1"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+        />
+        <circle
+            cx="18"
+            cy="18"
+            r="1"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+        />
+    </svg>
+);
+
+export const DateIcon = () => (
+    <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <path
+            d="M3 5H21V21H3V5Z"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinejoin="round"
+        />
+        <path
+            d="M21 9H3"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+        />
+        <path
+            d="M7 5V3"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+        />
+        <path
+            d="M17 5V3"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+        />
+    </svg>
+);
+
+export const ImageIcon = () => (
+    <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <rect
+            x="21"
+            y="3"
+            width="18"
+            height="18"
+            transform="rotate(90 21 3)"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        />
+        <path
+            d="M3 14L7 10L18 21"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+        />
+        <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M13.5 10C14.8807 10 16 8.88071 16 7.5C16 6.11929 14.8807 5 13.5 5C12.1193 5 11 6.11929 11 7.5C11 8.88071 12.1193 10 13.5 10Z"
+            stroke="currentColor"
+            strokeWidth="2"
+        />
+        <path d="M13.5 16.5L21 9" stroke="currentColor" strokeWidth="2" />
+    </svg>
+);
+
+export const SlideIcon = () => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none">
+        <rect
+            x="6"
+            y="8"
+            width="12"
+            height="7"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+        />
+        <path
+            d="M6 5H12M18 5H12M12 5V4"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+        />
+        <path
+            d="M6 18H8M18 18H16M12 18V21M12 18H8M12 18H16M8 18L6 21M16 18L18 21"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+        />
+    </svg>
+);
+
+export const FlagIcon = () => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none">
+        <path
+            d="M5 5V20"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+        />
+        <path
+            d="M5 6C5 6 6.75 4 9.375 4C12 4 14 6 16 6C18 6 19 5 19 5"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+        />
+        <path
+            d="M5 15C5 15 6.75 13 9.375 13C12 13 14 15 16 15C18 15 19 14 19 14V5"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+        />
+    </svg>
+);
+
+export const LocationIcon = () => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none">
+        <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M12 21C12 21 18 14.7 18 9C18 5.68629 15.3137 3 12 3C8.68629 3 6 5.68629 6 9C6 14.7 12 21 12 21Z"
+            stroke="currentColor"
+            stroke-width="2"
+        />
+        <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M12 10C12.5523 10 13 9.55228 13 9C13 8.44772 12.5523 8 12 8C11.4477 8 11 8.44772 11 9C11 9.55228 11.4477 10 12 10Z"
+            stroke="currentColor"
+            stroke-width="2"
+        />
+    </svg>
+);
+
+export const PeopleIcon = () => (
+    <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <path
+            d="M1 18C1 15.75 4 15.75 5.5 14.25C6.25 13.5 4 13.5 4 9.75C4 7.25025 4.99975 6 7 6C9.00025 6 10 7.25025 10 9.75C10 13.5 7.75 13.5 8.5 14.25C10 15.75 13 15.75 13 18"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+        />
+        <path
+            d="M11.9947 16.2431C12.5617 15.8523 13.2978 15.571 14.0021 15.2318C14.5528 14.9665 15.084 14.6659 15.5 14.25C16.25 13.5 14 13.5 14 9.75C14 7.25025 14.9997 6 17 6C19.0002 6 20 7.25025 20 9.75C20 13.5 17.75 13.5 18.5 14.25C20 15.75 23 15.75 23 18"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+        />
+    </svg>
+);
