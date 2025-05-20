@@ -78,3 +78,19 @@ export const handleForgetPasswordStaff = async (formData: FormData) => {
         };
     }
 }
+
+
+export const handleLogoutStaf = async () => {
+    try {
+        const data = await apiFetch<ApiResponse>('municipalstaff/logout');
+        return { success: true, message: data.message || 'Çıkış yapıldı.', errors: [] };
+
+    } catch (error) {
+        console.error(error);
+        return {
+            success: false,
+            message: "",
+            errors: error instanceof Error ? error.message : 'Çıkış yapılamadı.',
+        };
+    }
+}

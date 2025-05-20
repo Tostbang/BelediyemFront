@@ -1,6 +1,6 @@
 "use server"
 
-import { CustomJwtPayload, LoginResponse } from "@/types";
+import { ApiResponse, CustomJwtPayload, LoginResponse } from "@/types";
 import { apiFetch } from "@/utils/api";
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
@@ -49,6 +49,21 @@ export const handleLoginAdmin = async (formData: FormData) => {
             success: false,
             message: "",
             errors: error instanceof Error ? error.message : 'Giriş yapılamadı.',
+        };
+    }
+}
+
+export const handleLogoutAdmin = async () => {
+    try {
+        const data = await apiFetch<ApiResponse>('admin/logout');
+        return { success: true, message: data.message || 'Çıkış yapıldı.', errors: [] };
+
+    } catch (error) {
+        console.error(error);
+        return {
+            success: false,
+            message: "",
+            errors: error instanceof Error ? error.message : 'Çıkış yapılamadı.',
         };
     }
 }

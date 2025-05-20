@@ -1,13 +1,83 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+import { logout } from '@/utils/auth';
+import { handleLogoutMun } from '@/app/actions/municipality/auth';
+import { handleLogoutStaf } from '@/app/actions/staff/auth';
+import { handleLogoutAdmin } from '@/app/actions';
+import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 
 export default function Header() {
     const [isProfileOpen, setIsProfileOpen] = useState(false);
+    const router = useRouter();
+    const pathname = usePathname();
+    const { handleError, handleSuccess } = useNotificationHandler();
+
+    const authPaths = useMemo(
+        () => ['/login', '/login/admin', '/login/municipality', '/login/staff'],
+        []
+    );
 
     const toggleProfilePopover = () => {
         setIsProfileOpen(!isProfileOpen);
+    };
+
+    useEffect(() => {
+        const handleStorageChange = (event: StorageEvent) => {
+            if (event.key === 'logout' && event.newValue === 'true') {
+                if (!authPaths.includes(pathname || '')) {
+                    logout();
+                    router.push('/login');
+                }
+            }
+        };
+
+        window.addEventListener('storage', handleStorageChange);
+
+        return () => {
+            window.removeEventListener('storage', handleStorageChange);
+        };
+    }, [authPaths, pathname, router]);
+
+    const handleLogout = async () => {
+        let result;
+
+        if (pathname?.startsWith('/admin')) {
+            result = await handleLogoutAdmin();
+        } else if (pathname?.startsWith('/municipality')) {
+            result = await handleLogoutMun();
+        } else if (pathname?.startsWith('/staff')) {
+            result = await handleLogoutStaf();
+        }
+
+        if (result && result.success) {
+            handleSuccess(result.message);
+            logout();
+            localStorage.setItem('logout', 'true');
+            setTimeout(() => {
+                localStorage.removeItem('logout');
+            }, 500);
+
+            // Redirect to appropriate login page based on current path
+            if (pathname?.startsWith('/admin')) {
+                router.push('/login/admin');
+            } else if (pathname?.startsWith('/municipality')) {
+                router.push('/login/municipality');
+            } else if (pathname?.startsWith('/staff')) {
+                router.push('/login/staff');
+            } else {
+                router.push('/login');
+            }
+        } else if (result) {
+            handleError(result);
+        } else {
+            handleError({
+                success: false,
+                message: 'Çıkış işlemi başarısız oldu.',
+            });
+        }
     };
 
     return (
@@ -61,7 +131,9 @@ export default function Header() {
                             Ayarlar
                         </Link>
                         <hr className="my-1" />
-                        <button className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                        <button
+                            className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 cursor-pointer"
+                            onClick={handleLogout}>
                             Çıkış Yap
                         </button>
                     </div>

@@ -79,6 +79,22 @@ export const handleForgetPasswordMun = async (formData: FormData) => {
     }
 }
 
+
+export const handleLogoutMun = async () => {
+    try {
+        const data = await apiFetch<ApiResponse>('municipality/logout');
+        return { success: true, message: data.message || 'Çıkış yapıldı.', errors: [] };
+
+    } catch (error) {
+        console.error(error);
+        return {
+            success: false,
+            message: "",
+            errors: error instanceof Error ? error.message : 'Çıkış yapılamadı.',
+        };
+    }
+}
+
 export const getDashboardMuni = async () => {
     try {
         const data = await apiFetch('municipality/getdashboardstatistics');
