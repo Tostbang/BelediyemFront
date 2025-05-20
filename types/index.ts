@@ -41,3 +41,37 @@ export type ApiResponse = {
 export type LoginResponse = ApiResponse & User & {
     token: string;
 }
+
+
+
+export type MonthlyStatistics = {
+    month: string;
+    totalComplaints: number;
+    resolvedCount: number;
+    pendingCount: number;
+    underReviewCount: number;
+    startedCount: number;
+    rejectedCount: number;
+};
+
+export type DepartmentStatistics = {
+    departmentName: string;
+    totalComplaints: number;
+    resolvedCount: number;
+    pendingCount: number;
+    underReviewCount: number;
+    startedCount: number;
+    rejectedCount: number;
+};
+
+
+export type DashboardStatisticsMuni = ApiResponse & {
+    totalComplaints: number;
+    resolvedCount: number;
+    pendingCount: number;
+    underReviewCount: number;
+    startedCount: number;
+    rejectedCount: number;
+    monthlyStatistics: MonthlyStatistics[];
+    departmentStatistics: DepartmentStatistics[];
+};

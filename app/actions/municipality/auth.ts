@@ -1,6 +1,6 @@
 "use server"
 
-import { ApiResponse, CustomJwtPayload, LoginResponse } from "@/types";
+import { ApiResponse, CustomJwtPayload, DashboardStatisticsMuni, LoginResponse } from "@/types";
 import { apiFetch } from "@/utils/api";
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
@@ -75,6 +75,21 @@ export const handleForgetPasswordMun = async (formData: FormData) => {
             success: false,
             message: "",
             errors: error instanceof Error ? error.message : 'Şifre sıfırlama bağlantısı gönderilemedi.',
+        };
+    }
+}
+
+export const getDashboardMuni = async () => {
+    try {
+        const data = await apiFetch<DashboardStatisticsMuni>('municipality/getdashboardstatistics');
+
+        return { success: true, data };
+    } catch (error) {
+        console.error(error);
+        return {
+            success: false,
+            message: "",
+            errors: error instanceof Error ? error.message : 'Veri alınamadı.',
         };
     }
 }
