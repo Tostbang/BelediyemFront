@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactElement, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { useActionState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
@@ -135,6 +135,22 @@ export default function LoginForm({
 
         if (result.success) {
             handleSuccess(result.message);
+
+            // Set login event in localStorage for other tabs
+            localStorage.setItem(
+                'login',
+                JSON.stringify({
+                    timestamp: new Date().getTime(),
+                    redirectPath,
+                    role: type,
+                })
+            );
+
+            // Remove the login item after a short delay
+            setTimeout(() => {
+                localStorage.removeItem('login');
+            }, 500);
+
             router.push(redirectPath);
             return { ...result, email: '', password: '' };
         } else {
@@ -148,6 +164,25 @@ export default function LoginForm({
     };
 
     const [state, formAction] = useActionState(clientAction, initialState);
+
+    // Effect to handle login events from other tabs
+    useEffect(() => {
+        const handleStorageChange = (e: StorageEvent) => {
+            if (e.key === 'login') {
+                const loginEvent = JSON.parse(e.newValue as string);
+                if (loginEvent && loginEvent.role === type) {
+                    router.push(loginEvent.redirectPath);
+                }
+            }
+        };
+
+        window.addEventListener('storage', handleStorageChange);
+
+        // Cleanup listener on unmount
+        return () => {
+            window.removeEventListener('storage', handleStorageChange);
+        };
+    }, [router, type]);
 
     return (
         <div className="max-w-lg lg:w-[460px]  mx-auto bg-white rounded-lg shadow-md p-8">

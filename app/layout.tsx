@@ -5,6 +5,7 @@ import NProgressProvider from '@/components/nproggress';
 import { Toaster } from 'react-hot-toast';
 import { Suspense } from 'react';
 import AntdStable from '@/lib/antdPatch';
+import LoginListener from '@/components/common/LoginListener';
 
 const inter = Inter({ subsets: ['latin'] });
 const playfair = Playfair_Display({
@@ -28,6 +29,7 @@ export default function RootLayout({
                     <NProgressProvider />
                     <AntdStable />
                     <Toaster position="top-right" />
+                    <LoginListener />
                     {children}
                 </Suspense>
             </body>
