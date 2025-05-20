@@ -55,14 +55,11 @@ export const apiFetch = async <T>(
       ...(options.next && { next: options.next }),
     });
 
-    console.log("url", url);
-    console.log("response", response);
     if (!response.ok) {
       throw new Error(`API yanıtı hatalı: ${response.statusText}`);
     }
 
     const data = await response.json();
-    console.log("data", data);
     // Check for custom error format
     if (data && data.code !== "200" && data.errors) {
       throw new Error(data.errors[0] || 'Bir hata oluştu');
