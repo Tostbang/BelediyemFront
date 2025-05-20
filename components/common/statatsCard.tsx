@@ -14,7 +14,7 @@ export default function StatsCard({
     bgColor?: string;
 }) {
     return (
-        <div className={`w-full p-6 rounded-lg shadow-sm ${bgColor}`}>
+        <div className={`w-full p-6 rounded-xl shadow-sm ${bgColor}`}>
             <div className="flex justify-between items-center">
                 <div>
                     <h3 className="text-sm text-gray-600 font-medium">{title}</h3>
