@@ -81,15 +81,11 @@ export const handleForgetPasswordMun = async (formData: FormData) => {
 
 export const getDashboardMuni = async () => {
     try {
-        const data = await apiFetch<DashboardStatisticsMuni>('municipality/getdashboardstatistics');
+        const data = await apiFetch('municipality/getdashboardstatistics');
 
-        return { success: true, data };
+        return data as DashboardStatisticsMuni
     } catch (error) {
         console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Veri alınamadı.',
-        };
+        return null;
     }
 }

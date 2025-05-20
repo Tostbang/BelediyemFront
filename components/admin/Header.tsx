@@ -13,13 +13,13 @@ export default function Header() {
     return (
         <header className="bg-white h-16 px-4 flex items-center justify-between">
             <div className="flex"></div>
-            <div className="relative">
+            <div className="relative cursor-pointer">
                 <button
                     onClick={toggleProfilePopover}
-                    className="flex items-center space-x-2 focus:outline-none">
+                    className="flex items-center space-x-2 focus:outline-none cursor-pointer">
                     <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
                         <Image
-                            src="/placeholder-avatar.png"
+                            src="/logo.svg"
                             alt="Profile"
                             width={40}
                             height={40}
@@ -30,11 +30,11 @@ export default function Header() {
                             }}
                         />
                     </div>
-                    <span className="text-gray-700 font-medium hidden sm:inline">
+                    <span className="text-gray-700 font-medium hidden sm:inline cursor-pointer">
                         Admin
                     </span>
                     <svg
-                        className="w-5 h-5 text-gray-500"
+                        className="w-5 h-5 text-gray-500 cursor-pointer"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
