@@ -1,6 +1,5 @@
 'use client';
 import { useEffect, useMemo, useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Popover } from 'antd';
@@ -10,14 +9,20 @@ import { handleLogoutStaf } from '@/app/actions/staff/auth';
 import { handleLogoutAdmin } from '@/app/actions';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import { User } from '@/types';
+import ImageWithSkeleton from '../common/imageSkeleton';
 
 export default function Header() {
     const [isProfileOpen, setIsProfileOpen] = useState(false);
+    const [userDetails, setUserDetails] = useState<User | null>(null);
     const router = useRouter();
     const pathname = usePathname();
     const { handleError, handleSuccess } = useNotificationHandler();
-    const userData = getClientCookie('user');
-    const user = safelyParseJSON<User>(userData);
+
+    useEffect(() => {
+        const userData = getClientCookie('user');
+        const parsedUser = safelyParseJSON<User>(userData);
+        setUserDetails(parsedUser);
+    }, []);
 
     const authPaths = useMemo(
         () => ['/login', '/login/admin', '/login/municipality', '/login/staff'],
@@ -106,8 +111,34 @@ export default function Header() {
     );
 
     return (
-        <header className="fixed top-0 w-full bg-white h-16 px-4 flex items-center justify-between z-[2000]">
-            <div className="flex"></div>
+        <header className="fixed top-0 w-full bg-white h-16 px-4 flex items-center justify-between z-[800]">
+            <div className="w-full p-4 mt-2 flex items-center gap-3 ml-8 md:ml-0">
+                <ImageWithSkeleton
+                    src={
+                        !userDetails
+                            ? '/assets/logo.svg'
+                            : userDetails.role === 4
+                              ? userDetails?.profileImage || '/assets/logo.svg'
+                              : userDetails.role === 3
+                                ? userDetails?.logoImg || '/assets/logo.svg'
+                                : '/assets/logo.svg'
+                    }
+                    alt="Profile"
+                    width={40}
+                    height={40}
+                    className="object-cover"
+                />
+
+                <div className="font-bold">
+                    {!userDetails
+                        ? 'TOSTBANG A.Ş.'
+                        : userDetails.role === 3
+                          ? userDetails.name || 'Belediye'
+                          : userDetails.role === 4
+                            ? userDetails.municipalityName + 'Belediye'
+                            : 'TOSTBANG A.Ş.'}
+                </div>
+            </div>
             <Popover
                 content={profileContent}
                 trigger="click"
@@ -118,22 +149,33 @@ export default function Header() {
                     <button
                         onClick={toggleProfilePopover}
                         className="flex items-center space-x-2 focus:outline-none cursor-pointer">
-                        <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
-                            <Image
-                                src={user?.profileImage || '/logo.svg'}
-                                alt="Profile"
-                                width={40}
-                                height={40}
-                                className="object-cover"
-                                onError={(e) => {
-                                    e.currentTarget.src =
-                                        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'%3E%3C/path%3E%3Ccircle cx='12' cy='7' r='4'%3E%3C/circle%3E%3C/svg%3E";
-                                }}
-                            />
-                        </div>
-                        <span className="text-gray-700 font-medium hidden sm:inline cursor-pointer">
-                            {user?.name + '' + ' ' + user?.surname ||
-                                'Kullanıcı Adı'}
+                        {userDetails?.role === 2 ? null : userDetails?.role ===
+                          3 ? null : userDetails?.role === 4 ? (
+                            <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                                <ImageWithSkeleton
+                                    src={
+                                        userDetails?.profileImage || '/logo.svg'
+                                    }
+                                    alt="Profile"
+                                    width={40}
+                                    height={40}
+                                    className="object-cover"
+                                />
+                            </div>
+                        ) : null}
+                        <span className="text-gray-700 font-medium cursor-pointer">
+                            {!userDetails
+                                ? ''
+                                : userDetails.role === 2
+                                  ? 'Admin Profil'
+                                  : userDetails.role === 3
+                                    ? 'Profil'
+                                    : userDetails.role === 4
+                                      ? userDetails.name +
+                                            ' ' +
+                                            userDetails.surname ||
+                                        'Personel Adı'
+                                      : 'Kullanıcı'}
                         </span>
                         <svg
                             className="w-5 h-5 text-gray-500 cursor-pointer"

@@ -34,6 +34,9 @@ export type User = {
     surname: string;
     role?: number;
     profileImage?: string;
+    logoImg?: string;
+    municipalityName?: number;
+
 };
 
 export type ApiResponse = {

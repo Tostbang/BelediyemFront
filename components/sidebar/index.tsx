@@ -16,6 +16,7 @@ const SideBar = ({ items }: { items: SidebarItem[] }) => {
     const pathname = usePathname();
     const router = useRouter();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
     const adminAuthPaths = useMemo(
         () => ['/admin/login', '/admin/resetpassword'],
         []
@@ -58,18 +59,9 @@ const SideBar = ({ items }: { items: SidebarItem[] }) => {
         <>
             {/* Sidebar */}
             <div
-                className={`fixed top-0 left-0 p-4 h-full bg-white text-[#B1B1B1] transition-transform transform ${
+                className={`fixed top-0 left-0 p-4 h-full bg-white transition-transform transform ${
                     isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-                } md:relative md:translate-x-0 w-64 z-[2500]`}>
-                {/* Logo and company name */}
-                <div className="w-full p-4 flex items-center gap-3">
-                    <div className="bg-gray-100 p-2 rounded">
-                        <span className="font-bold text-sm text-gray-500">
-                            logo
-                        </span>
-                    </div>
-                    <div className="font-bold text-red-600">TOSTBANG A.Ş.</div>
-                </div>
+                } md:relative md:translate-x-0 w-64 z-[700] mt-16`}>
                 <div className="flex-1">
                     <nav className="space-y-1 px-2">
                         {items.map((item, index) => {
@@ -192,13 +184,11 @@ const SideBar = ({ items }: { items: SidebarItem[] }) => {
             </div>
 
             {/* Hamburger button - positioned absolutely when sidebar is closed */}
-            {!isSidebarOpen && (
-                <button
-                    className="fixed top-4 left-4 p-2 text-[#343C6A] md:hidden z-[2500] bg-transparent rounded-md shadow-md"
-                    onClick={toggleSidebar}>
-                    <GiHamburgerMenu size={24} />
-                </button>
-            )}
+            <button
+                className="fixed top-4 left-4 p-2 cursor-pointer text-[#343C6A] md:hidden z-[850] bg-transparent rounded-md shadow-md"
+                onClick={toggleSidebar}>
+                <GiHamburgerMenu size={24} />
+            </button>
 
             {/* Black transparent overlay */}
             <div
