@@ -17,7 +17,7 @@ export function usePagination(options: PaginationOptions = {}) {
         return (!isNaN(parsed) && parsed > 0) ? parsed : defaultValue;
     };
 
-    const currentPage = parsePositiveInteger(searchParams?.get('page') ?? null, defaultPage);
+    const pageNumber = parsePositiveInteger(searchParams?.get('page') ?? null, defaultPage);
     const pageSize = parsePositiveInteger(searchParams?.get('pageSize') ?? null, defaultPageSize);
 
     const handlePageChange = (page: number, size: number) => {
@@ -35,7 +35,7 @@ export function usePagination(options: PaginationOptions = {}) {
     };
 
     return {
-        currentPage,
+        pageNumber,
         pageSize,
         handlePageChange,
         handlePageSizeChange,

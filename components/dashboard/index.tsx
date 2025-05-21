@@ -9,16 +9,25 @@ import {
     TickIcon,
     XIcon,
 } from '@/components/icons';
-import { DashboardStatisticsMuni, MonthlyStatistics } from '@/types';
+import {
+    ComplaintReports,
+    DashboardStatisticsMuni,
+    DepartmentStatistics,
+    ReportsMuniResponse,
+} from '@/types';
 import DynamicTable from '../dynamic/table';
 import { usePagination } from '@/hooks/usePagination';
+import { departmans } from '@/data/departmans';
+import { formatDate } from '@/utils';
 
 export default function DashboardMuni({
     dashboard,
+    reports,
 }: {
     dashboard: DashboardStatisticsMuni;
+    reports?: ReportsMuniResponse;
 }) {
-    const { currentPage, pageSize, handlePageChange, handlePageSizeChange } =
+    const { pageNumber, pageSize, handlePageChange, handlePageSizeChange } =
         usePagination();
 
     const cardsData = [
@@ -80,9 +89,74 @@ export default function DashboardMuni({
 
     const columns = [
         {
-            title: 'Ay',
-            dataIndex: 'month',
+            title: 'id',
+            dataIndex: 'id',
             width: 100,
+            fixed: 'left' as const,
+        },
+        {
+            title: 'Dosya Adı',
+            dataIndex: 'fileName',
+            width: 180,
+        },
+        {
+            title: 'Oluşturulma Tarihi',
+            dataIndex: 'createdDate',
+            width: 180,
+            render: (date: string) => formatDate(date),
+        },
+        {
+            title: 'İndir',
+            dataIndex: 'actions',
+            fixed: 'right' as const,
+            width: 50,
+            render: (_: unknown, record: ComplaintReports) => (
+                // <Dropdown
+                //     menu={{
+                //         items: [
+                //             {
+                //                 key: 'edit',
+                //                 label: (
+                //                     <Link href={`/admin/blog/${record.id}`}>
+                //                         Düzenle / Görüntüle
+                //                     </Link>
+                //                 ),
+                //             },
+                //             {
+                //                 key: 'delete',
+                //                 label: 'Sil',
+                //                 danger: true,
+                //                 onClick: () =>
+                //                     handleDeleteClick(record.id.toString()),
+                //             },
+                //         ],
+                //     }}>
+                //     <a onClick={(e) => e.preventDefault()} className="text-2xl">
+                //         <MoreOutlined />
+                //     </a>
+                // </Dropdown>
+                <div>
+                    <a
+                        href={`/municipality/download/${record.id}`}
+                        target="_blank"
+                        rel="noopener noreferrer">
+                        <button className="text-blue-500 hover:text-blue-700">
+                            <ClipboardIcon />
+                        </button>
+                    </a>
+                </div>
+            ),
+        },
+    ];
+
+    const columns2 = [
+        {
+            title: 'Departman',
+            dataIndex: 'departmentName',
+            width: 100,
+            fixed: 'left' as const,
+            render: (value: number) =>
+                departmans.find((item) => item.id === value)?.name,
         },
         {
             title: 'Toplam Şikayet',
@@ -132,28 +206,42 @@ export default function DashboardMuni({
 
                 <div className="w-full overflow-hidden mt-6 bg-white rounded-lg p-6">
                     <h2 className="text-xl font-semibold mb-4">
-                        Aylık Dağılım
+                        Şikayet Rapor Dosyaları
                     </h2>
                     <div className="overflow-x-auto">
-                        <DynamicTable<MonthlyStatistics>
-                            data={dashboard.monthlyStatistics.map((stat) => ({
-                                ...stat,
-                                department: 'Alt Yapı',
-                                createdAt: '12.09.2019 - 12.53',
-                                lastDownloadDate: '12.09.2019 - 12.53',
-                            }))}
-                            columns={columns}
-                            rowKey="month"
+                        {reports ? (
+                            <DynamicTable<ComplaintReports>
+                                data={reports.complaintReports || []}
+                                columns={columns}
+                                rowKey="id"
+                                showControls={false}
+                                pagination={{
+                                    pageSize: pageSize,
+                                    current: pageNumber,
+                                    total: reports.totalCount || 0,
+                                    onChange: handlePageChange,
+                                    onShowSizeChange: handlePageSizeChange,
+                                    responsive: true,
+                                    size: 'default',
+                                }}
+                            />
+                        ) : (
+                            <div className="text-center py-4">Veri yükleniyor...</div>
+                        )}
+                    </div>
+                </div>
+
+                <div className="w-full overflow-hidden mt-6 bg-white rounded-lg p-6">
+                    <h2 className="text-xl font-semibold mb-4">
+                        Departman Bazlı Şikayet Dağılımı
+                    </h2>
+                    <div className="overflow-x-auto">
+                        <DynamicTable<DepartmentStatistics>
+                            data={dashboard.departmentStatistics}
+                            columns={columns2}
+                            rowKey="departmentName"
                             showControls={false}
-                            pagination={{
-                                pageSize: pageSize,
-                                current: currentPage,
-                                total: dashboard.monthlyStatistics.length,
-                                onChange: handlePageChange,
-                                onShowSizeChange: handlePageSizeChange,
-                                responsive: true,
-                                size: 'default',
-                            }}
+                            pagination={false}
                         />
                     </div>
                 </div>

@@ -8,6 +8,11 @@ export type SidebarItem = {
     children?: SidebarItem[];
 };
 
+export type PaginationBody = {
+    pageNumber: number;
+    pageSize: number;
+};
+
 
 export type ApiFetchOptions = {
     method?: string;
@@ -75,3 +80,23 @@ export type DashboardStatisticsMuni = ApiResponse & {
     monthlyStatistics: MonthlyStatistics[];
     departmentStatistics: DepartmentStatistics[];
 };
+
+export type ComplaintReports = {
+    id: number;
+    municipalityId: number;
+    fileName: string;
+    fileContent: string;
+    createdDate: string;
+}
+
+export type ReportsMuni = {
+    complaintReports: ComplaintReports[];
+    totalCount: number;
+    pageNumber: number;
+    pageSize: number;
+    lastPage: boolean;
+    backPage: boolean;
+    nextPage: boolean;
+}
+
+export type ReportsMuniResponse = ApiResponse & ReportsMuni;

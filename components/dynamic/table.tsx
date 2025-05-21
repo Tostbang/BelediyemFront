@@ -2,6 +2,15 @@
 
 import React, { useState, useEffect } from 'react';
 import type { GetProp, TableProps, TablePaginationConfig } from 'antd';
+
+// Define the pagination position type as it's not exported from antd
+type TablePaginationPosition =
+    | 'topLeft'
+    | 'topCenter'
+    | 'topRight'
+    | 'bottomLeft'
+    | 'bottomCenter'
+    | 'bottomRight';
 import { Form, Switch, Table, Button, Space, Tooltip, Skeleton } from 'antd';
 import './table.css'; // We'll create this CSS file for custom styling
 
@@ -22,7 +31,7 @@ interface DynamicTableProps<T extends object> {
     handleBulkAction?: () => void;
     selectedRowKeys?: React.Key[];
     setSelectedRowKeys?: (keys: React.Key[]) => void;
-    pagination?: TablePaginationConfig;
+    pagination?: TablePaginationConfig | false;
 }
 
 export default function DynamicTable<T extends object>({
@@ -40,7 +49,7 @@ export default function DynamicTable<T extends object>({
     selectedRowKeys = [],
     setSelectedRowKeys = () => {},
     // Pagination props with defaults
-    pagination = {},
+    pagination,
 }: DynamicTableProps<T>) {
     const [internalEllipsis, setInternalEllipsis] = useState(true);
     const [stylesLoaded, setStylesLoaded] = useState(false);
@@ -65,35 +74,15 @@ export default function DynamicTable<T extends object>({
     }));
 
     // Custom pagination configuration to match the UI in the image
-    const paginationConfig: TablePaginationConfig = {
-        pageSizeOptions: [5, 10, 20, 50, 100],
-        showSizeChanger: false, // Hide size changer to match the image
-        position: ['bottomCenter'], // Center alignment as shown in image
-        size: 'default',
-        // showTotal: false, // Remove the total text
-        className: 'custom-pagination', // Apply custom styling
-        itemRender: (page, type, originalElement) => {
-            if (type === 'prev') {
-                return <Button size="small">&lt;</Button>;
-            }
-            if (type === 'next') {
-                return <Button size="small">&gt;</Button>;
-            }
-            if (type === 'page') {
-                return (
-                    <Button
-                        size="small"
-                        type={
-                            pagination.current === page ? 'primary' : 'default'
-                        }>
-                        {page}
-                    </Button>
-                );
-            }
-            return originalElement;
-        },
-        ...(pagination || {}),
-    };
+    const paginationConfig =
+        pagination === false
+            ? false
+            : {
+                  pageSizeOptions: [5, 10, 20, 50, 100],
+                  showSizeChanger: true,
+                  position: ['bottomRight' as TablePaginationPosition],
+                  ...(pagination || {}),
+              };
 
     // Show skeleton loader when styles aren't ready or data is loading
     if (!stylesLoaded) {
