@@ -9,7 +9,12 @@ import {
     TickIcon,
     XIcon,
 } from '@/components/icons';
-import { DashboardStatisticsMuni, DepartmentStatistics } from '@/types';
+import {
+    DashboardStatisticsAdmin,
+    DepartmentStatistics,
+    TopComplaintCategories,
+    TopMunicipalities,
+} from '@/types';
 import DynamicTable from '../dynamic/table';
 import { departmans } from '@/data/departmans';
 import ComplaintChart from './complaintChart';
@@ -17,7 +22,7 @@ import ComplaintChart from './complaintChart';
 export default function DashboardAdmin({
     dashboard,
 }: {
-    dashboard: DashboardStatisticsMuni;
+    dashboard: DashboardStatisticsAdmin;
 }) {
     const cardsData = [
         {
@@ -117,6 +122,34 @@ export default function DashboardAdmin({
         },
     ];
 
+    const column2 = [
+        {
+            title: 'Belediye Adı',
+            dataIndex: 'municipalityName',
+            width: 100,
+            fixed: 'left' as const,
+        },
+        {
+            title: 'Şikayet Sayısı',
+            dataIndex: 'complaintCount',
+            width: 180,
+        },
+    ];
+
+    const column3 = [
+        {
+            title: 'Kategori Adı',
+            dataIndex: 'categoryName',
+            width: 100,
+            fixed: 'left' as const,
+        },
+        {
+            title: 'Şikayet Sayısı',
+            dataIndex: 'complaintCount',
+            width: 180,
+        },
+    ];
+
     return (
         <div>
             <div className="flex flex-col items-center w-full mb-6">
@@ -144,6 +177,35 @@ export default function DashboardAdmin({
                             data={dashboard.departmentStatistics}
                             columns={columns}
                             rowKey="departmentName"
+                            showControls={false}
+                            pagination={false}
+                        />
+                    </div>
+                </div>
+                <div className="w-full overflow-hidden mt-6 bg-white rounded-lg p-6">
+                    <h2 className="text-xl font-semibold mb-4">
+                        En Çok Şikayet Gelen Belediyeler
+                    </h2>
+                    <div className="overflow-x-auto">
+                        <DynamicTable<TopMunicipalities>
+                            data={dashboard.topMunicipalities}
+                            columns={column2}
+                            rowKey="municipalityName"
+                            showControls={false}
+                            pagination={false}
+                        />
+                    </div>
+                </div>
+
+                <div className="w-full overflow-hidden mt-6 bg-white rounded-lg p-6">
+                    <h2 className="text-xl font-semibold mb-4">
+                        En Çok Şikayet Gelen Kategoriler
+                    </h2>
+                    <div className="overflow-x-auto">
+                        <DynamicTable<TopComplaintCategories>
+                            data={dashboard.topComplaintCategories}
+                            columns={column3}
+                            rowKey="categoryName"
                             showControls={false}
                             pagination={false}
                         />

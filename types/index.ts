@@ -73,12 +73,12 @@ export type DepartmentStatistics = {
 };
 
 
-export type topMunicipalities = {
+export type TopMunicipalities = {
     municipalityName: string;
     complaintCount: number;
 };
 
-export type topComplaintCategories = {
+export type TopComplaintCategories = {
     categoryName: string;
     complaintCount: number;
 };
@@ -137,8 +137,8 @@ export type DashboardStatisticsAdmin = ApiResponse & {
     totalAdmins: number;
     monthlyStatistics: MonthlyStatistics[];
     departmentStatistics: DepartmentStatistics[];
-    topMunicipalities: topMunicipalities[];
-    topComplaintCategories: topComplaintCategories[];
+    topMunicipalities: TopMunicipalities[];
+    topComplaintCategories: TopComplaintCategories[];
 };
 
 export type InfoMuni = ApiResponse & {
