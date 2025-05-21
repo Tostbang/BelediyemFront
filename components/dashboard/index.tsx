@@ -4,6 +4,7 @@ import StatsCard from '@/components/common/statatsCard';
 import {
     ClipboardIcon,
     ClockIcon,
+    DownloadIcon,
     EyeIcon,
     PauseIcon,
     TickIcon,
@@ -29,6 +30,22 @@ export default function DashboardMuni({
 }) {
     const { pageNumber, pageSize, handlePageChange, handlePageSizeChange } =
         usePagination();
+
+    const handleDownload = (record: ComplaintReports) => {
+        try {
+            const link = document.createElement('a');
+            link.href = record.fileContent;
+            link.target = '_blank';
+            link.setAttribute('download', record.fileName);
+
+            document.body.appendChild(link);
+            link.click();
+            link.parentNode?.removeChild(link);
+        } catch (error) {
+            console.error('Download failed:', error);
+            alert('Dosya indirme işlemi başarısız oldu.');
+        }
+    };
 
     const cardsData = [
         {
@@ -111,39 +128,12 @@ export default function DashboardMuni({
             fixed: 'right' as const,
             width: 50,
             render: (_: unknown, record: ComplaintReports) => (
-                // <Dropdown
-                //     menu={{
-                //         items: [
-                //             {
-                //                 key: 'edit',
-                //                 label: (
-                //                     <Link href={`/admin/blog/${record.id}`}>
-                //                         Düzenle / Görüntüle
-                //                     </Link>
-                //                 ),
-                //             },
-                //             {
-                //                 key: 'delete',
-                //                 label: 'Sil',
-                //                 danger: true,
-                //                 onClick: () =>
-                //                     handleDeleteClick(record.id.toString()),
-                //             },
-                //         ],
-                //     }}>
-                //     <a onClick={(e) => e.preventDefault()} className="text-2xl">
-                //         <MoreOutlined />
-                //     </a>
-                // </Dropdown>
                 <div>
-                    <a
-                        href={`/municipality/download/${record.id}`}
-                        target="_blank"
-                        rel="noopener noreferrer">
-                        <button className="text-blue-500 hover:text-blue-700">
-                            <ClipboardIcon />
-                        </button>
-                    </a>
+                    <button
+                        onClick={() => handleDownload(record)}
+                        className="text-blue-500 hover:text-blue-700 cursor-pointer">
+                        <DownloadIcon />
+                    </button>
                 </div>
             ),
         },
@@ -226,7 +216,9 @@ export default function DashboardMuni({
                                 }}
                             />
                         ) : (
-                            <div className="text-center py-4">Veri yükleniyor...</div>
+                            <div className="text-center py-4">
+                                Veri yükleniyor...
+                            </div>
                         )}
                     </div>
                 </div>
