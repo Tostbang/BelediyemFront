@@ -1,0 +1,97 @@
+'use client';
+import React from 'react';
+import StatsCard from '@/components/common/statatsCard';
+import {
+    ClipboardIcon,
+    ClockIcon,
+    EyeIcon,
+    PauseIcon,
+    TickIcon,
+    XIcon,
+} from '@/components/icons';
+import { DashboardStatisticsStaff } from '@/types';
+import ComplaintChart from './complainChart';
+
+export default function DashboardStaff({
+    dashboard,
+}: {
+    dashboard: DashboardStatisticsStaff;
+}) {
+    const cardsData = [
+        {
+            title: 'Gelen Şikayet/Talep',
+            value: dashboard?.totalComplaints || '0',
+            icon: (
+                <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-500">
+                    <ClipboardIcon />
+                </div>
+            ),
+        },
+        {
+            title: 'Çözülen Sorunlar',
+            value: dashboard?.resolvedCount || '0',
+            icon: (
+                <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center text-green-500">
+                    <TickIcon />
+                </div>
+            ),
+        },
+        {
+            title: 'Bekleyen Sorunlar',
+            value: dashboard?.pendingCount || '0',
+            icon: (
+                <div className="h-10 w-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-500">
+                    <ClockIcon />
+                </div>
+            ),
+        },
+        {
+            title: 'İncelenen Şikayet/Talepler',
+            value: dashboard?.underReviewCount || '0',
+            icon: (
+                <div className="h-10 w-10 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-500">
+                    <EyeIcon />
+                </div>
+            ),
+        },
+        {
+            title: 'Başlayan Şikayet/Talepler',
+            value: dashboard?.startedCount || '0',
+            icon: (
+                <div className="h-10 w-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-500">
+                    <PauseIcon />
+                </div>
+            ),
+        },
+        {
+            title: 'Reddedilen Şikayet/Talepler',
+            value: dashboard?.rejectedCount || '0',
+            icon: (
+                <div className="h-10 w-10 rounded-full bg-red-100 flex items-center justify-center text-red-500">
+                    <XIcon />
+                </div>
+            ),
+        },
+    ];
+
+    return (
+        <div>
+            <div className="flex flex-col items-center w-full mb-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 w-full max-w-full">
+                    {cardsData.map((card, index) => (
+                        <StatsCard
+                            key={index}
+                            title={card.title}
+                            value={card.value}
+                            icon={card.icon}
+                        />
+                    ))}
+                </div>
+
+                <ComplaintChart
+                    monthlyStatistics={dashboard.monthlyStatistics || []}
+                />
+            </div>
+        </div>
+    );
+}

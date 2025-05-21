@@ -106,17 +106,6 @@ export const getDashboardMuni = async () => {
     }
 }
 
-export const getInfoMun = async () => {
-    try {
-        const data = await apiFetch('municipality/getinfo');
-
-        return data as InfoMuni
-    } catch (error) {
-        console.error(error);
-        return null;
-    }
-}
-
 export const getReportsMuni = async (body: PaginationBody) => {
     try {
         const data = await apiFetch('municipality/getallreports', {
@@ -134,4 +123,13 @@ export const getReportsMuni = async (body: PaginationBody) => {
     }
 }
 
+export const getInfoMun = async () => {
+    try {
+        const data = await apiFetch('municipality/getinfo');
 
+        return data as InfoMuni
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}

@@ -1,6 +1,6 @@
 "use server"
 
-import { ApiResponse, CustomJwtPayload, LoginResponse } from "@/types";
+import { ApiResponse, CustomJwtPayload, DashboardStatisticsStaff, LoginResponse } from "@/types";
 import { apiFetch } from "@/utils/api";
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
@@ -92,5 +92,17 @@ export const handleLogoutStaf = async () => {
             message: "",
             errors: error instanceof Error ? error.message : 'Çıkış yapılamadı.',
         };
+    }
+}
+
+
+export const getDashboardStaff = async () => {
+    try {
+        const data = await apiFetch('municipalstaff/getdashboardstatistics');
+
+        return data as DashboardStatisticsStaff
+    } catch (error) {
+        console.error(error);
+        return null;
     }
 }

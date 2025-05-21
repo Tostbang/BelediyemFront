@@ -104,7 +104,15 @@ export type ReportsMuni = {
 
 export type ReportsMuniResponse = ApiResponse & ReportsMuni;
 
-
+export type DashboardStatisticsStaff = ApiResponse & {
+    totalComplaints: number;
+    resolvedCount: number;
+    pendingCount: number;
+    underReviewCount: number;
+    startedCount: number;
+    rejectedCount: number;
+    monthlyStatistics: MonthlyStatistics[];
+};
 
 export type InfoMuni = ApiResponse & {
     municipalities: {
