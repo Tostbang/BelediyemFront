@@ -20,7 +20,7 @@ import DynamicTable from '../dynamic/table';
 import { usePagination } from '@/hooks/usePagination';
 import { departmans } from '@/data/departmans';
 import { formatDate } from '@/utils';
-import ComplaintChart from './complainChart';
+import ComplaintChart from './complaintChart';
 
 export default function DashboardMuni({
     dashboard,

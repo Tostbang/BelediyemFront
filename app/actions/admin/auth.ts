@@ -68,7 +68,7 @@ export const handleLogoutAdmin = async () => {
     }
 }
 
-export const getDashboardStaff = async () => {
+export const getDashboardAdmin = async () => {
     try {
         const data = await apiFetch('admin/getdashboardstatistics');
 

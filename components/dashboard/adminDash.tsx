@@ -9,13 +9,15 @@ import {
     TickIcon,
     XIcon,
 } from '@/components/icons';
-import { DashboardStatisticsStaff } from '@/types';
+import { DashboardStatisticsMuni, DepartmentStatistics } from '@/types';
+import DynamicTable from '../dynamic/table';
+import { departmans } from '@/data/departmans';
 import ComplaintChart from './complaintChart';
 
-export default function DashboardStaff({
+export default function DashboardAdmin({
     dashboard,
 }: {
-    dashboard: DashboardStatisticsStaff;
+    dashboard: DashboardStatisticsMuni;
 }) {
     const cardsData = [
         {
@@ -74,6 +76,47 @@ export default function DashboardStaff({
         },
     ];
 
+    const columns = [
+        {
+            title: 'Departman',
+            dataIndex: 'departmentName',
+            width: 100,
+            fixed: 'left' as const,
+            render: (value: number) =>
+                departmans.find((item) => item.id === value)?.name,
+        },
+        {
+            title: 'Toplam Şikayet',
+            dataIndex: 'totalComplaints',
+            width: 180,
+        },
+        {
+            title: 'Çözüldü',
+            dataIndex: 'resolvedCount',
+            width: 180,
+        },
+        {
+            title: 'Bekleniyor',
+            dataIndex: 'pendingCount',
+            width: 180,
+        },
+        {
+            title: 'İnceleniyor',
+            dataIndex: 'underReviewCount',
+            width: 180,
+        },
+        {
+            title: 'Başladı',
+            dataIndex: 'startedCount',
+            width: 180,
+        },
+        {
+            title: 'Reddedildi',
+            dataIndex: 'rejectedCount',
+            width: 180,
+        },
+    ];
+
     return (
         <div>
             <div className="flex flex-col items-center w-full mb-6">
@@ -91,6 +134,21 @@ export default function DashboardStaff({
                 <ComplaintChart
                     monthlyStatistics={dashboard.monthlyStatistics || []}
                 />
+
+                <div className="w-full overflow-hidden mt-6 bg-white rounded-lg p-6">
+                    <h2 className="text-xl font-semibold mb-4">
+                        Departman Bazlı Şikayet Dağılımı
+                    </h2>
+                    <div className="overflow-x-auto">
+                        <DynamicTable<DepartmentStatistics>
+                            data={dashboard.departmentStatistics}
+                            columns={columns}
+                            rowKey="departmentName"
+                            showControls={false}
+                            pagination={false}
+                        />
+                    </div>
+                </div>
             </div>
         </div>
     );
