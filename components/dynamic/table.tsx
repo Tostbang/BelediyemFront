@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import type { GetProp, TableProps, TablePaginationConfig } from 'antd';
 import { Form, Switch, Table, Button, Space, Tooltip, Skeleton } from 'antd';
+import './table.css'; // We'll create this CSS file for custom styling
 
 type ColumnsType<T extends object> = GetProp<TableProps<T>, 'columns'>;
 type ExpandableConfig<T extends object> = TableProps<T>['expandable'];
@@ -32,7 +33,7 @@ export default function DynamicTable<T extends object>({
     rowKey = 'id',
     expandable,
     footerContent = undefined,
-    showControls = true,
+    showControls = false, // Changed default to false to match the image
     // Selection props with defaults
     rowSelection,
     handleBulkAction = () => {},
@@ -61,13 +62,36 @@ export default function DynamicTable<T extends object>({
     const tableColumns = (columns || []).map((item) => ({
         ...item,
         ellipsis: internalEllipsis,
-        // fixed: item.fixed as 'left' | 'right' | undefined, // Ensure correct typing for 'fixed'
     }));
 
+    // Custom pagination configuration to match the UI in the image
     const paginationConfig: TablePaginationConfig = {
         pageSizeOptions: [5, 10, 20, 50, 100],
-        showSizeChanger: true,
-        position: ['bottomRight'],
+        showSizeChanger: false, // Hide size changer to match the image
+        position: ['bottomCenter'], // Center alignment as shown in image
+        size: 'default',
+        // showTotal: false, // Remove the total text
+        className: 'custom-pagination', // Apply custom styling
+        itemRender: (page, type, originalElement) => {
+            if (type === 'prev') {
+                return <Button size="small">&lt;</Button>;
+            }
+            if (type === 'next') {
+                return <Button size="small">&gt;</Button>;
+            }
+            if (type === 'page') {
+                return (
+                    <Button
+                        size="small"
+                        type={
+                            pagination.current === page ? 'primary' : 'default'
+                        }>
+                        {page}
+                    </Button>
+                );
+            }
+            return originalElement;
+        },
         ...(pagination || {}),
     };
 
@@ -83,7 +107,7 @@ export default function DynamicTable<T extends object>({
     }
 
     return (
-        <div className="table-container" style={{ minHeight: '400px' }}>
+        <div className="custom-table-container" style={{ minHeight: '400px' }}>
             {selectedRowKeys.length > 0 && (
                 <div className="mb-4">
                     <Space>
@@ -121,10 +145,11 @@ export default function DynamicTable<T extends object>({
                 footer={footerContent}
                 expandable={expandable}
                 rowSelection={rowSelection}
-                scroll={{ x: 1500, y: 800, ...(tableProps.scroll || {}) }}
-                size="large"
+                scroll={{ x: 'max-content' }} // Modified to better fit content
+                size="middle" // Changed to middle size for better spacing
                 tableLayout="fixed"
                 rowKey={rowKey}
+                className="styled-table" // Add custom class for styling
             />
         </div>
     );

@@ -60,7 +60,7 @@ const SideBar = ({ items }: { items: SidebarItem[] }) => {
             <div
                 className={`fixed top-0 left-0 p-4 h-full bg-white text-[#B1B1B1] transition-transform transform ${
                     isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-                } md:relative md:translate-x-0 w-64 z-50`}>
+                } md:relative md:translate-x-0 w-64 z-[2500]`}>
                 {/* Logo and company name */}
                 <div className="w-full p-4 flex items-center gap-3">
                     <div className="bg-gray-100 p-2 rounded">
@@ -194,7 +194,7 @@ const SideBar = ({ items }: { items: SidebarItem[] }) => {
             {/* Hamburger button - positioned absolutely when sidebar is closed */}
             {!isSidebarOpen && (
                 <button
-                    className="fixed top-4 left-4 p-2 text-[#343C6A] md:hidden z-40 bg-transparent rounded-md shadow-md"
+                    className="fixed top-4 left-4 p-2 text-[#343C6A] md:hidden z-[2500] bg-transparent rounded-md shadow-md"
                     onClick={toggleSidebar}>
                     <GiHamburgerMenu size={24} />
                 </button>

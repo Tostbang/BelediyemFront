@@ -17,7 +17,7 @@ export default function PageContainer({
         <div className="flex h-screen">
             <div className="flex-1 p-6 h-full overflow-auto bg-gray-100">
                 <div className="flex justify-between items-center mb-4">
-                    <div className="flex items-center text-[#343C6A]">
+                    <div className="flex items-center mt-16">
                         {breadcrumb.map((item, index) => (
                             <React.Fragment key={index}>
                                 {index > 0 && (
@@ -26,11 +26,11 @@ export default function PageContainer({
                                 {item.href ? (
                                     <a
                                         href={item.href}
-                                        className="hover:underline">
+                                        className="hover:underline text-2xl font-bold mb-4 sm:mb-6">
                                         {item.label}
                                     </a>
                                 ) : (
-                                    <span className="font-semibold">
+                                    <span className="text-2xl font-bold mb-4 sm:mb-6">
                                         {item.label}
                                     </span>
                                 )}

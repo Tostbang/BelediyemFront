@@ -81,7 +81,7 @@ export default function Header() {
     };
 
     return (
-        <header className="bg-white h-16 px-4 flex items-center justify-between">
+        <header className="fixed top-0 w-full bg-white h-16 px-4 flex items-center justify-between z-[2000]">
             <div className="flex"></div>
             <div className="relative cursor-pointer">
                 <button
