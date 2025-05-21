@@ -4,17 +4,20 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Popover } from 'antd';
-import { logout } from '@/utils/auth';
+import { getClientCookie, logout, safelyParseJSON } from '@/utils/auth';
 import { handleLogoutMun } from '@/app/actions/municipality/auth';
 import { handleLogoutStaf } from '@/app/actions/staff/auth';
 import { handleLogoutAdmin } from '@/app/actions';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
+import { User } from '@/types';
 
 export default function Header() {
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const router = useRouter();
     const pathname = usePathname();
     const { handleError, handleSuccess } = useNotificationHandler();
+    const userData = getClientCookie('user');
+    const user = safelyParseJSON<User>(userData);
 
     const authPaths = useMemo(
         () => ['/login', '/login/admin', '/login/municipality', '/login/staff'],
@@ -117,7 +120,7 @@ export default function Header() {
                         className="flex items-center space-x-2 focus:outline-none cursor-pointer">
                         <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
                             <Image
-                                src="/logo.svg"
+                                src={user?.profileImage || '/logo.svg'}
                                 alt="Profile"
                                 width={40}
                                 height={40}
@@ -129,7 +132,8 @@ export default function Header() {
                             />
                         </div>
                         <span className="text-gray-700 font-medium hidden sm:inline cursor-pointer">
-                            Admin
+                            {user?.name + '' + ' ' + user?.surname ||
+                                'Kullanıcı Adı'}
                         </span>
                         <svg
                             className="w-5 h-5 text-gray-500 cursor-pointer"
