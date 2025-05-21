@@ -1,6 +1,6 @@
 "use server"
 
-import { ApiResponse, CustomJwtPayload, DashboardStatisticsMuni, LoginResponse, PaginationBody, ReportsMuniResponse } from "@/types";
+import { ApiResponse, CustomJwtPayload, DashboardStatisticsMuni, InfoMuni, LoginResponse, PaginationBody, ReportsMuniResponse } from "@/types";
 import { apiFetch } from "@/utils/api";
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
@@ -100,6 +100,17 @@ export const getDashboardMuni = async () => {
         const data = await apiFetch('municipality/getdashboardstatistics');
 
         return data as DashboardStatisticsMuni
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
+
+export const getInfoMun = async () => {
+    try {
+        const data = await apiFetch('municipality/getinfo');
+
+        return data as InfoMuni
     } catch (error) {
         console.error(error);
         return null;

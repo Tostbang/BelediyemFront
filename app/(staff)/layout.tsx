@@ -3,7 +3,7 @@ import Header from '@/components/admin/Header';
 import { sidebarItemsStaff } from '@/data/sidebarItems';
 import { ReactNode } from 'react';
 
-export default function AdminLayout({ children }: { children: ReactNode }) {
+export default function StaffLayout({ children }: { children: ReactNode }) {
     return (
         <div className="flex h-screen overflow-hidden">
             <SideBar items={sidebarItemsStaff} />

@@ -100,3 +100,23 @@ export type ReportsMuni = {
 }
 
 export type ReportsMuniResponse = ApiResponse & ReportsMuni;
+
+
+
+export type InfoMuni = ApiResponse & {
+    municipalities: {
+        name: string;
+        email: string;
+        phone: string;
+        municipalityStatusType: number;
+        logoImg: string;
+        url: string;
+        membershipType: number;
+        membershipStartDate: string;
+        membershipEndDate: string;
+        city: string;
+        discrit: string;
+        adressline: string;
+        profileImage: string;
+    }
+}
