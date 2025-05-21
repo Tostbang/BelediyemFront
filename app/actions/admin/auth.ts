@@ -1,6 +1,6 @@
 "use server"
 
-import { ApiResponse, CustomJwtPayload, LoginResponse } from "@/types";
+import { ApiResponse, CustomJwtPayload, DashboardStatisticsAdmin, LoginResponse } from "@/types";
 import { apiFetch } from "@/utils/api";
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
@@ -65,5 +65,16 @@ export const handleLogoutAdmin = async () => {
             message: "",
             errors: error instanceof Error ? error.message : 'Çıkış yapılamadı.',
         };
+    }
+}
+
+export const getDashboardStaff = async () => {
+    try {
+        const data = await apiFetch('admin/getdashboardstatistics');
+
+        return data as DashboardStatisticsAdmin
+    } catch (error) {
+        console.error(error);
+        return null;
     }
 }

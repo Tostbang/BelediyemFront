@@ -73,6 +73,16 @@ export type DepartmentStatistics = {
 };
 
 
+export type topMunicipalities = {
+    municipalityName: string;
+    complaintCount: number;
+};
+
+export type topComplaintCategories = {
+    categoryName: string;
+    complaintCount: number;
+};
+
 export type DashboardStatisticsMuni = ApiResponse & {
     totalComplaints: number;
     resolvedCount: number;
@@ -112,6 +122,23 @@ export type DashboardStatisticsStaff = ApiResponse & {
     startedCount: number;
     rejectedCount: number;
     monthlyStatistics: MonthlyStatistics[];
+};
+
+export type DashboardStatisticsAdmin = ApiResponse & {
+    totalComplaints: number;
+    resolvedCount: number;
+    pendingCount: number;
+    underReviewCount: number;
+    startedCount: number;
+    rejectedCount: number;
+    totalMunicipalities: number;
+    totalCitizens: number;
+    totalStaff: number;
+    totalAdmins: number;
+    monthlyStatistics: MonthlyStatistics[];
+    departmentStatistics: DepartmentStatistics[];
+    topMunicipalities: topMunicipalities[];
+    topComplaintCategories: topComplaintCategories[];
 };
 
 export type InfoMuni = ApiResponse & {
