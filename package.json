@@ -14,7 +14,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@ant-design/plots": "^2.3.3",
+    "@ant-design/plots": "^2.4.0",
     "@ant-design/v5-patch-for-react-19": "^1.0.3",
     "@headlessui/react": "^2.2.3",
     "@types/nprogress": "^0.2.3",

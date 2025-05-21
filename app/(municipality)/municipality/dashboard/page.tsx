@@ -16,8 +16,9 @@ export default async function Page({
 }: {
     searchParams: { page?: string; pageSize?: string };
 }) {
-    const pageNumber = Number(searchParams.page) || 1;
-    const pageSize = Number(searchParams.pageSize) || 20;
+    const params = await searchParams;
+    const pageNumber = Number(params.page) || 1;
+    const pageSize = Number(params.pageSize) || 20;
 
     const response = await getDashboardMuni();
 

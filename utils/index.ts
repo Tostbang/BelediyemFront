@@ -35,6 +35,17 @@ export const formatDate = (date: string): string => {
     }
 }
 
+export const formatMonth = (monthStr: string) => {
+    const [year, month] = monthStr.split('-');
+    const date = new Date(parseInt(year), parseInt(month) - 1);
+    return date.toLocaleDateString('tr-TR', {
+        month: 'short',
+        year: 'numeric',
+    });
+};
+
+
+
 export const isPositiveNumber = (str: string) => {
     const num = Number(str);
     return !isNaN(num) && num > 0;
