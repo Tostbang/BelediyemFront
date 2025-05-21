@@ -3,6 +3,7 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { useActionState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import {
     handleLoginAdmin,
@@ -12,6 +13,7 @@ import {
 import ForgetPasswordModal from '@/components/modals/forgetPasswordModal';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import SubmitButton from '../common/submitButton';
+import { LockIcon } from '@/components/icons';
 
 type LoginType = 'admin' | 'municipality' | 'staff';
 
@@ -186,9 +188,18 @@ export default function LoginForm({
 
     return (
         <div className="max-w-lg lg:w-[460px]  mx-auto bg-white rounded-lg shadow-md p-8">
-            <div className="flex items-center mb-6 gap-2">
-                <div>{logo}</div>
-                <h1 className="text-xl font-medium text-gray-800">{title}</h1>
+            <div className="flex items-center mb-6 justify-between w-full">
+                <div className="flex items-center gap-2">
+                    <div>{logo}</div>
+                    <h1 className="text-xl font-medium text-gray-800">
+                        {title}
+                    </h1>
+                </div>
+                <Link
+                    href="/login"
+                    className="p-2 bg-gray-100 rounded-md hover:bg-gray-200 transition-all">
+                    <LockIcon />
+                </Link>
             </div>
 
             <h2 className="text-center text-lg font-medium text-gray-900 mb-4">

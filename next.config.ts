@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "tostbangstorage.blob.core.windows.net",
+        hostname: "belediyetostbangstorage.blob.core.windows.net",
       },
     ],
 

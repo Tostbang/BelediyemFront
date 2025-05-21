@@ -36,7 +36,7 @@ export const handleLoginMun = async (formData: FormData) => {
             name: data.name,
             surname: data.surname,
             role: data.role,
-            profileImage: data.profileImage
+            logoImage: data.logoImage
         }), {
             expires: expirationDate,
             path: '/'

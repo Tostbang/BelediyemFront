@@ -34,7 +34,7 @@ export type User = {
     surname: string;
     role?: number;
     profileImage?: string;
-    logoImg?: string;
+    logoImage?: string;
     municipalityName?: number;
 
 };
@@ -112,7 +112,7 @@ export type InfoMuni = ApiResponse & {
         email: string;
         phone: string;
         municipalityStatusType: number;
-        logoImg: string;
+        logoImage: string;
         url: string;
         membershipType: number;
         membershipStartDate: string;

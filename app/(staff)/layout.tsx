@@ -7,10 +7,8 @@ export default function StaffLayout({ children }: { children: ReactNode }) {
     return (
         <div className="flex h-screen overflow-hidden">
             <SideBar items={sidebarItemsStaff} />
-            <div className="flex flex-col flex-1">
-                <Header />
-                <main className="flex-1 overflow-auto">{children}</main>
-            </div>
+            <Header />
+            <main className="flex-1 overflow-auto">{children}</main>
         </div>
     );
 }

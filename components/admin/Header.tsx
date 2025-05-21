@@ -113,21 +113,23 @@ export default function Header() {
     return (
         <header className="fixed top-0 w-full bg-white h-16 px-4 flex items-center justify-between z-[800]">
             <div className="w-full p-4 mt-2 flex items-center gap-3 ml-8 md:ml-0">
-                <ImageWithSkeleton
-                    src={
-                        !userDetails
-                            ? '/assets/logo.svg'
-                            : userDetails.role === 4
-                              ? userDetails?.profileImage || '/assets/logo.svg'
-                              : userDetails.role === 3
-                                ? userDetails?.logoImg || '/assets/logo.svg'
-                                : '/assets/logo.svg'
-                    }
-                    alt="Profile"
-                    width={40}
-                    height={40}
-                    className="object-cover"
-                />
+                {(!userDetails || userDetails.role !== 4) && (
+                    <ImageWithSkeleton
+                        src={
+                            !userDetails
+                                ? '/assets/logo.svg'
+                                : userDetails.role === 4
+                                  ? userDetails?.profileImage || '/assets/logo.svg'
+                                  : userDetails.role === 3
+                                    ? userDetails?.logoImage || '/assets/logo.svg'
+                                    : '/assets/logo.svg'
+                        }
+                        alt="Profile"
+                        width={40}
+                        height={40}
+                        className="object-cover"
+                    />
+                )}
 
                 <div className="font-bold">
                     {!userDetails
@@ -135,7 +137,7 @@ export default function Header() {
                         : userDetails.role === 3
                           ? userDetails.name || 'Belediye'
                           : userDetails.role === 4
-                            ? userDetails.municipalityName + 'Belediye'
+                            ? userDetails.municipalityName || 'Belediye'
                             : 'TOSTBANG A.Ş.'}
                 </div>
             </div>
@@ -149,12 +151,14 @@ export default function Header() {
                     <button
                         onClick={toggleProfilePopover}
                         className="flex items-center space-x-2 focus:outline-none cursor-pointer">
-                        {userDetails?.role === 2 ? null : userDetails?.role ===
-                          3 ? null : userDetails?.role === 4 ? (
+                        {userDetails?.role === 2 ||
+                        userDetails?.role === 3 ? null : userDetails?.role ===
+                          4 ? (
                             <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
                                 <ImageWithSkeleton
                                     src={
-                                        userDetails?.profileImage || '/logo.svg'
+                                        userDetails?.profileImage ||
+                                        '/assets/logo.svg'
                                     }
                                     alt="Profile"
                                     width={40}
