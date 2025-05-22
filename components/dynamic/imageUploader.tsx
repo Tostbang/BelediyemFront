@@ -144,7 +144,7 @@ export default function ImageUploader({
                     <button
                         type="button"
                         onClick={triggerFileInput}
-                        className="flex items-center justify-center w-12 h-12 bg-gray-100 border-2 border-dashed border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
+                        className="flex items-center cursor-pointer justify-center w-12 h-12 bg-gray-100 border-2 border-dashed border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="h-6 w-6 text-gray-500"

@@ -141,20 +141,22 @@ export type DashboardStatisticsAdmin = ApiResponse & {
     topComplaintCategories: TopComplaintCategories[];
 };
 
+export type Municipalities = {
+    name: string;
+    email: string;
+    phone: string;
+    municipalityStatusType: number;
+    logoImg: string;
+    url: string;
+    membershipType: number;
+    membershipStartDate: string;
+    membershipEndDate: string;
+    city: string;
+    discrit: string;
+    adressline: string;
+    profileImage: string;
+}
+
 export type InfoMuni = ApiResponse & {
-    municipalities: {
-        name: string;
-        email: string;
-        phone: string;
-        municipalityStatusType: number;
-        logoImage: string;
-        url: string;
-        membershipType: number;
-        membershipStartDate: string;
-        membershipEndDate: string;
-        city: string;
-        discrit: string;
-        adressline: string;
-        profileImage: string;
-    }
+    municipalities: Municipalities
 }
