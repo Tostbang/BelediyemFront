@@ -14,8 +14,7 @@ import ForgetPasswordModal from '@/components/modals/forgetPasswordModal';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import SubmitButton from '../common/submitButton';
 import { LockIcon } from '@/components/icons';
-
-type LoginType = 'admin' | 'municipality' | 'staff';
+import { RoleType } from '@/types';
 
 export default function LoginForm({
     type = 'admin',
@@ -23,7 +22,7 @@ export default function LoginForm({
     customLogo,
     customColor,
 }: {
-    type?: LoginType;
+    type?: RoleType;
     customTitle?: string;
     customLogo?: ReactElement;
     customColor?: string;
@@ -113,7 +112,6 @@ export default function LoginForm({
     };
 
     const clientAction = async (_prevState: unknown, formData: FormData) => {
-        // Use different login handlers based on type
         let result;
         let redirectPath;
 
@@ -130,9 +128,6 @@ export default function LoginForm({
                 result = await handleLoginStaff(formData);
                 redirectPath = '/staff/dashboard';
                 break;
-            default:
-                result = await handleLoginAdmin(formData);
-                redirectPath = '/admin/dashboard';
         }
 
         if (result.success) {
@@ -242,7 +237,7 @@ export default function LoginForm({
                         />
                         <button
                             type="button"
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 cursor-pointer"
                             onClick={() => setShowPassword(!showPassword)}>
                             {showPassword ? (
                                 <AiFillEyeInvisible />
