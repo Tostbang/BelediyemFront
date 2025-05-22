@@ -100,7 +100,7 @@ export const changePasswordAdmin = async (formData: FormData) => {
         };
 
         const response = await apiFetch<ApiResponse>('admin/changepassword', {
-            method: 'PUT',
+            method: 'POST',
             body: payload
         });
 

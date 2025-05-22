@@ -127,7 +127,7 @@ export const changePasswordStaff = async (formData: FormData) => {
         };
 
         const response = await apiFetch<ApiResponse>('municipalstaff/changepassword', {
-            method: 'PUT',
+            method: 'POST',
             body: payload
         });
 
