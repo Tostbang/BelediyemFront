@@ -195,19 +195,22 @@ export default function ChangePasswordForm({
                     </label>
                     <div className="relative">
                         <input
-                            type={oldPassword ? 'text' : 'password'}
+                            type={showOldPassword ? 'text' : 'password'}
                             id="oldPassword"
                             name="oldPassword"
                             placeholder="Eski Şifre"
                             value={oldPassword}
                             onChange={(e) => setOldPassword(e.target.value)}
+                            autoComplete="one-time-code"
+                            data-form-type="password"
+                            suppressHydrationWarning={true}
                             className={`border ${validations.minLength && oldPassword ? 'border-green-500' : 'border-gray-300'} p-4 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
                             required
                         />
                         <span
                             onClick={() => setShowOldPassword(!showOldPassword)}
                             className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500 hover:text-blue-500">
-                            {showNewPassword ? (
+                            {showOldPassword ? (
                                 <AiFillEye size={20} />
                             ) : (
                                 <AiFillEyeInvisible size={20} />
@@ -224,12 +227,15 @@ export default function ChangePasswordForm({
                     </label>
                     <div className="relative">
                         <input
-                            type={newPassword ? 'text' : 'password'}
+                            type={showNewPassword ? 'text' : 'password'}
                             id="newPassword"
                             name="newPassword"
                             placeholder="Yeni Şifre"
                             value={newPassword}
                             onChange={(e) => setNewPassword(e.target.value)}
+                            autoComplete="one-time-code"
+                            data-form-type="password"
+                            suppressHydrationWarning={true}
                             className={`border ${validations.minLength && newPassword ? 'border-green-500' : 'border-gray-300'} p-4 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
                             required
                         />
@@ -259,6 +265,9 @@ export default function ChangePasswordForm({
                             placeholder="Yeni Şifreyi Tekrar Girin"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
+                            autoComplete="one-time-code"
+                            data-form-type="password"
+                            suppressHydrationWarning={true}
                             className={`border ${validations.passwordsMatch && confirmPassword ? 'border-green-500' : 'border-gray-300'} p-4 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
                             required
                         />
