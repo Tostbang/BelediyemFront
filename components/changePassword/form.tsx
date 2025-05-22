@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useActionState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
@@ -12,6 +12,40 @@ import {
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import SubmitButton from '../common/submitButton';
 import { RoleType } from '@/types';
+import { z } from 'zod';
+import { FiCheck, FiX } from 'react-icons/fi';
+
+const passwordSchema = z
+    .object({
+        newPassword: z
+            .string()
+            .min(8, { message: 'Şifre en az 8 karakter içermelidir' })
+            .regex(/[A-Z]/, {
+                message: 'Şifre en az bir büyük harf içermelidir',
+            })
+            .regex(/[a-z]/, {
+                message: 'Şifre en az bir küçük harf içermelidir',
+            })
+            .regex(/[0-9]/, { message: 'Şifre en az bir sayı içermelidir' })
+            .regex(/[^A-Za-z0-9]/, {
+                message: 'Şifre en az bir özel karakter içermelidir',
+            }),
+        confirmPassword: z.string(),
+    })
+    .refine((data) => data.newPassword === data.confirmPassword, {
+        message: 'Şifreler eşleşmiyor',
+        path: ['confirmPassword'],
+    });
+
+// Type for validation errors
+type ValidationErrors = {
+    minLength: boolean;
+    hasUpperCase: boolean;
+    hasLowerCase: boolean;
+    hasNumber: boolean;
+    hasSpecial: boolean;
+    passwordsMatch: boolean;
+};
 
 export default function ChangePasswordForm({
     type = 'admin',
@@ -22,8 +56,56 @@ export default function ChangePasswordForm({
     const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
     const [showConfirmPassword, setShowConfirmPassword] =
         useState<boolean>(false);
+    const [oldPassword, setOldPassword] = useState<string>('');
+    const [newPassword, setNewPassword] = useState<string>('');
+    const [confirmPassword, setConfirmPassword] = useState<string>('');
     const router = useRouter();
     const { handleError, handleSuccess } = useNotificationHandler();
+
+    const [validations, setValidations] = useState<ValidationErrors>({
+        minLength: false,
+        hasUpperCase: false,
+        hasLowerCase: false,
+        hasNumber: false,
+        hasSpecial: false,
+        passwordsMatch: false,
+    });
+    const [validationError, setValidationError] = useState<string | null>(null);
+
+    // Validate with Zod as user types
+    useEffect(() => {
+        // Individual validations for UI feedback
+        setValidations({
+            minLength: newPassword.length >= 8,
+            hasUpperCase: /[A-Z]/.test(newPassword),
+            hasLowerCase: /[a-z]/.test(newPassword),
+            hasNumber: /[0-9]/.test(newPassword),
+            hasSpecial: /[^A-Za-z0-9]/.test(newPassword),
+            passwordsMatch:
+                newPassword === confirmPassword && newPassword !== '',
+        });
+
+        // Full Zod validation
+        const result = passwordSchema.safeParse({
+            newPassword,
+            confirmPassword,
+        });
+        if (!result.success) {
+            // Format error message
+            const formattedError = result.error.format();
+            if (formattedError.newPassword?._errors?.length) {
+                setValidationError(formattedError.newPassword._errors[0]);
+            } else if (formattedError.confirmPassword?._errors?.length) {
+                setValidationError(formattedError.confirmPassword._errors[0]);
+            } else if (formattedError._errors?.length) {
+                setValidationError(formattedError._errors[0]);
+            } else {
+                setValidationError(null);
+            }
+        } else {
+            setValidationError(null);
+        }
+    }, [newPassword, confirmPassword]);
 
     const initialState = {
         oldPassword: '',
@@ -32,6 +114,29 @@ export default function ChangePasswordForm({
     };
 
     const clientAction = async (_prevState: unknown, formData: FormData) => {
+        // Client-side validation before submission
+        // Validate before submission as an extra safeguard
+        const passwordData = {
+            oldPassword: formData.get('oldPassword') as string,
+            newPassword: formData.get('newPassword') as string,
+            confirmPassword: formData.get('confirmPassword') as string,
+        };
+
+        const validation = passwordSchema.safeParse(passwordData);
+        if (!validation.success) {
+            handleError({
+                message: 'Şifre gereksinimleri karşılanmıyor',
+                errors: [],
+            });
+            return {
+                ...initialState,
+                oldPassword: passwordData.oldPassword,
+                newPassword: passwordData.newPassword,
+                confirmPassword: passwordData.confirmPassword,
+                success: false,
+            };
+        }
+
         let result;
         let redirectPath;
 
@@ -70,102 +175,192 @@ export default function ChangePasswordForm({
         }
     };
 
-    const [state, formAction] = useActionState(clientAction, initialState);
+    const [, formAction] = useActionState(clientAction, initialState);
+
+    // Validation indicator component
+    const ValidationIndicator = ({ isValid }: { isValid: boolean }) => (
+        <span className={`ml-2 ${isValid ? 'text-green-500' : 'text-red-500'}`}>
+            {isValid ? <FiCheck /> : <FiX />}
+        </span>
+    );
 
     return (
         <div className="w-full bg-white shadow-lg rounded-xl p-8 border border-gray-100">
-            <form action={formAction} className="space-y-5">
-                <div className="flex flex-col relative">
+            <form action={formAction} className="flex flex-col gap-6">
+                <div className="flex flex-col">
                     <label
-                        htmlFor="oldPassword"
-                        className="text-sm text-gray-600 mb-1">
+                        htmlFor="newPassword"
+                        className="text-sm font-semibold text-gray-700 mb-2">
                         Eski Şifre
                     </label>
                     <div className="relative">
                         <input
-                            type={showOldPassword ? 'text' : 'password'}
+                            type={oldPassword ? 'text' : 'password'}
                             id="oldPassword"
                             name="oldPassword"
-                            placeholder="eski şifre"
-                            defaultValue={state.oldPassword}
-                            className="border border-gray-300 p-3 rounded-lg w-full focus:outline-none pr-10"
+                            placeholder="Eski Şifre"
+                            value={oldPassword}
+                            onChange={(e) => setOldPassword(e.target.value)}
+                            className={`border ${validations.minLength && oldPassword ? 'border-green-500' : 'border-gray-300'} p-4 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
                             required
                         />
-                        <button
-                            type="button"
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 cursor-pointer"
-                            onClick={() =>
-                                setShowOldPassword(!showOldPassword)
-                            }>
-                            {showOldPassword ? (
-                                <AiFillEyeInvisible />
+                        <span
+                            onClick={() => setShowOldPassword(!showOldPassword)}
+                            className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500 hover:text-blue-500">
+                            {showNewPassword ? (
+                                <AiFillEye size={20} />
                             ) : (
-                                <AiFillEye />
+                                <AiFillEyeInvisible size={20} />
                             )}
-                        </button>
+                        </span>
                     </div>
                 </div>
 
-                <div className="flex flex-col relative">
+                <div className="flex flex-col">
                     <label
                         htmlFor="newPassword"
-                        className="text-sm text-gray-600 mb-1">
+                        className="text-sm font-semibold text-gray-700 mb-2">
                         Yeni Şifre
                     </label>
                     <div className="relative">
                         <input
-                            type={showNewPassword ? 'text' : 'password'}
+                            type={newPassword ? 'text' : 'password'}
                             id="newPassword"
                             name="newPassword"
-                            placeholder="yeni şifre"
-                            defaultValue={state.newPassword}
-                            className="border border-gray-300 p-3 rounded-lg w-full focus:outline-none pr-10"
+                            placeholder="Yeni Şifre"
+                            value={newPassword}
+                            onChange={(e) => setNewPassword(e.target.value)}
+                            className={`border ${validations.minLength && newPassword ? 'border-green-500' : 'border-gray-300'} p-4 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
                             required
                         />
-                        <button
-                            type="button"
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 cursor-pointer"
-                            onClick={() =>
-                                setShowNewPassword(!showNewPassword)
-                            }>
+                        <span
+                            onClick={() => setShowNewPassword(!showNewPassword)}
+                            className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500 hover:text-blue-500">
                             {showNewPassword ? (
-                                <AiFillEyeInvisible />
+                                <AiFillEye size={20} />
                             ) : (
-                                <AiFillEye />
+                                <AiFillEyeInvisible size={20} />
                             )}
-                        </button>
+                        </span>
                     </div>
                 </div>
 
-                <div className="flex flex-col relative">
+                <div className="flex flex-col">
                     <label
                         htmlFor="confirmPassword"
-                        className="text-sm text-gray-600 mb-1">
-                        Yeni Şifre Tekrar
+                        className="text-sm font-semibold text-gray-700 mb-2">
+                        Yeni Şifreyi Tekrar Girin
                     </label>
                     <div className="relative">
                         <input
                             type={showConfirmPassword ? 'text' : 'password'}
                             id="confirmPassword"
                             name="confirmPassword"
-                            placeholder="yeni şifre tekrar"
-                            defaultValue={state.confirmPassword}
-                            className="border border-gray-300 p-3 rounded-lg w-full focus:outline-none pr-10"
+                            placeholder="Yeni Şifreyi Tekrar Girin"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            className={`border ${validations.passwordsMatch && confirmPassword ? 'border-green-500' : 'border-gray-300'} p-4 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
                             required
                         />
-                        <button
-                            type="button"
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 cursor-pointer"
+                        <span
                             onClick={() =>
                                 setShowConfirmPassword(!showConfirmPassword)
-                            }>
+                            }
+                            className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500 hover:text-blue-500">
                             {showConfirmPassword ? (
-                                <AiFillEyeInvisible />
+                                <AiFillEye size={20} />
                             ) : (
-                                <AiFillEye />
+                                <AiFillEyeInvisible size={20} />
                             )}
-                        </button>
+                        </span>
                     </div>
+                    {confirmPassword && (
+                        <p
+                            className={`text-sm mt-1 ${validations.passwordsMatch ? 'text-green-500' : 'text-red-500'}`}>
+                            {validations.passwordsMatch
+                                ? 'Şifreler eşleşiyor'
+                                : 'Şifreler eşleşmiyor'}
+                        </p>
+                    )}
+                </div>
+
+                {validationError && (
+                    <div className="text-red-500 text-sm bg-red-50 p-3 rounded-lg">
+                        {validationError}
+                    </div>
+                )}
+
+                <div className="bg-blue-50 p-4 rounded-lg text-sm text-blue-800 mt-2">
+                    <p className="font-medium mb-2">
+                        Güçlü bir şifre için gereksinimler:
+                    </p>
+                    <ul className="list-none pl-1 space-y-1">
+                        <li className="flex items-center">
+                            <ValidationIndicator
+                                isValid={validations.minLength}
+                            />
+                            <span
+                                className={
+                                    validations.minLength
+                                        ? 'text-green-700'
+                                        : ''
+                                }>
+                                En az 8 karakter
+                            </span>
+                        </li>
+                        <li className="flex items-center">
+                            <ValidationIndicator
+                                isValid={validations.hasUpperCase}
+                            />
+                            <span
+                                className={
+                                    validations.hasUpperCase
+                                        ? 'text-green-700'
+                                        : ''
+                                }>
+                                En az bir büyük harf (A-Z)
+                            </span>
+                        </li>
+                        <li className="flex items-center">
+                            <ValidationIndicator
+                                isValid={validations.hasLowerCase}
+                            />
+                            <span
+                                className={
+                                    validations.hasLowerCase
+                                        ? 'text-green-700'
+                                        : ''
+                                }>
+                                En az bir küçük harf (a-z)
+                            </span>
+                        </li>
+                        <li className="flex items-center">
+                            <ValidationIndicator
+                                isValid={validations.hasNumber}
+                            />
+                            <span
+                                className={
+                                    validations.hasNumber
+                                        ? 'text-green-700'
+                                        : ''
+                                }>
+                                En az bir sayı (0-9)
+                            </span>
+                        </li>
+                        <li className="flex items-center">
+                            <ValidationIndicator
+                                isValid={validations.hasSpecial}
+                            />
+                            <span
+                                className={
+                                    validations.hasSpecial
+                                        ? 'text-green-700'
+                                        : ''
+                                }>
+                                En az bir özel karakter
+                            </span>
+                        </li>
+                    </ul>
                 </div>
 
                 <div className="flex justify-end mt-8">

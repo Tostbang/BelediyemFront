@@ -14,7 +14,7 @@ export default async function Page() {
 
     return (
         <PageContainer breadcrumb={breadcrumb}>
-            {<ChangePasswordForm type="municipality" />}
+            <ChangePasswordForm type="municipality" />
         </PageContainer>
     );
 }

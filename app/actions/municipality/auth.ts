@@ -222,7 +222,7 @@ export const changePasswordMun = async (formData: FormData) => {
         };
 
         const response = await apiFetch<ApiResponse>('municipality/changepassword', {
-            method: 'PUT',
+            method: 'POST',
             body: payload
         });
 
