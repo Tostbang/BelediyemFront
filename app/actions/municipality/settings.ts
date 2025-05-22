@@ -123,6 +123,26 @@ export const changePasswordMun = async (formData: FormData) => {
     }
 }
 
+export const sendResetRequestMun = async () => {
+    try {
+        const data = await apiFetch<ApiResponse>('municipality/municipalityresetrequest');
+
+        return {
+            success: true,
+            message: data.message || 'Şifre sıfırlama isteği gönderildi.',
+            errors: [],
+        };
+
+    } catch (error) {
+        console.error(error);
+        return {
+            success: false,
+            message: "",
+            errors: error instanceof Error ? error.message : 'Şifre sıfırlama isteği gönderilemedi.',
+        };
+    }
+}
+
 export const getDevicesMun = async () => {
     try {
         const data = await apiFetch('municipality/getalldevice');

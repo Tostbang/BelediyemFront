@@ -8,6 +8,8 @@ import {
     changePasswordMun,
     changePasswordAdmin,
     changePasswordStaff,
+    sendResetRequestMun,
+    sendResetRequestStaff,
 } from '@/app/actions';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import SubmitButton from '../common/submitButton';
@@ -177,6 +179,25 @@ export default function ChangePasswordForm({
 
     const [, formAction] = useActionState(clientAction, initialState);
 
+    const clientAction2 = async () => {
+        let result;
+
+        switch (type) {
+            case 'municipality':
+                result = await sendResetRequestMun();
+                break;
+            case 'staff':
+                result = await sendResetRequestStaff();
+                break;
+        }
+
+        if (result?.success) {
+            handleSuccess(result.message);
+        } else if (result) {
+            handleError(result);
+        }
+    };
+
     // Validation indicator component
     const ValidationIndicator = ({ isValid }: { isValid: boolean }) => (
         <span className={`ml-2 ${isValid ? 'text-green-500' : 'text-red-500'}`}>
@@ -186,10 +207,26 @@ export default function ChangePasswordForm({
 
     return (
         <div className="w-full bg-white shadow-lg rounded-xl p-8 border border-gray-100">
+            {type !== 'admin' && (
+                <div className="flex justify-end mb-4">
+                    <form
+                        action={clientAction2}
+                        className="flex flex-col gap-2">
+                        <SubmitButton
+                            title={
+                                type === 'municipality'
+                                    ? 'Admine Şifre Sıfırlama Talebi Gönder'
+                                    : 'Belediyeye Şifre Sıfırlama Talebi Gönder'
+                            }
+                        />
+                    </form>
+                </div>
+            )}
+
             <form action={formAction} className="flex flex-col gap-6">
                 <div className="flex flex-col">
                     <label
-                        htmlFor="newPassword"
+                        htmlFor="oldPassword"
                         className="text-sm font-semibold text-gray-700 mb-2">
                         Eski Şifre
                     </label>

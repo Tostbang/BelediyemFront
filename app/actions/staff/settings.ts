@@ -43,3 +43,23 @@ export const changePasswordStaff = async (formData: FormData) => {
         };
     }
 }
+
+export const sendResetRequestStaff = async () => {
+    try {
+        const data = await apiFetch<ApiResponse>('municipalstaff/municipalitystaffresetrequest');
+
+        return {
+            success: true,
+            message: data.message || 'Şifre sıfırlama isteği gönderildi.',
+            errors: [],
+        };
+
+    } catch (error) {
+        console.error(error);
+        return {
+            success: false,
+            message: "",
+            errors: error instanceof Error ? error.message : 'Şifre sıfırlama isteği gönderilemedi.',
+        };
+    }
+}
