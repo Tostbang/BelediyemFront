@@ -1,40 +1,38 @@
 'use client';
-import { updateInfoMun } from '@/app/actions';
+import { updateInfoStaff } from '@/app/actions';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import SubmitButton from '@/components/common/submitButton';
 import { useRouter } from 'next/navigation';
 import React, { useActionState } from 'react';
-import { InfoMuni } from '@/types';
+import { InfoStaff } from '@/types';
 import ImageUploader from '../dynamic/imageUploader';
 
-export default function InfoFormMuni({ detail }: { detail?: InfoMuni | null }) {
+export default function InfoFormStaff({
+    detail,
+}: {
+    detail?: InfoStaff | null;
+}) {
     const { handleSuccess, handleError } = useNotificationHandler();
     const router = useRouter();
 
     const initialState = {
-        name: detail?.municipalities.name || '',
-        phone: detail?.municipalities.phone || '',
-        logoImg: detail?.municipalities.logoImg || '',
-        url: detail?.municipalities.url || '',
-        city: detail?.municipalities.city || '',
-        discrit: detail?.municipalities.discrit || '',
-        adressline: detail?.municipalities.adressline || '',
+        name: detail?.municipalStaff.name || '',
+        surname: detail?.municipalStaff.surname || '',
+        profileImage: detail?.municipalStaff.profileImage || '',
+        phone: detail?.municipalStaff.phone || '',
     };
 
     const clientAction = async (_prevState: unknown, formData: FormData) => {
-        const result = await updateInfoMun(formData);
+        const result = await updateInfoStaff(formData);
         if (result.success) {
             handleSuccess(result.message);
-            router.push('/municipality/settings/profile');
+            router.push('/staff/settings/profile');
             return {
                 ...result,
                 name: '',
+                surname: '',
                 phone: '',
-                logoImg: '',
-                url: '',
-                city: '',
-                discrit: '',
-                adressline: '',
+                profileImage: '',
             };
         } else {
             handleError(result);
@@ -42,11 +40,8 @@ export default function InfoFormMuni({ detail }: { detail?: InfoMuni | null }) {
                 ...result,
                 name: formData.get('name') as string,
                 phone: formData.get('phone') as string,
-                logoImg: formData.get('logoImg') as string,
-                url: formData.get('url') as string,
-                city: formData.get('city') as string,
-                discrit: formData.get('discrit') as string,
-                adressline: formData.get('adressline') as string,
+                surname: formData.get('surname') as string,
+                profileImage: formData.get('profileImage') as string,
             };
         }
     };
@@ -58,16 +53,16 @@ export default function InfoFormMuni({ detail }: { detail?: InfoMuni | null }) {
             <form action={formAction} className="space-y-6">
                 <div className="space-y-5">
                     <ImageUploader
-                        name="logoImg"
+                        name="profileImage"
                         label="Logo"
                         targetWidth={1920}
                         targetHeight={1080}
                         required
-                        initialImage={state?.logoImg}
+                        initialImage={state?.profileImage}
                     />
                     <div className="mb-4">
                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Belediye Adı
+                            Ad
                         </label>
                         <input
                             type="text"
@@ -82,13 +77,13 @@ export default function InfoFormMuni({ detail }: { detail?: InfoMuni | null }) {
                 <div className="space-y-5">
                     <div className="mb-4">
                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Url
+                            Soyad
                         </label>
                         <input
                             type="text"
-                            name="url"
+                            name="surname"
                             placeholder="https://example.com"
-                            defaultValue={state?.url}
+                            defaultValue={state?.surname}
                             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required
                         />
@@ -108,38 +103,16 @@ export default function InfoFormMuni({ detail }: { detail?: InfoMuni | null }) {
                     </div>
                     <div className="mb-4">
                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Şehir
+                            E-Posta
                         </label>
                         <input
-                            type="text"
-                            name="city"
-                            placeholder="Şehir"
-                            defaultValue={state?.city}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            type="email"
+                            name="email"
+                            placeholder="E-Posta"
+                            disabled
+                            defaultValue={detail?.municipalStaff.email}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed"
                         />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            İlçe
-                        </label>
-                        <input
-                            type="text"
-                            name="discrit"
-                            placeholder="İlçe"
-                            defaultValue={state?.discrit}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Adres
-                        </label>
-                        <textarea
-                            name="adressline"
-                            defaultValue={state?.adressline}
-                            placeholder="Adres"
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            rows={3}></textarea>
                     </div>
                 </div>
                 <div className="flex justify-end mt-8">

@@ -2,7 +2,7 @@ import React from 'react';
 import PageContainer from '@/components/pageContainer';
 import { generatePageMetadata } from '@/lib/metadata';
 import { getInfoMun } from '@/app/actions';
-import InfoForm from '@/components/muni/infoForm';
+import InfoFormMuni from '@/components/muni/infoForm';
 
 export const dynamic = 'force-dynamic';
 
@@ -16,7 +16,7 @@ export default async function Page() {
 
     return (
         <PageContainer breadcrumb={breadcrumb}>
-            {response && <InfoForm detail={response} />}
+            {response && <InfoFormMuni detail={response} />}
         </PageContainer>
     );
 }

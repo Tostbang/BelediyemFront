@@ -52,7 +52,6 @@ export type LoginResponse = ApiResponse & User & {
 }
 
 
-
 export type MonthlyStatistics = {
     month: string;
     totalComplaints: number;
@@ -172,4 +171,20 @@ export type Devices = {
 
 export type DevicesResponse = ApiResponse & {
     devices: Devices[];
+}
+
+export type StaffUser = {
+    userId: number;
+    name: string;
+    surname: string;
+    email: string;
+    phone: string;
+    role: number;
+    profileImage: string;
+    municipalityName: string;
+    municipalityId: number;
+}
+
+export type InfoStaff = ApiResponse & {
+    municipalStaff: StaffUser
 }
