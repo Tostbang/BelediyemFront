@@ -27,7 +27,7 @@ export default function InfoFormAdmin({
         const result = await updateInfoAdmin(formData);
         if (result.success) {
             handleSuccess(result.message);
-            router.push('/staff/settings/profile');
+            router.push('/admin/settings/profile');
             return {
                 ...result,
                 name: '',
