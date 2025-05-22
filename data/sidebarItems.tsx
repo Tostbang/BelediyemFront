@@ -154,17 +154,17 @@ export const sidebarItemsMuni: SidebarItem[] = [
             {
                 title: 'Belediye Bilgileri',
                 icon: <UserIcon />,
-                path: '/municipality/profile',
+                path: '/municipality/settings/profile',
             },
             {
                 title: 'Şifre Değiştirme',
                 icon: <LockIcon />,
-                path: '/municipality/change-password',
+                path: '/municipality/settings/change-password',
             },
             {
                 title: 'Cihaz Oturumları',
                 icon: <MobileIcon />,
-                path: '/municipality/sessions',
+                path: '/municipality/settings/sessions',
             },
         ],
     },
