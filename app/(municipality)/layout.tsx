@@ -1,5 +1,5 @@
+import Header from '@/components/common/Header';
 import SideBar from '@/components/sidebar';
-import Header from '@/components/admin/Header';
 import { sidebarItemsMuni } from '@/data/sidebarItems';
 import { ReactNode } from 'react';
 

@@ -1,7 +1,82 @@
 "use server"
 
-import { ApiResponse, DevicesResponse } from "@/types";
+import { ApiResponse, DevicesResponse, InfoAdmin } from "@/types";
 import { apiFetch } from "@/utils/api";
+import { uploadImage } from "../file";
+import { validateBase64Size } from "@/utils/fileUtils";
+
+export const getInfoAdmin = async () => {
+    try {
+        const data = await apiFetch('admin/getinfo');
+
+        return data as InfoAdmin
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
+
+export const updateInfoAdmin = async (formData: FormData) => {
+    try {
+        const imageData = formData.get('profileImage') as string;
+        const name = formData.get('name') as string;
+        const surname = formData.get('surname') as string;
+        const phone = formData.get('phone') as string;
+        const email = formData.get('email') as string;
+
+        if (!imageData || !name || !phone || !surname || !email) {
+            return { success: false, message: "", errors: 'Lütfen tüm alanları doldurun.' };
+        }
+
+        let imagePath = imageData;
+        if (imageData.startsWith('data:image')) {
+            const sizeValidation = validateBase64Size(imageData);
+            if (!sizeValidation.valid) {
+                return { success: false, message: "", errors: sizeValidation.message };
+            }
+
+            const imageFormData = new FormData();
+            imageFormData.append('image', imageData);
+
+            const uploadResult = await uploadImage(imageFormData);
+            if (!uploadResult.success) {
+                return {
+                    success: false,
+                    message: "",
+                    errors: uploadResult.errors || 'Görsel yüklenemedi.'
+                };
+            }
+            imagePath = uploadResult.path ?? '';
+        }
+
+        const payload = {
+            name,
+            surname,
+            phone,
+            email,
+            profileImage: imagePath,
+        };
+
+        const response = await apiFetch<ApiResponse>('admin/putinfo', {
+            method: 'PUT',
+            body: payload
+        });
+
+        return {
+            success: true,
+            message: response.message || 'Bilgiler başarıyla güncellendi.',
+            errors: [],
+            ...payload,
+        };
+    } catch (error) {
+        console.error(error);
+        return {
+            success: false,
+            message: "",
+            errors: error instanceof Error ? error.message : 'Bilgiler güncellenemedi.',
+        };
+    }
+}
 
 export const changePasswordAdmin = async (formData: FormData) => {
     try {

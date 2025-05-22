@@ -174,7 +174,6 @@ export type DevicesResponse = ApiResponse & {
 }
 
 export type StaffUser = {
-    userId: number;
     name: string;
     surname: string;
     email: string;
@@ -187,4 +186,18 @@ export type StaffUser = {
 
 export type InfoStaff = ApiResponse & {
     municipalStaff: StaffUser
+}
+
+export type AdminUser = {
+    id: number;
+    name: string;
+    surname: string;
+    email: string;
+    phone: string;
+    role: number;
+    profileImage: string;
+}
+
+export type InfoAdmin = ApiResponse & {
+    user: StaffUser
 }

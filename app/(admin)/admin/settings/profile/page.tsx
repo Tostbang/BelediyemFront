@@ -1,22 +1,22 @@
 import React from 'react';
 import PageContainer from '@/components/pageContainer';
 import { generatePageMetadata } from '@/lib/metadata';
-import { getInfoMun } from '@/app/actions';
-import InfoFormMuni from '@/components/muni/infoForm';
+import { getInfoAdmin } from '@/app/actions';
+import InfoFormAdmin from '@/components/admin/infoForm';
 
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata() {
-    return generatePageMetadata('Belediye Bilgileri');
+    return generatePageMetadata('Admin Bilgileri');
 }
 
 export default async function Page() {
-    const response = await getInfoMun();
-    const breadcrumb = [{ label: 'Belediye Bilgileri' }];
+    const response = await getInfoAdmin();
+    const breadcrumb = [{ label: 'Admin Bilgileri' }];
 
     return (
         <PageContainer breadcrumb={breadcrumb}>
-            {response && <InfoFormMuni detail={response} />}
+            {response && <InfoFormAdmin detail={response} />}
         </PageContainer>
     );
 }
