@@ -1,6 +1,6 @@
 "use server";
 
-import { ApiResponse } from "@/types";
+import { ApiResponse, DevicesResponse } from "@/types";
 import { apiFetch } from "@/utils/api";
 
 export const changePasswordStaff = async (formData: FormData) => {
@@ -60,6 +60,36 @@ export const sendResetRequestStaff = async () => {
             success: false,
             message: "",
             errors: error instanceof Error ? error.message : 'Şifre sıfırlama isteği gönderilemedi.',
+        };
+    }
+}
+
+export const getDevicesStaff = async () => {
+    try {
+        const data = await apiFetch('municipalstaff/getalldevice');
+
+        return data as DevicesResponse
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
+
+export const closeDeviceStaff = async (id: string) => {
+    try {
+        const data = await apiFetch<ApiResponse>(`municipalstaff/closedevice?deviceId=${id}`);
+
+        return {
+            success: true,
+            message: data.message || 'Oturum başarıyla kapatıldı.',
+            errors: [],
+        };
+    } catch (error) {
+        console.error(error);
+        return {
+            success: false,
+            message: "",
+            errors: error instanceof Error ? error.message : 'Oturum kapatılamadı.',
         };
     }
 }

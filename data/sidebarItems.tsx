@@ -54,17 +54,17 @@ export const sidebarItemsAdmin: SidebarItem[] = [
             {
                 title: 'Admin Bilgileri',
                 icon: <UserIcon />,
-                path: '/admin/profile',
+                path: '/admin/settings/profile',
             },
             {
                 title: 'Şifre Değiştirme',
                 icon: <LockIcon />,
-                path: '/admin/change-password',
+                path: '/admin/settings/change-password',
             },
             {
                 title: 'Cihaz Oturumları',
                 icon: <MobileIcon />,
-                path: '/admin/sessions',
+                path: '/admin/settings/sessions',
             },
         ],
     },
@@ -198,17 +198,17 @@ export const sidebarItemsStaff: SidebarItem[] = [
             {
                 title: 'Personel Bilgileri',
                 icon: <UserIcon />,
-                path: '/staff/profile',
+                path: '/staff/settings/profile',
             },
             {
                 title: 'Şifre Değiştirme',
                 icon: <LockIcon />,
-                path: '/staff/change-password',
+                path: '/staff/settings/change-password',
             },
             {
                 title: 'Cihaz Oturumları',
                 icon: <MobileIcon />,
-                path: '/staff/sessions',
+                path: '/staff/settings/sessions',
             },
         ],
     },

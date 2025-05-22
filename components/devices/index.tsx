@@ -1,14 +1,24 @@
 'use client';
 import React, { useState } from 'react';
-import { Devices } from '@/types';
+import { Devices, RoleType } from '@/types';
 import DynamicTable from '../dynamic/table';
 import ConfirmModal from '../modals/confirmModal';
-import { closeDeviceMun } from '@/app/actions';
+import {
+    closeDeviceAdmin,
+    closeDeviceMun,
+    closeDeviceStaff,
+} from '@/app/actions';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import { useRouter } from 'next/navigation';
 import { formatDateTime } from '@/utils';
 
-export default function DevicesMuni({ devices }: { devices: Devices[] }) {
+export default function DevicesList({
+    devices,
+    type,
+}: {
+    devices: Devices[];
+    type: RoleType;
+}) {
     const [modal, setModal] = useState(false);
     const [selectedItem, setSelectedItem] = useState<string | null>(null);
     const { handleSuccess, handleError } = useNotificationHandler();
@@ -21,7 +31,19 @@ export default function DevicesMuni({ devices }: { devices: Devices[] }) {
 
     const handleConfirm = async () => {
         if (selectedItem) {
-            const result = await closeDeviceMun(selectedItem);
+            let result;
+            switch (type) {
+                case 'admin':
+                    result = await closeDeviceAdmin(selectedItem);
+                    break;
+                case 'municipality':
+                    result = await closeDeviceMun(selectedItem);
+                    break;
+                case 'staff':
+                    result = await closeDeviceStaff(selectedItem);
+                    break;
+            }
+
             if (result.success) {
                 handleSuccess(result.message);
                 setModal(false);

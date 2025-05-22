@@ -1,7 +1,7 @@
 import React from 'react';
 import PageContainer from '@/components/pageContainer';
 import { generatePageMetadata } from '@/lib/metadata';
-import { getDevicesMun } from '@/app/actions';
+import { getDevicesStaff } from '@/app/actions';
 import DevicesList from '@/components/devices';
 
 export const dynamic = 'force-dynamic';
@@ -12,14 +12,11 @@ export async function generateMetadata() {
 
 export default async function Page() {
     const breadcrumb = [{ label: 'Cihaz Oturumları' }];
-    const response = await getDevicesMun();
+    const response = await getDevicesStaff();
 
     return (
         <PageContainer breadcrumb={breadcrumb}>
-            <DevicesList
-                devices={response?.devices || []}
-                type="municipality"
-            />
+            <DevicesList devices={response?.devices || []} type="staff" />
         </PageContainer>
     );
 }
