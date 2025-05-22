@@ -15,7 +15,7 @@ export default function PageContainer({
 }) {
     return (
         <div className="flex h-screen">
-            <div className="flex-1 p-6 h-full overflow-auto bg-gray-100">
+            <div className="flex-1 p-6 h-full overflow-auto bg-[#F5F6FA]">
                 <div className="flex justify-between items-center mb-4">
                     <div className="flex items-center mt-16">
                         {breadcrumb.map((item, index) => (

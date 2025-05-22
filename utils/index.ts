@@ -44,6 +44,30 @@ export const formatMonth = (monthStr: string) => {
     });
 };
 
+//2025-05-22T12:22:41.9030262> 12.05.2025 - 10:22
+
+export const formatDateTime = (date: string): string => {
+    if (!date) return '';
+    try {
+        const newDate = new Date(date);
+        if (isNaN(newDate.getTime())) {
+            throw new Error('Invalid date');
+        }
+
+        const options = {
+            year: "numeric" as const,
+            month: "2-digit" as const,
+            day: "2-digit" as const,
+            hour: "2-digit" as const,
+            minute: "2-digit" as const,
+        };
+
+        return newDate.toLocaleDateString('tr-TR', options).replace(',', ' -');
+    } catch (error) {
+        console.error('Error formatting date:', error);
+        return date;
+    }
+}
 
 
 export const isPositiveNumber = (str: string) => {

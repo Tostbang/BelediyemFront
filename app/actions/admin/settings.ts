@@ -1,0 +1,45 @@
+"use server"
+
+import { ApiResponse } from "@/types";
+import { apiFetch } from "@/utils/api";
+
+export const changePasswordAdmin = async (formData: FormData) => {
+    try {
+        const oldPassword = formData.get('oldPassword') as string;
+        const newPassword = formData.get('newPassword') as string;
+        const confirmPassword = formData.get('confirmPassword') as string;
+
+        if (!oldPassword || !newPassword || !confirmPassword) {
+            return { success: false, message: "", errors: 'Lütfen tüm alanları doldurun.' };
+        }
+
+        if (newPassword !== confirmPassword) {
+            return { success: false, message: "", errors: 'Yeni şifreler eşleşmiyor.' };
+        }
+
+        const payload = {
+            oldPassword,
+            newPassword,
+            confirmPassword
+        };
+
+        const response = await apiFetch<ApiResponse>('admin/changepassword', {
+            method: 'POST',
+            body: payload
+        });
+
+        return {
+            success: true,
+            message: response.message || 'Şifre başarıyla güncellendi.',
+            errors: [],
+            ...payload,
+        };
+    } catch (error) {
+        console.error(error);
+        return {
+            success: false,
+            message: "",
+            errors: error instanceof Error ? error.message : 'Şifre güncellenemedi.',
+        };
+    }
+}

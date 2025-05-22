@@ -161,3 +161,15 @@ export type Municipalities = {
 export type InfoMuni = ApiResponse & {
     municipalities: Municipalities
 }
+
+export type Devices = {
+    id: number;
+    userId: number;
+    deviceInfo: string;
+    ipAddress: string;
+    loginTime: string;
+}
+
+export type DevicesResponse = ApiResponse & {
+    devices: Devices[];
+}

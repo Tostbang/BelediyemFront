@@ -23,7 +23,7 @@ export default function Modal({
                 <Dialog
                     open={isOpen}
                     onClose={onClose}
-                    className="relative z-50">
+                    className="relative z-[3000]">
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
