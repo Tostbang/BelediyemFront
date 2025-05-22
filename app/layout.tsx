@@ -28,7 +28,12 @@ export default function RootLayout({
                 <Suspense>
                     <NProgressProvider />
                     <AntdStable />
-                    <Toaster position="top-right" />
+                    <Toaster
+                        position="top-right"
+                        toastOptions={{
+                            duration: 1000,
+                        }}
+                    />
                     <LoginListener />
                     {children}
                 </Suspense>
