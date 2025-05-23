@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useActionState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import {
     changePasswordMuni,
@@ -57,7 +56,6 @@ export default function ChangePasswordForm({ type }: { type: RoleType }) {
     const [oldPassword, setOldPassword] = useState<string>('');
     const [newPassword, setNewPassword] = useState<string>('');
     const [confirmPassword, setConfirmPassword] = useState<string>('');
-    const router = useRouter();
     const { handleError, handleSuccess } = useNotificationHandler();
 
     const [validations, setValidations] = useState<ValidationErrors>({
@@ -136,32 +134,26 @@ export default function ChangePasswordForm({ type }: { type: RoleType }) {
         }
 
         let result;
-        let redirectPath;
 
         switch (type) {
             case 'admin':
                 result = await changePasswordAdmin(formData);
-                redirectPath = '/admin/settings/change-password';
                 break;
             case 'municipality':
                 result = await changePasswordMuni(formData);
-                redirectPath = '/municipality/settings/change-password';
                 break;
             case 'staff':
                 result = await changePasswordStaff(formData);
-                redirectPath = '/staff/settings/change-password';
                 break;
             default:
                 result = {
                     success: false,
                     message: 'Unsupported role type',
                 };
-                redirectPath = '/';
         }
 
         if (result.success) {
             handleSuccess(result.message);
-            router.push(redirectPath);
             return {
                 ...result,
                 oldPassword: '',

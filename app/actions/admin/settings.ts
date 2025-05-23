@@ -185,7 +185,7 @@ export const addFAQAdmin = async (formData: FormData) => {
             description
         };
 
-        const response = await apiFetch<ApiResponse>('admin/createfrequentlyaskedqsuestions', {
+        const response = await apiFetch<ApiResponse>('admin/createfrequentlyaskedquestions', {
             method: 'POST',
             body: payload
         });
@@ -222,7 +222,7 @@ export const updateFAQAdmin = async (formData: FormData) => {
             description
         };
 
-        const response = await apiFetch<ApiResponse>('admin/updatefrequentlyaskedqsuestion', {
+        const response = await apiFetch<ApiResponse>('admin/updatefrequentlyaskedquestion', {
             method: 'PUT',
             body: payload
         });
@@ -245,7 +245,7 @@ export const updateFAQAdmin = async (formData: FormData) => {
 
 export const deleteFAQAdmin = async (id: string) => {
     try {
-        const data = await apiFetch<ApiResponse>(`admin/deletefrequentlyaskedqsuestion?faqId=${id}`, {
+        const data = await apiFetch<ApiResponse>(`admin/deletefrequentlyaskedquestion?faqId=${id}`, {
             method: 'DELETE'
         });
 
