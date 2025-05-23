@@ -142,6 +142,7 @@ export type DashboardStatisticsAdmin = ApiResponse & {
 };
 
 export type Municipalities = {
+    id: number;
     name: string;
     email: string;
     phone: string;
@@ -155,6 +156,9 @@ export type Municipalities = {
     discrit: string;
     adressline: string;
     profileImage: string;
+    status: number;
+    createdDate: string;
+    modifiedDate: string;
 }
 
 export type InfoMuni = ApiResponse & {
@@ -217,4 +221,27 @@ export type FAQResponse = ApiResponse & {
 
 export type FAQDetail = ApiResponse & {
     frequentlyAsked: FAQ;
+}
+
+export type MuniListResponse = ApiResponse & {
+    municipalities: Municipalities[];
+    totalCount: number;
+    pageNumber: number;
+    pageSize: number;
+    lastPage: boolean;
+    backPage: boolean;
+    nextPage: boolean;
+}
+
+export type MuniDetailResponse = ApiResponse & {
+    municipality: Municipalities;
+}
+
+export type PasswordReset = {
+    id: number;
+    userId: number;
+    name: string;
+    email: string;
+    createdDate: string;
+    passwordResetStatus: number;
 }
