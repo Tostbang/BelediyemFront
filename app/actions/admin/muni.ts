@@ -1,4 +1,4 @@
-"user server"
+"use server"
 
 import { ApiResponse, MuniDetailResponse, MuniListResponse, PaginationBody } from "@/types";
 import { apiFetch } from "@/utils/api";

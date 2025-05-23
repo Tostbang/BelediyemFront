@@ -224,7 +224,7 @@ export type FAQDetail = ApiResponse & {
 }
 
 export type MuniListResponse = ApiResponse & {
-    municipalities: Municipalities[];
+    municipalLists: Municipalities[];
     totalCount: number;
     pageNumber: number;
     pageSize: number;
