@@ -105,3 +105,21 @@ export const getDashboardStaff = async () => {
     }
 }
 
+export const updateLastSeenStaff = async () => {
+    try {
+        const data = await apiFetch<ApiResponse>('municipalstaff/lastseenupdate');
+
+        return {
+            success: true,
+            message: data.message || 'Son görülme güncellendi.',
+            errors: [],
+        };
+    } catch (error) {
+        console.error(error);
+        return {
+            success: false,
+            message: "",
+            errors: error instanceof Error ? error.message : 'Son görülme güncellenemedi.',
+        };
+    }
+}

@@ -79,3 +79,21 @@ export const getDashboardAdmin = async () => {
     }
 }
 
+export const updateLastSeenAdmin = async () => {
+    try {
+        const data = await apiFetch<ApiResponse>('admin/lastseenupdate');
+
+        return {
+            success: true,
+            message: data.message || 'Son görülme güncellendi.',
+            errors: [],
+        };
+    } catch (error) {
+        console.error(error);
+        return {
+            success: false,
+            message: "",
+            errors: error instanceof Error ? error.message : 'Son görülme güncellenemedi.',
+        };
+    }
+}

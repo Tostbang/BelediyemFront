@@ -2,8 +2,19 @@ import Header from '@/components/common/Header';
 import SideBar from '@/components/sidebar';
 import { sidebarItemsMuni } from '@/data/sidebarItems';
 import { ReactNode } from 'react';
+import { updateLastSeenMuni } from '../actions';
 
-export default function MunicipalityLayout({ children }: { children: ReactNode }) {
+export default async function MunicipalityLayout({
+    children,
+}: {
+    children: ReactNode;
+}) {
+    try {
+        await updateLastSeenMuni();
+        console.log('Last seen status updated successfully.');
+    } catch (error) {
+        console.error('Failed to update last seen status:', error);
+    }
     return (
         <div className="flex h-screen overflow-hidden">
             <SideBar items={sidebarItemsMuni} />
