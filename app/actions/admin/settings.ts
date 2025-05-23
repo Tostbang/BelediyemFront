@@ -57,8 +57,6 @@ export const updateInfoAdmin = async (formData: FormData) => {
             profileImage: imagePath,
         };
 
-        console.log("payload", payload);
-
         const response = await apiFetch<ApiResponse>('admin/putinfo', {
             method: 'PUT',
             body: payload
