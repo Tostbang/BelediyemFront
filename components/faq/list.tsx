@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { Collapse } from 'antd';
 import Link from 'next/link';
 import { PencilIcon, TrashIcon } from '../icons';
+import LinkButton from '../common/LinkButton';
 
 export default function FaqList({
     faqs,
@@ -54,6 +55,18 @@ export default function FaqList({
         }
     };
 
+    let url;
+    switch (type) {
+        case 'admin':
+            url = '/admin/faq';
+            break;
+        case 'municipality':
+            url = '/municipality/faq';
+            break;
+        default:
+            url = '';
+    }
+
     const editedItems = faqs?.map((item, index) => ({
         key: index,
         label: <div className="text-3xl"> {item.title}</div>,
@@ -64,18 +77,22 @@ export default function FaqList({
                         {item.description}
                     </div>
                 </div>
-                <div className="flex justify-end mt-4">
-                    <Link
-                        href={`municipality/faq/${item.id}`}
-                        className="flex items-center text-amber-500 hover:text-amber-700 mr-3">
-                        <PencilIcon />
-                    </Link>
-                    <button
-                        onClick={() => handleCloseDevice(item.id.toString())}
-                        className="flex items-center text-red-500 hover:text-red-700 cursor-pointer">
-                        <TrashIcon />
-                    </button>
-                </div>
+                {type !== 'staff' && (
+                    <div className="flex justify-end mt-4">
+                        <Link
+                            href={`${url}/${item.id}`}
+                            className="flex items-center text-amber-500 hover:text-amber-700 mr-3">
+                            <PencilIcon />
+                        </Link>
+                        <button
+                            onClick={() =>
+                                handleCloseDevice(item.id.toString())
+                            }
+                            className="flex items-center text-red-500 hover:text-red-700 cursor-pointer">
+                            <TrashIcon />
+                        </button>
+                    </div>
+                )}
             </div>
         ),
     }));
@@ -83,6 +100,11 @@ export default function FaqList({
     return (
         <div className="flex flex-col items-center w-full mb-6">
             <div className="w-full overflow-hidden">
+                {type !== 'staff' && (
+                    <div className="flex justify-end mb-4">
+                        <LinkButton href={`${url}/new`} title="Yeni SSS Ekle" />
+                    </div>
+                )}
                 <div className="overflow-x-auto">
                     <Collapse
                         items={editedItems}
