@@ -56,7 +56,7 @@ export default function ChangePasswordForm({ type }: { type: RoleType }) {
     const [oldPassword, setOldPassword] = useState<string>('');
     const [newPassword, setNewPassword] = useState<string>('');
     const [confirmPassword, setConfirmPassword] = useState<string>('');
-    const { handleError, handleSuccess } = useNotificationHandler();
+    const { handleResult, handleError } = useNotificationHandler();
 
     const [validations, setValidations] = useState<ValidationErrors>({
         minLength: false,
@@ -121,6 +121,7 @@ export default function ChangePasswordForm({ type }: { type: RoleType }) {
         const validation = passwordSchema.safeParse(passwordData);
         if (!validation.success) {
             handleError({
+                success: false,
                 message: 'Şifre gereksinimleri karşılanmıyor',
                 errors: [],
             });
@@ -152,23 +153,14 @@ export default function ChangePasswordForm({ type }: { type: RoleType }) {
                 };
         }
 
-        if (result.success) {
-            handleSuccess(result.message);
-            return {
-                ...result,
-                oldPassword: '',
-                newPassword: '',
-                confirmPassword: '',
-            };
-        } else {
-            handleError(result);
-            return {
-                ...result,
-                oldPassword: formData.get('oldPassword') as string,
-                newPassword: formData.get('newPassword') as string,
-                confirmPassword: formData.get('confirmPassword') as string,
-            };
-        }
+        handleResult(result);
+
+        return {
+            ...result,
+            oldPassword: formData.get('oldPassword') as string,
+            newPassword: formData.get('newPassword') as string,
+            confirmPassword: formData.get('confirmPassword') as string,
+        };
     };
 
     const [, formAction] = useActionState(clientAction, initialState);
@@ -189,12 +181,7 @@ export default function ChangePasswordForm({ type }: { type: RoleType }) {
                     message: 'Unsupported role type',
                 };
         }
-
-        if (result.success) {
-            handleSuccess(result.message);
-        } else if (result) {
-            handleError(result);
-        }
+        handleResult(result);
     };
 
     // Validation indicator component
