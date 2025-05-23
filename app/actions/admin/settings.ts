@@ -217,7 +217,7 @@ export const updateFAQAdmin = async (formData: FormData) => {
         }
 
         const payload = {
-            id,
+            faqId: id,
             title,
             description
         };
