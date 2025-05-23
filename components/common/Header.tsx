@@ -14,6 +14,7 @@ import ImageWithSkeleton from '../common/imageSkeleton';
 export default function Header() {
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [userDetails, setUserDetails] = useState<User | null>(null);
+    const [isLoggingOut, setIsLoggingOut] = useState(false);
     const router = useRouter();
     const pathname = usePathname();
     const { handleError, handleSuccess } = useNotificationHandler();
@@ -51,41 +52,54 @@ export default function Header() {
     }, [authPaths, pathname, router]);
 
     const handleLogout = async () => {
+        if (isLoggingOut) return; // Prevent multiple clicks
+
+        setIsLoggingOut(true);
         let result;
 
-        if (pathname?.startsWith('/admin')) {
-            result = await handleLogoutAdmin();
-        } else if (pathname?.startsWith('/municipality')) {
-            result = await handleLogoutMuni();
-        } else if (pathname?.startsWith('/staff')) {
-            result = await handleLogoutStaf();
-        }
-
-        if (result && result.success) {
-            handleSuccess(result.message);
-            logout();
-            localStorage.setItem('logout', 'true');
-            setTimeout(() => {
-                localStorage.removeItem('logout');
-            }, 500);
-
-            // Redirect to appropriate login page based on current path
+        try {
             if (pathname?.startsWith('/admin')) {
-                router.push('/login/admin');
+                result = await handleLogoutAdmin();
             } else if (pathname?.startsWith('/municipality')) {
-                router.push('/login/municipality');
+                result = await handleLogoutMuni();
             } else if (pathname?.startsWith('/staff')) {
-                router.push('/login/staff');
-            } else {
-                router.push('/login');
+                result = await handleLogoutStaf();
             }
-        } else if (result) {
-            handleError(result);
-        } else {
+
+            if (result && result.success) {
+                handleSuccess(result.message);
+                logout();
+                localStorage.setItem('logout', 'true');
+                setTimeout(() => {
+                    localStorage.removeItem('logout');
+                }, 500);
+
+                // Redirect to appropriate login page based on current path
+                if (pathname?.startsWith('/admin')) {
+                    router.push('/login/admin');
+                } else if (pathname?.startsWith('/municipality')) {
+                    router.push('/login/municipality');
+                } else if (pathname?.startsWith('/staff')) {
+                    router.push('/login/staff');
+                } else {
+                    router.push('/login');
+                }
+            } else if (result) {
+                handleError(result);
+            } else {
+                handleError({
+                    success: false,
+                    message: 'Çıkış işlemi başarısız oldu.',
+                });
+            }
+        } catch (error) {
+            console.error('Logout error:', error);
             handleError({
                 success: false,
-                message: 'Çıkış işlemi başarısız oldu.',
+                message: 'Çıkış işlemi sırasında hata oluştu.',
             });
+        } finally {
+            setIsLoggingOut(false);
         }
     };
 
@@ -103,9 +117,10 @@ export default function Header() {
             </Link>
             <hr className="my-1" />
             <button
-                className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 cursor-pointer"
-                onClick={handleLogout}>
-                Çıkış Yap
+                className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                onClick={handleLogout}
+                disabled={isLoggingOut}>
+                {isLoggingOut ? 'Çıkış Yapılıyor...' : 'Çıkış Yap'}
             </button>
         </div>
     );
@@ -119,9 +134,11 @@ export default function Header() {
                             !userDetails
                                 ? '/assets/logo.svg'
                                 : userDetails.role === 4
-                                  ? userDetails?.profileImage || '/assets/logo.svg'
+                                  ? userDetails?.profileImage ||
+                                    '/assets/logo.svg'
                                   : userDetails.role === 3
-                                    ? userDetails?.logoImage || '/assets/logo.svg'
+                                    ? userDetails?.logoImage ||
+                                      '/assets/logo.svg'
                                     : '/assets/logo.svg'
                         }
                         alt="Profile"
