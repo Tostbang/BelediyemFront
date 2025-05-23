@@ -216,5 +216,5 @@ export type FAQResponse = ApiResponse & {
 }
 
 export type FAQDetail = ApiResponse & {
-    frequentlyAskedQuestion: FAQ;
+    frequentlyAsked: FAQ;
 }

@@ -21,16 +21,16 @@ export default function PageContainer({
                         {breadcrumb.map((item, index) => (
                             <React.Fragment key={index}>
                                 {index > 0 && (
-                                    <span className="mx-2">{'>'}</span>
+                                    <span className="mx-2 text-3xl">{'>'}</span>
                                 )}
                                 {item.href ? (
                                     <a
                                         href={item.href}
-                                        className="hover:underline text-2xl font-bold mb-4 sm:mb-6">
+                                        className="hover:underline text-2xl font-medium">
                                         {item.label}
                                     </a>
                                 ) : (
-                                    <span className="text-2xl font-bold mb-4 sm:mb-6">
+                                    <span className="text-2xl font-medium opacity-80">
                                         {item.label}
                                     </span>
                                 )}

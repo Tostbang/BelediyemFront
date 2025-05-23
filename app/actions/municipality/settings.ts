@@ -209,7 +209,7 @@ export const addFAQMuni = async (formData: FormData) => {
             description
         };
 
-        const response = await apiFetch<ApiResponse>('municipality/createfrequentlyaskedqsuestions', {
+        const response = await apiFetch<ApiResponse>('municipality/createfrequentlyaskedquestions', {
             method: 'POST',
             body: payload
         });
@@ -241,12 +241,12 @@ export const updateFAQMuni = async (formData: FormData) => {
         }
 
         const payload = {
-            id,
+            faqId: id,
             title,
             description
         };
 
-        const response = await apiFetch<ApiResponse>('municipality/updatefrequentlyaskedqsuestion', {
+        const response = await apiFetch<ApiResponse>('municipality/updatefrequentlyaskedquestion', {
             method: 'PUT',
             body: payload
         });
@@ -269,7 +269,7 @@ export const updateFAQMuni = async (formData: FormData) => {
 
 export const deleteFAQMuni = async (id: string) => {
     try {
-        const data = await apiFetch<ApiResponse>(`municipality/deletefrequentlyaskedqsuestion?faqId=${id}`, {
+        const data = await apiFetch<ApiResponse>(`municipality/deletefrequentlyaskedquestion?faqId=${id}`, {
             method: 'DELETE'
         });
 
