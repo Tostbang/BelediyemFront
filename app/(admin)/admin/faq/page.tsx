@@ -1,17 +1,26 @@
 import React from 'react';
 import PageContainer from '@/components/pageContainer';
 import { generatePageMetadata } from '@/lib/metadata';
+import { getFAQsAdmin } from '@/app/actions';
+import FaqList from '@/components/faq/list';
 
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata() {
-    return generatePageMetadata('SSS');
+    return generatePageMetadata('Sıkça Sorulan Sorular');
 }
 
 export default async function Page() {
-    // const dashboard = await getAdminDashboard();
+    const response = await getFAQsAdmin();
 
-    const breadcrumb = [{ label: 'SSS' }];
+    const breadcrumb = [{ label: 'Sıkça Sorulan Sorular' }];
 
-    return <PageContainer breadcrumb={breadcrumb}>SSS</PageContainer>;
+    return (
+        <PageContainer breadcrumb={breadcrumb}>
+            <FaqList
+                faqs={response?.frequentlyAskedQuestions || []}
+                type="admin"
+            />
+        </PageContainer>
+    );
 }

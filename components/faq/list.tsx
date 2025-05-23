@@ -69,11 +69,11 @@ export default function FaqList({
 
     const editedItems = faqs?.map((item, index) => ({
         key: index,
-        label: <div className="text-3xl"> {item.title}</div>,
+        label: <div className="text-2xl"> {item.title}</div>,
         children: (
             <div>
                 <div className="flex flex-col gap-2">
-                    <div className="text-2xl opacity-90">
+                    <div className="text-xl opacity-90">
                         {item.description}
                     </div>
                 </div>
