@@ -169,7 +169,7 @@ export const closeDeviceStaff = async (id: string) => {
 
 export const getFAQsStaff = async () => {
     try {
-        const data = await apiFetch('municipalstaff/getfrequentlyaskedquestions');
+        const data = await apiFetch('municipalstaff/getmunicipalityfrequentlyaskedquestions');
 
         return data as FAQResponse
     } catch (error) {
