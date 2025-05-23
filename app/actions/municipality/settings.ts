@@ -5,7 +5,7 @@ import { apiFetch } from "@/utils/api";
 import { validateBase64Size } from "@/utils/fileUtils";
 import { uploadImage } from "../file";
 
-export const getInfoMun = async () => {
+export const getInfoMuni = async () => {
     try {
         const data = await apiFetch('municipality/getinfo');
 
@@ -16,7 +16,7 @@ export const getInfoMun = async () => {
     }
 }
 
-export const updateInfoMun = async (formData: FormData) => {
+export const updateInfoMuni = async (formData: FormData) => {
     try {
         const imageData = formData.get('logoImg') as string;
         const name = formData.get('name') as string;
@@ -82,7 +82,7 @@ export const updateInfoMun = async (formData: FormData) => {
     }
 }
 
-export const changePasswordMun = async (formData: FormData) => {
+export const changePasswordMuni = async (formData: FormData) => {
     try {
         const oldPassword = formData.get('oldPassword') as string;
         const newPassword = formData.get('newPassword') as string;
@@ -123,7 +123,7 @@ export const changePasswordMun = async (formData: FormData) => {
     }
 }
 
-export const sendResetRequestMun = async () => {
+export const sendResetRequestMuni = async () => {
     try {
         const data = await apiFetch<ApiResponse>('municipality/municipalityresetrequest');
 
@@ -143,7 +143,7 @@ export const sendResetRequestMun = async () => {
     }
 }
 
-export const getDevicesMun = async () => {
+export const getDevicesMuni = async () => {
     try {
         const data = await apiFetch('municipality/getalldevice');
 
@@ -154,7 +154,7 @@ export const getDevicesMun = async () => {
     }
 }
 
-export const closeDeviceMun = async (id: string) => {
+export const closeDeviceMuni = async (id: string) => {
     try {
         const data = await apiFetch<ApiResponse>(`municipality/closedevice?deviceId=${id}`);
 
@@ -173,7 +173,7 @@ export const closeDeviceMun = async (id: string) => {
     }
 }
 
-export const getFAQsMun = async () => {
+export const getFAQsMuni = async () => {
     try {
         const data = await apiFetch('municipality/getfrequentlyaskedquestions');
 
@@ -184,7 +184,7 @@ export const getFAQsMun = async () => {
     }
 }
 
-export const getFAQByIdMun = async (id: string) => {
+export const getFAQByIdMuni = async (id: string) => {
     try {
         const data = await apiFetch(`municipality/getfrequentlyaskedquestiondetail?faqId=${id}`);
 
@@ -195,7 +195,7 @@ export const getFAQByIdMun = async (id: string) => {
     }
 }
 
-export const addFAQMun = async (formData: FormData) => {
+export const addFAQMuni = async (formData: FormData) => {
     try {
         const title = formData.get('title') as string;
         const description = formData.get('description') as string;
@@ -230,7 +230,7 @@ export const addFAQMun = async (formData: FormData) => {
     }
 }
 
-export const updateFAQMun = async (formData: FormData) => {
+export const updateFAQMuni = async (formData: FormData) => {
     try {
         const id = formData.get('id') as string;
         const title = formData.get('title') as string;
@@ -267,7 +267,7 @@ export const updateFAQMun = async (formData: FormData) => {
     }
 }
 
-export const deleteFAQMun = async (id: string) => {
+export const deleteFAQMuni = async (id: string) => {
     try {
         const data = await apiFetch<ApiResponse>(`municipality/deletefrequentlyaskedqsuestion?faqId=${id}`, {
             method: 'DELETE'

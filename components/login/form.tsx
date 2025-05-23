@@ -128,6 +128,12 @@ export default function LoginForm({
                 result = await handleLoginStaff(formData);
                 redirectPath = '/staff/dashboard';
                 break;
+            default:
+                result = {
+                    success: false,
+                    message: 'Unsupported role type',
+                };
+                redirectPath = '/';
         }
 
         if (result.success) {

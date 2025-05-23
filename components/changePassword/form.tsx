@@ -5,10 +5,10 @@ import { useActionState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import {
-    changePasswordMun,
+    changePasswordMuni,
     changePasswordAdmin,
     changePasswordStaff,
-    sendResetRequestMun,
+    sendResetRequestMuni,
     sendResetRequestStaff,
 } from '@/app/actions';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
@@ -49,11 +49,7 @@ type ValidationErrors = {
     passwordsMatch: boolean;
 };
 
-export default function ChangePasswordForm({
-    type = 'admin',
-}: {
-    type: RoleType;
-}) {
+export default function ChangePasswordForm({ type }: { type: RoleType }) {
     const [showOldPassword, setShowOldPassword] = useState<boolean>(false);
     const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
     const [showConfirmPassword, setShowConfirmPassword] =
@@ -148,13 +144,19 @@ export default function ChangePasswordForm({
                 redirectPath = '/admin/settings/change-password';
                 break;
             case 'municipality':
-                result = await changePasswordMun(formData);
+                result = await changePasswordMuni(formData);
                 redirectPath = '/municipality/settings/change-password';
                 break;
             case 'staff':
                 result = await changePasswordStaff(formData);
                 redirectPath = '/staff/settings/change-password';
                 break;
+            default:
+                result = {
+                    success: false,
+                    message: 'Unsupported role type',
+                };
+                redirectPath = '/';
         }
 
         if (result.success) {
@@ -184,14 +186,19 @@ export default function ChangePasswordForm({
 
         switch (type) {
             case 'municipality':
-                result = await sendResetRequestMun();
+                result = await sendResetRequestMuni();
                 break;
             case 'staff':
                 result = await sendResetRequestStaff();
                 break;
+            default:
+                result = {
+                    success: false,
+                    message: 'Unsupported role type',
+                };
         }
 
-        if (result?.success) {
+        if (result.success) {
             handleSuccess(result.message);
         } else if (result) {
             handleError(result);

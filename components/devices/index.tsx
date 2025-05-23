@@ -5,7 +5,7 @@ import DynamicTable from '../dynamic/table';
 import ConfirmModal from '../modals/confirmModal';
 import {
     closeDeviceAdmin,
-    closeDeviceMun,
+    closeDeviceMuni,
     closeDeviceStaff,
 } from '@/app/actions';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
@@ -37,11 +37,16 @@ export default function DevicesList({
                     result = await closeDeviceAdmin(selectedItem);
                     break;
                 case 'municipality':
-                    result = await closeDeviceMun(selectedItem);
+                    result = await closeDeviceMuni(selectedItem);
                     break;
                 case 'staff':
                     result = await closeDeviceStaff(selectedItem);
                     break;
+                default:
+                    result = {
+                        success: false,
+                        message: 'Unsupported role type',
+                    };
             }
 
             if (result.success) {

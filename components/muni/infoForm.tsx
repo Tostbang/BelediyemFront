@@ -1,5 +1,5 @@
 'use client';
-import { updateInfoMun } from '@/app/actions';
+import { updateInfoMuni } from '@/app/actions';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import SubmitButton from '@/components/common/submitButton';
 import React, { useActionState } from 'react';
@@ -20,7 +20,7 @@ export default function InfoFormMuni({ detail }: { detail?: InfoMuni | null }) {
     };
 
     const clientAction = async (_prevState: unknown, formData: FormData) => {
-        const result = await updateInfoMun(formData);
+        const result = await updateInfoMuni(formData);
         handleResult(result);
 
         return {

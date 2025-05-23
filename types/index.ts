@@ -13,7 +13,7 @@ export type PaginationBody = {
     pageSize: number;
 };
 
-export type RoleType = 'admin' | 'municipality' | 'staff';
+export type RoleType = 'admin' | 'municipality' | 'staff' | 'admin-muni';
 
 export type ApiFetchOptions = {
     method?: string;

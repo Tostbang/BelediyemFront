@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Popover } from 'antd';
 import { getClientCookie, logout, safelyParseJSON } from '@/utils/auth';
-import { handleLogoutMun } from '@/app/actions/municipality/auth';
+import { handleLogoutMuni } from '@/app/actions/municipality/auth';
 import { handleLogoutStaf } from '@/app/actions/staff/auth';
 import { handleLogoutAdmin } from '@/app/actions';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
@@ -56,7 +56,7 @@ export default function Header() {
         if (pathname?.startsWith('/admin')) {
             result = await handleLogoutAdmin();
         } else if (pathname?.startsWith('/municipality')) {
-            result = await handleLogoutMun();
+            result = await handleLogoutMuni();
         } else if (pathname?.startsWith('/staff')) {
             result = await handleLogoutStaf();
         }

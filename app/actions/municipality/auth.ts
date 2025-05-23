@@ -80,7 +80,7 @@ export const handleForgetPasswordMun = async (formData: FormData) => {
     }
 }
 
-export const handleLogoutMun = async () => {
+export const handleLogoutMuni = async () => {
     try {
         const data = await apiFetch<ApiResponse>('municipality/logout');
         return { success: true, message: data.message || 'Çıkış yapıldı.', errors: [] };

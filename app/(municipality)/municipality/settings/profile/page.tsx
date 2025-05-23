@@ -1,7 +1,7 @@
 import React from 'react';
 import PageContainer from '@/components/pageContainer';
 import { generatePageMetadata } from '@/lib/metadata';
-import { getInfoMun } from '@/app/actions';
+import { getInfoMuni } from '@/app/actions';
 import InfoFormMuni from '@/components/muni/infoForm';
 
 export const dynamic = 'force-dynamic';
@@ -11,7 +11,7 @@ export async function generateMetadata() {
 }
 
 export default async function Page() {
-    const response = await getInfoMun();
+    const response = await getInfoMuni();
     const breadcrumb = [{ label: 'Belediye Bilgileri' }];
 
     return (

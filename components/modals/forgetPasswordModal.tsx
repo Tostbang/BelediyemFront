@@ -8,6 +8,7 @@ import {
     handleForgetPasswordMun,
     handleForgetPasswordStaff,
 } from '@/app/actions';
+import { RoleType } from '@/types';
 
 export default function ForgetPasswordModal({
     open,
@@ -16,7 +17,7 @@ export default function ForgetPasswordModal({
 }: {
     open: boolean;
     onClose: () => void;
-    type: 'admin' | 'municipality' | 'staff';
+    type: RoleType;
 }) {
     const { handleError, handleSuccess } = useNotificationHandler();
 
@@ -38,7 +39,10 @@ export default function ForgetPasswordModal({
                 result = await handleForgetPasswordStaff(formData);
                 break;
             default:
-                result = await handleForgetPasswordMun(formData);
+                result = {
+                    success: false,
+                    message: 'Unsupported role type',
+                };
         }
 
         if (result.success) {
