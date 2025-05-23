@@ -19,7 +19,7 @@ export default function FaqForm({
     detail?: FAQDetail | null;
     type: RoleType;
 }) {
-    const { handleSuccess, handleError } = useNotificationHandler();
+    const { handleResult } = useNotificationHandler();
     const isEditing = !!id;
 
     const initialState = {
@@ -52,18 +52,12 @@ export default function FaqForm({
 
         // Execute action and handle result
         const result = await actionFunction(formData);
-
-        if (result.success) {
-            handleSuccess(result.message);
-            return { ...result, title: '', description: '' };
-        } else {
-            handleError(result);
-            return {
-                ...result,
-                title: formData.get('title') as string,
-                description: formData.get('description') as string,
-            };
-        }
+        handleResult(result);
+        return {
+            ...result,
+            title: formData.get('title') as string,
+            description: formData.get('description') as string,
+        };
     };
 
     const [state, formAction] = useActionState(clientAction, initialState);
