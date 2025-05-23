@@ -180,17 +180,17 @@ export const DynamicCropImageModal: React.FC<CropImageModalProps> = ({
 
             <div className="mt-4 flex gap-4">
                 <button
-                    className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md"
+                    className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md cursor-pointer"
                     onClick={handleCropComplete}>
                     Kırp ve Kaydet
                 </button>
                 <button
-                    className="border border-gray-300 hover:bg-gray-100 py-2 px-4 rounded-md"
+                    className="border border-gray-300 hover:bg-gray-100 py-2 px-4 rounded-md cursor-pointer"
                     onClick={handleAddOriginal}>
                     Olduğu Gibi Ekle
                 </button>
                 <button
-                    className="border border-gray-300 hover:bg-gray-100 py-2 px-4 rounded-md"
+                    className="border border-gray-300 hover:bg-gray-100 py-2 px-4 rounded-md cursor-pointer"
                     onClick={handleClose}>
                     İptal
                 </button>

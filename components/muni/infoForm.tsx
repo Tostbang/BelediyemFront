@@ -2,14 +2,12 @@
 import { updateInfoMun } from '@/app/actions';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import SubmitButton from '@/components/common/submitButton';
-import { useRouter } from 'next/navigation';
 import React, { useActionState } from 'react';
 import { InfoMuni } from '@/types';
 import ImageUploader from '../dynamic/imageUploader';
 
 export default function InfoFormMuni({ detail }: { detail?: InfoMuni | null }) {
-    const { handleSuccess, handleError } = useNotificationHandler();
-    const router = useRouter();
+    const { handleResult } = useNotificationHandler();
 
     const initialState = {
         name: detail?.municipalities.name || '',
@@ -23,32 +21,18 @@ export default function InfoFormMuni({ detail }: { detail?: InfoMuni | null }) {
 
     const clientAction = async (_prevState: unknown, formData: FormData) => {
         const result = await updateInfoMun(formData);
-        if (result.success) {
-            handleSuccess(result.message);
-            router.push('/municipality/settings/profile');
-            return {
-                ...result,
-                name: '',
-                phone: '',
-                logoImg: '',
-                url: '',
-                city: '',
-                discrit: '',
-                adressline: '',
-            };
-        } else {
-            handleError(result);
-            return {
-                ...result,
-                name: formData.get('name') as string,
-                phone: formData.get('phone') as string,
-                logoImg: formData.get('logoImg') as string,
-                url: formData.get('url') as string,
-                city: formData.get('city') as string,
-                discrit: formData.get('discrit') as string,
-                adressline: formData.get('adressline') as string,
-            };
-        }
+        handleResult(result);
+
+        return {
+            ...result,
+            name: formData.get('name') as string,
+            phone: formData.get('phone') as string,
+            logoImg: formData.get('logoImg') as string,
+            url: formData.get('url') as string,
+            city: formData.get('city') as string,
+            discrit: formData.get('discrit') as string,
+            adressline: formData.get('adressline') as string,
+        };
     };
 
     const [state, formAction] = useActionState(clientAction, initialState);
@@ -100,7 +84,7 @@ export default function InfoFormMuni({ detail }: { detail?: InfoMuni | null }) {
                         <input
                             type="tel"
                             name="phone"
-                            placeholder="https://example.com"
+                            placeholder="+XX-XXXXXXXXXX"
                             defaultValue={state?.phone}
                             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required

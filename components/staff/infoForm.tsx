@@ -2,7 +2,6 @@
 import { updateInfoStaff } from '@/app/actions';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import SubmitButton from '@/components/common/submitButton';
-import { useRouter } from 'next/navigation';
 import React, { useActionState } from 'react';
 import { InfoStaff } from '@/types';
 import ImageUploader from '../dynamic/imageUploader';
@@ -12,8 +11,7 @@ export default function InfoFormStaff({
 }: {
     detail?: InfoStaff | null;
 }) {
-    const { handleSuccess, handleError } = useNotificationHandler();
-    const router = useRouter();
+    const { handleResult } = useNotificationHandler();
 
     const initialState = {
         name: detail?.municipalStaff.name || '',
@@ -24,26 +22,14 @@ export default function InfoFormStaff({
 
     const clientAction = async (_prevState: unknown, formData: FormData) => {
         const result = await updateInfoStaff(formData);
-        if (result.success) {
-            handleSuccess(result.message);
-            router.push('/staff/settings/profile');
-            return {
-                ...result,
-                name: '',
-                surname: '',
-                phone: '',
-                profileImage: '',
-            };
-        } else {
-            handleError(result);
-            return {
-                ...result,
-                name: formData.get('name') as string,
-                phone: formData.get('phone') as string,
-                surname: formData.get('surname') as string,
-                profileImage: formData.get('profileImage') as string,
-            };
-        }
+        handleResult(result);
+        return {
+            ...result,
+            name: formData.get('name') as string,
+            phone: formData.get('phone') as string,
+            surname: formData.get('surname') as string,
+            profileImage: formData.get('profileImage') as string,
+        };
     };
 
     const [state, formAction] = useActionState(clientAction, initialState);
@@ -95,7 +81,7 @@ export default function InfoFormStaff({
                         <input
                             type="tel"
                             name="phone"
-                            placeholder="https://example.com"
+                            placeholder="+XX-XXXXXXXXXX"
                             defaultValue={state?.phone}
                             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required
