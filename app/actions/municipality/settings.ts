@@ -1,5 +1,5 @@
 "use server"
-import { ApiResponse, DevicesResponse, InfoMuni } from "@/types";
+import { ApiResponse, DevicesResponse, FAQDetail, FAQResponse, InfoMuni } from "@/types";
 import { apiFetch } from "@/utils/api";
 
 import { validateBase64Size } from "@/utils/fileUtils";
@@ -169,6 +169,121 @@ export const closeDeviceMun = async (id: string) => {
             success: false,
             message: "",
             errors: error instanceof Error ? error.message : 'Oturum kapatılamadı.',
+        };
+    }
+}
+
+export const getFAQsMun = async () => {
+    try {
+        const data = await apiFetch('municipality/getfrequentlyaskedquestions');
+
+        return data as FAQResponse
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
+
+export const getFAQByIdMun = async (id: string) => {
+    try {
+        const data = await apiFetch(`municipality/getfrequentlyaskedquestiondetail?faqId=${id}`);
+
+        return data as FAQDetail
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
+
+export const addFAQMun = async (formData: FormData) => {
+    try {
+        const title = formData.get('title') as string;
+        const description = formData.get('description') as string;
+
+        if (!title || !description) {
+            return { success: false, message: "", errors: 'Lütfen tüm alanları doldurun.' };
+        }
+
+        const payload = {
+            title,
+            description
+        };
+
+        const response = await apiFetch<ApiResponse>('municipality/createfrequentlyaskedqsuestions', {
+            method: 'POST',
+            body: payload
+        });
+
+        return {
+            success: true,
+            message: response.message || 'Sıkça Sorulan Sorular başarıyla eklendi.',
+            errors: [],
+            ...payload,
+        };
+    } catch (error) {
+        console.error(error);
+        return {
+            success: false,
+            message: "",
+            errors: error instanceof Error ? error.message : 'Sıkça Sorulan Sorular eklenemedi.',
+        };
+    }
+}
+
+export const updateFAQMun = async (formData: FormData) => {
+    try {
+        const id = formData.get('id') as string;
+        const title = formData.get('title') as string;
+        const description = formData.get('description') as string;
+
+        if (!id || !title || !description) {
+            return { success: false, message: "", errors: 'Lütfen tüm alanları doldurun.' };
+        }
+
+        const payload = {
+            id,
+            title,
+            description
+        };
+
+        const response = await apiFetch<ApiResponse>('municipality/updatefrequentlyaskedqsuestion', {
+            method: 'PUT',
+            body: payload
+        });
+
+        return {
+            success: true,
+            message: response.message || 'Sıkça Sorulan Sorular başarıyla güncellendi.',
+            errors: [],
+            ...payload,
+        };
+    } catch (error) {
+        console.error(error);
+        return {
+            success: false,
+            message: "",
+            errors: error instanceof Error ? error.message : 'Sıkça Sorulan Sorular güncellenemedi.',
+        };
+    }
+}
+
+export const deleteFAQMun = async (id: string) => {
+    try {
+        const data = await apiFetch<ApiResponse>(`municipality/deletefrequentlyaskedqsuestion?faqId=${id}`, {
+            method: 'DELETE'
+        });
+
+        return {
+            success: true,
+            message: data.message || 'Sıkça Sorulan Sorular başarıyla silindi.',
+            errors: [],
+        };
+    } catch (error) {
+        console.error(error);
+        return {
+            success: false,
+            message: "",
+            errors: error instanceof Error ? error.message : 'Sıkça Sorulan Sorular silinemedi.',
         };
     }
 }

@@ -201,3 +201,20 @@ export type AdminUser = {
 export type InfoAdmin = ApiResponse & {
     user: StaffUser
 }
+
+export type FAQ = {
+    id: number;
+    title: string;
+    description: string;
+    municipalityId: number;
+    userType: number;
+    createdDate: string;
+    modifiedDate: string;
+}
+export type FAQResponse = ApiResponse & {
+    frequentlyAskedQuestions: FAQ[];
+}
+
+export type FAQDetail = ApiResponse & {
+    frequentlyAskedQuestion: FAQ;
+}

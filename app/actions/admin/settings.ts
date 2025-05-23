@@ -1,6 +1,6 @@
 "use server"
 
-import { ApiResponse, DevicesResponse, InfoAdmin } from "@/types";
+import { ApiResponse, DevicesResponse, FAQDetail, FAQResponse, InfoAdmin } from "@/types";
 import { apiFetch } from "@/utils/api";
 import { uploadImage } from "../file";
 import { validateBase64Size } from "@/utils/fileUtils";
@@ -145,6 +145,121 @@ export const closeDeviceAdmin = async (id: string) => {
             success: false,
             message: "",
             errors: error instanceof Error ? error.message : 'Oturum kapatılamadı.',
+        };
+    }
+}
+
+export const getFAQsAdmin = async () => {
+    try {
+        const data = await apiFetch('admin/getfrequentlyaskedquestions');
+
+        return data as FAQResponse
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
+
+export const getFAQByIdAdmin = async (id: string) => {
+    try {
+        const data = await apiFetch(`admin/getfrequentlyaskedquestiondetail?faqId=${id}`);
+
+        return data as FAQDetail
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
+
+export const addFAQAdmin = async (formData: FormData) => {
+    try {
+        const title = formData.get('title') as string;
+        const description = formData.get('description') as string;
+
+        if (!title || !description) {
+            return { success: false, message: "", errors: 'Lütfen tüm alanları doldurun.' };
+        }
+
+        const payload = {
+            title,
+            description
+        };
+
+        const response = await apiFetch<ApiResponse>('admin/createfrequentlyaskedqsuestions', {
+            method: 'POST',
+            body: payload
+        });
+
+        return {
+            success: true,
+            message: response.message || 'Sıkça Sorulan Sorular başarıyla eklendi.',
+            errors: [],
+            ...payload,
+        };
+    } catch (error) {
+        console.error(error);
+        return {
+            success: false,
+            message: "",
+            errors: error instanceof Error ? error.message : 'Sıkça Sorulan Sorular eklenemedi.',
+        };
+    }
+}
+
+export const updateFAQAdmin = async (formData: FormData) => {
+    try {
+        const id = formData.get('id') as string;
+        const title = formData.get('title') as string;
+        const description = formData.get('description') as string;
+
+        if (!id || !title || !description) {
+            return { success: false, message: "", errors: 'Lütfen tüm alanları doldurun.' };
+        }
+
+        const payload = {
+            id,
+            title,
+            description
+        };
+
+        const response = await apiFetch<ApiResponse>('admin/updatefrequentlyaskedqsuestion', {
+            method: 'PUT',
+            body: payload
+        });
+
+        return {
+            success: true,
+            message: response.message || 'Sıkça Sorulan Sorular başarıyla güncellendi.',
+            errors: [],
+            ...payload,
+        };
+    } catch (error) {
+        console.error(error);
+        return {
+            success: false,
+            message: "",
+            errors: error instanceof Error ? error.message : 'Sıkça Sorulan Sorular güncellenemedi.',
+        };
+    }
+}
+
+export const deleteFAQAdmin = async (id: string) => {
+    try {
+        const data = await apiFetch<ApiResponse>(`admin/deletefrequentlyaskedqsuestion?faqId=${id}`, {
+            method: 'DELETE'
+        });
+
+        return {
+            success: true,
+            message: data.message || 'Sıkça Sorulan Sorular başarıyla silindi.',
+            errors: [],
+        };
+    } catch (error) {
+        console.error(error);
+        return {
+            success: false,
+            message: "",
+            errors: error instanceof Error ? error.message : 'Sıkça Sorulan Sorular silinemedi.',
         };
     }
 }

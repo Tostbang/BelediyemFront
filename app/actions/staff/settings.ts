@@ -1,6 +1,6 @@
 "use server";
 
-import { ApiResponse, DevicesResponse, InfoStaff } from "@/types";
+import { ApiResponse, DevicesResponse, FAQResponse, InfoStaff } from "@/types";
 import { apiFetch } from "@/utils/api";
 import { validateBase64Size } from "@/utils/fileUtils";
 import { uploadImage } from "../file";
@@ -164,5 +164,16 @@ export const closeDeviceStaff = async (id: string) => {
             message: "",
             errors: error instanceof Error ? error.message : 'Oturum kapatılamadı.',
         };
+    }
+}
+
+export const getFAQsStaff = async () => {
+    try {
+        const data = await apiFetch('municipalstaff/getfrequentlyaskedquestions');
+
+        return data as FAQResponse
+    } catch (error) {
+        console.error(error);
+        return null;
     }
 }
