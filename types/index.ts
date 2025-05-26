@@ -11,6 +11,7 @@ export type SidebarItem = {
 export type PaginationBody = {
     pageNumber: number;
     pageSize: number;
+    searchText: string;
 };
 
 export type RoleType = 'admin' | 'municipality' | 'staff' | 'admin-muni';
@@ -179,6 +180,7 @@ export type DevicesResponse = ApiResponse & {
 }
 
 export type StaffUser = {
+    id: number;
     name: string;
     surname: string;
     email: string;
@@ -187,6 +189,9 @@ export type StaffUser = {
     profileImage: string;
     municipalityName: string;
     municipalityId: number;
+    status: boolean;
+    createdDate: string;
+    modifiedDate: string;
 }
 
 export type InfoStaff = ApiResponse & {
@@ -304,4 +309,24 @@ export type ContractsResponse = ApiResponse & {
 export type ContractDetailResponse = ApiResponse & {
     contract: Contract;
 }
+
+
+export type StaffUserListResponse = ApiResponse & {
+    municipalStaff: StaffUser[];
+    totalCount: number;
+    pageNumber: number;
+    pageSize: number;
+    lastPage: boolean;
+    backPage: boolean;
+    nextPage: boolean;
+}
+
+export type StaffUserDetailResponse = ApiResponse & {
+    municipalStaff: StaffUser;
+}
+
+export type StaffPaginationBody = PaginationBody & {
+    municipalStaffType?: number;
+};
+
 

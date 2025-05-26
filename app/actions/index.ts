@@ -11,6 +11,7 @@ export * from '@/app/actions/admin/contracts';
 export * from '@/app/actions/municipality/auth';
 export * from '@/app/actions/municipality/settings';
 export * from '@/app/actions/municipality/ratings';
+export * from '@/app/actions/municipality/staff';
 
 // staff
 export * from '@/app/actions/staff/auth';
