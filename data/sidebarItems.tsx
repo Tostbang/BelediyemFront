@@ -38,7 +38,7 @@ export const sidebarItemsAdmin: SidebarItem[] = [
             {
                 title: 'Şifre Sıfırlma Talepleri',
                 icon: <LockIcon />,
-                path: '/admin/password-reset-requests',
+                path: '/admin/municipality/password-reset-requests',
             },
         ],
     },

@@ -1,6 +1,6 @@
 "use server"
 
-import { ApiResponse, MuniDetailResponse, MuniListResponse, PaginationBody } from "@/types";
+import { ApiResponse, MuniDetailResponse, MuniListResponse, PaginationBody, PasswordResetResponse } from "@/types";
 import { apiFetch } from "@/utils/api";
 import { validateBase64Size } from "@/utils/fileUtils";
 import { uploadImage } from "../file";
@@ -196,14 +196,14 @@ export const getMunisPWResetRequestAdmin = async (body: PaginationBody) => {
             }
         });
 
-        return data as MuniListResponse
+        return data as PasswordResetResponse
     } catch (error) {
         console.error(error);
         return null;
     }
 }
 
-export const getMunisSendPWAdmin = async (id: string) => {
+export const sendMunisPWAdmin = async (id: string) => {
     try {
         const data = await apiFetch<ApiResponse>('admin/adminsendnewpassword', {
             method: 'POST',

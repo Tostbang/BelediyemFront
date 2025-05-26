@@ -31,7 +31,7 @@ export default function RootLayout({
                     <Toaster
                         position="top-right"
                         toastOptions={{
-                            duration: 1000,
+                            duration: 1500,
                         }}
                     />
                     <LoginListener />

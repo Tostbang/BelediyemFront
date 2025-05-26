@@ -245,3 +245,13 @@ export type PasswordReset = {
     createdDate: string;
     passwordResetStatus: number;
 }
+
+export type PasswordResetResponse = ApiResponse & {
+    requests: PasswordReset[];
+    totalCount: number;
+    pageNumber: number;
+    pageSize: number;
+    lastPage: boolean;
+    backPage: boolean;
+    nextPage: boolean;
+}
