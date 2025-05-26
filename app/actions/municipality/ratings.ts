@@ -1,6 +1,6 @@
 "use server"
 
-import { ApiResponse, PaginationBody, RatingResponse } from "@/types";
+import { ApiResponse, PaginationBody, RatingDetail, RatingResponse } from "@/types";
 import { apiFetch } from "@/utils/api";
 
 export const getRatingsMuni = async (body: PaginationBody) => {
@@ -20,6 +20,16 @@ export const getRatingsMuni = async (body: PaginationBody) => {
     }
 }
 
+export const getRatingByIdMuni = async (id: string) => {
+    try {
+        const data = await apiFetch(`municipality/getratingdetail?ratingId=${id}`);
+
+        return data as RatingDetail;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
 
 export const approvedRatingMuni = async (id: string) => {
     try {

@@ -284,3 +284,7 @@ export type RatingResponse = ApiResponse & {
     backPage: boolean;
     nextPage: boolean;
 }
+
+export type RatingDetail = ApiResponse & {
+    ratingDto: Ratings;
+}
