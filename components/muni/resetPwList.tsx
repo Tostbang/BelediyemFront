@@ -46,7 +46,6 @@ export default function PWResetList({
             title: 'Id',
             dataIndex: 'id',
             width: 180,
-            fixed: 'left' as const,
         },
         {
             title: 'Kullanıcı Id',
