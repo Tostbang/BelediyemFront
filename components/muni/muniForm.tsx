@@ -23,7 +23,7 @@ export default function MuniForm({
         email: detail?.municipality.email || '',
         password: '',
         phone: detail?.municipality.phone || '',
-        membershipType: detail?.municipality.membershipType || '',
+        membershipType: detail?.municipality.membershipType?.toString() || '',
         landlinePhone: detail?.municipality.landlinePhone || '',
 
         logoImg: detail?.municipality.logoImg || '',
@@ -46,14 +46,15 @@ export default function MuniForm({
         // Execute action and handle result
         const result = await actionFunction(formData);
         handleResult(result);
-        return {
+
+        const returnState = {
             ...result,
             name: formData.get('name') as string,
             email: formData.get('email') as string,
             password: formData.get('password') as string,
             phone: formData.get('phone') as string,
             landlinePhone: formData.get('landlinePhone') as string,
-            membershipType: Number(formData.get('membershipType') as string),
+            membershipType: formData.get('membershipType') as string,
             logoImg: formData.get('logoImg') as string,
             url: formData.get('url') as string,
             membershipStartDate: formData.get('membershipStartDate') as string,
@@ -63,6 +64,8 @@ export default function MuniForm({
             adressline: formData.get('adressline') as string,
             status: (formData.get('status') as string) === 'on' ? true : false,
         };
+
+        return returnState;
     };
 
     const [state, formAction] = useActionState(clientAction, initialState);
@@ -175,6 +178,7 @@ export default function MuniForm({
                             Üyelik Tipi
                         </label>
                         <select
+                            key={`membership-select-${state?.membershipType || 'default'}`}
                             name="membershipType"
                             defaultValue={state?.membershipType}
                             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -183,7 +187,9 @@ export default function MuniForm({
                                 Üyelik Tipi Seçin
                             </option>
                             {membershipTypes.map((type) => (
-                                <option key={type.id} value={type.id}>
+                                <option
+                                    key={type.id}
+                                    value={type.id.toString()}>
                                     {type.name}
                                 </option>
                             ))}
