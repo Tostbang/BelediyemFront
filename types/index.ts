@@ -156,7 +156,7 @@ export type Municipalities = {
     discrit: string;
     adressline: string;
     profileImage: string;
-    status: number;
+    status: boolean;
     createdDate: string;
     modifiedDate: string;
 }

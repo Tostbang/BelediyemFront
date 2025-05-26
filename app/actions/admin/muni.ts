@@ -2,6 +2,8 @@
 
 import { ApiResponse, MuniDetailResponse, MuniListResponse, PaginationBody } from "@/types";
 import { apiFetch } from "@/utils/api";
+import { validateBase64Size } from "@/utils/fileUtils";
+import { uploadImage } from "../file";
 
 export const getMunisAdmin = async (body: PaginationBody) => {
     try {
@@ -72,7 +74,7 @@ export const addMuniAdmin = async (formData: FormData) => {
     }
 }
 
-export const updateFAQAdmin = async (formData: FormData) => {
+export const updateMuniAdmin = async (formData: FormData) => {
     try {
 
         const id = formData.get('id') as string;
@@ -85,29 +87,56 @@ export const updateFAQAdmin = async (formData: FormData) => {
         const city = formData.get('city') as string;
         const discrit = formData.get('discrit') as string;
         const adressline = formData.get('adressline') as string;
-        const status = formData.get('status') as string;
-        const logoImg = formData.get('logoImg') as string;
+        const statusRaw = formData.get('status') as string | null;
+        const imageData = formData.get('logoImg') as string;
         const url = formData.get('url') as string;
 
-        if (!id || !name || !email || !phone || !membershipType || !membershipStartDate || !membershipEndDate || !city || !discrit || !adressline || !status || !logoImg || !url) {
+        // status boolean olarak ayarlanıyor
+        const status = statusRaw === 'on' ? true : false;
+
+        if (!imageData || !id || !name || !email || !phone || !membershipType || !membershipStartDate || !membershipEndDate || !city || !discrit || !adressline || !url) {
             return { success: false, message: "", errors: 'Lütfen tüm alanları doldurun.' };
         }
+
+        let imagePath = imageData;
+        if (imageData.startsWith('data:image')) {
+            const sizeValidation = validateBase64Size(imageData);
+            if (!sizeValidation.valid) {
+                return { success: false, message: "", errors: sizeValidation.message };
+            }
+
+            const imageFormData = new FormData();
+            imageFormData.append('image', imageData);
+
+            const uploadResult = await uploadImage(imageFormData);
+            if (!uploadResult.success) {
+                return {
+                    success: false,
+                    message: "",
+                    errors: uploadResult.errors || 'Görsel yüklenemedi.'
+                };
+            }
+            imagePath = uploadResult.path ?? '';
+        }
+
 
         const payload = {
             municipalityId: id,
             name,
             email,
             phone,
-            membershipType,
+            membershipType: parseInt(membershipType),
             membershipStartDate,
             membershipEndDate,
+            municipalityStatusType: 1,
             city,
             discrit,
             adressline,
-            status,
-            logoImg,
+            status, // boolean olarak gönderiliyor
+            logoImg: imagePath,
             url
         };
+
 
         const response = await apiFetch<ApiResponse>('admin/putinfomunicipality', {
             method: 'PUT',

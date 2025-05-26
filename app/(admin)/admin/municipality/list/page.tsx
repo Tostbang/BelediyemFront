@@ -2,7 +2,7 @@ import React from 'react';
 import PageContainer from '@/components/pageContainer';
 import { generatePageMetadata } from '@/lib/metadata';
 import MuniList from '@/components/muni/list';
-import { getMunisAdmin } from '@/app/actions/admin/muni';
+import { getMunisAdmin } from '@/app/actions';
 import { PaginationBody } from '@/types';
 
 export const dynamic = 'force-dynamic';

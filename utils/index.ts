@@ -69,6 +69,11 @@ export const formatDateTime = (date: string): string => {
     }
 }
 
+export const formatDateInput = (dateString: string | undefined) => {
+    if (!dateString) return '';
+    return new Date(dateString).toISOString().split('T')[0];
+};
+
 
 export const isPositiveNumber = (str: string) => {
     const num = Number(str);
