@@ -48,6 +48,11 @@ export const sidebarItemsAdmin: SidebarItem[] = [
         path: '/admin/faq',
     },
     {
+        title: 'Sözleşmeler',
+        icon: <ListIcon />,
+        path: '/admin/contract/list',
+    },
+    {
         title: 'Ayarlar',
         icon: <SettingsIcon />,
         children: [

@@ -5,6 +5,7 @@ export * from '@/app/actions/file';
 export * from '@/app/actions/admin/auth';
 export * from '@/app/actions/admin/settings';
 export * from '@/app/actions/admin/muni';
+export * from '@/app/actions/admin/contracts';
 
 //municipality
 export * from '@/app/actions/municipality/auth';

@@ -288,3 +288,20 @@ export type RatingResponse = ApiResponse & {
 export type RatingDetail = ApiResponse & {
     ratingDto: Ratings;
 }
+
+export type Contract = {
+    id: number;
+    name: number;
+    content: string;
+    contractType: number;
+
+}
+
+export type ContractsResponse = ApiResponse & {
+    contract: Contract[];
+}
+
+export type ContractDetailResponse = ApiResponse & {
+    contract: Contract;
+}
+
