@@ -9,6 +9,7 @@ export * from '@/app/actions/admin/muni';
 //municipality
 export * from '@/app/actions/municipality/auth';
 export * from '@/app/actions/municipality/settings';
+export * from '@/app/actions/municipality/ratings';
 
 // staff
 export * from '@/app/actions/staff/auth';

@@ -135,7 +135,7 @@ export const sidebarItemsMuni: SidebarItem[] = [
     {
         title: 'Değerlendirme',
         icon: <StarIcon />,
-        path: '/municipality/evaluation',
+        path: '/municipality/ratings',
     },
     {
         title: 'Destek',

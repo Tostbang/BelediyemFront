@@ -256,3 +256,31 @@ export type PasswordResetResponse = ApiResponse & {
     backPage: boolean;
     nextPage: boolean;
 }
+
+
+export type Ratings = {
+    id: number;
+    complaintId: number;
+    complaintTitle: string;
+    complaintDescription: string;
+    complaintStatusType: number;
+    userId: number;
+    userName: string;
+    userProfileImage: string;
+    rating: number;
+    comment: string;
+    createdDate: string;
+    modifiedDate: string;
+    status: boolean;
+
+}
+
+export type RatingResponse = ApiResponse & {
+    ratings: Ratings[];
+    totalCount: number;
+    pageNumber: number;
+    pageSize: number;
+    lastPage: boolean;
+    backPage: boolean;
+    nextPage: boolean;
+}
