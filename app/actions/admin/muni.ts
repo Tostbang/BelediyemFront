@@ -160,6 +160,32 @@ export const updateMuniAdmin = async (formData: FormData) => {
     }
 }
 
+export const updateMuniStatusAdmin = async (id: string, status: boolean) => {
+    try {
+        const response = await apiFetch<ApiResponse>('admin/municipalityupdatestatus', {
+            method: 'PUT',
+            body: {
+                municipalityId: id,
+                status
+            }
+        });
+
+        return {
+            success: true,
+            message: response.message || 'Belediye durumu başarıyla güncellendi.',
+            errors: [],
+        };
+    }
+    catch (error) {
+        console.error(error);
+        return {
+            success: false,
+            message: "",
+            errors: error instanceof Error ? error.message : 'Belediye durumu güncellenemedi.',
+        };
+    }
+}
+
 export const getMunisPWResetRequestAdmin = async (body: PaginationBody) => {
     try {
         const data = await apiFetch('admin/getmunicipalitypasswordresetlist', {

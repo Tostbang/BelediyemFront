@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Municipalities, MuniListResponse } from '@/types';
 import DynamicTable from '../dynamic/table';
 import ConfirmModal from '../modals/confirmModal';
-import { closeDeviceAdmin } from '@/app/actions';
+import { updateMuniStatusAdmin } from '@/app/actions';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import { useRouter } from 'next/navigation';
 import { formatDate } from '@/utils';
@@ -29,7 +29,7 @@ export default function MuniList({ munilist }: { munilist: MuniListResponse }) {
 
     const handleConfirm = async () => {
         if (selectedItem) {
-            const result = await closeDeviceAdmin(selectedItem);
+            const result = await updateMuniStatusAdmin(selectedItem, false);
 
             if (result.success) {
                 handleSuccess(result.message);
