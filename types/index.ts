@@ -146,6 +146,7 @@ export type Municipalities = {
     name: string;
     email: string;
     phone: string;
+    landlinePhone: string;
     municipalityStatusType: number;
     logoImg: string;
     url: string;

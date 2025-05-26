@@ -24,6 +24,7 @@ export default function MuniForm({
         password: '',
         phone: detail?.municipality.phone || '',
         membershipType: detail?.municipality.membershipType || '',
+        landlinePhone: detail?.municipality.landlinePhone || '',
 
         logoImg: detail?.municipality.logoImg || '',
         url: detail?.municipality.url || '',
@@ -51,6 +52,7 @@ export default function MuniForm({
             email: formData.get('email') as string,
             password: formData.get('password') as string,
             phone: formData.get('phone') as string,
+            landlinePhone: formData.get('landlinePhone') as string,
             membershipType: Number(formData.get('membershipType') as string),
             logoImg: formData.get('logoImg') as string,
             url: formData.get('url') as string,
@@ -138,13 +140,29 @@ export default function MuniForm({
                 <div className="space-y-5">
                     <div className="mb-4">
                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Telefon
+                            GSM
                         </label>
                         <input
                             type="text"
                             name="phone"
-                            placeholder="Telefon"
+                            placeholder="+XX-XXXXXXXXXX"
                             defaultValue={state?.phone}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <div className="space-y-5">
+                    <div className="mb-4">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Sabit Telefon
+                        </label>
+                        <input
+                            type="text"
+                            name="landlinePhone"
+                            placeholder="(0 XXX) XXX XX XX"
+                            defaultValue={state?.landlinePhone}
                             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required
                         />

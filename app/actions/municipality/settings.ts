@@ -21,12 +21,13 @@ export const updateInfoMuni = async (formData: FormData) => {
         const imageData = formData.get('logoImg') as string;
         const name = formData.get('name') as string;
         const phone = formData.get('phone') as string;
+        const landlinePhone = formData.get('landlinePhone') as string;
         const url = formData.get('url') as string;
         const city = formData.get('city') as string;
         const discrit = formData.get('discrit') as string;
         const adressline = formData.get('adressline') as string;
 
-        if (!imageData || !name || !phone || !url || !city || !discrit || !adressline) {
+        if (!imageData || !name || !phone || !landlinePhone || !url || !city || !discrit || !adressline) {
             return { success: false, message: "", errors: 'Lütfen tüm alanları doldurun.' };
         }
 
@@ -54,6 +55,7 @@ export const updateInfoMuni = async (formData: FormData) => {
         const payload = {
             name,
             phone,
+            landlinePhone,
             logoImg: imagePath,
             url,
             city,

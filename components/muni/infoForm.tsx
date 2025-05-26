@@ -12,6 +12,7 @@ export default function InfoFormMuni({ detail }: { detail?: InfoMuni | null }) {
     const initialState = {
         name: detail?.municipalities.name || '',
         phone: detail?.municipalities.phone || '',
+        landlinePhone: detail?.municipalities.landlinePhone || '',
         logoImg: detail?.municipalities.logoImg || '',
         url: detail?.municipalities.url || '',
         city: detail?.municipalities.city || '',
@@ -27,6 +28,7 @@ export default function InfoFormMuni({ detail }: { detail?: InfoMuni | null }) {
             ...result,
             name: formData.get('name') as string,
             phone: formData.get('phone') as string,
+            landlinePhone: formData.get('landlinePhone') as string,
             logoImg: formData.get('logoImg') as string,
             url: formData.get('url') as string,
             city: formData.get('city') as string,
@@ -77,18 +79,36 @@ export default function InfoFormMuni({ detail }: { detail?: InfoMuni | null }) {
                             required
                         />
                     </div>
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Telefon
-                        </label>
-                        <input
-                            type="tel"
-                            name="phone"
-                            placeholder="+XX-XXXXXXXXXX"
-                            defaultValue={state?.phone}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required
-                        />
+                    <div className="space-y-5">
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                GSM
+                            </label>
+                            <input
+                                type="text"
+                                name="phone"
+                                placeholder="+XX-XXXXXXXXXX"
+                                defaultValue={state?.phone}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required
+                            />
+                        </div>
+                    </div>
+
+                    <div className="space-y-5">
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Sabit Telefon
+                            </label>
+                            <input
+                                type="text"
+                                name="landlinePhone"
+                                placeholder="(0 XXX) XXX XX XX"
+                                defaultValue={state?.landlinePhone}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required
+                            />
+                        </div>
                     </div>
                     <div className="mb-4">
                         <label className="block text-sm font-medium text-gray-700 mb-1">

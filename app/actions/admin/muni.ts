@@ -39,9 +39,10 @@ export const addMuniAdmin = async (formData: FormData) => {
         const email = formData.get('email') as string;
         const password = formData.get('password') as string;
         const phone = formData.get('phone') as string;
+        const landlinePhone = formData.get('landlinePhone') as string;
         const membershipType = formData.get('membershipType') as string;
 
-        if (!name || !email || !password || !phone || !membershipType) {
+        if (!name || !email || !password || !phone || !membershipType || !landlinePhone) {
             return { success: false, message: "", errors: 'Lütfen tüm alanları doldurun.' };
         }
 
@@ -50,6 +51,7 @@ export const addMuniAdmin = async (formData: FormData) => {
             email,
             password,
             phone,
+            landlinePhone,
             membershipType: parseInt(membershipType),
 
         };
@@ -82,6 +84,7 @@ export const updateMuniAdmin = async (formData: FormData) => {
         const name = formData.get('name') as string;
         const email = formData.get('email') as string;
         const phone = formData.get('phone') as string;
+        const landlinePhone = formData.get('landlinePhone') as string;
         const membershipType = formData.get('membershipType') as string;
         const membershipStartDate = formData.get('membershipStartDate') as string;
         const membershipEndDate = formData.get('membershipEndDate') as string;
@@ -95,7 +98,7 @@ export const updateMuniAdmin = async (formData: FormData) => {
         // status boolean olarak ayarlanıyor
         const status = statusRaw === 'on' ? true : false;
 
-        if (!imageData || !id || !name || !email || !phone || !membershipType || !membershipStartDate || !membershipEndDate || !city || !discrit || !adressline || !url) {
+        if (!imageData || !id || !name || !email || !phone || !landlinePhone || !membershipType || !membershipStartDate || !membershipEndDate || !city || !discrit || !adressline || !url) {
             return { success: false, message: "", errors: 'Lütfen tüm alanları doldurun.' };
         }
 
@@ -126,6 +129,7 @@ export const updateMuniAdmin = async (formData: FormData) => {
             name,
             email,
             phone,
+            landlinePhone,
             membershipType: parseInt(membershipType),
             membershipStartDate,
             membershipEndDate,
