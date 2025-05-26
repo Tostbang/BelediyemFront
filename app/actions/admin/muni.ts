@@ -50,7 +50,8 @@ export const addMuniAdmin = async (formData: FormData) => {
             email,
             password,
             phone,
-            membershipType
+            membershipType: parseInt(membershipType),
+
         };
 
         const response = await apiFetch<ApiResponse>('admin/registermunicipality', {

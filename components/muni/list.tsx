@@ -12,6 +12,7 @@ import { Dropdown } from 'antd';
 import Link from 'next/link';
 import { MoreOutlined } from '@ant-design/icons';
 import { usePagination } from '@/hooks/usePagination';
+import LinkButton from '../common/LinkButton';
 
 export default function MuniList({ munilist }: { munilist: MuniListResponse }) {
     const { pageNumber, pageSize, handlePageChange, handlePageSizeChange } =
@@ -99,11 +100,11 @@ export default function MuniList({ munilist }: { munilist: MuniListResponse }) {
             title: 'Durum',
             dataIndex: 'status',
             width: 180,
-            render: (text: number) => {
+            render: (text: boolean) => {
                 switch (text) {
-                    case 0:
+                    case false:
                         return <span className="text-red-500">Pasif</span>;
-                    case 1:
+                    case true:
                         return <span className="text-green-500">Aktif</span>;
                     default:
                         return (
@@ -150,6 +151,12 @@ export default function MuniList({ munilist }: { munilist: MuniListResponse }) {
     return (
         <div className="flex flex-col items-center w-full mb-6">
             <div className="w-full overflow-hidden bg-white rounded-lg p-6">
+                <div className="flex justify-end mb-4">
+                    <LinkButton
+                        href="/admin/municipality/new"
+                        title="Yeni Belediye Ekle"
+                    />
+                </div>
                 <div className="overflow-x-auto">
                     <DynamicTable<Municipalities>
                         data={munilist.municipalLists}
