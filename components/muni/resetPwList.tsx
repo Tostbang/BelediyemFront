@@ -103,7 +103,7 @@ export default function PWResetList({
                         onClick={() =>
                             handleSendMailClick(record.userId.toString())
                         }
-                        className="text-red-500 hover:text-red-700 cursor-pointer">
+                        className="text-blue-500 hover:text-blue-700 cursor-pointer">
                         Mail Gönder
                     </button>
                 </div>
