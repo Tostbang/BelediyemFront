@@ -66,10 +66,10 @@ export default function PWResetList({
             title: 'Kullanıcı Id',
             dataIndex: 'userId',
             width: 180,
-            fixed: 'left' as const,
         },
         {
-            title: 'Belediye Adı',
+            fixed: 'left' as const,
+            title: type === 'admin' ? 'Belediye Adı' : 'Personel Adı',
             dataIndex: 'name',
             width: 180,
         },

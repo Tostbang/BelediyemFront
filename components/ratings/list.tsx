@@ -43,11 +43,11 @@ export default function RatingList({ ratings }: { ratings: RatingResponse }) {
             title: 'Id',
             dataIndex: 'id',
             width: 180,
-            fixed: 'left' as const,
         },
         {
             title: 'Kullanıcı Adı',
             dataIndex: 'userName',
+            fixed: 'left' as const,
             width: 180,
         },
         {
