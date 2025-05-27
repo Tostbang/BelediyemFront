@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 
 // Define a type for breadcrumb items
@@ -24,11 +25,11 @@ export default function PageContainer({
                                     <span className="mx-2 text-3xl">{'>'}</span>
                                 )}
                                 {item.href ? (
-                                    <a
+                                    <Link
                                         href={item.href}
                                         className="hover:underline text-2xl font-medium">
                                         {item.label}
-                                    </a>
+                                    </Link>
                                 ) : (
                                     <span className="text-2xl font-medium opacity-80">
                                         {item.label}
