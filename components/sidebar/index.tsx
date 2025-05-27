@@ -81,7 +81,7 @@ const SideBar = ({ items }: { items: SidebarItem[] }) => {
                                                             : 'text-black'
                                                     }`}>
                                                     <span className="flex items-center gap-4 flex-grow">
-                                                        <span>{item.icon}</span>
+                                                        <span className='w-4 h-4'>{item.icon}</span>
                                                         <span>
                                                             {item.title}
                                                         </span>
@@ -131,7 +131,7 @@ const SideBar = ({ items }: { items: SidebarItem[] }) => {
                                                                                     : 'text-black'
                                                                             }`}>
                                                                             <span className="flex items-center gap-4">
-                                                                                <span>
+                                                                                <span className='w-4 h-4'>
                                                                                     {
                                                                                         child.icon
                                                                                     }
@@ -173,7 +173,7 @@ const SideBar = ({ items }: { items: SidebarItem[] }) => {
                                             : 'text-black'
                                     }`}>
                                     <span className="flex items-center gap-4">
-                                        <span>{item.icon}</span>
+                                        <span className='w-4 h-4'>{item.icon}</span>
                                         <span>{item.title}</span>
                                     </span>
                                 </button>

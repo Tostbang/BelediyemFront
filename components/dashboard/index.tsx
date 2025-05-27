@@ -54,7 +54,9 @@ export default function DashboardMuni({
             value: dashboard?.totalComplaints || '0',
             icon: (
                 <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-500">
-                    <ClipboardIcon />
+                    <div className="h-6 w-6 flex items-center justify-center">
+                        <ClipboardIcon />
+                    </div>
                 </div>
             ),
         },
@@ -63,7 +65,9 @@ export default function DashboardMuni({
             value: dashboard?.resolvedCount || '0',
             icon: (
                 <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center text-green-500">
-                    <TickIcon />
+                    <div className="h-6 w-6 flex items-center justify-center">
+                        <TickIcon />
+                    </div>
                 </div>
             ),
         },
@@ -72,7 +76,9 @@ export default function DashboardMuni({
             value: dashboard?.pendingCount || '0',
             icon: (
                 <div className="h-10 w-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-500">
-                    <ClockIcon />
+                    <div className="h-6 w-6 flex items-center justify-center">
+                        <ClockIcon />
+                    </div>
                 </div>
             ),
         },
@@ -81,7 +87,9 @@ export default function DashboardMuni({
             value: dashboard?.underReviewCount || '0',
             icon: (
                 <div className="h-10 w-10 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-500">
-                    <EyeIcon />
+                    <div className="h-6 w-6 flex items-center justify-center">
+                        <EyeIcon />
+                    </div>
                 </div>
             ),
         },
@@ -90,7 +98,9 @@ export default function DashboardMuni({
             value: dashboard?.startedCount || '0',
             icon: (
                 <div className="h-10 w-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-500">
-                    <PauseIcon />
+                    <div className="h-6 w-6 flex items-center justify-center">
+                        <PauseIcon />
+                    </div>
                 </div>
             ),
         },
@@ -99,7 +109,9 @@ export default function DashboardMuni({
             value: dashboard?.rejectedCount || '0',
             icon: (
                 <div className="h-10 w-10 rounded-full bg-red-100 flex items-center justify-center text-red-500">
-                    <XIcon />
+                    <div className="h-6 w-6 flex items-center justify-center">
+                        <XIcon />
+                    </div>
                 </div>
             ),
         },
@@ -132,7 +144,7 @@ export default function DashboardMuni({
                 <div>
                     <button
                         onClick={() => handleDownload(record)}
-                        className="text-blue-500 hover:text-blue-700 cursor-pointer">
+                        className="text-blue-500 hover:text-blue-700 cursor-pointer w-6 h-6">
                         <DownloadIcon />
                     </button>
                 </div>

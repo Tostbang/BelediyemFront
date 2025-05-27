@@ -81,14 +81,14 @@ export default function FaqList({
                     <div className="flex justify-end mt-4">
                         <Link
                             href={`${url}/${item.id}`}
-                            className="flex items-center text-amber-500 hover:text-amber-700 mr-3">
+                            className="flex items-center text-amber-500 hover:text-amber-700 mr-3 w-6 h-6">
                             <PencilIcon />
                         </Link>
                         <button
                             onClick={() =>
                                 handleCloseDevice(item.id.toString())
                             }
-                            className="flex items-center text-red-500 hover:text-red-700 cursor-pointer">
+                            className="flex items-center text-red-500 hover:text-red-700 cursor-pointer w-6 h6">
                             <TrashIcon />
                         </button>
                     </div>

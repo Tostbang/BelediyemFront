@@ -231,12 +231,12 @@ export default function StaffList({
                             <div className="flex items-center">
                                 <button
                                     onClick={handleSearch}
-                                    className="border border-gray-300 border-r-0 flex items-center cursor-pointer justisfy-center bg-blue-500 hover:bg-blue-600 text-white p-2 h-full min-w-[40px]">
+                                    className="border border-gray-300 border-r-0 flex items-center cursor-pointer justisfy-center bg-blue-500 hover:bg-blue-600 text-white p-2 h-full min-w-[41px]">
                                     <SearchIcon />
                                 </button>
                                 <button
                                     onClick={clearFilters}
-                                    className="border border-y-gray-300 border-l-0 border-r-gray-300  flex items-center cursor-pointer justify-center bg-red-500 hover:bg-red-600 text-white p-2 h-full min-w-[40px] rounded-r">
+                                    className="border border-y-gray-300 border-l-0 border-r-gray-300  flex items-center cursor-pointer justify-center bg-red-500 hover:bg-red-600 text-white p-2 h-full min-w-[41px] rounded-r">
                                     <TrashIcon />
                                 </button>
                             </div>

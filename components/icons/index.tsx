@@ -1,12 +1,7 @@
 import React from 'react';
 
 export const HomeIcon = () => (
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
         <path
             fillRule="evenodd"
             clipRule="evenodd"
@@ -21,8 +16,6 @@ export const BuildingIcon = () => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
-        width="16"
-        height="16"
         viewBox="0 0 24 24"
         stroke="currentColor">
         <path
@@ -35,12 +28,7 @@ export const BuildingIcon = () => (
 );
 
 export const ListIcon = () => (
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
         <path
             d="M10 7H18"
             stroke="currentColor"
@@ -81,12 +69,7 @@ export const ListIcon = () => (
 );
 
 export const LockIcon = () => (
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
         <rect
             x="5"
             y="11"
@@ -109,12 +92,7 @@ export const LockIcon = () => (
 );
 
 export const SettingsIcon = () => (
-    <svg
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
             fillRule="evenodd"
             clipRule="evenodd"
@@ -135,8 +113,6 @@ export const UserIcon = () => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
-        width="16"
-        height="16"
         viewBox="0 0 24 24"
         stroke="currentColor">
         <path
@@ -149,12 +125,7 @@ export const UserIcon = () => (
 );
 
 export const MobileIcon = () => (
-    <svg
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
             fillRule="evenodd"
             clipRule="evenodd"
@@ -179,12 +150,7 @@ export const MobileIcon = () => (
 );
 
 export const ModuleIcon = () => (
-    <svg
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <circle
             cx="6"
             cy="6"
@@ -261,12 +227,7 @@ export const ModuleIcon = () => (
 );
 
 export const DateIcon = () => (
-    <svg
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
             d="M3 5H21V21H3V5Z"
             stroke="currentColor"
@@ -295,12 +256,7 @@ export const DateIcon = () => (
 );
 
 export const ImageIcon = () => (
-    <svg
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect
             x="21"
             y="3"
@@ -330,12 +286,7 @@ export const ImageIcon = () => (
 );
 
 export const SlideIcon = () => (
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
         <rect
             x="6"
             y="8"
@@ -361,12 +312,7 @@ export const SlideIcon = () => (
 );
 
 export const FlagIcon = () => (
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
         <path
             d="M5 5V20"
             stroke="currentColor"
@@ -389,12 +335,7 @@ export const FlagIcon = () => (
 );
 
 export const LocationIcon = () => (
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
         <path
             fillRule="evenodd"
             clipRule="evenodd"
@@ -413,12 +354,7 @@ export const LocationIcon = () => (
 );
 
 export const PeopleIcon = () => (
-    <svg
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
             d="M1 18C1 15.75 4 15.75 5.5 14.25C6.25 13.5 4 13.5 4 9.75C4 7.25025 4.99975 6 7 6C9.00025 6 10 7.25025 10 9.75C10 13.5 7.75 13.5 8.5 14.25C10 15.75 13 15.75 13 18"
             stroke="currentColor"
@@ -435,12 +371,7 @@ export const PeopleIcon = () => (
 );
 
 export const ChatIcon = () => (
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
         <path
             d="M8.82617 18.5859L9.08469 17.6199C8.84855 17.5567 8.59744 17.5822 8.37881 17.6916L8.82617 18.5859ZM4 21L3.01005 20.8586C2.95745 21.2268 3.11359 21.5938 3.41537 21.8113C3.71714 22.0288 4.11469 22.0608 4.44736 21.8944L4 21ZM4.65332 16.4258L5.64327 16.5672C5.69136 16.2305 5.56506 15.8925 5.308 15.6699L4.65332 16.4258ZM12 3V4C17.1903 4 21 7.33071 21 11H22H23C23 5.83274 17.8554 2 12 2V3ZM22 11H21C21 14.6693 17.1903 18 12 18V19V20C17.8554 20 23 16.1673 23 11H22ZM12 19V18C10.9787 18 9.99886 17.8646 9.08469 17.6199L8.82617 18.5859L8.56765 19.5519C9.64829 19.8411 10.8019 20 12 20V19ZM8.82617 18.5859L8.37881 17.6916L3.55264 20.1056L4 21L4.44736 21.8944L9.27353 19.4803L8.82617 18.5859ZM4 21L4.98995 21.1414L5.64327 16.5672L4.65332 16.4258L3.66337 16.2844L3.01005 20.8586L4 21ZM4.65332 16.4258L5.308 15.6699C3.84111 14.3994 3 12.7555 3 11H2H1C1 13.4332 2.17254 15.6001 3.99864 17.1817L4.65332 16.4258ZM2 11H3C3 7.33071 6.80967 4 12 4V3V2C6.14463 2 1 5.83274 1 11H2Z"
             fill="currentColor"
@@ -449,12 +380,7 @@ export const ChatIcon = () => (
 );
 
 export const StarIcon = () => (
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
         <path
             fillRule="evenodd"
             clipRule="evenodd"
@@ -468,12 +394,7 @@ export const StarIcon = () => (
 );
 
 export const SupportIcon = () => (
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
         <path
             d="M21 13H19C17.8954 13 17 13.8954 17 15V17C17 18.1046 17.8954 19 19 19V19C20.1046 19 21 18.1046 21 17V13C21 8.02944 16.9706 4 12 4C7.02944 4 3 8.02944 3 13V17C3 18.1046 3.89543 19 5 19V19C6.10457 19 7 18.1046 7 17V15C7 13.8954 6.10457 13 5 13H3"
             stroke="currentColor"
@@ -483,12 +404,7 @@ export const SupportIcon = () => (
 );
 
 export const MoneyIcon = () => (
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
         <path
             d="M12 4V6"
             stroke="currentColor"
@@ -511,12 +427,7 @@ export const MoneyIcon = () => (
 );
 
 export const HornIcon = () => (
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
         <path
             fillRule="evenodd"
             clipRule="evenodd"
@@ -538,12 +449,7 @@ export const HornIcon = () => (
 );
 
 export const EnvelopeIcon = () => (
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
         <path d="M3 6L12 14L21 6" stroke="currentColor" strokeWidth="2" />
         <rect
             x="2"
@@ -561,7 +467,6 @@ export const EnvelopeIcon = () => (
 export const ClipboardIcon = () => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
-        className="h-6 w-6"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor">
@@ -577,7 +482,6 @@ export const ClipboardIcon = () => (
 export const TickIcon = () => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
-        className="h-6 w-6"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor">
@@ -593,7 +497,6 @@ export const TickIcon = () => (
 export const ClockIcon = () => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
-        className="h-6 w-6"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor">
@@ -609,7 +512,6 @@ export const ClockIcon = () => (
 export const EyeIcon = () => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
-        className="h-6 w-6"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor">
@@ -631,7 +533,6 @@ export const EyeIcon = () => (
 export const PauseIcon = () => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
-        className="h-6 w-6"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor">
@@ -653,7 +554,6 @@ export const PauseIcon = () => (
 export const XIcon = () => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
-        className="h-6 w-6"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor">
@@ -667,12 +567,7 @@ export const XIcon = () => (
 );
 
 export const DownloadIcon = () => (
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
         <path
             d="M12 3V16"
             stroke="currentColor"
@@ -695,12 +590,7 @@ export const DownloadIcon = () => (
 );
 
 export const TrashIcon = () => (
-    <svg
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
             d="M19 6H5"
             stroke="currentColor"
@@ -723,12 +613,7 @@ export const TrashIcon = () => (
 );
 
 export const PencilIcon = () => (
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
         <path
             fillRule="evenodd"
             clipRule="evenodd"
@@ -741,12 +626,7 @@ export const PencilIcon = () => (
 );
 
 export const SearchIcon = () => (
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 17 17"
-        fill="none">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17 17" fill="none">
         <path
             fillRule="evenodd"
             clipRule="evenodd"
@@ -760,6 +640,50 @@ export const SearchIcon = () => (
             d="M11.3902 11.3887L15.5555 15.5546"
             stroke="currentColor"
             strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        />
+    </svg>
+);
+
+export const PhoneIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+        <path
+            d="M12.7408 18.4036L15.3055 15.8389C15.6481 15.4963 16.1871 15.4486 16.5846 15.7258L20.1353 18.2023C20.6459 18.5584 20.7106 19.2894 20.2704 19.7296L19.8841 20.1159C19.1739 20.8261 18.1547 21.1338 17.1986 20.826C15.1336 20.1613 11.3767 18.6179 8.26175 15.503C5.14678 12.388 3.6034 8.63109 2.93871 6.56614C2.63093 5.60999 2.93859 4.59084 3.64885 3.88058L4.03512 3.49432C4.47529 3.05415 5.20634 3.11879 5.56244 3.62937L8.03888 7.18011C8.3161 7.57758 8.26844 8.11661 7.92578 8.45927L5.36113 11.0239"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+        />
+    </svg>
+);
+
+export const PersonIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+        <path
+            d="M4 20C4 17 8 17 10 15C11 14 8 14 8 9C8 5.667 9.333 4 12 4C14.667 4 16 5.667 16 9C16 14 13 14 14 15C16 17 20 17 20 20"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+        />
+    </svg>
+);
+
+export const BagIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+        <rect
+            x="5"
+            y="7"
+            width="14"
+            height="12"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        />
+        <path
+            d="M8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7"
+            stroke="currentColor"
+            strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
         />
