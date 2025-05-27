@@ -1,9 +1,9 @@
 'use client';
 import React, { useState } from 'react';
-import { PasswordReset, PasswordResetResponse } from '@/types';
+import { PasswordReset, PasswordResetResponse, RoleType } from '@/types';
 import DynamicTable from '../dynamic/table';
 import ConfirmModal from '../modals/confirmModal';
-import { sendMunisPWAdmin } from '@/app/actions';
+import { sendMunisPWAdmin, sendStaffPWMuni } from '@/app/actions';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import { useRouter } from 'next/navigation';
 import { usePagination } from '@/hooks/usePagination';
@@ -11,8 +11,10 @@ import { formatDateTime } from '@/utils';
 
 export default function PWResetList({
     requests,
+    type,
 }: {
     requests: PasswordResetResponse;
+    type: RoleType;
 }) {
     const { pageNumber, pageSize, handlePageChange, handlePageSizeChange } =
         usePagination();
@@ -28,7 +30,20 @@ export default function PWResetList({
 
     const handleConfirm = async () => {
         if (selectedItem) {
-            const result = await sendMunisPWAdmin(selectedItem);
+            let result;
+            switch (type) {
+                case 'admin':
+                    result = await sendMunisPWAdmin(selectedItem);
+                    break;
+                case 'municipality':
+                    result = await sendStaffPWMuni(selectedItem);
+                    break;
+                default:
+                    result = {
+                        success: false,
+                        message: 'Unsupported role type',
+                    };
+            }
 
             if (result.success) {
                 handleSuccess(result.message);

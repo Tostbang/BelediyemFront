@@ -30,7 +30,7 @@ export default async function Page({
 
     return (
         <PageContainer breadcrumb={breadcrumb}>
-            {response && <PWResetList requests={response || []} />}
+            {response && <PWResetList requests={response || []} type="admin" />}
         </PageContainer>
     );
 }

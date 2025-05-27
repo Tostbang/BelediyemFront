@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useRef } from 'react';
 import { StaffUser, StaffUserListResponse } from '@/types';
-import { updateMuniStatusAdmin } from '@/app/actions';
+import { sendStaffPWMuni, updateMuniStatusAdmin } from '@/app/actions';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import { useRouter } from 'next/navigation';
 import { Dropdown } from 'antd';
@@ -63,7 +63,7 @@ export default function StaffList({
 
     const handleConfirmReset = async () => {
         if (selectedItem) {
-            const result = await updateMuniStatusAdmin(selectedItem, false);
+            const result = await sendStaffPWMuni(selectedItem);
             if (result.success) {
                 handleSuccess(result.message);
                 setModalReset(false);
