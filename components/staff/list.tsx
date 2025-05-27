@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useRef } from 'react';
 import { StaffUser, StaffUserListResponse } from '@/types';
-import { sendStaffPWMuni, updateMuniStatusAdmin } from '@/app/actions';
+import { sendStaffPWMuni, updateStaffStatusMuni } from '@/app/actions';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import { useRouter } from 'next/navigation';
 import { Dropdown } from 'antd';
@@ -49,7 +49,7 @@ export default function StaffList({
 
     const handleConfirm = async () => {
         if (selectedItem) {
-            const result = await updateMuniStatusAdmin(selectedItem, false);
+            const result = await updateStaffStatusMuni(selectedItem, false);
             if (result.success) {
                 handleSuccess(result.message);
                 setModal(false);
@@ -118,6 +118,23 @@ export default function StaffList({
             width: 100,
             render: (value: number) =>
                 departmans.find((item) => item.id === value)?.name,
+        },
+        {
+            title: 'Durum',
+            dataIndex: 'status',
+            width: 100,
+            render: (text: boolean) => {
+                switch (text) {
+                    case false:
+                        return <span className="text-red-500">Pasif</span>;
+                    case true:
+                        return <span className="text-green-500">Aktif</span>;
+                    default:
+                        return (
+                            <span className="text-gray-500">Bilinmiyor</span>
+                        );
+                }
+            },
         },
         {
             title: 'Şifre Sırfılama',

@@ -322,7 +322,7 @@ export type StaffUserListResponse = ApiResponse & {
 }
 
 export type StaffUserDetailResponse = ApiResponse & {
-    municipalStaff: StaffUser;
+    municipalityStaff: StaffUser;
 }
 
 export type StaffPaginationBody = PaginationBody & {

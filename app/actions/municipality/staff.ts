@@ -24,7 +24,7 @@ export const getStaffsMuni = async (body: StaffPaginationBody) => {
 
 export const getStaffByIdMuni = async (id: string) => {
     try {
-        const data = await apiFetch(`municipality/municipalitystafdetail?staffId=${id}`);
+        const data = await apiFetch(`municipality/municipalitystaffdetail?staffid=${id}`);
 
         return data as StaffUserDetailResponse
     } catch (error) {
@@ -42,7 +42,7 @@ export const addStaffMuni = async (formData: FormData) => {
         const role = formData.get('role') as string;
         const password = formData.get('password') as string;
 
-        if (!name || !email || !surname || !phone || !role || !password) {
+        if (!name || !email || !surname || !phone || !role) {
             return { success: false, message: "", errors: 'Lütfen tüm alanları doldurun.' };
         }
 
@@ -51,6 +51,7 @@ export const addStaffMuni = async (formData: FormData) => {
             surname,
             email,
             phone,
+            password,
             role: parseInt(role),
         };
 
@@ -118,6 +119,32 @@ export const updateStaffMuni = async (formData: FormData) => {
             success: false,
             message: "",
             errors: error instanceof Error ? error.message : 'Personel bilgileri güncellenemedi.',
+        };
+    }
+}
+
+export const updateStaffStatusMuni = async (id: string, status: boolean) => {
+    try {
+        const response = await apiFetch<ApiResponse>('municipality/staffupdatestatus', {
+            method: 'PUT',
+            body: {
+                staffId: id,
+                status
+            }
+        });
+
+        return {
+            success: true,
+            message: response.message || 'Personel durumu başarıyla güncellendi.',
+            errors: [],
+        };
+    }
+    catch (error) {
+        console.error(error);
+        return {
+            success: false,
+            message: "",
+            errors: error instanceof Error ? error.message : 'Personel durumu güncellenemedi.',
         };
     }
 }

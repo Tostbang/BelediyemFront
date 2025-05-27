@@ -41,7 +41,7 @@ export default async function Page({
         try {
             detail = await getMuniByIdAdmin(id);
             if (!detail) {
-                errorMessage = `Belediye bulunamadı: #${id} ID'li blog yazısı mevcut değil veya erişim yetkiniz yok.`;
+                errorMessage = `Belediye bulunamadı: #${id} ID'li kayıt mevcut değil veya erişim yetkiniz yok.`;
                 isNewRecord = true;
                 id = null;
             }
