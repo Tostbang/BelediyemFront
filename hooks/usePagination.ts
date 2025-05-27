@@ -19,6 +19,8 @@ export function usePagination(options: PaginationOptions = {}) {
 
     const pageNumber = parsePositiveInteger(searchParams?.get('page') ?? null, defaultPage);
     const pageSize = parsePositiveInteger(searchParams?.get('pageSize') ?? null, defaultPageSize);
+    const searchText = searchParams?.get('searchText') ?? '';
+    const municipalStaffType = searchParams?.get('municipalStaffType') ?? undefined;
 
     const handlePageChange = (page: number, size: number) => {
         const params = new URLSearchParams(searchParams?.toString() ?? '');
@@ -34,10 +36,46 @@ export function usePagination(options: PaginationOptions = {}) {
         router.push(`?${params.toString()}`);
     };
 
+    const handleSearchTextChange = (searchText: string) => {
+        const params = new URLSearchParams(searchParams?.toString() ?? '');
+        if (searchText) {
+            params.set('searchText', searchText);
+        } else {
+            params.delete('searchText');
+        }
+        params.set('page', '1'); // Reset to first page on search
+        router.push(`?${params.toString()}`);
+    }
+
+    const handleMunicipalStaffTypeChange = (type: string | undefined) => {
+        const params = new URLSearchParams(searchParams?.toString() ?? '');
+        if (type) {
+            params.set('municipalStaffType', type);
+        } else {
+            params.delete('municipalStaffType');
+        }
+        params.set('page', '1'); // Reset to first page on type change
+        router.push(`?${params.toString()}`);
+    };
+
+    const handleClearSearch = () => {
+        const params = new URLSearchParams(searchParams?.toString() ?? '');
+        params.delete('searchText');
+        params.set('page', '1'); // Reset to first page on clear
+        router.push(`?${params.toString()}`);
+    }
+
     return {
         pageNumber,
         pageSize,
         handlePageChange,
         handlePageSizeChange,
+
+
+        searchText,
+        municipalStaffType,
+        handleClearSearch,
+        handleSearchTextChange,
+        handleMunicipalStaffTypeChange,
     };
 }

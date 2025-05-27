@@ -11,7 +11,7 @@ export type SidebarItem = {
 export type PaginationBody = {
     pageNumber: number;
     pageSize: number;
-    searchText: string;
+    searchText?: string;
 };
 
 export type RoleType = 'admin' | 'municipality' | 'staff' | 'admin-muni';

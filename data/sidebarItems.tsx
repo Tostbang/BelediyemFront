@@ -130,7 +130,7 @@ export const sidebarItemsMuni: SidebarItem[] = [
     {
         title: 'Personel',
         icon: <PeopleIcon />,
-        path: '/municipality/staff',
+        path: '/municipality/staff/list',
     },
     {
         title: 'Vatandaş',
