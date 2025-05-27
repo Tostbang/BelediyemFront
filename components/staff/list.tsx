@@ -25,9 +25,9 @@ export default function StaffList({
         handlePageChange,
         handlePageSizeChange,
         searchText,
-        municipalStaffType,
+        type,
         handleSearchTextChange,
-        handleMunicipalStaffTypeChange,
+        handleTypeChange,
         handleClearSearch,
     } = usePagination();
     const [modal, setModal] = useState(false);
@@ -192,12 +192,10 @@ export default function StaffList({
                 <div className="flex flex-col lg:flex-row justify-between items-start gap-4 mb-4">
                     <div className="flex flex-col sm:flex-row flex-wrap items-center gap-3 w-full lg:w-auto">
                         <select
-                            key={`membership-select-${municipalStaffType || 'default'}`}
+                            key={`membership-select-${type || 'default'}`}
                             className="border border-gray-300 rounded p-2 w-full sm:w-auto"
-                            value={municipalStaffType}
-                            onChange={(e) =>
-                                handleMunicipalStaffTypeChange(e.target.value)
-                            }>
+                            value={type}
+                            onChange={(e) => handleTypeChange(e.target.value)}>
                             <option value="">Tüm Departmanlar</option>
                             {departmans.map((item) => (
                                 <option key={item.id} value={item.id}>

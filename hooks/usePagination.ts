@@ -20,7 +20,7 @@ export function usePagination(options: PaginationOptions = {}) {
     const pageNumber = parsePositiveInteger(searchParams?.get('page') ?? null, defaultPage);
     const pageSize = parsePositiveInteger(searchParams?.get('pageSize') ?? null, defaultPageSize);
     const searchText = searchParams?.get('searchText') ?? '';
-    const municipalStaffType = searchParams?.get('municipalStaffType') ?? undefined;
+    const type = searchParams?.get('type') ?? undefined;
 
     const handlePageChange = (page: number, size: number) => {
         const params = new URLSearchParams(searchParams?.toString() ?? '');
@@ -47,12 +47,12 @@ export function usePagination(options: PaginationOptions = {}) {
         router.push(`?${params.toString()}`);
     }
 
-    const handleMunicipalStaffTypeChange = (type: string | undefined) => {
+    const handleTypeChange = (type: string | undefined) => {
         const params = new URLSearchParams(searchParams?.toString() ?? '');
         if (type) {
-            params.set('municipalStaffType', type);
+            params.set('type', type);
         } else {
-            params.delete('municipalStaffType');
+            params.delete('type');
         }
         params.set('page', '1'); // Reset to first page on type change
         router.push(`?${params.toString()}`);
@@ -73,9 +73,9 @@ export function usePagination(options: PaginationOptions = {}) {
 
 
         searchText,
-        municipalStaffType,
+        type,
         handleClearSearch,
         handleSearchTextChange,
-        handleMunicipalStaffTypeChange,
+        handleTypeChange,
     };
 }
