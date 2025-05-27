@@ -45,8 +45,6 @@ export default function AttendedList({
         }
     };
 
-    console.log('details', complaints);
-
     const columns = [
         {
             title: 'Id',
