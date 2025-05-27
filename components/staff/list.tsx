@@ -93,11 +93,11 @@ export default function StaffList({
             title: 'Id',
             dataIndex: 'id',
             width: 180,
-            fixed: 'left' as const,
         },
         {
             title: 'Personel',
             dataIndex: 'name',
+            fixed: 'left' as const,
             width: 180,
             render: (text: string, record: StaffUser) =>
                 text + ' ' + record.surname,
@@ -122,7 +122,8 @@ export default function StaffList({
         {
             title: 'Şifre Sırfılama',
             dataIndex: 'action_reset',
-            width: 180,
+            fixed: 'right' as const,
+            width: 50,
             render: (_: unknown, record: StaffUser) => (
                 <div>
                     <button
