@@ -329,4 +329,44 @@ export type StaffPaginationBody = PaginationBody & {
     municipalStaffType?: number;
 };
 
+export type StaffAttendedComplaintsPaginationBody = PaginationBody & {
+    municipalityStaffId?: number;
+    categoryType?: number;
+    complaintsStatusType?: number;
+    startDate?: string;
+    endDate?: string;
+};
 
+export type StaffComplaints = {
+    id: number;
+    title: string;
+    description: string;
+    firstImage: string;
+    secondImage: string;
+    thirdImage: string;
+    createdDate: string;
+    modifiedDate: string;
+    categoryType: number;
+    latitude: string;
+    longitude: string;
+    userId: number;
+    complaintsStatusType: number;
+    complaintsStatus: {
+        id: number;
+        createdById: number;
+        createdByRole: number;
+        complaintId: number;
+        complaintsStatusType: number;
+    }[];
+}
+
+
+export type StaffAttendedComplaintsResponse = ApiResponse & {
+    complaints: StaffComplaints[];
+    totalCount: number;
+    pageNumber: number;
+    pageSize: number;
+    lastPage: boolean;
+    backPage: boolean;
+    nextPage: boolean;
+};

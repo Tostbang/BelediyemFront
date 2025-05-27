@@ -19,17 +19,18 @@ export default function StaffList({
 }: {
     staffList: StaffUserListResponse;
 }) {
+    const filterParams = ['searchText', 'municipalityStaffType'];
+
     const {
         pageNumber,
         pageSize,
         handlePageChange,
         handlePageSizeChange,
-        searchText,
-        type,
-        handleSearchTextChange,
-        handleTypeChange,
         handleClearSearch,
-    } = usePagination();
+        filters,
+        handleFilterChange,
+    } = usePagination({ filterParams });
+
     const [modal, setModal] = useState(false);
     const [modalReset, setModalReset] = useState(false);
     const [selectedItem, setSelectedItem] = useState<string | null>(null);
@@ -77,7 +78,7 @@ export default function StaffList({
 
     const handleSearch = () => {
         if (searchInputRef.current) {
-            handleSearchTextChange(searchInputRef.current.value);
+            handleFilterChange('searchText', searchInputRef.current.value);
         }
     };
 
@@ -209,10 +210,17 @@ export default function StaffList({
                 <div className="flex flex-col lg:flex-row justify-between items-start gap-4 mb-4">
                     <div className="flex flex-col sm:flex-row flex-wrap items-center gap-3 w-full lg:w-auto">
                         <select
-                            key={`membership-select-${type || 'default'}`}
+                            key={`membership-select-${filters.municipalityStaffType || 'default'}`}
                             className="border border-gray-300 rounded p-2 w-full sm:w-auto"
-                            value={type}
-                            onChange={(e) => handleTypeChange(e.target.value)}>
+                            value={
+                                filters.municipalityStaffType?.toString() || ''
+                            }
+                            onChange={(e) =>
+                                handleFilterChange(
+                                    'municipalityStaffType',
+                                    e.target.value
+                                )
+                            }>
                             <option value="">Tüm Departmanlar</option>
                             {departmans.map((item) => (
                                 <option key={item.id} value={item.id}>
@@ -224,7 +232,9 @@ export default function StaffList({
                             <input
                                 type="text"
                                 placeholder="Arama..."
-                                defaultValue={searchText}
+                                defaultValue={
+                                    filters.searchText?.toString() || ''
+                                }
                                 ref={searchInputRef}
                                 className="border border-gray-300 border-r-transparent rounded-l p-2 flex-grow w-full sm:w-64"
                             />

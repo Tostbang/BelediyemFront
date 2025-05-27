@@ -30,7 +30,7 @@ export default function StaffDetail({
                         </h1>
                         <div className="justify-end ml-auto">
                             <LinkButton
-                                href={`/municipality/staff/${id}/attented-complaints`}
+                                href={`/municipality/staff/${id}/attended-complaints`}
                                 title="Atanan Şikayetler"
                             />
                         </div>

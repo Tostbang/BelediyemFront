@@ -1,6 +1,6 @@
 "use server";
 
-import { ApiResponse, PaginationBody, PasswordResetResponse, StaffPaginationBody, StaffUserDetailResponse, StaffUserListResponse } from "@/types";
+import { ApiResponse, PaginationBody, PasswordResetResponse, StaffAttendedComplaintsPaginationBody, StaffAttendedComplaintsResponse, StaffPaginationBody, StaffUserDetailResponse, StaffUserListResponse } from "@/types";
 import { apiFetch } from "@/utils/api";
 
 export const getStaffsMuni = async (body: StaffPaginationBody) => {
@@ -187,5 +187,28 @@ export const sendStaffPWMuni = async (id: string) => {
             message: "",
             errors: error instanceof Error ? error.message : 'Yeni şifre gönderilemedi.',
         };
+    }
+}
+
+export const getStaffComplaintsMuni = async (body: StaffAttendedComplaintsPaginationBody) => {
+    try {
+        const data = await apiFetch('municipality/getstaffcomplaints', {
+            method: 'POST',
+            body: {
+                municipalityStaffId: body.municipalityStaffId || undefined,
+                pageNumber: body.pageNumber - 1,
+                pageSize: body.pageSize,
+                searchText: body.searchText || '',
+                categoryType: body.categoryType || undefined,
+                // complaintsStatusType: body.complaintsStatusType || undefined,
+                // startDate: body.startDate || "2025-05-27T14:21:36.460Z",
+                // endDate: body.endDate || "2025-05-27T14:21:36.460Z",
+            }
+        });
+
+        return data as StaffAttendedComplaintsResponse
+    } catch (error) {
+        console.error(error);
+        return null;
     }
 }

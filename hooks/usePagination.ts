@@ -1,15 +1,29 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 
+// Define filter types and their configuration
+type FilterType = 'string' | 'integer' | 'date' | 'boolean';
+
+interface FilterConfig {
+    type: FilterType;
+    defaultValue?: string | number | null;
+}
+
 interface PaginationOptions {
     defaultPage?: number;
     defaultPageSize?: number;
+    filterParams?: string[];
+    filterConfig?: Record<string, FilterConfig>; // Configuration for each filter
 }
 
 export function usePagination(options: PaginationOptions = {}) {
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    const { defaultPage = 1, defaultPageSize = 20 } = options;
+    const {
+        defaultPage = 1,
+        defaultPageSize = 20,
+        filterParams = [],
+    } = options;
 
     const parsePositiveInteger = (value: string | null, defaultValue: number): number => {
         if (!value) return defaultValue;
@@ -19,8 +33,12 @@ export function usePagination(options: PaginationOptions = {}) {
 
     const pageNumber = parsePositiveInteger(searchParams?.get('page') ?? null, defaultPage);
     const pageSize = parsePositiveInteger(searchParams?.get('pageSize') ?? null, defaultPageSize);
-    const searchText = searchParams?.get('searchText') ?? '';
-    const type = searchParams?.get('type') ?? undefined;
+
+    const filters: Record<string, string | number | boolean | undefined> = {};
+
+    filterParams.forEach(param => {
+        filters[param] = searchParams?.get(param) ?? undefined;
+    });
 
     const handlePageChange = (page: number, size: number) => {
         const params = new URLSearchParams(searchParams?.toString() ?? '');
@@ -36,46 +54,43 @@ export function usePagination(options: PaginationOptions = {}) {
         router.push(`?${params.toString()}`);
     };
 
-    const handleSearchTextChange = (searchText: string) => {
+    const handleFilterChange = (filterName: string, value: string | number | undefined | null) => {
         const params = new URLSearchParams(searchParams?.toString() ?? '');
-        if (searchText) {
-            params.set('searchText', searchText);
-        } else {
-            params.delete('searchText');
-        }
-        params.set('page', '1'); // Reset to first page on search
-        router.push(`?${params.toString()}`);
-    }
 
-    const handleTypeChange = (type: string | undefined) => {
-        const params = new URLSearchParams(searchParams?.toString() ?? '');
-        if (type) {
-            params.set('type', type);
+        if (value !== undefined && value !== null && value !== '') {
+            params.set(filterName, value.toString());
         } else {
-            params.delete('type');
+            params.delete(filterName);
         }
-        params.set('page', '1'); // Reset to first page on type change
+
+        params.set('page', '1');
         router.push(`?${params.toString()}`);
     };
 
     const handleClearSearch = () => {
         const params = new URLSearchParams(searchParams?.toString() ?? '');
         params.delete('searchText');
-        params.set('page', '1'); // Reset to first page on clear
+        params.set('page', '1');
         router.push(`?${params.toString()}`);
     }
+
+    const handleClearAllFilters = () => {
+        const params = new URLSearchParams();
+        params.set('page', '1');
+        params.set('pageSize', pageSize.toString());
+        router.push(`?${params.toString()}`);
+    };
+
+
 
     return {
         pageNumber,
         pageSize,
         handlePageChange,
         handlePageSizeChange,
-
-
-        searchText,
-        type,
         handleClearSearch,
-        handleSearchTextChange,
-        handleTypeChange,
+        handleClearAllFilters,
+        filters,
+        handleFilterChange,
     };
 }

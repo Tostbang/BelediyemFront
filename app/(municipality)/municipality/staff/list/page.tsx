@@ -18,14 +18,14 @@ export default async function Page({
         page?: string;
         pageSize?: string;
         searchText?: string;
-        type?: string;
+        municipalStaffType?: string;
     };
 }) {
     const params = await searchParams;
     const pageNumber = Number(params.page) || 1;
     const pageSize = Number(params.pageSize) || 20;
     const searchText = params.searchText || '';
-    const municipalStaffType = params.type ? Number(params.type) : undefined;
+    const municipalStaffType = Number(params.municipalStaffType) || 0;
 
     const paginationBody: StaffPaginationBody = {
         pageNumber,
