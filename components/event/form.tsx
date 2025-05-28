@@ -18,10 +18,10 @@ export default function EventForm({
     const isEditing = !!id;
 
     const initialState = {
-        title: detail?.announcement.title || '',
-        description: detail?.announcement.description || '',
-        image: detail?.announcement.image || '',
-        announcementsType: detail?.announcement.announcementsType || '',
+        title: detail?.announcementDetail.title || '',
+        description: detail?.announcementDetail.description || '',
+        image: detail?.announcementDetail.image || '',
+        announcementsType: detail?.announcementDetail.announcementsType || '',
     };
 
     const clientAction = async (_prevState: unknown, formData: FormData) => {

@@ -422,7 +422,7 @@ export type AnnouncementResponse = ApiResponse & {
 };
 
 export type AnnouncementDetailResponse = ApiResponse & {
-    announcement: Announcement;
+    announcementDetail: Announcement;
 };
 
 export type AnnouncementPaginationBody = PaginationBody & {

@@ -25,7 +25,7 @@ export const getAnnsMuni = async (body: AnnouncementPaginationBody) => {
     }
 }
 
-export const getAnnsByIdMuni = async (id: string) => {
+export const getAnnByIdMuni = async (id: string) => {
     try {
         const data = await apiFetch(`municipality/getannouncementdetail?announcementId=${id}`);
 

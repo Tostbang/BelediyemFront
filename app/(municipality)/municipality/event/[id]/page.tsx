@@ -4,7 +4,7 @@ import { generatePageMetadata } from '@/lib/metadata';
 import { isPositiveNumber } from '@/utils';
 import AlertMessage from '@/components/ui/AlertMessage';
 import EventForm from '@/components/event/form';
-import { getAnnsByIdMuni } from '@/app/actions/municipality/ann';
+import { getAnnByIdMuni } from '@/app/actions/municipality/ann';
 
 export const dynamic = 'force-dynamic';
 
@@ -41,7 +41,7 @@ export default async function Page({
     let detail = null;
     if (id) {
         try {
-            detail = await getAnnsByIdMuni(id);
+            detail = await getAnnByIdMuni(id);
             if (!detail) {
                 errorMessage = `Etkinlik / Duyuru bulunamadı: #${id} ID'li kayıt mevcut değil veya erişim yetkiniz yok.`;
                 isNewRecord = true;
