@@ -1,6 +1,6 @@
 "use server";
 
-import { ApiResponse, PaginationBody, PasswordResetResponse, StaffAttendedComplaintsPaginationBody, StaffAttendedComplaintsResponse, StaffPaginationBody, StaffUserDetailResponse, StaffUserListResponse } from "@/types";
+import { ApiResponse, CitizenUserDetailResponse, CitizenUserResponse, PaginationBody, PasswordResetResponse, StaffAttendedComplaintsPaginationBody, StaffAttendedComplaintsResponse, StaffPaginationBody, StaffUserDetailResponse, StaffUserListResponse } from "@/types";
 import { apiFetch } from "@/utils/api";
 
 export const getStaffsMuni = async (body: StaffPaginationBody) => {
@@ -206,6 +206,36 @@ export const getStaffComplaintsMuni = async (body: StaffAttendedComplaintsPagina
         });
 
         return data as StaffAttendedComplaintsResponse
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
+
+
+export const getCitizenMuni = async (body: PaginationBody) => {
+    try {
+        const data = await apiFetch('municipality/citizenlist', {
+            method: 'POST',
+            body: {
+                pageNumber: body.pageNumber - 1,
+                pageSize: body.pageSize,
+                searchText: body.searchText || '',
+            }
+        });
+
+        return data as CitizenUserResponse
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
+
+export const getCitizenByIdMuni = async (id: string) => {
+    try {
+        const data = await apiFetch(`municipality/citizendetail?citizenid=${id}`);
+
+        return data as CitizenUserDetailResponse
     } catch (error) {
         console.error(error);
         return null;

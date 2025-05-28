@@ -373,3 +373,31 @@ export type StaffAttendedComplaintsResponse = ApiResponse & {
     backPage: boolean;
     nextPage: boolean;
 };
+
+export type CitezenUser = {
+    userId: number;
+    municipalityId: number;
+    name: string;
+    surname: string;
+    email: string;
+    phone: string;
+    identityNumber: string;
+    birthDay: string;
+    createdDate: string;
+    role: number;
+    profileImage: string;
+};
+
+export type CitizenUserResponse = ApiResponse & {
+    users: CitezenUser[];
+    totalCount: number;
+    pageNumber: number;
+    pageSize: number;
+    lastPage: boolean;
+    backPage: boolean;
+    nextPage: boolean;
+};
+
+export type CitizenUserDetailResponse = ApiResponse & {
+    user: CitezenUser;
+};

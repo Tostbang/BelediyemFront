@@ -1,6 +1,7 @@
 'use client';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useState, useEffect, useMemo } from 'react';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { SidebarItem } from '@/types';
@@ -81,7 +82,9 @@ const SideBar = ({ items }: { items: SidebarItem[] }) => {
                                                             : 'text-black'
                                                     }`}>
                                                     <span className="flex items-center gap-4 flex-grow">
-                                                        <span className='w-4 h-4'>{item.icon}</span>
+                                                        <span className="w-4 h-4">
+                                                            {item.icon}
+                                                        </span>
                                                         <span>
                                                             {item.title}
                                                         </span>
@@ -110,20 +113,15 @@ const SideBar = ({ items }: { items: SidebarItem[] }) => {
                                                                         child,
                                                                         childIndex
                                                                     ) => (
-                                                                        <button
+                                                                        <Link
                                                                             key={
                                                                                 child.path ||
                                                                                 `child-${index}-${childIndex}`
                                                                             }
-                                                                            onClick={() => {
-                                                                                if (
-                                                                                    child.path
-                                                                                ) {
-                                                                                    router.push(
-                                                                                        child.path
-                                                                                    );
-                                                                                }
-                                                                            }}
+                                                                            href={
+                                                                                child.path ||
+                                                                                '#'
+                                                                            }
                                                                             className={`group cursor-pointer flex w-full items-center px-2 py-2 text-sm font-medium hover:bg-blue-600 hover:text-white rounded-md focus:outline-none ${
                                                                                 pathname ===
                                                                                 child.path
@@ -131,7 +129,7 @@ const SideBar = ({ items }: { items: SidebarItem[] }) => {
                                                                                     : 'text-black'
                                                                             }`}>
                                                                             <span className="flex items-center gap-4">
-                                                                                <span className='w-4 h-4'>
+                                                                                <span className="w-4 h-4">
                                                                                     {
                                                                                         child.icon
                                                                                     }
@@ -142,7 +140,7 @@ const SideBar = ({ items }: { items: SidebarItem[] }) => {
                                                                                     }
                                                                                 </span>
                                                                             </span>
-                                                                        </button>
+                                                                        </Link>
                                                                     )
                                                                 )}
                                                         </div>
@@ -155,28 +153,34 @@ const SideBar = ({ items }: { items: SidebarItem[] }) => {
                             }
 
                             // Simple menu item (no children)
-                            return (
+                            return item.isLogout ? (
                                 <button
                                     key={item.path || `item-${index}`}
-                                    onClick={() => {
-                                        if (item.isLogout) {
-                                            handleLogout();
-                                            return;
-                                        }
-                                        if (item.path) {
-                                            router.push(item.path);
-                                        }
-                                    }}
+                                    onClick={handleLogout}
+                                    className={`group cursor-pointer flex w-full items-center px-2 py-2 text-sm font-medium rounded-md hover:bg-blue-600 hover:text-white focus:outline-none text-black`}>
+                                    <span className="flex items-center gap-4">
+                                        <span className="w-4 h-4">
+                                            {item.icon}
+                                        </span>
+                                        <span>{item.title}</span>
+                                    </span>
+                                </button>
+                            ) : (
+                                <Link
+                                    key={item.path || `item-${index}`}
+                                    href={item.path || '#'}
                                     className={`group cursor-pointer flex w-full items-center px-2 py-2 text-sm font-medium rounded-md hover:bg-blue-600 hover:text-white focus:outline-none ${
                                         pathname === item.path
                                             ? 'bg-blue-600 text-white hover:bg-blue-700'
                                             : 'text-black'
                                     }`}>
                                     <span className="flex items-center gap-4">
-                                        <span className='w-4 h-4'>{item.icon}</span>
+                                        <span className="w-4 h-4">
+                                            {item.icon}
+                                        </span>
                                         <span>{item.title}</span>
                                     </span>
-                                </button>
+                                </Link>
                             );
                         })}
                     </nav>
