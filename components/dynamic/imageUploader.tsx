@@ -209,6 +209,7 @@ export default function ImageUploader({
                             width={800}
                             height={300}
                             className="w-full h-full object-contain"
+                            skipUrlValidation={true} // Skip URL validation for cropped images
                         />
                     </div>
                 </div>

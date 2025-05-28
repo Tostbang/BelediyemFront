@@ -40,7 +40,7 @@ export const addAnnfMuni = async (formData: FormData) => {
     try {
         const title = formData.get('title') as string;
         const description = formData.get('description') as string;
-        const imageData = formData.get('logoImg') as string;
+        const imageData = formData.get('image') as string;
         const announcementsType = formData.get('announcementsType') as string;
 
         if (!title || !description || !imageData || !announcementsType) {
@@ -103,7 +103,7 @@ export const updateAnnMuni = async (formData: FormData) => {
         const id = formData.get('id') as string;
         const title = formData.get('title') as string;
         const description = formData.get('description') as string;
-        const imageData = formData.get('logoImg') as string;
+        const imageData = formData.get('image') as string;
         const announcementsType = formData.get('announcementsType') as string;
 
         if (!title || !description || !imageData || !announcementsType) {

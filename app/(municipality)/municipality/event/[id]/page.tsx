@@ -1,0 +1,83 @@
+import React from 'react';
+import PageContainer from '@/components/pageContainer';
+import { generatePageMetadata } from '@/lib/metadata';
+import { isPositiveNumber } from '@/utils';
+import AlertMessage from '@/components/ui/AlertMessage';
+import EventForm from '@/components/event/form';
+import { getAnnsByIdMuni } from '@/app/actions/municipality/ann';
+
+export const dynamic = 'force-dynamic';
+
+export async function generateMetadata({
+    params,
+}: {
+    params: Promise<{ id: string }>;
+}) {
+    const resolvedParams = await params;
+    const isEditing = resolvedParams.id !== 'new';
+    return generatePageMetadata(
+        isEditing
+            ? 'Etkinlik / Duyuru Düzenle / Görüntüle'
+            : 'Yeni Etkinlik / Duyuru Ekle'
+    );
+}
+
+export default async function Page({
+    params,
+}: {
+    params: Promise<{ id: string }>;
+}) {
+    const resolvedParams = await params;
+
+    let id = null;
+    let isNewRecord = true;
+    let errorMessage = null;
+
+    if (resolvedParams.id !== 'new' && isPositiveNumber(resolvedParams.id)) {
+        id = resolvedParams.id;
+        isNewRecord = false;
+    }
+
+    let detail = null;
+    if (id) {
+        try {
+            detail = await getAnnsByIdMuni(id);
+            if (!detail) {
+                errorMessage = `Etkinlik / Duyuru bulunamadı: #${id} ID'li kayıt mevcut değil veya erişim yetkiniz yok.`;
+                isNewRecord = true;
+                id = null;
+            }
+        } catch (error) {
+            console.log('Etkinlik / Duyuru detayı alınamadı:', error);
+            errorMessage = `Etkinlik / Duyuru detayı alınamadı: ${error instanceof Error ? error.message : 'Bilinmeyen bir hata oluştu'}`;
+            isNewRecord = true;
+            id = null;
+        }
+    }
+
+    const breadcrumb = [
+        {
+            label: 'Etkinlik / Duyuru Listesi',
+            href: '/municipality/event',
+        },
+        {
+            label: isNewRecord
+                ? 'Yeni Etkinlik / Duyuru Ekle'
+                : 'Etkinlik / Duyuru Düzenle / Görüntüle',
+        },
+    ];
+
+    return (
+        <PageContainer breadcrumb={breadcrumb}>
+            {errorMessage ? (
+                <AlertMessage
+                    message={errorMessage}
+                    type="error"
+                    title="Hata"
+                />
+            ) : (
+                <EventForm id={id} detail={detail || null} />
+            )}
+        </PageContainer>
+    );
+}

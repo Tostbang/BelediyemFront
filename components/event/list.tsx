@@ -162,12 +162,11 @@ export default function EventList({
                                 )
                             }>
                             <option value="">Tüm Türler</option>
-                            <option key={1} value={1}>
-                                Etkinlik
-                            </option>
-                            <option key={2} value={2}>
-                                Duyuru
-                            </option>
+                            {annType.map((type) => (
+                                <option key={type.id} value={type.id}>
+                                    {type.name}
+                                </option>
+                            ))}
                         </select>
                         <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                             <div className="flex items-center gap-1 w-full sm:w-auto">

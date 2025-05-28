@@ -12,6 +12,7 @@ interface ImageWithSkeletonProps {
     className?: string;
     applyStyle?: boolean;
     priority?: boolean;
+    skipUrlValidation?: boolean; // New prop to skip URL validation
 }
 
 // Function to validate URL
@@ -37,12 +38,13 @@ const ImageWithSkeleton = ({
     className = '',
     applyStyle = true,
     priority = false,
+    skipUrlValidation = false, // Default to false to maintain current behavior
 }: ImageWithSkeletonProps) => {
     const [isLoading, setIsLoading] = useState(true);
     const [hasError, setHasError] = useState(false);
 
-    // Use validated URL or default
-    const imageUrl = isValidImageUrl(src) ? src : DEFAULT_IMAGE_URL;
+    // Use validated URL or default, but skip validation if skipUrlValidation is true
+    const imageUrl = skipUrlValidation ? src : (isValidImageUrl(src) ? src : DEFAULT_IMAGE_URL);
 
     const containerStyle: CSSProperties | undefined = fill
         ? { position: 'relative', width: '100%', height: '100%' }

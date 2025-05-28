@@ -143,7 +143,8 @@ export default function InfoFormMuni({ detail }: { detail?: InfoMuni | null }) {
                             defaultValue={state?.adressline}
                             placeholder="Adres"
                             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            rows={3}></textarea>
+                            rows={3}
+                        />
                     </div>
                 </div>
                 <div className="flex justify-end mt-8">

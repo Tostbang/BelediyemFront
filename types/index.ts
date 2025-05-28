@@ -402,7 +402,6 @@ export type CitizenUserDetailResponse = ApiResponse & {
     user: CitezenUser;
 };
 
-
 export type Announcement = {
     id: number;
     title: string;
