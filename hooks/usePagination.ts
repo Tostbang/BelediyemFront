@@ -1,4 +1,5 @@
 import { useRouter, useSearchParams } from 'next/navigation';
+import { RefObject } from 'react';
 
 // Define filter types and their configuration
 type FilterType = 'string' | 'integer' | 'date' | 'boolean';
@@ -13,6 +14,7 @@ interface PaginationOptions {
     defaultPageSize?: number;
     filterParams?: string[];
     filterConfig?: Record<string, FilterConfig>; // Configuration for each filter
+    searchInputRef?: RefObject<HTMLInputElement>;
 }
 
 export function usePagination(options: PaginationOptions = {}) {
@@ -23,6 +25,7 @@ export function usePagination(options: PaginationOptions = {}) {
         defaultPage = 1,
         defaultPageSize = 20,
         filterParams = [],
+        searchInputRef
     } = options;
 
     const parsePositiveInteger = (value: string | null, defaultValue: number): number => {
@@ -67,11 +70,22 @@ export function usePagination(options: PaginationOptions = {}) {
         router.push(`?${params.toString()}`);
     };
 
+    const handleSearch = () => {
+        if (searchInputRef?.current) {
+            const searchText = searchInputRef.current.value;
+            handleFilterChange('searchText', searchText);
+        }
+    };
+
     const handleClearSearch = () => {
         const params = new URLSearchParams(searchParams?.toString() ?? '');
         params.delete('searchText');
         params.set('page', '1');
         router.push(`?${params.toString()}`);
+        
+        if (searchInputRef?.current) {
+            searchInputRef.current.value = '';
+        }
     }
 
     const handleClearAllFilters = () => {
@@ -79,6 +93,10 @@ export function usePagination(options: PaginationOptions = {}) {
         params.set('page', '1');
         params.set('pageSize', pageSize.toString());
         router.push(`?${params.toString()}`);
+        
+        if (searchInputRef?.current) {
+            searchInputRef.current.value = '';
+        }
     };
 
 
@@ -88,6 +106,7 @@ export function usePagination(options: PaginationOptions = {}) {
         pageSize,
         handlePageChange,
         handlePageSizeChange,
+        handleSearch,
         handleClearSearch,
         handleClearAllFilters,
         filters,

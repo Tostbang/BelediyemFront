@@ -20,23 +20,26 @@ export default function StaffList({
     staffList: StaffUserListResponse;
 }) {
     const filterParams = ['searchText', 'municipalityStaffType'];
+    const searchInputRef = useRef<HTMLInputElement>(
+        null
+    ) as React.RefObject<HTMLInputElement>;
 
     const {
         pageNumber,
         pageSize,
         handlePageChange,
         handlePageSizeChange,
+        handleSearch,
         handleClearSearch,
         filters,
         handleFilterChange,
-    } = usePagination({ filterParams });
+    } = usePagination({ filterParams, searchInputRef });
 
     const [modal, setModal] = useState(false);
     const [modalReset, setModalReset] = useState(false);
     const [selectedItem, setSelectedItem] = useState<string | null>(null);
     const { handleSuccess, handleError } = useNotificationHandler();
     const router = useRouter();
-    const searchInputRef = useRef<HTMLInputElement>(null);
 
     const handleDeleteClick = (id: string) => {
         setSelectedItem(id);
@@ -73,19 +76,6 @@ export default function StaffList({
                 handleError(result);
                 setModalReset(false);
             }
-        }
-    };
-
-    const handleSearch = () => {
-        if (searchInputRef.current) {
-            handleFilterChange('searchText', searchInputRef.current.value);
-        }
-    };
-
-    const clearFilters = () => {
-        handleClearSearch();
-        if (searchInputRef.current) {
-            searchInputRef.current.value = '';
         }
     };
 
@@ -245,7 +235,7 @@ export default function StaffList({
                                     <SearchIcon />
                                 </button>
                                 <button
-                                    onClick={clearFilters}
+                                    onClick={handleClearSearch}
                                     className="border border-y-gray-300 border-l-0 border-r-gray-300  flex items-center cursor-pointer justify-center bg-red-500 hover:bg-red-600 text-white p-2 h-full min-w-[41px] rounded-r">
                                     <TrashIcon />
                                 </button>

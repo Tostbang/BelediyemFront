@@ -9,7 +9,9 @@ import ImageWithSkeleton from '../common/imageSkeleton';
 
 export default function CitizenList({ users }: { users: CitizenUserResponse }) {
     const filterParams = ['searchText'];
-    const searchInputRef = useRef<HTMLInputElement>(null);
+    const searchInputRef = useRef<HTMLInputElement>(
+        null
+    ) as React.RefObject<HTMLInputElement>;
 
     const {
         pageNumber,
@@ -17,22 +19,12 @@ export default function CitizenList({ users }: { users: CitizenUserResponse }) {
         handlePageChange,
         handlePageSizeChange,
         filters,
-        handleFilterChange,
+        handleSearch,
         handleClearSearch,
-    } = usePagination({ filterParams });
-
-    const handleSearch = () => {
-        if (searchInputRef.current) {
-            handleFilterChange('searchText', searchInputRef.current.value);
-        }
-    };
-
-    const clearFilters = () => {
-        handleClearSearch();
-        if (searchInputRef.current) {
-            searchInputRef.current.value = '';
-        }
-    };
+    } = usePagination({
+        filterParams,
+        searchInputRef,
+    });
 
     const columns = [
         {
@@ -128,7 +120,7 @@ export default function CitizenList({ users }: { users: CitizenUserResponse }) {
                                     <SearchIcon />
                                 </button>
                                 <button
-                                    onClick={clearFilters}
+                                    onClick={handleClearSearch}
                                     className="border border-y-gray-300 border-l-0 border-r-gray-300  flex items-center cursor-pointer justify-center bg-red-500 hover:bg-red-600 text-white p-2 h-full min-w-[41px] rounded-r">
                                     <TrashIcon />
                                 </button>
