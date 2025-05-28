@@ -198,11 +198,10 @@ export const getStaffComplaintsMuni = async (body: StaffAttendedComplaintsPagina
                 municipalityStaffId: body.municipalityStaffId || undefined,
                 pageNumber: body.pageNumber - 1,
                 pageSize: body.pageSize,
-                searchText: body.searchText || '',
                 categoryType: body.categoryType || undefined,
-                // complaintsStatusType: body.complaintsStatusType || undefined,
-                // startDate: body.startDate || "2025-05-27T14:21:36.460Z",
-                // endDate: body.endDate || "2025-05-27T14:21:36.460Z",
+                complaintsStatusType: body.complaintsStatusType || undefined,
+                startDate: body.startDate || undefined,
+                endDate: body.endDate || undefined,
             }
         });
 

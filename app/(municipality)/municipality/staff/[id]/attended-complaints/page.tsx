@@ -34,9 +34,10 @@ export default async function Page({
     const pageNumber = Number(resolvedSearchParams.page) || 1;
     const pageSize = Number(resolvedSearchParams.pageSize) || 20;
     const searchText = resolvedSearchParams.searchText || '';
-    const categoryType = Number(resolvedSearchParams.categoryType) || 1;
-    const complaintsStatusType =
-        Number(resolvedSearchParams.complaintsStatusType) || 1;
+    const categoryType = Number(resolvedSearchParams.categoryType);
+    const complaintsStatusType = Number(
+        resolvedSearchParams.complaintsStatusType
+    );
     const startDate = resolvedSearchParams.startDate || '';
     const endDate = resolvedSearchParams.endDate || '';
 

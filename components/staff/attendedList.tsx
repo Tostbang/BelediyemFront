@@ -1,11 +1,12 @@
 'use client';
-import React, { useRef } from 'react';
+import React from 'react';
 import { StaffAttendedComplaintsResponse, StaffComplaints } from '@/types';
 import { usePagination } from '@/hooks/usePagination';
-import { departmans } from '@/data/departmans';
 import DynamicTable from '@/components/dynamic/table';
-import { SearchIcon, TrashIcon } from '../icons';
 import { formatDateTime } from '@/utils';
+import { XIcon } from '../icons';
+import { categoryType } from '@/data/categoryType';
+import { complaintStatusType } from '@/data/complaintStatus';
 
 export default function AttendedList({
     complaints,
@@ -13,7 +14,6 @@ export default function AttendedList({
     complaints: StaffAttendedComplaintsResponse;
 }) {
     const filterParams = [
-        'searchText',
         'categoryType',
         'complaintsStatusType',
         'startDate',
@@ -25,25 +25,10 @@ export default function AttendedList({
         pageSize,
         handlePageChange,
         handlePageSizeChange,
-        handleClearSearch,
         filters,
         handleFilterChange,
+        handleClearAllFilters,
     } = usePagination({ filterParams });
-
-    const searchInputRef = useRef<HTMLInputElement>(null);
-
-    const handleSearch = () => {
-        if (searchInputRef.current) {
-            handleFilterChange('searchText', searchInputRef.current.value);
-        }
-    };
-
-    const clearFilters = () => {
-        handleClearSearch();
-        if (searchInputRef.current) {
-            searchInputRef.current.value = '';
-        }
-    };
 
     const columns = [
         {
@@ -73,45 +58,17 @@ export default function AttendedList({
             title: 'Durum',
             dataIndex: 'complaintsStatusType',
             width: 100,
-            render: (status: number) => {
-                switch (status) {
-                    case 1:
-                        return (
-                            <span className="bg-green-500 p-1 px-4 rounded-2xl text-white text-center w-fit">
-                                Çözüldü
-                            </span>
-                        );
-                    case 2:
-                        return (
-                            <span className="bg-yellow-500 p-1 px-4 rounded-2xl text-white text-center w-fit">
-                                Bekleniyor
-                            </span>
-                        );
-                    case 3:
-                        return (
-                            <span className="bg-orange-500 p-1 px-4 rounded-2xl text-white text-center w-fit">
-                                İnceleniyor
-                            </span>
-                        );
-                    case 4:
-                        return (
-                            <span className="bg-blue-500 p-1 px-4 rounded-2xl text-white text-center w-fit">
-                                Başlatıldı
-                            </span>
-                        );
-                    case 5:
-                        return (
-                            <span className="bg-red-500 p-1 px-4 rounded-2xl text-white text-center w-fit">
-                                Reddedildi
-                            </span>
-                        );
-                    default:
-                        return (
-                            <span className="bg-gray-500 p-1 px-4 rounded-2xl text-white text-center w-fit">
-                                Bilinmiyor
-                            </span>
-                        );
-                }
+            render: (value: number) => {
+                const status = complaintStatusType.find(
+                    (item) => item.id === value
+                );
+
+                return (
+                    <span
+                        className={`bg-${status?.color || 'gray'}-500 p-1 px-4 rounded-2xl text-white text-center w-fit`}>
+                        {status?.name || 'Bilinmiyor'}
+                    </span>
+                );
             },
         },
     ];
@@ -122,48 +79,90 @@ export default function AttendedList({
                 <div className="flex flex-col lg:flex-row justify-between items-start gap-4 mb-4">
                     <div className="flex flex-col sm:flex-row flex-wrap items-center gap-3 w-full lg:w-auto">
                         <select
-                            key={`membership-select-${filters.municipalityStaffId || 'default'}`}
+                            key={`category-select-${filters.categoryType || 'default'}`}
                             className="border border-gray-300 rounded p-2 w-full sm:w-auto"
-                            value={
-                                filters.municipalityStaffId?.toString() || ''
-                            }
+                            value={filters.categoryType?.toString() || ''}
                             onChange={(e) =>
                                 handleFilterChange(
-                                    'municipalityStaffType',
+                                    'categoryType',
                                     e.target.value
                                 )
                             }>
-                            <option value="">Tüm Departmanlar</option>
-                            {departmans.map((item) => (
+                            <option value="">Tüm Kategoriler</option>
+                            {categoryType.map((item) => (
                                 <option key={item.id} value={item.id}>
                                     {item.name}
                                 </option>
                             ))}
                         </select>
-                        <div className="flex items-center w-full sm:w-auto">
-                            <input
-                                type="text"
-                                placeholder="Arama..."
-                                defaultValue={
-                                    filters.searchText?.toString() || ''
-                                }
-                                ref={searchInputRef}
-                                className="border border-gray-300 border-r-transparent rounded-l p-2 flex-grow w-full sm:w-64"
-                            />
-                            <div className="flex items-center">
-                                <button
-                                    onClick={handleSearch}
-                                    className="border border-gray-300 border-r-0 flex items-center cursor-pointer justisfy-center bg-blue-500 hover:bg-blue-600 text-white p-2 h-full min-w-[41px]">
-                                    <SearchIcon />
-                                </button>
-                                <button
-                                    onClick={clearFilters}
-                                    className="border border-y-gray-300 border-l-0 border-r-gray-300  flex items-center cursor-pointer justify-center bg-red-500 hover:bg-red-600 text-white p-2 h-full min-w-[41px] rounded-r">
-                                    <TrashIcon />
-                                </button>
+                        <select
+                            key={`complaintsStatusType-select-${filters.complaintsStatusType || 'default'}`}
+                            className="border border-gray-300 rounded p-2 w-full sm:w-auto"
+                            value={
+                                filters.complaintsStatusType?.toString() || ''
+                            }
+                            onChange={(e) =>
+                                handleFilterChange(
+                                    'complaintsStatusType',
+                                    e.target.value
+                                )
+                            }>
+                            <option value="">Tüm Durumlar</option>
+                            {complaintStatusType.map((item) => (
+                                <option key={item.id} value={item.id}>
+                                    {item.name}
+                                </option>
+                            ))}
+                        </select>
+                        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                            <div className="flex items-center gap-1 w-full sm:w-auto">
+                                <label
+                                    htmlFor="startDate"
+                                    className="text-sm whitespace-nowrap">
+                                    Başlangıç:
+                                </label>
+                                <input
+                                    id="startDate"
+                                    type="date"
+                                    className="border border-gray-300 rounded p-2 w-full"
+                                    value={filters.startDate?.toString() || ''}
+                                    onChange={(e) =>
+                                        handleFilterChange(
+                                            'startDate',
+                                            e.target.value
+                                        )
+                                    }
+                                />
+                            </div>
+                            <div className="flex items-center gap-1 w-full sm:w-auto">
+                                <label
+                                    htmlFor="endDate"
+                                    className="text-sm whitespace-nowrap">
+                                    Bitiş:
+                                </label>
+                                <input
+                                    id="endDate"
+                                    type="date"
+                                    className="border border-gray-300 rounded p-2 w-full"
+                                    value={filters.endDate?.toString() || ''}
+                                    onChange={(e) =>
+                                        handleFilterChange(
+                                            'endDate',
+                                            e.target.value
+                                        )
+                                    }
+                                />
                             </div>
                         </div>
                     </div>
+                    <button
+                        onClick={handleClearAllFilters}
+                        className="cursor-pointer bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-md transition-colors duration-200 flex items-center gap-1 ml-auto mt-3 sm:mt-0">
+                        <div className="w-4 h-4">
+                            <XIcon />
+                        </div>
+                        Filtreleri Temizle
+                    </button>
                 </div>
                 <div className="overflow-x-auto">
                     <DynamicTable<StaffComplaints>
