@@ -401,3 +401,33 @@ export type CitizenUserResponse = ApiResponse & {
 export type CitizenUserDetailResponse = ApiResponse & {
     user: CitezenUser;
 };
+
+
+export type Announcement = {
+    id: number;
+    title: string;
+    description: string;
+    municipalityId: number;
+    announcementsType: string;
+    image: string;
+};
+
+export type AnnouncementResponse = ApiResponse & {
+    announcements: Announcement[];
+    totalCount: number;
+    pageNumber: number;
+    pageSize: number;
+    lastPage: boolean;
+    backPage: boolean;
+    nextPage: boolean;
+};
+
+export type AnnouncementDetailResponse = ApiResponse & {
+    announcement: Announcement;
+};
+
+export type AnnouncementPaginationBody = PaginationBody & {
+    announcementsType?: number;
+    startDate?: string;
+    endDate?: string;
+};
