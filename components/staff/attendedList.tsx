@@ -50,9 +50,20 @@ export default function AttendedList({
         },
         {
             title: 'Çözülme Tarihi',
-            dataIndex: 'modifiedDate',
+            dataIndex: 'complaintsStatusType',
             width: 180,
-            render: (text: string) => formatDateTime(text),
+            render: (value: number, record: StaffComplaints) => {
+                if (value === 4 && record.complaintsStatus?.length > 0) {
+                    const matchingStatus = record.complaintsStatus.find(
+                        (status) => status.complaintsStatusType === 4
+                    );
+
+                    if (matchingStatus) {
+                        return formatDateTime(matchingStatus.createdDate);
+                    }
+                }
+                return 'Henüz Çözülmedi';
+            },
         },
         {
             title: 'Durum',

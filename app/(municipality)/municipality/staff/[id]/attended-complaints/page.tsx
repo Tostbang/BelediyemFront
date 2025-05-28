@@ -54,7 +54,10 @@ export default async function Page({
 
     const response = await getStaffComplaintsMuni(paginationBody);
 
-    const breadcrumb = [{ label: 'Atanan Şikayetler' }];
+    const breadcrumb = [
+        { label: 'Personel Listesi', href: '/municipality/staff/list' },
+        { label: 'Atanan Şikayetler' },
+    ];
 
     return (
         <PageContainer breadcrumb={breadcrumb}>

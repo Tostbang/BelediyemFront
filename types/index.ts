@@ -355,6 +355,7 @@ export type StaffComplaints = {
         id: number;
         createdById: number;
         createdByRole: number;
+        createdDate: string;
         complaintId: number;
         complaintsStatusType: number;
     }[];
