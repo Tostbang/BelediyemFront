@@ -44,7 +44,6 @@ export default function CitizenList({ users }: { users: CitizenUserResponse }) {
         {
             title: 'Fotoğraf',
             dataIndex: 'profileImage',
-
             width: 180,
             render: (value: string) => {
                 return value ? (

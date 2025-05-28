@@ -14,6 +14,20 @@ interface ImageWithSkeletonProps {
     priority?: boolean;
 }
 
+// Function to validate URL
+const isValidImageUrl = (url: string): boolean => {
+    if (!url || url === 'string') return false;
+    try {
+        new URL(url);
+        return url.startsWith('http://') || url.startsWith('https://');
+    } catch {
+        return false;
+    }
+};
+
+// Default image URL to use when provided URL is invalid
+const DEFAULT_IMAGE_URL = '/assets/not-found.jpg'; // Update this path to your actual default image
+
 const ImageWithSkeleton = ({
     src,
     alt,
@@ -26,6 +40,9 @@ const ImageWithSkeleton = ({
 }: ImageWithSkeletonProps) => {
     const [isLoading, setIsLoading] = useState(true);
     const [hasError, setHasError] = useState(false);
+
+    // Use validated URL or default
+    const imageUrl = isValidImageUrl(src) ? src : DEFAULT_IMAGE_URL;
 
     const containerStyle: CSSProperties | undefined = fill
         ? { position: 'relative', width: '100%', height: '100%' }
@@ -64,7 +81,7 @@ const ImageWithSkeleton = ({
                 </div>
             ) : (
                 <Image
-                    src={src}
+                    src={imageUrl}
                     alt={alt}
                     width={fill ? undefined : width}
                     height={fill ? undefined : height}

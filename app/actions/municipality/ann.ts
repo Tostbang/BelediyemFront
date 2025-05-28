@@ -12,9 +12,9 @@ export const getAnnsMuni = async (body: AnnouncementPaginationBody) => {
             body: {
                 pageNumber: body.pageNumber - 1,
                 pageSize: body.pageSize,
+                announcementsType: body.announcementsType || null,
                 startDate: body.startDate || undefined,
                 endDate: body.endDate || undefined,
-                announcementsType: body.announcementsType || undefined
             }
         });
 
