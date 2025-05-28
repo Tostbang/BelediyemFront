@@ -87,6 +87,9 @@ export default function AttendedList({
     return (
         <div className="flex flex-col items-center w-full mb-6">
             <div className="w-full overflow-hidden bg-white rounded-lg p-6">
+                <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+                    {complaints.name} {complaints.surname}
+                </h2>
                 <div className="flex flex-col lg:flex-row justify-between items-start gap-4 mb-4">
                     <div className="flex flex-col sm:flex-row flex-wrap items-center gap-3 w-full lg:w-auto">
                         <select

@@ -364,6 +364,8 @@ export type StaffComplaints = {
 
 export type StaffAttendedComplaintsResponse = ApiResponse & {
     complaints: StaffComplaints[];
+    name: string;
+    surname: string;
     totalCount: number;
     pageNumber: number;
     pageSize: number;
