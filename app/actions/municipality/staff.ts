@@ -212,7 +212,6 @@ export const getStaffComplaintsMuni = async (body: StaffAttendedComplaintsPagina
     }
 }
 
-
 export const getCitizenMuni = async (body: PaginationBody) => {
     try {
         const data = await apiFetch('municipality/citizenlist', {
