@@ -199,7 +199,9 @@ export default function LoginForm({
                 <Link
                     href="/login"
                     className="p-2 bg-gray-100 rounded-md hover:bg-gray-200 transition-all">
-                    <LockIcon />
+                    <div className="w-6 h-6">
+                        <LockIcon />
+                    </div>
                 </Link>
             </div>
 
