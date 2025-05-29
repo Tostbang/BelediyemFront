@@ -10,12 +10,13 @@ import { usePagination } from '@/hooks/usePagination';
 import LinkButton from '@/components/common/LinkButton';
 import DynamicTable from '@/components/dynamic/table';
 import ConfirmModal from '@/components/modals/confirmModal';
-import { PersonIcon, XIcon } from '../icons';
+import { FilterIcon, PersonIcon } from '../icons';
 import ImageWithSkeleton from '../common/imageSkeleton';
 import { deleteAnnMuni } from '@/app/actions/municipality/ann';
 import { annType } from '@/data/annType';
 import { formatDateTime } from '@/utils';
 import Breadcrumb from '../common/breadCrumb';
+import Modal from '../common/modal';
 
 export default function EventList({
     events,
@@ -41,6 +42,7 @@ export default function EventList({
 
     const [modal, setModal] = useState(false);
     const [selectedItem, setSelectedItem] = useState<string | null>(null);
+    const [showDateFilter, setShowDateFilter] = useState(false);
     const { handleSuccess, handleError } = useNotificationHandler();
     const router = useRouter();
 
@@ -154,83 +156,110 @@ export default function EventList({
                     />
                 }
             />
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-4 bg-white rounded-lg px-4">
+                <div className="flex flex-wrap sm:flex-nowrap items-center w-full lg:w-auto gap-2 sm:gap-3">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 flex items-center">
+                        <FilterIcon />
+                    </div>
+
+                    {/* Date filter button */}
+                    <button
+                        onClick={() => setShowDateFilter(true)}
+                        className="rounded p-2 hover:bg-gray-50 cursor-pointer flex items-center justify-center h-20 w-full sm:w-auto text-sm sm:text-base">
+                        Tarih Seç
+                    </button>
+
+                    {/* Date filter popup */}
+                    {showDateFilter && (
+                        <Modal
+                            isOpen={showDateFilter}
+                            onClose={() => setShowDateFilter(false)}>
+                            <div>
+                                <h2 className="text-lg font-semibold mb-4">
+                                    Tarih Seç
+                                </h2>
+
+                                <div className="mb-4">
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        Başlangıç Tarihi
+                                    </label>
+                                    <div className="relative">
+                                        <input
+                                            type="date"
+                                            className="border border-gray-300 rounded p-2 w-full"
+                                            value={
+                                                filters.startDate?.toString() ||
+                                                ''
+                                            }
+                                            onChange={(e) =>
+                                                handleFilterChange(
+                                                    'startDate',
+                                                    e.target.value
+                                                )
+                                            }
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="mb-6">
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        Bitiş Tarihi
+                                    </label>
+                                    <div className="relative">
+                                        <input
+                                            type="date"
+                                            className="border border-gray-300 rounded p-2 w-full"
+                                            value={
+                                                filters.endDate?.toString() ||
+                                                ''
+                                            }
+                                            onChange={(e) =>
+                                                handleFilterChange(
+                                                    'endDate',
+                                                    e.target.value
+                                                )
+                                            }
+                                        />
+                                    </div>
+                                </div>
+
+                                <button
+                                    onClick={() => setShowDateFilter(false)}
+                                    className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded transition-colors duration-200">
+                                    Seç
+                                </button>
+                            </div>
+                        </Modal>
+                    )}
+                    <select
+                        key={`ann-select-${filters.announcementsType || 'default'}`}
+                        className="rounded p-2 hover:bg-gray-50 cursor-pointer h-20 w-full sm:w-auto text-sm sm:text-base"
+                        value={filters.announcementsType?.toString() || ''}
+                        onChange={(e) =>
+                            handleFilterChange(
+                                'announcementsType',
+                                e.target.value
+                            )
+                        }>
+                        <option value="">İçerik Türüne göre Filtrele</option>
+                        {annType.map((type) => (
+                            <option key={type.id} value={type.id}>
+                                {type.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
+                {/* Clear button with better responsive alignment */}
+                <button
+                    onClick={handleClearAllFilters}
+                    className="cursor-pointer bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-md transition-colors duration-200 w-full sm:w-auto text-sm sm:text-base my-2 lg:my-0">
+                    Filtreleri Temizle
+                </button>
+            </div>
+
             <div className="flex flex-col items-center w-full mb-6">
                 <div className="w-full overflow-hidden bg-white rounded-lg p-6">
-                    <div className="flex flex-col lg:flex-row justify-between items-start gap-4 mb-4">
-                        <div className="flex flex-col sm:flex-row flex-wrap items-center gap-3 w-full lg:w-auto">
-                            <select
-                                key={`ann-select-${filters.announcementsType || 'default'}`}
-                                className="border border-gray-300 rounded p-2 w-full sm:w-auto"
-                                value={
-                                    filters.announcementsType?.toString() || ''
-                                }
-                                onChange={(e) =>
-                                    handleFilterChange(
-                                        'announcementsType',
-                                        e.target.value
-                                    )
-                                }>
-                                <option value="">Tüm Türler</option>
-                                {annType.map((type) => (
-                                    <option key={type.id} value={type.id}>
-                                        {type.name}
-                                    </option>
-                                ))}
-                            </select>
-                            <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                                <div className="flex items-center gap-1 w-full sm:w-auto">
-                                    <label
-                                        htmlFor="startDate"
-                                        className="text-sm whitespace-nowrap">
-                                        Başlangıç:
-                                    </label>
-                                    <input
-                                        id="startDate"
-                                        type="date"
-                                        className="border border-gray-300 rounded p-2 w-full"
-                                        value={
-                                            filters.startDate?.toString() || ''
-                                        }
-                                        onChange={(e) =>
-                                            handleFilterChange(
-                                                'startDate',
-                                                e.target.value
-                                            )
-                                        }
-                                    />
-                                </div>
-                                <div className="flex items-center gap-1 w-full sm:w-auto">
-                                    <label
-                                        htmlFor="endDate"
-                                        className="text-sm whitespace-nowrap">
-                                        Bitiş:
-                                    </label>
-                                    <input
-                                        id="endDate"
-                                        type="date"
-                                        className="border border-gray-300 rounded p-2 w-full"
-                                        value={
-                                            filters.endDate?.toString() || ''
-                                        }
-                                        onChange={(e) =>
-                                            handleFilterChange(
-                                                'endDate',
-                                                e.target.value
-                                            )
-                                        }
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <button
-                            onClick={handleClearAllFilters}
-                            className="cursor-pointer bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-md transition-colors duration-200 flex items-center gap-1 ml-auto mt-3 sm:mt-0">
-                            <div className="w-4 h-4">
-                                <XIcon />
-                            </div>
-                            Filtreleri Temizle
-                        </button>
-                    </div>
                     <div className="overflow-x-auto">
                         <DynamicTable<Announcement>
                             data={events.announcements}
