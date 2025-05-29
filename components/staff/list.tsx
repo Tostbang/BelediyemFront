@@ -217,7 +217,7 @@ export default function StaffList({
                         className="hover:bg-gray-50 cursor-pointer h-10 lg:h-20 w-full sm:w-auto text-sm sm:text-base sm:px-4"
                         value={filters.municipalityStaffType?.toString() || ''}
                         onChange={handleFilterChange}
-                        placeholder="Tüm Departmanlar"
+                        placeholder="Departmana Göre"
                         options={departmans}
                         fieldName="municipalityStaffType"
                     />

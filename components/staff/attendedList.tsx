@@ -49,7 +49,7 @@ export default function AttendedList({
         handleClearAllFilters,
         handleDateFilter,
         handleClearDateFilters,
-    } = usePagination({ filterParams ,startDateRef, endDateRef});
+    } = usePagination({ filterParams, startDateRef, endDateRef });
 
     const columns = [
         {
@@ -146,7 +146,7 @@ export default function AttendedList({
                         className="hover:bg-gray-50 cursor-pointer h-10 lg:h-20 w-full sm:w-auto text-sm sm:text-base sm:px-4"
                         value={filters.categoryType?.toString() || ''}
                         onChange={handleFilterChange}
-                        placeholder="Tüm Kategoriler"
+                        placeholder="Kategoriye Göre"
                         options={categoryType}
                         fieldName="categoryType"
                     />
@@ -158,7 +158,7 @@ export default function AttendedList({
                         className="hover:bg-gray-50 cursor-pointer h-10 lg:h-20 w-full sm:w-auto text-sm sm:text-base sm:px-4"
                         value={filters.complaintsStatusType?.toString() || ''}
                         onChange={handleFilterChange}
-                        placeholder="Tüm Durumlar"
+                        placeholder="Duruma Göre"
                         options={complaintStatusType}
                         fieldName="complaintsStatusType"
                     />
