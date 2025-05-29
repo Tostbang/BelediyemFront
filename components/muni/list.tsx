@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Municipalities, MuniListResponse } from '@/types';
+import { BreadcrumbItem, Municipalities, MuniListResponse } from '@/types';
 import DynamicTable from '../dynamic/table';
 import ConfirmModal from '../modals/confirmModal';
 import { updateMuniStatusAdmin } from '@/app/actions';
@@ -13,8 +13,15 @@ import Link from 'next/link';
 import { MoreOutlined } from '@ant-design/icons';
 import { usePagination } from '@/hooks/usePagination';
 import LinkButton from '../common/LinkButton';
+import Breadcrumb from '../common/breadCrumb';
 
-export default function MuniList({ munilist }: { munilist: MuniListResponse }) {
+export default function MuniList({
+    munilist,
+    breadcrumb,
+}: {
+    munilist: MuniListResponse;
+    breadcrumb: BreadcrumbItem[];
+}) {
     const { pageNumber, pageSize, handlePageChange, handlePageSizeChange } =
         usePagination();
     const [modal, setModal] = useState(false);
@@ -149,39 +156,44 @@ export default function MuniList({ munilist }: { munilist: MuniListResponse }) {
     ];
 
     return (
-        <div className="flex flex-col items-center w-full mb-6">
-            <div className="w-full overflow-hidden bg-white rounded-lg p-6">
-                <div className="flex justify-end mb-4">
+        <>
+            <Breadcrumb
+                breadcrumb={breadcrumb}
+                buttonComponent={
                     <LinkButton
                         href="/admin/municipality/new"
                         title="Yeni Belediye Ekle"
                     />
-                </div>
-                <div className="overflow-x-auto">
-                    <DynamicTable<Municipalities>
-                        data={munilist.municipalLists}
-                        columns={columns}
-                        rowKey="id"
-                        showControls={false}
-                        pagination={{
-                            pageSize: pageSize,
-                            current: pageNumber,
-                            total: munilist.totalCount || 0,
-                            onChange: handlePageChange,
-                            onShowSizeChange: handlePageSizeChange,
-                            responsive: true,
-                            size: 'default',
-                        }}
-                    />
-                </div>
-            </div>
-            <ConfirmModal
-                isOpen={modal}
-                onClose={() => setModal(false)}
-                title="Belediye Sil"
-                message="Bu kaydı silmek istediğinize emin misiniz? Bu işlem geri alınamaz."
-                onConfirm={handleConfirm}
+                }
             />
-        </div>
+            <div className="flex flex-col items-center w-full mb-6">
+                <div className="w-full overflow-hidden bg-white rounded-lg p-6">
+                    <div className="overflow-x-auto">
+                        <DynamicTable<Municipalities>
+                            data={munilist.municipalLists}
+                            columns={columns}
+                            rowKey="id"
+                            showControls={false}
+                            pagination={{
+                                pageSize: pageSize,
+                                current: pageNumber,
+                                total: munilist.totalCount || 0,
+                                onChange: handlePageChange,
+                                onShowSizeChange: handlePageSizeChange,
+                                responsive: true,
+                                size: 'default',
+                            }}
+                        />
+                    </div>
+                </div>
+                <ConfirmModal
+                    isOpen={modal}
+                    onClose={() => setModal(false)}
+                    title="Belediye Sil"
+                    message="Bu kaydı silmek istediğinize emin misiniz? Bu işlem geri alınamaz."
+                    onConfirm={handleConfirm}
+                />
+            </div>
+        </>
     );
 }

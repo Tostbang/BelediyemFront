@@ -15,8 +15,10 @@ export default async function Page() {
     const breadcrumb = [{ label: 'Belediye Bilgileri' }];
 
     return (
-        <PageContainer breadcrumb={breadcrumb}>
-            {response && <InfoFormMuni detail={response} />}
+        <PageContainer>
+            {response && (
+                <InfoFormMuni detail={response} breadcrumb={breadcrumb} />
+            )}
         </PageContainer>
     );
 }

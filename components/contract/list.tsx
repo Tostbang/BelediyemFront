@@ -1,14 +1,17 @@
 'use client';
 import React from 'react';
-import { Contract, ContractsResponse } from '@/types';
+import { BreadcrumbItem, Contract, ContractsResponse } from '@/types';
 import DynamicTable from '../dynamic/table';
 import Link from 'next/link';
 import { contractTypes } from '@/data/contractTypes';
+import Breadcrumb from '../common/breadCrumb';
 
 export default function ContractList({
     contracts,
+    breadcrumb,
 }: {
     contracts: ContractsResponse;
+    breadcrumb: BreadcrumbItem[];
 }) {
     const columns = [
         {
@@ -52,18 +55,21 @@ export default function ContractList({
     ];
 
     return (
-        <div className="flex flex-col items-center w-full mb-6">
-            <div className="w-full overflow-hidden bg-white rounded-lg p-6">
-                <div className="overflow-x-auto">
-                    <DynamicTable<Contract>
-                        data={contracts.contract}
-                        columns={columns}
-                        rowKey="id"
-                        showControls={false}
-                        pagination={false}
-                    />
+        <>
+            <Breadcrumb breadcrumb={breadcrumb} />
+            <div className="flex flex-col items-center w-full mb-6">
+                <div className="w-full overflow-hidden bg-white rounded-lg p-6">
+                    <div className="overflow-x-auto">
+                        <DynamicTable<Contract>
+                            data={contracts.contract}
+                            columns={columns}
+                            rowKey="id"
+                            showControls={false}
+                            pagination={false}
+                        />
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }

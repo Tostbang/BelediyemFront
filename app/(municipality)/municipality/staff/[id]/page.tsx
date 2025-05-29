@@ -63,7 +63,7 @@ export default async function Page({
     ];
 
     return (
-        <PageContainer breadcrumb={breadcrumb}>
+        <PageContainer>
             {errorMessage ? (
                 <AlertMessage
                     message={errorMessage}
@@ -71,7 +71,11 @@ export default async function Page({
                     title="Hata"
                 />
             ) : (
-                <StaffForm id={id} detail={detail || null} />
+                <StaffForm
+                    id={id}
+                    detail={detail || null}
+                    breadcrumb={breadcrumb}
+                />
             )}
         </PageContainer>
     );

@@ -16,8 +16,13 @@ export default async function Page() {
     const breadcrumb = [{ label: 'Sözleşmeler' }];
 
     return (
-        <PageContainer breadcrumb={breadcrumb}>
-            {response && <ContractList contracts={response || []} />}
+        <PageContainer>
+            {response && (
+                <ContractList
+                    contracts={response || []}
+                    breadcrumb={breadcrumb}
+                />
+            )}
         </PageContainer>
     );
 }

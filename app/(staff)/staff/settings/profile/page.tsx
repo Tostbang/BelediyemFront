@@ -15,8 +15,10 @@ export default async function Page() {
     const breadcrumb = [{ label: 'Personel Bilgileri' }];
 
     return (
-        <PageContainer breadcrumb={breadcrumb}>
-            {response && <InfoFormStaff detail={response} />}
+        <PageContainer>
+            {response && (
+                <InfoFormStaff detail={response} breadcrumb={breadcrumb} />
+            )}
         </PageContainer>
     );
 }

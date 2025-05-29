@@ -9,13 +9,16 @@ import {
     TickIcon,
     XIcon,
 } from '@/components/icons';
-import { DashboardStatisticsStaff } from '@/types';
+import { BreadcrumbItem, DashboardStatisticsStaff } from '@/types';
 import ComplaintChart from './complaintChart';
+import Breadcrumb from '../common/breadCrumb';
 
 export default function DashboardStaff({
     dashboard,
+    breadcrumb,
 }: {
     dashboard: DashboardStatisticsStaff;
+    breadcrumb: BreadcrumbItem[];
 }) {
     const cardsData = [
         {
@@ -87,7 +90,8 @@ export default function DashboardStaff({
     ];
 
     return (
-        <div>
+        <>
+            <Breadcrumb breadcrumb={breadcrumb} />
             <div className="flex flex-col items-center w-full mb-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 w-full max-w-full">
                     {cardsData.map((card, index) => (
@@ -104,6 +108,6 @@ export default function DashboardStaff({
                     monthlyStatistics={dashboard.monthlyStatistics || []}
                 />
             </div>
-        </div>
+        </>
     );
 }

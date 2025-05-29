@@ -29,8 +29,10 @@ export default async function Page({
     const breadcrumb = [{ label: 'Belediye Listesi' }];
 
     return (
-        <PageContainer breadcrumb={breadcrumb}>
-            {response && <MuniList munilist={response || []} />}
+        <PageContainer>
+            {response && (
+                <MuniList munilist={response || []} breadcrumb={breadcrumb} />
+            )}
         </PageContainer>
     );
 }

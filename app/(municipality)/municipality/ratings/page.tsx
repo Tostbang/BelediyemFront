@@ -29,8 +29,10 @@ export default async function Page({
     const breadcrumb = [{ label: 'Değerlendirme' }];
 
     return (
-        <PageContainer breadcrumb={breadcrumb}>
-            {response && <RatingList ratings={response || []} />}
+        <PageContainer>
+            {response && (
+                <RatingList ratings={response || []} breadcrumb={breadcrumb} />
+            )}
         </PageContainer>
     );
 }

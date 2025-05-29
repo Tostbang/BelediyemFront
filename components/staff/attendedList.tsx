@@ -1,17 +1,24 @@
 'use client';
 import React from 'react';
-import { StaffAttendedComplaintsResponse, StaffComplaints } from '@/types';
+import {
+    BreadcrumbItem,
+    StaffAttendedComplaintsResponse,
+    StaffComplaints,
+} from '@/types';
 import { usePagination } from '@/hooks/usePagination';
 import DynamicTable from '@/components/dynamic/table';
 import { formatDateTime } from '@/utils';
 import { XIcon } from '../icons';
 import { categoryType } from '@/data/categoryType';
 import { complaintStatusType } from '@/data/complaintStatus';
+import Breadcrumb from '../common/breadCrumb';
 
 export default function AttendedList({
     complaints,
+    breadcrumb,
 }: {
     complaints: StaffAttendedComplaintsResponse;
+    breadcrumb: BreadcrumbItem[];
 }) {
     const filterParams = [
         'categoryType',
@@ -85,117 +92,125 @@ export default function AttendedList({
     ];
 
     return (
-        <div className="flex flex-col items-center w-full mb-6">
-            <div className="w-full overflow-hidden bg-white rounded-lg p-6">
-                <h2 className="text-2xl font-semibold text-gray-800 mb-2">
-                    {complaints.name} {complaints.surname}
-                </h2>
-                <div className="flex flex-col lg:flex-row justify-between items-start gap-4 mb-4">
-                    <div className="flex flex-col sm:flex-row flex-wrap items-center gap-3 w-full lg:w-auto">
-                        <select
-                            key={`category-select-${filters.categoryType || 'default'}`}
-                            className="border border-gray-300 rounded p-2 w-full sm:w-auto"
-                            value={filters.categoryType?.toString() || ''}
-                            onChange={(e) =>
-                                handleFilterChange(
-                                    'categoryType',
-                                    e.target.value
-                                )
-                            }>
-                            <option value="">Tüm Kategoriler</option>
-                            {categoryType.map((item) => (
-                                <option key={item.id} value={item.id}>
-                                    {item.name}
-                                </option>
-                            ))}
-                        </select>
-                        <select
-                            key={`complaintsStatusType-select-${filters.complaintsStatusType || 'default'}`}
-                            className="border border-gray-300 rounded p-2 w-full sm:w-auto"
-                            value={
-                                filters.complaintsStatusType?.toString() || ''
-                            }
-                            onChange={(e) =>
-                                handleFilterChange(
-                                    'complaintsStatusType',
-                                    e.target.value
-                                )
-                            }>
-                            <option value="">Tüm Durumlar</option>
-                            {complaintStatusType.map((item) => (
-                                <option key={item.id} value={item.id}>
-                                    {item.name}
-                                </option>
-                            ))}
-                        </select>
-                        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                            <div className="flex items-center gap-1 w-full sm:w-auto">
-                                <label
-                                    htmlFor="startDate"
-                                    className="text-sm whitespace-nowrap">
-                                    Başlangıç:
-                                </label>
-                                <input
-                                    id="startDate"
-                                    type="date"
-                                    className="border border-gray-300 rounded p-2 w-full"
-                                    value={filters.startDate?.toString() || ''}
-                                    onChange={(e) =>
-                                        handleFilterChange(
-                                            'startDate',
-                                            e.target.value
-                                        )
-                                    }
-                                />
-                            </div>
-                            <div className="flex items-center gap-1 w-full sm:w-auto">
-                                <label
-                                    htmlFor="endDate"
-                                    className="text-sm whitespace-nowrap">
-                                    Bitiş:
-                                </label>
-                                <input
-                                    id="endDate"
-                                    type="date"
-                                    className="border border-gray-300 rounded p-2 w-full"
-                                    value={filters.endDate?.toString() || ''}
-                                    onChange={(e) =>
-                                        handleFilterChange(
-                                            'endDate',
-                                            e.target.value
-                                        )
-                                    }
-                                />
+        <>
+            <Breadcrumb breadcrumb={breadcrumb} />
+            <div className="flex flex-col items-center w-full mb-6">
+                <div className="w-full overflow-hidden bg-white rounded-lg p-6">
+                    <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+                        {complaints.name} {complaints.surname}
+                    </h2>
+                    <div className="flex flex-col lg:flex-row justify-between items-start gap-4 mb-4">
+                        <div className="flex flex-col sm:flex-row flex-wrap items-center gap-3 w-full lg:w-auto">
+                            <select
+                                key={`category-select-${filters.categoryType || 'default'}`}
+                                className="border border-gray-300 rounded p-2 w-full sm:w-auto"
+                                value={filters.categoryType?.toString() || ''}
+                                onChange={(e) =>
+                                    handleFilterChange(
+                                        'categoryType',
+                                        e.target.value
+                                    )
+                                }>
+                                <option value="">Tüm Kategoriler</option>
+                                {categoryType.map((item) => (
+                                    <option key={item.id} value={item.id}>
+                                        {item.name}
+                                    </option>
+                                ))}
+                            </select>
+                            <select
+                                key={`complaintsStatusType-select-${filters.complaintsStatusType || 'default'}`}
+                                className="border border-gray-300 rounded p-2 w-full sm:w-auto"
+                                value={
+                                    filters.complaintsStatusType?.toString() ||
+                                    ''
+                                }
+                                onChange={(e) =>
+                                    handleFilterChange(
+                                        'complaintsStatusType',
+                                        e.target.value
+                                    )
+                                }>
+                                <option value="">Tüm Durumlar</option>
+                                {complaintStatusType.map((item) => (
+                                    <option key={item.id} value={item.id}>
+                                        {item.name}
+                                    </option>
+                                ))}
+                            </select>
+                            <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                                <div className="flex items-center gap-1 w-full sm:w-auto">
+                                    <label
+                                        htmlFor="startDate"
+                                        className="text-sm whitespace-nowrap">
+                                        Başlangıç:
+                                    </label>
+                                    <input
+                                        id="startDate"
+                                        type="date"
+                                        className="border border-gray-300 rounded p-2 w-full"
+                                        value={
+                                            filters.startDate?.toString() || ''
+                                        }
+                                        onChange={(e) =>
+                                            handleFilterChange(
+                                                'startDate',
+                                                e.target.value
+                                            )
+                                        }
+                                    />
+                                </div>
+                                <div className="flex items-center gap-1 w-full sm:w-auto">
+                                    <label
+                                        htmlFor="endDate"
+                                        className="text-sm whitespace-nowrap">
+                                        Bitiş:
+                                    </label>
+                                    <input
+                                        id="endDate"
+                                        type="date"
+                                        className="border border-gray-300 rounded p-2 w-full"
+                                        value={
+                                            filters.endDate?.toString() || ''
+                                        }
+                                        onChange={(e) =>
+                                            handleFilterChange(
+                                                'endDate',
+                                                e.target.value
+                                            )
+                                        }
+                                    />
+                                </div>
                             </div>
                         </div>
+                        <button
+                            onClick={handleClearAllFilters}
+                            className="cursor-pointer bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-md transition-colors duration-200 flex items-center gap-1 ml-auto mt-3 sm:mt-0">
+                            <div className="w-4 h-4">
+                                <XIcon />
+                            </div>
+                            Filtreleri Temizle
+                        </button>
                     </div>
-                    <button
-                        onClick={handleClearAllFilters}
-                        className="cursor-pointer bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-md transition-colors duration-200 flex items-center gap-1 ml-auto mt-3 sm:mt-0">
-                        <div className="w-4 h-4">
-                            <XIcon />
-                        </div>
-                        Filtreleri Temizle
-                    </button>
-                </div>
-                <div className="overflow-x-auto">
-                    <DynamicTable<StaffComplaints>
-                        data={complaints.complaints}
-                        columns={columns}
-                        rowKey="id"
-                        showControls={false}
-                        pagination={{
-                            pageSize: pageSize,
-                            current: pageNumber,
-                            total: complaints.totalCount || 0,
-                            onChange: handlePageChange,
-                            onShowSizeChange: handlePageSizeChange,
-                            responsive: true,
-                            size: 'default',
-                        }}
-                    />
+                    <div className="overflow-x-auto">
+                        <DynamicTable<StaffComplaints>
+                            data={complaints.complaints}
+                            columns={columns}
+                            rowKey="id"
+                            showControls={false}
+                            pagination={{
+                                pageSize: pageSize,
+                                current: pageNumber,
+                                total: complaints.totalCount || 0,
+                                onChange: handlePageChange,
+                                onShowSizeChange: handlePageSizeChange,
+                                responsive: true,
+                                size: 'default',
+                            }}
+                        />
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }

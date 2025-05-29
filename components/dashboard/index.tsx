@@ -11,6 +11,7 @@ import {
     XIcon,
 } from '@/components/icons';
 import {
+    BreadcrumbItem,
     ComplaintReports,
     DashboardStatisticsMuni,
     DepartmentStatistics,
@@ -21,13 +22,16 @@ import { usePagination } from '@/hooks/usePagination';
 import { departmans } from '@/data/departmans';
 import { formatDate } from '@/utils';
 import ComplaintChart from './complaintChart';
+import Breadcrumb from '../common/breadCrumb';
 
 export default function DashboardMuni({
     dashboard,
     reports,
+    breadcrumb,
 }: {
     dashboard: DashboardStatisticsMuni;
     reports?: ReportsMuniResponse;
+    breadcrumb: BreadcrumbItem[];
 }) {
     const { pageNumber, pageSize, handlePageChange, handlePageSizeChange } =
         usePagination();
@@ -194,67 +198,70 @@ export default function DashboardMuni({
     ];
 
     return (
-        <div>
-            <div className="flex flex-col items-center w-full mb-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 w-full max-w-full">
-                    {cardsData.map((card, index) => (
-                        <StatsCard
-                            key={index}
-                            title={card.title}
-                            value={card.value}
-                            icon={card.icon}
-                        />
-                    ))}
-                </div>
-
-                <ComplaintChart
-                    monthlyStatistics={dashboard.monthlyStatistics || []}
-                />
-
-                <div className="w-full overflow-hidden mt-6 bg-white rounded-lg p-6">
-                    <h2 className="text-xl font-semibold mb-4">
-                        Şikayet Rapor Dosyaları
-                    </h2>
-                    <div className="overflow-x-auto">
-                        {reports ? (
-                            <DynamicTable<ComplaintReports>
-                                data={reports.complaintReports || []}
-                                columns={columns}
-                                rowKey="id"
-                                showControls={false}
-                                pagination={{
-                                    pageSize: pageSize,
-                                    current: pageNumber,
-                                    total: reports.totalCount || 0,
-                                    onChange: handlePageChange,
-                                    onShowSizeChange: handlePageSizeChange,
-                                    responsive: true,
-                                    size: 'default',
-                                }}
+        <>
+            <Breadcrumb breadcrumb={breadcrumb} />
+            <div>
+                <div className="flex flex-col items-center w-full mb-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 w-full max-w-full">
+                        {cardsData.map((card, index) => (
+                            <StatsCard
+                                key={index}
+                                title={card.title}
+                                value={card.value}
+                                icon={card.icon}
                             />
-                        ) : (
-                            <div className="text-center py-4">
-                                Veri yükleniyor...
-                            </div>
-                        )}
+                        ))}
                     </div>
-                </div>
 
-                <div className="w-full overflow-hidden mt-6 bg-white rounded-lg p-6">
-                    <h2 className="text-xl font-semibold mb-4">
-                        Departman Bazlı Şikayet Dağılımı
-                    </h2>
-                    <div className="overflow-x-auto">
-                        <DynamicTable<DepartmentStatistics>
-                            data={dashboard.departmentStatistics}
-                            columns={columns2}
-                            rowKey="departmentName"
-                            showControls={false}
-                            pagination={false}
-                        />
+                    <ComplaintChart
+                        monthlyStatistics={dashboard.monthlyStatistics || []}
+                    />
+
+                    <div className="w-full overflow-hidden mt-6 bg-white rounded-lg p-6">
+                        <h2 className="text-xl font-semibold mb-4">
+                            Şikayet Rapor Dosyaları
+                        </h2>
+                        <div className="overflow-x-auto">
+                            {reports ? (
+                                <DynamicTable<ComplaintReports>
+                                    data={reports.complaintReports || []}
+                                    columns={columns}
+                                    rowKey="id"
+                                    showControls={false}
+                                    pagination={{
+                                        pageSize: pageSize,
+                                        current: pageNumber,
+                                        total: reports.totalCount || 0,
+                                        onChange: handlePageChange,
+                                        onShowSizeChange: handlePageSizeChange,
+                                        responsive: true,
+                                        size: 'default',
+                                    }}
+                                />
+                            ) : (
+                                <div className="text-center py-4">
+                                    Veri yükleniyor...
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className="w-full overflow-hidden mt-6 bg-white rounded-lg p-6">
+                        <h2 className="text-xl font-semibold mb-4">
+                            Departman Bazlı Şikayet Dağılımı
+                        </h2>
+                        <div className="overflow-x-auto">
+                            <DynamicTable<DepartmentStatistics>
+                                data={dashboard.departmentStatistics}
+                                columns={columns2}
+                                rowKey="departmentName"
+                                showControls={false}
+                                pagination={false}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }

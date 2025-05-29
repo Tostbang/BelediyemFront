@@ -39,8 +39,10 @@ export default async function Page({
     const breadcrumb = [{ label: 'Personel Listesi' }];
 
     return (
-        <PageContainer breadcrumb={breadcrumb}>
-            {response && <StaffList staffList={response} />}
+        <PageContainer>
+            {response && (
+                <StaffList staffList={response} breadcrumb={breadcrumb} />
+            )}
         </PageContainer>
     );
 }

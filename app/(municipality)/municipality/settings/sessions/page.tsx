@@ -15,10 +15,11 @@ export default async function Page() {
     const response = await getDevicesMuni();
 
     return (
-        <PageContainer breadcrumb={breadcrumb}>
+        <PageContainer>
             <DevicesList
                 devices={response?.devices || []}
                 type="municipality"
+                breadcrumb={breadcrumb}
             />
         </PageContainer>
     );

@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { StaffUserDetailResponse } from '@/types';
+import { BreadcrumbItem, StaffUserDetailResponse } from '@/types';
 import { departmans } from '@/data/departmans';
 import { formatDate } from '@/utils';
 import LinkButton from '../common/LinkButton';
@@ -12,30 +12,33 @@ import {
     PersonIcon,
     PhoneIcon,
 } from '../icons';
+import Breadcrumb from '../common/breadCrumb';
 
 export default function StaffDetail({
     id,
     detail,
+    breadcrumb,
 }: {
     id: string | null;
     detail?: StaffUserDetailResponse | null;
+    breadcrumb: BreadcrumbItem[];
 }) {
     return (
-        <div className="w-full bg-white shadow-lg rounded-xl p-8 border border-gray-100">
-            <div className="space-y-6">
-                <div>
-                    <div className="flex mb-4">
-                        <h1 className="mb-4 text-2xl font-semibold">
-                            {detail?.municipalityStaff.name}
-                        </h1>
-                        <div className="justify-end ml-auto">
-                            <LinkButton
-                                href={`/municipality/staff/${id}/attended-complaints`}
-                                title="Atanan Şikayetler"
-                            />
-                        </div>
-                    </div>
-
+        <>
+            <Breadcrumb
+                breadcrumb={breadcrumb}
+                buttonComponent={
+                    <LinkButton
+                        href={`/municipality/staff/${id}/attended-complaints`}
+                        title="Atanan Şikayetler"
+                    />
+                }
+            />
+            <div className="w-full bg-white shadow-lg rounded-xl p-8 border border-gray-100">
+                <div className="space-y-6">
+                    <h1 className="mb-4 text-2xl font-semibold">
+                        {detail?.municipalityStaff.name}
+                    </h1>
                     <div className="flex flex-col gap-6">
                         <div className="flex justify-center mb-6 md:mb-0">
                             <div className="rounded-full overflow-hidden border-2 border-blue-100 shadow-md">
@@ -144,6 +147,6 @@ export default function StaffDetail({
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }

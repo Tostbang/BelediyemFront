@@ -15,8 +15,12 @@ export default async function Page() {
     const response = await getDevicesAdmin();
 
     return (
-        <PageContainer breadcrumb={breadcrumb}>
-            <DevicesList devices={response?.devices || []} type="admin" />
+        <PageContainer>
+            <DevicesList
+                devices={response?.devices || []}
+                type="admin"
+                breadcrumb={breadcrumb}
+            />
         </PageContainer>
     );
 }

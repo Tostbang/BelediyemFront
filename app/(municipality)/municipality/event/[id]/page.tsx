@@ -18,7 +18,7 @@ export async function generateMetadata({
     return generatePageMetadata(
         isEditing
             ? 'Etkinlik / Duyuru Düzenle / Görüntüle'
-            : 'Yeni Etkinlik / Duyuru Ekle'
+            : 'Yeni Etkinlik / Duyuru Oluştur'
     );
 }
 
@@ -62,13 +62,13 @@ export default async function Page({
         },
         {
             label: isNewRecord
-                ? 'Yeni Etkinlik / Duyuru Ekle'
+                ? 'Yeni Etkinlik / Duyuru Oluştur'
                 : 'Etkinlik / Duyuru Düzenle / Görüntüle',
         },
     ];
 
     return (
-        <PageContainer breadcrumb={breadcrumb}>
+        <PageContainer>
             {errorMessage ? (
                 <AlertMessage
                     message={errorMessage}
@@ -76,7 +76,11 @@ export default async function Page({
                     title="Hata"
                 />
             ) : (
-                <EventForm id={id} detail={detail || null} />
+                <EventForm
+                    id={id}
+                    detail={detail || null}
+                    breadcrumb={breadcrumb}
+                />
             )}
         </PageContainer>
     );

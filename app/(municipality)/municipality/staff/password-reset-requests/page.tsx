@@ -32,9 +32,13 @@ export default async function Page({
     ];
 
     return (
-        <PageContainer breadcrumb={breadcrumb}>
+        <PageContainer>
             {response && (
-                <PWResetList requests={response || []} type="municipality" />
+                <PWResetList
+                    requests={response || []}
+                    type="municipality"
+                    breadcrumb={breadcrumb}
+                />
             )}
         </PageContainer>
     );

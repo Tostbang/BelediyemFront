@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { FAQ, RoleType } from '@/types';
+import { BreadcrumbItem, FAQ, RoleType } from '@/types';
 import ConfirmModal from '../modals/confirmModal';
 import { deleteFAQAdmin, deleteFAQMuni } from '@/app/actions';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
@@ -9,13 +9,16 @@ import { Collapse } from 'antd';
 import Link from 'next/link';
 import { PencilIcon, TrashIcon } from '../icons';
 import LinkButton from '../common/LinkButton';
+import Breadcrumb from '../common/breadCrumb';
 
 export default function FaqList({
     faqs,
     type,
+    breadcrumb,
 }: {
     faqs: FAQ[];
     type: RoleType;
+    breadcrumb: BreadcrumbItem[];
 }) {
     const [modal, setModal] = useState(false);
     const [selectedItem, setSelectedItem] = useState<string | null>(null);
@@ -73,9 +76,7 @@ export default function FaqList({
         children: (
             <div>
                 <div className="flex flex-col gap-2">
-                    <div className="text-xl opacity-90">
-                        {item.description}
-                    </div>
+                    <div className="text-xl opacity-90">{item.description}</div>
                 </div>
                 {type !== 'staff' && (
                     <div className="flex justify-end mt-4">
@@ -98,33 +99,38 @@ export default function FaqList({
     }));
 
     return (
-        <div className="flex flex-col items-center w-full mb-6">
-            <div className="w-full overflow-hidden">
-                {type !== 'staff' && (
-                    <div className="flex justify-end mb-4">
+        <>
+            <Breadcrumb
+                breadcrumb={breadcrumb}
+                buttonComponent={
+                    type !== 'staff' && (
                         <LinkButton href={`${url}/new`} title="Yeni SSS Ekle" />
-                    </div>
-                )}
-                <div className="overflow-x-auto">
-                    <Collapse
-                        items={editedItems}
-                        className="faq-collapse"
-                        bordered={false}
-                        expandIconPosition="end"
-                        style={{
-                            backgroundColor: 'white',
-                            borderRadius: '8px',
-                        }}
-                    />
-                </div>
-            </div>
-            <ConfirmModal
-                isOpen={modal}
-                onClose={() => setModal(false)}
-                title="SSS Sil"
-                message="Bu içeriği silmek istediğinize emin misiniz? Bu işlem geri alınamaz."
-                onConfirm={handleConfirm}
+                    )
+                }
             />
-        </div>
+            <div className="flex flex-col items-center w-full mb-6">
+                <div className="w-full overflow-hidden">
+                    <div className="overflow-x-auto">
+                        <Collapse
+                            items={editedItems}
+                            className="faq-collapse"
+                            bordered={false}
+                            expandIconPosition="end"
+                            style={{
+                                backgroundColor: 'white',
+                                borderRadius: '8px',
+                            }}
+                        />
+                    </div>
+                </div>
+                <ConfirmModal
+                    isOpen={modal}
+                    onClose={() => setModal(false)}
+                    title="SSS Sil"
+                    message="Bu içeriği silmek istediğinize emin misiniz? Bu işlem geri alınamaz."
+                    onConfirm={handleConfirm}
+                />
+            </div>
+        </>
     );
 }

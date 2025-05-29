@@ -2,18 +2,21 @@
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import SubmitButton from '@/components/common/submitButton';
 import React, { useActionState } from 'react';
-import { MuniDetailResponse } from '@/types';
+import { BreadcrumbItem, MuniDetailResponse } from '@/types';
 import { addMuniAdmin, updateMuniAdmin } from '@/app/actions';
 import { membershipTypes } from '@/data/membershipType';
 import ImageUploader from '../dynamic/imageUploader';
 import { formatDateInput } from '@/utils';
+import Breadcrumb from '../common/breadCrumb';
 
 export default function MuniForm({
     id,
     detail,
+    breadcrumb,
 }: {
     id?: string | null;
     detail?: MuniDetailResponse | null;
+    breadcrumb: BreadcrumbItem[];
 }) {
     const { handleResult } = useNotificationHandler();
     const isEditing = !!id;
@@ -71,256 +74,261 @@ export default function MuniForm({
     const [state, formAction] = useActionState(clientAction, initialState);
 
     return (
-        <div className="w-full bg-white shadow-lg rounded-xl p-8 border border-gray-100">
-            <form action={formAction} className="space-y-6">
-                {/* Common fields for both create and edit */}
+        <>
+            <Breadcrumb breadcrumb={breadcrumb} />
+            <div className="w-full bg-white shadow-lg rounded-xl p-8 border border-gray-100">
+                <form action={formAction} className="space-y-6">
+                    {/* Common fields for both create and edit */}
 
-                {isEditing && (
-                    <div className="space-y-5">
-                        <div className="mb-4">
-                            <ImageUploader
-                                name="logoImg"
-                                label="Logo"
-                                targetWidth={1920}
-                                targetHeight={1080}
-                                required
-                                initialImage={state?.logoImg}
-                            />
+                    {isEditing && (
+                        <div className="space-y-5">
+                            <div className="mb-4">
+                                <ImageUploader
+                                    name="logoImg"
+                                    label="Logo"
+                                    targetWidth={1920}
+                                    targetHeight={1080}
+                                    required
+                                    initialImage={state?.logoImg}
+                                />
+                            </div>
                         </div>
-                    </div>
-                )}
+                    )}
 
-                <div className="space-y-5">
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Belediye Adı
-                        </label>
-                        <input
-                            type="text"
-                            name="name"
-                            placeholder="Belediye Adı"
-                            defaultValue={state?.name}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required
-                        />
-                    </div>
-                </div>
-
-                <div className="space-y-5">
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            E-posta
-                        </label>
-                        <input
-                            type="email"
-                            name="email"
-                            placeholder="E-posta"
-                            defaultValue={state?.email}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required
-                        />
-                    </div>
-                </div>
-
-                {/* Password field only for create mode */}
-                {!isEditing && (
                     <div className="space-y-5">
                         <div className="mb-4">
                             <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Şifre
+                                Belediye Adı
                             </label>
                             <input
-                                type="password"
-                                name="password"
-                                placeholder="Şifre"
+                                type="text"
+                                name="name"
+                                placeholder="Belediye Adı"
+                                defaultValue={state?.name}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 required
                             />
                         </div>
                     </div>
-                )}
 
-                <div className="space-y-5">
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            GSM
-                        </label>
-                        <input
-                            type="text"
-                            name="phone"
-                            placeholder="+XX-XXXXXXXXXX"
-                            defaultValue={state?.phone}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required
-                        />
+                    <div className="space-y-5">
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                E-posta
+                            </label>
+                            <input
+                                type="email"
+                                name="email"
+                                placeholder="E-posta"
+                                defaultValue={state?.email}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required
+                            />
+                        </div>
                     </div>
-                </div>
 
-                <div className="space-y-5">
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Sabit Telefon
-                        </label>
-                        <input
-                            type="text"
-                            name="landlinePhone"
-                            placeholder="(0 XXX) XXX XX XX"
-                            defaultValue={state?.landlinePhone}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required
-                        />
+                    {/* Password field only for create mode */}
+                    {!isEditing && (
+                        <div className="space-y-5">
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    Şifre
+                                </label>
+                                <input
+                                    type="password"
+                                    name="password"
+                                    placeholder="Şifre"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    required
+                                />
+                            </div>
+                        </div>
+                    )}
+
+                    <div className="space-y-5">
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                GSM
+                            </label>
+                            <input
+                                type="text"
+                                name="phone"
+                                placeholder="+XX-XXXXXXXXXX"
+                                defaultValue={state?.phone}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required
+                            />
+                        </div>
                     </div>
-                </div>
 
-                <div className="space-y-5">
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Üyelik Tipi
-                        </label>
-                        <select
-                            key={`membership-select-${state?.membershipType || 'default'}`}
-                            name="membershipType"
-                            defaultValue={state?.membershipType}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required>
-                            <option value="" disabled>
-                                Üyelik Tipi Seçin
-                            </option>
-                            {membershipTypes.map((type) => (
-                                <option
-                                    key={type.id}
-                                    value={type.id.toString()}>
-                                    {type.name}
+                    <div className="space-y-5">
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Sabit Telefon
+                            </label>
+                            <input
+                                type="text"
+                                name="landlinePhone"
+                                placeholder="(0 XXX) XXX XX XX"
+                                defaultValue={state?.landlinePhone}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required
+                            />
+                        </div>
+                    </div>
+
+                    <div className="space-y-5">
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Üyelik Tipi
+                            </label>
+                            <select
+                                key={`membership-select-${state?.membershipType || 'default'}`}
+                                name="membershipType"
+                                defaultValue={state?.membershipType}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required>
+                                <option value="" disabled>
+                                    Üyelik Tipi Seçin
                                 </option>
-                            ))}
-                        </select>
+                                {membershipTypes.map((type) => (
+                                    <option
+                                        key={type.id}
+                                        value={type.id.toString()}>
+                                        {type.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
                     </div>
-                </div>
 
-                {/* Additional fields only for edit mode */}
-                {isEditing && (
-                    <>
-                        <div className="space-y-5">
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Website URL
-                                </label>
-                                <input
-                                    type="text"
-                                    name="url"
-                                    placeholder="Website URL"
-                                    defaultValue={state?.url}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="space-y-5">
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Üyelik Başlangıç Tarihi
-                                </label>
-                                <input
-                                    type="date"
-                                    name="membershipStartDate"
-                                    defaultValue={formatDateInput(
-                                        state?.membershipStartDate
-                                    )}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="space-y-5">
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Üyelik Bitiş Tarihi
-                                </label>
-                                <input
-                                    type="date"
-                                    name="membershipEndDate"
-                                    defaultValue={formatDateInput(
-                                        state?.membershipEndDate
-                                    )}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="space-y-5">
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Şehir
-                                </label>
-                                <input
-                                    type="text"
-                                    name="city"
-                                    placeholder="Şehir"
-                                    defaultValue={state?.city}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="space-y-5">
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    İlçe
-                                </label>
-                                <input
-                                    type="text"
-                                    name="discrit"
-                                    placeholder="İlçe"
-                                    defaultValue={state?.discrit}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="space-y-5">
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Adres
-                                </label>
-                                <input
-                                    type="text"
-                                    name="adressline"
-                                    placeholder="Adres"
-                                    defaultValue={state?.adressline}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="space-y-5">
-                            <div className="mb-4">
-                                <div className="flex items-center">
-                                    <input
-                                        type="checkbox"
-                                        id="status"
-                                        name="status"
-                                        defaultChecked={state?.status}
-                                        className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                                    />
-                                    <label
-                                        htmlFor="status"
-                                        className="ml-2 block text-sm font-medium text-gray-700">
-                                        Aktif
+                    {/* Additional fields only for edit mode */}
+                    {isEditing && (
+                        <>
+                            <div className="space-y-5">
+                                <div className="mb-4">
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        Website URL
                                     </label>
+                                    <input
+                                        type="text"
+                                        name="url"
+                                        placeholder="Website URL"
+                                        defaultValue={state?.url}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
                                 </div>
-                                <p className="text-xs text-gray-500 mt-1">
-                                    Belediyenin sistem üzerinde aktif olup
-                                    olmadığını belirler
-                                </p>
                             </div>
-                        </div>
-                    </>
-                )}
 
-                <div className="flex justify-end mt-8">
-                    <SubmitButton title={isEditing ? 'Güncelle' : 'Oluştur'} />
-                </div>
-            </form>
-        </div>
+                            <div className="space-y-5">
+                                <div className="mb-4">
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        Üyelik Başlangıç Tarihi
+                                    </label>
+                                    <input
+                                        type="date"
+                                        name="membershipStartDate"
+                                        defaultValue={formatDateInput(
+                                            state?.membershipStartDate
+                                        )}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="space-y-5">
+                                <div className="mb-4">
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        Üyelik Bitiş Tarihi
+                                    </label>
+                                    <input
+                                        type="date"
+                                        name="membershipEndDate"
+                                        defaultValue={formatDateInput(
+                                            state?.membershipEndDate
+                                        )}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="space-y-5">
+                                <div className="mb-4">
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        Şehir
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="city"
+                                        placeholder="Şehir"
+                                        defaultValue={state?.city}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="space-y-5">
+                                <div className="mb-4">
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        İlçe
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="discrit"
+                                        placeholder="İlçe"
+                                        defaultValue={state?.discrit}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="space-y-5">
+                                <div className="mb-4">
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        Adres
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="adressline"
+                                        placeholder="Adres"
+                                        defaultValue={state?.adressline}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="space-y-5">
+                                <div className="mb-4">
+                                    <div className="flex items-center">
+                                        <input
+                                            type="checkbox"
+                                            id="status"
+                                            name="status"
+                                            defaultChecked={state?.status}
+                                            className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                                        />
+                                        <label
+                                            htmlFor="status"
+                                            className="ml-2 block text-sm font-medium text-gray-700">
+                                            Aktif
+                                        </label>
+                                    </div>
+                                    <p className="text-xs text-gray-500 mt-1">
+                                        Belediyenin sistem üzerinde aktif olup
+                                        olmadığını belirler
+                                    </p>
+                                </div>
+                            </div>
+                        </>
+                    )}
+
+                    <div className="flex justify-end mt-8">
+                        <SubmitButton
+                            title={isEditing ? 'Güncelle' : 'Oluştur'}
+                        />
+                    </div>
+                </form>
+            </div>
+        </>
     );
 }

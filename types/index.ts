@@ -24,6 +24,11 @@ export type ApiFetchOptions = {
     next?: NextFetchRequestConfig;
 }
 
+export type BreadcrumbItem = {
+    label: string;
+    href?: string;
+};
+
 export interface CustomJwtPayload extends JwtPayload {
     exp: number;
 }
@@ -430,3 +435,4 @@ export type AnnouncementPaginationBody = PaginationBody & {
     startDate?: string;
     endDate?: string;
 };
+

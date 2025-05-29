@@ -13,8 +13,8 @@ export default async function Page() {
     const breadcrumb = [{ label: 'Şifre Değiştirme' }];
 
     return (
-        <PageContainer breadcrumb={breadcrumb}>
-            <ChangePasswordForm type="admin" />
+        <PageContainer>
+            <ChangePasswordForm type="admin" breadcrumb={breadcrumb} />
         </PageContainer>
     );
 }

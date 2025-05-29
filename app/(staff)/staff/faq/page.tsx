@@ -16,10 +16,11 @@ export default async function Page() {
     const breadcrumb = [{ label: 'Sıkça Sorulan Sorular' }];
 
     return (
-        <PageContainer breadcrumb={breadcrumb}>
+        <PageContainer>
             <FaqList
                 faqs={response?.frequentlyAskedQuestions || []}
                 type="staff"
+                breadcrumb={breadcrumb}
             />
         </PageContainer>
     );

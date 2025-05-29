@@ -15,8 +15,12 @@ export default async function Page() {
     const response = await getDevicesStaff();
 
     return (
-        <PageContainer breadcrumb={breadcrumb}>
-            <DevicesList devices={response?.devices || []} type="staff" />
+        <PageContainer>
+            <DevicesList
+                devices={response?.devices || []}
+                type="staff"
+                breadcrumb={breadcrumb}
+            />
         </PageContainer>
     );
 }

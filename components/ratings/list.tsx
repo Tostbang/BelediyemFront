@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Ratings, RatingResponse } from '@/types';
+import { Ratings, RatingResponse, BreadcrumbItem } from '@/types';
 import ConfirmModal from '../modals/confirmModal';
 import { approvedRatingMuni } from '@/app/actions';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
@@ -9,8 +9,15 @@ import { formatDateTime } from '@/utils';
 import DynamicTable from '../dynamic/table';
 import { usePagination } from '@/hooks/usePagination';
 import { Rate } from 'antd';
+import Breadcrumb from '../common/breadCrumb';
 
-export default function RatingList({ ratings }: { ratings: RatingResponse }) {
+export default function RatingList({
+    ratings,
+    breadcrumb,
+}: {
+    ratings: RatingResponse;
+    breadcrumb: BreadcrumbItem[];
+}) {
     const { pageNumber, pageSize, handlePageChange, handlePageSizeChange } =
         usePagination();
     const [modal, setModal] = useState(false);
@@ -109,31 +116,34 @@ export default function RatingList({ ratings }: { ratings: RatingResponse }) {
     ];
 
     return (
-        <div className="flex flex-col items-center w-full mb-6">
-            <div className="w-full overflow-hidden">
-                <DynamicTable<Ratings>
-                    data={ratings.ratings}
-                    columns={columns}
-                    rowKey="id"
-                    showControls={false}
-                    pagination={{
-                        pageSize: pageSize,
-                        current: pageNumber,
-                        total: ratings.totalCount || 0,
-                        onChange: handlePageChange,
-                        onShowSizeChange: handlePageSizeChange,
-                        responsive: true,
-                        size: 'default',
-                    }}
+        <>
+            <Breadcrumb breadcrumb={breadcrumb} />
+            <div className="flex flex-col items-center w-full mb-6">
+                <div className="w-full overflow-hidden">
+                    <DynamicTable<Ratings>
+                        data={ratings.ratings}
+                        columns={columns}
+                        rowKey="id"
+                        showControls={false}
+                        pagination={{
+                            pageSize: pageSize,
+                            current: pageNumber,
+                            total: ratings.totalCount || 0,
+                            onChange: handlePageChange,
+                            onShowSizeChange: handlePageSizeChange,
+                            responsive: true,
+                            size: 'default',
+                        }}
+                    />
+                </div>
+                <ConfirmModal
+                    isOpen={modal}
+                    onClose={() => setModal(false)}
+                    title="Değerlendirmeyi Onayla"
+                    message="Bu değerlendirmeyi onaylamak istediğinize emin misiniz?"
+                    onConfirm={handleConfirm}
                 />
             </div>
-            <ConfirmModal
-                isOpen={modal}
-                onClose={() => setModal(false)}
-                title="Değerlendirmeyi Onayla"
-                message="Bu değerlendirmeyi onaylamak istediğinize emin misiniz?"
-                onConfirm={handleConfirm}
-            />
-        </div>
+        </>
     );
 }

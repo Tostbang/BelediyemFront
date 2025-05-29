@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useRef } from 'react';
-import { StaffUser, StaffUserListResponse } from '@/types';
+import { BreadcrumbItem, StaffUser, StaffUserListResponse } from '@/types';
 import { sendStaffPWMuni, updateStaffStatusMuni } from '@/app/actions';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import { useRouter } from 'next/navigation';
@@ -13,11 +13,14 @@ import LinkButton from '@/components/common/LinkButton';
 import DynamicTable from '@/components/dynamic/table';
 import ConfirmModal from '@/components/modals/confirmModal';
 import { SearchIcon, TrashIcon } from '../icons';
+import Breadcrumb from '../common/breadCrumb';
 
 export default function StaffList({
     staffList,
+    breadcrumb,
 }: {
     staffList: StaffUserListResponse;
+    breadcrumb: BreadcrumbItem[];
 }) {
     const filterParams = ['searchText', 'municipalityStaffType'];
     const searchInputRef = useRef<HTMLInputElement>(
@@ -189,99 +192,105 @@ export default function StaffList({
     ];
 
     return (
-        <div className="flex flex-col items-center w-full mb-6">
-            <div className="w-full overflow-hidden bg-white rounded-lg p-6">
-                <div className="flex justify-end mb-4">
+        <>
+            <Breadcrumb
+                breadcrumb={breadcrumb}
+                buttonComponent={
                     <LinkButton
                         href="/municipality/staff/new"
                         title="Yeni Personel Ekle"
                     />
-                </div>
-                <div className="flex flex-col lg:flex-row justify-between items-start gap-4 mb-4">
-                    <div className="flex flex-col sm:flex-row flex-wrap items-center gap-3 w-full lg:w-auto">
-                        <select
-                            key={`membership-select-${filters.municipalityStaffType || 'default'}`}
-                            className="border border-gray-300 rounded p-2 w-full sm:w-auto"
-                            value={
-                                filters.municipalityStaffType?.toString() || ''
-                            }
-                            onChange={(e) =>
-                                handleFilterChange(
-                                    'municipalityStaffType',
-                                    e.target.value
-                                )
-                            }>
-                            <option value="">Tüm Departmanlar</option>
-                            {departmans.map((item) => (
-                                <option key={item.id} value={item.id}>
-                                    {item.name}
-                                </option>
-                            ))}
-                        </select>
-                        <div className="flex items-center w-full sm:w-auto">
-                            <input
-                                type="text"
-                                placeholder="Arama..."
-                                defaultValue={
-                                    filters.searchText?.toString() || ''
+                }
+            />
+            <div className="flex flex-col items-center w-full mb-6">
+                <div className="w-full overflow-hidden bg-white rounded-lg p-6">
+                    <div className="flex flex-col lg:flex-row justify-between items-start gap-4 mb-4">
+                        <div className="flex flex-col sm:flex-row flex-wrap items-center gap-3 w-full lg:w-auto">
+                            <select
+                                key={`membership-select-${filters.municipalityStaffType || 'default'}`}
+                                className="border border-gray-300 rounded p-2 w-full sm:w-auto"
+                                value={
+                                    filters.municipalityStaffType?.toString() ||
+                                    ''
                                 }
-                                ref={searchInputRef}
-                                className="border border-gray-300 border-r-transparent rounded-l p-2 flex-grow w-full sm:w-64"
-                            />
-                            <div className="flex items-center">
-                                <button
-                                    onClick={handleSearch}
-                                    className="border border-gray-300 border-r-0 flex items-center cursor-pointer justisfy-center bg-blue-500 hover:bg-blue-600 text-white p-2 h-full min-w-[41px]">
-                                    <SearchIcon />
-                                </button>
-                                <button
-                                    onClick={handleClearSearch}
-                                    className="border border-y-gray-300 border-l-0 border-r-gray-300  flex items-center cursor-pointer justify-center bg-red-500 hover:bg-red-600 text-white p-2 h-full min-w-[41px] rounded-r">
-                                    <TrashIcon />
-                                </button>
+                                onChange={(e) =>
+                                    handleFilterChange(
+                                        'municipalityStaffType',
+                                        e.target.value
+                                    )
+                                }>
+                                <option value="">Tüm Departmanlar</option>
+                                {departmans.map((item) => (
+                                    <option key={item.id} value={item.id}>
+                                        {item.name}
+                                    </option>
+                                ))}
+                            </select>
+                            <div className="flex items-center w-full sm:w-auto">
+                                <input
+                                    type="text"
+                                    placeholder="Arama..."
+                                    defaultValue={
+                                        filters.searchText?.toString() || ''
+                                    }
+                                    ref={searchInputRef}
+                                    className="border border-gray-300 border-r-transparent rounded-l p-2 flex-grow w-full sm:w-64"
+                                />
+                                <div className="flex items-center">
+                                    <button
+                                        onClick={handleSearch}
+                                        className="border border-gray-300 border-r-0 flex items-center cursor-pointer justisfy-center bg-blue-500 hover:bg-blue-600 text-white p-2 h-full min-w-[41px]">
+                                        <SearchIcon />
+                                    </button>
+                                    <button
+                                        onClick={handleClearSearch}
+                                        className="border border-y-gray-300 border-l-0 border-r-gray-300  flex items-center cursor-pointer justify-center bg-red-500 hover:bg-red-600 text-white p-2 h-full min-w-[41px] rounded-r">
+                                        <TrashIcon />
+                                    </button>
+                                </div>
                             </div>
                         </div>
+                        <div className="w-full sm:w-auto">
+                            <LinkButton
+                                href="/municipality/staff/password-reset-requests"
+                                title="Şifre Sıfırlama Talepleri"
+                                className="w-full sm:w-auto"
+                            />
+                        </div>
                     </div>
-                    <div className="w-full sm:w-auto">
-                        <LinkButton
-                            href="/municipality/staff/password-reset-requests"
-                            title="Şifre Sıfırlama Talepleri"
-                            className="w-full sm:w-auto"
+                    <div className="overflow-x-auto">
+                        <DynamicTable<StaffUser>
+                            data={staffList.municipalStaff}
+                            columns={columns}
+                            rowKey="id"
+                            showControls={false}
+                            pagination={{
+                                pageSize: pageSize,
+                                current: pageNumber,
+                                total: staffList.totalCount || 0,
+                                onChange: handlePageChange,
+                                onShowSizeChange: handlePageSizeChange,
+                                responsive: true,
+                                size: 'default',
+                            }}
                         />
                     </div>
                 </div>
-                <div className="overflow-x-auto">
-                    <DynamicTable<StaffUser>
-                        data={staffList.municipalStaff}
-                        columns={columns}
-                        rowKey="id"
-                        showControls={false}
-                        pagination={{
-                            pageSize: pageSize,
-                            current: pageNumber,
-                            total: staffList.totalCount || 0,
-                            onChange: handlePageChange,
-                            onShowSizeChange: handlePageSizeChange,
-                            responsive: true,
-                            size: 'default',
-                        }}
-                    />
-                </div>
+                <ConfirmModal
+                    isOpen={modal}
+                    onClose={() => setModal(false)}
+                    title="Personel Sil"
+                    message="Bu kaydı silmek istediğinize emin misiniz? Bu işlem geri alınamaz."
+                    onConfirm={handleConfirm}
+                />
+                <ConfirmModal
+                    isOpen={modalReset}
+                    onClose={() => setModalReset(false)}
+                    title="Şifre Sıfırla"
+                    message="Şifre sıfırlama işlemi, personelin mevcut şifresini sıfırlayacak ve yeni bir şifre oluşturacaktır. Devam etmek istediğinize emin misiniz?"
+                    onConfirm={handleConfirmReset}
+                />
             </div>
-            <ConfirmModal
-                isOpen={modal}
-                onClose={() => setModal(false)}
-                title="Personel Sil"
-                message="Bu kaydı silmek istediğinize emin misiniz? Bu işlem geri alınamaz."
-                onConfirm={handleConfirm}
-            />
-            <ConfirmModal
-                isOpen={modalReset}
-                onClose={() => setModalReset(false)}
-                title="Şifre Sıfırla"
-                message="Şifre sıfırlama işlemi, personelin mevcut şifresini sıfırlayacak ve yeni bir şifre oluşturacaktır. Devam etmek istediğinize emin misiniz?"
-                onConfirm={handleConfirmReset}
-            />
-        </div>
+        </>
     );
 }

@@ -10,6 +10,7 @@ import {
     XIcon,
 } from '@/components/icons';
 import {
+    BreadcrumbItem,
     DashboardStatisticsAdmin,
     DepartmentStatistics,
     TopComplaintCategories,
@@ -18,11 +19,14 @@ import {
 import DynamicTable from '../dynamic/table';
 import { departmans } from '@/data/departmans';
 import ComplaintChart from './complaintChart';
+import Breadcrumb from '../common/breadCrumb';
 
 export default function DashboardAdmin({
     dashboard,
+    breadcrumb,
 }: {
     dashboard: DashboardStatisticsAdmin;
+    breadcrumb: BreadcrumbItem[];
 }) {
     const cardsData = [
         {
@@ -163,7 +167,8 @@ export default function DashboardAdmin({
     ];
 
     return (
-        <div>
+        <>
+            <Breadcrumb breadcrumb={breadcrumb} />
             <div className="flex flex-col items-center w-full mb-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 w-full max-w-full">
                     {cardsData.map((card, index) => (
@@ -224,6 +229,6 @@ export default function DashboardAdmin({
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }

@@ -31,9 +31,9 @@ export default async function Page({
     const breadcrumb = [{ label: 'Anasayfa' }];
 
     return (
-        <PageContainer breadcrumb={breadcrumb}>
+        <PageContainer >
             {response && reportsData && (
-                <DashboardMuni dashboard={response} reports={reportsData} />
+                <DashboardMuni dashboard={response} reports={reportsData} breadcrumb={breadcrumb}/>
             )}
         </PageContainer>
     );

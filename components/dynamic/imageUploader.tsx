@@ -172,7 +172,7 @@ export default function ImageUploader({
                         <button
                             type="button"
                             onClick={handleDeleteImage}
-                            className="flex items-center justify-center w-8 h-8 bg-red-100 rounded-full hover:bg-red-200 transition-colors"
+                            className="flex items-center justify-center cursor-pointer w-8 h-8 bg-red-100 rounded-full hover:bg-red-200 transition-colors"
                             aria-label="Delete image">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -209,7 +209,7 @@ export default function ImageUploader({
                             width={800}
                             height={300}
                             className="w-full h-full object-contain"
-                            skipUrlValidation={true} // Skip URL validation for cropped images
+                            skipUrlValidation={!initialImage}
                         />
                     </div>
                 </div>

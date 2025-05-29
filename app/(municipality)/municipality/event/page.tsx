@@ -42,8 +42,10 @@ export default async function Page({
     const breadcrumb = [{ label: 'Etkinlik / Duyuru Listesi' }];
 
     return (
-        <PageContainer breadcrumb={breadcrumb}>
-            {response && <EventList events={response} />}
+        <PageContainer>
+            {response && (
+                <EventList events={response} breadcrumb={breadcrumb} />
+            )}
         </PageContainer>
     );
 }

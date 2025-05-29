@@ -37,8 +37,10 @@ export default async function Page({
     const breadcrumb = [{ label: 'Vatandaş Listesi' }];
 
     return (
-        <PageContainer breadcrumb={breadcrumb}>
-            {response && <CitizenList users={response} />}
+        <PageContainer>
+            {response && (
+                <CitizenList users={response} breadcrumb={breadcrumb} />
+            )}
         </PageContainer>
     );
 }

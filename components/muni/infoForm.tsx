@@ -3,10 +3,17 @@ import { updateInfoMuni } from '@/app/actions';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import SubmitButton from '@/components/common/submitButton';
 import React, { useActionState } from 'react';
-import { InfoMuni } from '@/types';
+import { BreadcrumbItem, InfoMuni } from '@/types';
 import ImageUploader from '../dynamic/imageUploader';
+import Breadcrumb from '../common/breadCrumb';
 
-export default function InfoFormMuni({ detail }: { detail?: InfoMuni | null }) {
+export default function InfoFormMuni({
+    detail,
+    breadcrumb,
+}: {
+    detail?: InfoMuni | null;
+    breadcrumb: BreadcrumbItem[];
+}) {
     const { handleResult } = useNotificationHandler();
 
     const initialState = {
@@ -40,117 +47,120 @@ export default function InfoFormMuni({ detail }: { detail?: InfoMuni | null }) {
     const [state, formAction] = useActionState(clientAction, initialState);
 
     return (
-        <div className="w-full bg-white shadow-lg rounded-xl p-8 border border-gray-100">
-            <form action={formAction} className="space-y-6">
-                <div className="space-y-5">
-                    <ImageUploader
-                        name="logoImg"
-                        label="Logo"
-                        targetWidth={1920}
-                        targetHeight={1080}
-                        required
-                        initialImage={state?.logoImg}
-                    />
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Belediye Adı
-                        </label>
-                        <input
-                            type="text"
-                            name="name"
-                            placeholder="Belediye Adı"
-                            defaultValue={state?.name}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required
-                        />
-                    </div>
-                </div>
-                <div className="space-y-5">
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Url
-                        </label>
-                        <input
-                            type="text"
-                            name="url"
-                            placeholder="https://example.com"
-                            defaultValue={state?.url}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required
-                        />
-                    </div>
+        <>
+            <Breadcrumb breadcrumb={breadcrumb} />
+            <div className="w-full bg-white shadow-lg rounded-xl p-8 border border-gray-100">
+                <form action={formAction} className="space-y-6">
                     <div className="space-y-5">
+                        <ImageUploader
+                            name="logoImg"
+                            label="Logo"
+                            targetWidth={1920}
+                            targetHeight={1080}
+                            required
+                            initialImage={state?.logoImg}
+                        />
                         <div className="mb-4">
                             <label className="block text-sm font-medium text-gray-700 mb-1">
-                                GSM
+                                Belediye Adı
                             </label>
                             <input
                                 type="text"
-                                name="phone"
-                                placeholder="+XX-XXXXXXXXXX"
-                                defaultValue={state?.phone}
+                                name="name"
+                                placeholder="Belediye Adı"
+                                defaultValue={state?.name}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 required
                             />
                         </div>
                     </div>
+                    <div className="space-y-5">
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Url
+                            </label>
+                            <input
+                                type="text"
+                                name="url"
+                                placeholder="https://example.com"
+                                defaultValue={state?.url}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required
+                            />
+                        </div>
+                        <div className="space-y-5">
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    GSM
+                                </label>
+                                <input
+                                    type="text"
+                                    name="phone"
+                                    placeholder="+XX-XXXXXXXXXX"
+                                    defaultValue={state?.phone}
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    required
+                                />
+                            </div>
+                        </div>
 
-                    <div className="space-y-5">
+                        <div className="space-y-5">
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    Sabit Telefon
+                                </label>
+                                <input
+                                    type="text"
+                                    name="landlinePhone"
+                                    placeholder="(0 XXX) XXX XX XX"
+                                    defaultValue={state?.landlinePhone}
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    required
+                                />
+                            </div>
+                        </div>
                         <div className="mb-4">
                             <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Sabit Telefon
+                                Şehir
                             </label>
                             <input
                                 type="text"
-                                name="landlinePhone"
-                                placeholder="(0 XXX) XXX XX XX"
-                                defaultValue={state?.landlinePhone}
+                                name="city"
+                                placeholder="Şehir"
+                                defaultValue={state?.city}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                İlçe
+                            </label>
+                            <input
+                                type="text"
+                                name="discrit"
+                                placeholder="İlçe"
+                                defaultValue={state?.discrit}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Adres
+                            </label>
+                            <textarea
+                                name="adressline"
+                                defaultValue={state?.adressline}
+                                placeholder="Adres"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                rows={3}
                             />
                         </div>
                     </div>
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Şehir
-                        </label>
-                        <input
-                            type="text"
-                            name="city"
-                            placeholder="Şehir"
-                            defaultValue={state?.city}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
+                    <div className="flex justify-end mt-8">
+                        <SubmitButton title="Kaydet" />
                     </div>
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            İlçe
-                        </label>
-                        <input
-                            type="text"
-                            name="discrit"
-                            placeholder="İlçe"
-                            defaultValue={state?.discrit}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Adres
-                        </label>
-                        <textarea
-                            name="adressline"
-                            defaultValue={state?.adressline}
-                            placeholder="Adres"
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            rows={3}
-                        />
-                    </div>
-                </div>
-                <div className="flex justify-end mt-8">
-                    <SubmitButton title="Kaydet" />
-                </div>
-            </form>
-        </div>
+                </form>
+            </div>
+        </>
     );
 }

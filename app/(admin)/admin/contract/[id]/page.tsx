@@ -49,7 +49,7 @@ export default async function Page({
     ];
 
     return (
-        <PageContainer breadcrumb={breadcrumb}>
+        <PageContainer>
             {errorMessage ? (
                 <AlertMessage
                     message={errorMessage}
@@ -57,7 +57,11 @@ export default async function Page({
                     title="Hata"
                 />
             ) : (
-                <ContractForm id={id} detail={detail || null} />
+                <ContractForm
+                    id={id}
+                    detail={detail || null}
+                    breadcrumb={breadcrumb}
+                />
             )}
         </PageContainer>
     );

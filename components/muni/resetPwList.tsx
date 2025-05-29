@@ -1,6 +1,11 @@
 'use client';
 import React, { useState } from 'react';
-import { PasswordReset, PasswordResetResponse, RoleType } from '@/types';
+import {
+    BreadcrumbItem,
+    PasswordReset,
+    PasswordResetResponse,
+    RoleType,
+} from '@/types';
 import DynamicTable from '../dynamic/table';
 import ConfirmModal from '../modals/confirmModal';
 import { sendMunisPWAdmin, sendStaffPWMuni } from '@/app/actions';
@@ -8,13 +13,16 @@ import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import { useRouter } from 'next/navigation';
 import { usePagination } from '@/hooks/usePagination';
 import { formatDateTime } from '@/utils';
+import Breadcrumb from '../common/breadCrumb';
 
 export default function PWResetList({
     requests,
     type,
+    breadcrumb,
 }: {
     requests: PasswordResetResponse;
     type: RoleType;
+    breadcrumb: BreadcrumbItem[];
 }) {
     const { pageNumber, pageSize, handlePageChange, handlePageSizeChange } =
         usePagination();
@@ -127,33 +135,36 @@ export default function PWResetList({
     ];
 
     return (
-        <div className="flex flex-col items-center w-full mb-6">
-            <div className="w-full overflow-hidden bg-white rounded-lg p-6">
-                <div className="overflow-x-auto">
-                    <DynamicTable<PasswordReset>
-                        data={requests.requests}
-                        columns={columns}
-                        rowKey="id"
-                        showControls={false}
-                        pagination={{
-                            pageSize: pageSize,
-                            current: pageNumber,
-                            total: requests.totalCount || 0,
-                            onChange: handlePageChange,
-                            onShowSizeChange: handlePageSizeChange,
-                            responsive: true,
-                            size: 'default',
-                        }}
-                    />
+        <>
+            <Breadcrumb breadcrumb={breadcrumb} />
+            <div className="flex flex-col items-center w-full mb-6">
+                <div className="w-full overflow-hidden bg-white rounded-lg p-6">
+                    <div className="overflow-x-auto">
+                        <DynamicTable<PasswordReset>
+                            data={requests.requests}
+                            columns={columns}
+                            rowKey="id"
+                            showControls={false}
+                            pagination={{
+                                pageSize: pageSize,
+                                current: pageNumber,
+                                total: requests.totalCount || 0,
+                                onChange: handlePageChange,
+                                onShowSizeChange: handlePageSizeChange,
+                                responsive: true,
+                                size: 'default',
+                            }}
+                        />
+                    </div>
                 </div>
+                <ConfirmModal
+                    isOpen={modal}
+                    onClose={() => setModal(false)}
+                    title="Mail Gönder"
+                    message="Bu maile şifre sıfırlama talebi gönderilecek. Onaylıyor musunuz?"
+                    onConfirm={handleConfirm}
+                />
             </div>
-            <ConfirmModal
-                isOpen={modal}
-                onClose={() => setModal(false)}
-                title="Mail Gönder"
-                message="Bu maile şifre sıfırlama talebi gönderilecek. Onaylıyor musunuz?"
-                onConfirm={handleConfirm}
-            />
-        </div>
+        </>
     );
 }

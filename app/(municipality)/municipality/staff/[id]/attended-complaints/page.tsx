@@ -60,8 +60,10 @@ export default async function Page({
     ];
 
     return (
-        <PageContainer breadcrumb={breadcrumb}>
-            {response && <AttendedList complaints={response} />}
+        <PageContainer>
+            {response && (
+                <AttendedList complaints={response} breadcrumb={breadcrumb} />
+            )}
         </PageContainer>
     );
 }

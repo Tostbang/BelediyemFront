@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Devices, RoleType } from '@/types';
+import { BreadcrumbItem, Devices, RoleType } from '@/types';
 import DynamicTable from '../dynamic/table';
 import ConfirmModal from '../modals/confirmModal';
 import {
@@ -11,13 +11,16 @@ import {
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import { useRouter } from 'next/navigation';
 import { formatDateTime } from '@/utils';
+import Breadcrumb from '../common/breadCrumb';
 
 export default function DevicesList({
     devices,
     type,
+    breadcrumb,
 }: {
     devices: Devices[];
     type: RoleType;
+    breadcrumb: BreadcrumbItem[];
 }) {
     const [modal, setModal] = useState(false);
     const [selectedItem, setSelectedItem] = useState<string | null>(null);
@@ -101,25 +104,28 @@ export default function DevicesList({
     ];
 
     return (
-        <div className="flex flex-col items-center w-full mb-6">
-            <div className="w-full overflow-hidden bg-white rounded-lg p-6">
-                <div className="overflow-x-auto">
-                    <DynamicTable<Devices>
-                        data={devices}
-                        columns={columns}
-                        rowKey="id"
-                        showControls={false}
-                        pagination={false}
-                    />
+        <>
+            <Breadcrumb breadcrumb={breadcrumb} />
+            <div className="flex flex-col items-center w-full mb-6">
+                <div className="w-full overflow-hidden bg-white rounded-lg p-6">
+                    <div className="overflow-x-auto">
+                        <DynamicTable<Devices>
+                            data={devices}
+                            columns={columns}
+                            rowKey="id"
+                            showControls={false}
+                            pagination={false}
+                        />
+                    </div>
                 </div>
+                <ConfirmModal
+                    isOpen={modal}
+                    onClose={() => setModal(false)}
+                    title="Oturumu Kapat"
+                    message="Bu cihazdaki oturumu kapatmak istediğinize emin misiniz? Bu işlem geri alınamaz."
+                    onConfirm={handleConfirm}
+                />
             </div>
-            <ConfirmModal
-                isOpen={modal}
-                onClose={() => setModal(false)}
-                title="Oturumu Kapat"
-                message="Bu cihazdaki oturumu kapatmak istediğinize emin misiniz? Bu işlem geri alınamaz."
-                onConfirm={handleConfirm}
-            />
-        </div>
+        </>
     );
 }

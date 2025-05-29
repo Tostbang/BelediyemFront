@@ -12,9 +12,10 @@ import {
 } from '@/app/actions';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import SubmitButton from '../common/submitButton';
-import { RoleType } from '@/types';
+import { BreadcrumbItem, RoleType } from '@/types';
 import { z } from 'zod';
 import { FiCheck, FiX } from 'react-icons/fi';
+import Breadcrumb from '../common/breadCrumb';
 
 const passwordSchema = z
     .object({
@@ -48,7 +49,13 @@ type ValidationErrors = {
     passwordsMatch: boolean;
 };
 
-export default function ChangePasswordForm({ type }: { type: RoleType }) {
+export default function ChangePasswordForm({
+    type,
+    breadcrumb,
+}: {
+    type: RoleType;
+    breadcrumb: BreadcrumbItem[];
+}) {
     const [showOldPassword, setShowOldPassword] = useState<boolean>(false);
     const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
     const [showConfirmPassword, setShowConfirmPassword] =
@@ -192,213 +199,223 @@ export default function ChangePasswordForm({ type }: { type: RoleType }) {
     );
 
     return (
-        <div className="w-full bg-white shadow-lg rounded-xl p-8 border border-gray-100">
-            {type !== 'admin' && (
-                <div className="flex justify-end mb-4">
-                    <form
-                        action={clientAction2}
-                        className="flex flex-col gap-2">
-                        <SubmitButton
-                            title={
-                                type === 'municipality'
-                                    ? 'Admine Şifre Sıfırlama Talebi Gönder'
-                                    : 'Belediyeye Şifre Sıfırlama Talebi Gönder'
-                            }
-                        />
-                    </form>
-                </div>
-            )}
-
-            <form action={formAction} className="flex flex-col gap-6">
-                <div className="flex flex-col">
-                    <label
-                        htmlFor="oldPassword"
-                        className="text-sm font-semibold text-gray-700 mb-2">
-                        Eski Şifre
-                    </label>
-                    <div className="relative">
-                        <input
-                            type={showOldPassword ? 'text' : 'password'}
-                            id="oldPassword"
-                            name="oldPassword"
-                            placeholder="Eski Şifre"
-                            value={oldPassword}
-                            onChange={(e) => setOldPassword(e.target.value)}
-                            autoComplete="one-time-code"
-                            data-form-type="password"
-                            suppressHydrationWarning={true}
-                            className={`border ${validations.minLength && oldPassword ? 'border-green-500' : 'border-gray-300'} p-4 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
-                            required
-                        />
-                        <span
-                            onClick={() => setShowOldPassword(!showOldPassword)}
-                            className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500 hover:text-blue-500">
-                            {showOldPassword ? (
-                                <AiFillEye size={20} />
-                            ) : (
-                                <AiFillEyeInvisible size={20} />
-                            )}
-                        </span>
+        <>
+            <Breadcrumb
+                breadcrumb={breadcrumb}
+                buttonComponent={
+                    type !== 'admin' && (
+                        <form
+                            action={clientAction2}
+                            className="flex flex-col gap-2">
+                            <SubmitButton
+                                title={
+                                    type === 'municipality'
+                                        ? 'Admine Şifre Sıfırlama Talebi Gönder'
+                                        : 'Belediyeye Şifre Sıfırlama Talebi Gönder'
+                                }
+                            />
+                        </form>
+                    )
+                }
+            />
+            <div className="w-full bg-white shadow-lg rounded-xl p-8 border border-gray-100">
+                <form action={formAction} className="flex flex-col gap-6">
+                    <div className="flex flex-col">
+                        <label
+                            htmlFor="oldPassword"
+                            className="text-sm font-semibold text-gray-700 mb-2">
+                            Eski Şifre
+                        </label>
+                        <div className="relative">
+                            <input
+                                type={showOldPassword ? 'text' : 'password'}
+                                id="oldPassword"
+                                name="oldPassword"
+                                placeholder="Eski Şifre"
+                                value={oldPassword}
+                                onChange={(e) => setOldPassword(e.target.value)}
+                                autoComplete="one-time-code"
+                                data-form-type="password"
+                                suppressHydrationWarning={true}
+                                className={`border ${validations.minLength && oldPassword ? 'border-green-500' : 'border-gray-300'} p-4 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
+                                required
+                            />
+                            <span
+                                onClick={() =>
+                                    setShowOldPassword(!showOldPassword)
+                                }
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500 hover:text-blue-500">
+                                {showOldPassword ? (
+                                    <AiFillEye size={20} />
+                                ) : (
+                                    <AiFillEyeInvisible size={20} />
+                                )}
+                            </span>
+                        </div>
                     </div>
-                </div>
 
-                <div className="flex flex-col">
-                    <label
-                        htmlFor="newPassword"
-                        className="text-sm font-semibold text-gray-700 mb-2">
-                        Yeni Şifre
-                    </label>
-                    <div className="relative">
-                        <input
-                            type={showNewPassword ? 'text' : 'password'}
-                            id="newPassword"
-                            name="newPassword"
-                            placeholder="Yeni Şifre"
-                            value={newPassword}
-                            onChange={(e) => setNewPassword(e.target.value)}
-                            autoComplete="one-time-code"
-                            data-form-type="password"
-                            suppressHydrationWarning={true}
-                            className={`border ${validations.minLength && newPassword ? 'border-green-500' : 'border-gray-300'} p-4 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
-                            required
-                        />
-                        <span
-                            onClick={() => setShowNewPassword(!showNewPassword)}
-                            className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500 hover:text-blue-500">
-                            {showNewPassword ? (
-                                <AiFillEye size={20} />
-                            ) : (
-                                <AiFillEyeInvisible size={20} />
-                            )}
-                        </span>
+                    <div className="flex flex-col">
+                        <label
+                            htmlFor="newPassword"
+                            className="text-sm font-semibold text-gray-700 mb-2">
+                            Yeni Şifre
+                        </label>
+                        <div className="relative">
+                            <input
+                                type={showNewPassword ? 'text' : 'password'}
+                                id="newPassword"
+                                name="newPassword"
+                                placeholder="Yeni Şifre"
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                                autoComplete="one-time-code"
+                                data-form-type="password"
+                                suppressHydrationWarning={true}
+                                className={`border ${validations.minLength && newPassword ? 'border-green-500' : 'border-gray-300'} p-4 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
+                                required
+                            />
+                            <span
+                                onClick={() =>
+                                    setShowNewPassword(!showNewPassword)
+                                }
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500 hover:text-blue-500">
+                                {showNewPassword ? (
+                                    <AiFillEye size={20} />
+                                ) : (
+                                    <AiFillEyeInvisible size={20} />
+                                )}
+                            </span>
+                        </div>
                     </div>
-                </div>
 
-                <div className="flex flex-col">
-                    <label
-                        htmlFor="confirmPassword"
-                        className="text-sm font-semibold text-gray-700 mb-2">
-                        Yeni Şifreyi Tekrar Girin
-                    </label>
-                    <div className="relative">
-                        <input
-                            type={showConfirmPassword ? 'text' : 'password'}
-                            id="confirmPassword"
-                            name="confirmPassword"
-                            placeholder="Yeni Şifreyi Tekrar Girin"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            autoComplete="one-time-code"
-                            data-form-type="password"
-                            suppressHydrationWarning={true}
-                            className={`border ${validations.passwordsMatch && confirmPassword ? 'border-green-500' : 'border-gray-300'} p-4 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
-                            required
-                        />
-                        <span
-                            onClick={() =>
-                                setShowConfirmPassword(!showConfirmPassword)
-                            }
-                            className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500 hover:text-blue-500">
-                            {showConfirmPassword ? (
-                                <AiFillEye size={20} />
-                            ) : (
-                                <AiFillEyeInvisible size={20} />
-                            )}
-                        </span>
+                    <div className="flex flex-col">
+                        <label
+                            htmlFor="confirmPassword"
+                            className="text-sm font-semibold text-gray-700 mb-2">
+                            Yeni Şifreyi Tekrar Girin
+                        </label>
+                        <div className="relative">
+                            <input
+                                type={showConfirmPassword ? 'text' : 'password'}
+                                id="confirmPassword"
+                                name="confirmPassword"
+                                placeholder="Yeni Şifreyi Tekrar Girin"
+                                value={confirmPassword}
+                                onChange={(e) =>
+                                    setConfirmPassword(e.target.value)
+                                }
+                                autoComplete="one-time-code"
+                                data-form-type="password"
+                                suppressHydrationWarning={true}
+                                className={`border ${validations.passwordsMatch && confirmPassword ? 'border-green-500' : 'border-gray-300'} p-4 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
+                                required
+                            />
+                            <span
+                                onClick={() =>
+                                    setShowConfirmPassword(!showConfirmPassword)
+                                }
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500 hover:text-blue-500">
+                                {showConfirmPassword ? (
+                                    <AiFillEye size={20} />
+                                ) : (
+                                    <AiFillEyeInvisible size={20} />
+                                )}
+                            </span>
+                        </div>
+                        {confirmPassword && (
+                            <p
+                                className={`text-sm mt-1 ${validations.passwordsMatch ? 'text-green-500' : 'text-red-500'}`}>
+                                {validations.passwordsMatch
+                                    ? 'Şifreler eşleşiyor'
+                                    : 'Şifreler eşleşmiyor'}
+                            </p>
+                        )}
                     </div>
-                    {confirmPassword && (
-                        <p
-                            className={`text-sm mt-1 ${validations.passwordsMatch ? 'text-green-500' : 'text-red-500'}`}>
-                            {validations.passwordsMatch
-                                ? 'Şifreler eşleşiyor'
-                                : 'Şifreler eşleşmiyor'}
-                        </p>
+
+                    {validationError && (
+                        <div className="text-red-500 text-sm bg-red-50 p-3 rounded-lg">
+                            {validationError}
+                        </div>
                     )}
-                </div>
 
-                {validationError && (
-                    <div className="text-red-500 text-sm bg-red-50 p-3 rounded-lg">
-                        {validationError}
+                    <div className="bg-blue-50 p-4 rounded-lg text-sm text-blue-800 mt-2">
+                        <p className="font-medium mb-2">
+                            Güçlü bir şifre için gereksinimler:
+                        </p>
+                        <ul className="list-none pl-1 space-y-1">
+                            <li className="flex items-center">
+                                <ValidationIndicator
+                                    isValid={validations.minLength}
+                                />
+                                <span
+                                    className={
+                                        validations.minLength
+                                            ? 'text-green-700'
+                                            : ''
+                                    }>
+                                    En az 8 karakter
+                                </span>
+                            </li>
+                            <li className="flex items-center">
+                                <ValidationIndicator
+                                    isValid={validations.hasUpperCase}
+                                />
+                                <span
+                                    className={
+                                        validations.hasUpperCase
+                                            ? 'text-green-700'
+                                            : ''
+                                    }>
+                                    En az bir büyük harf (A-Z)
+                                </span>
+                            </li>
+                            <li className="flex items-center">
+                                <ValidationIndicator
+                                    isValid={validations.hasLowerCase}
+                                />
+                                <span
+                                    className={
+                                        validations.hasLowerCase
+                                            ? 'text-green-700'
+                                            : ''
+                                    }>
+                                    En az bir küçük harf (a-z)
+                                </span>
+                            </li>
+                            <li className="flex items-center">
+                                <ValidationIndicator
+                                    isValid={validations.hasNumber}
+                                />
+                                <span
+                                    className={
+                                        validations.hasNumber
+                                            ? 'text-green-700'
+                                            : ''
+                                    }>
+                                    En az bir sayı (0-9)
+                                </span>
+                            </li>
+                            <li className="flex items-center">
+                                <ValidationIndicator
+                                    isValid={validations.hasSpecial}
+                                />
+                                <span
+                                    className={
+                                        validations.hasSpecial
+                                            ? 'text-green-700'
+                                            : ''
+                                    }>
+                                    En az bir özel karakter
+                                </span>
+                            </li>
+                        </ul>
                     </div>
-                )}
 
-                <div className="bg-blue-50 p-4 rounded-lg text-sm text-blue-800 mt-2">
-                    <p className="font-medium mb-2">
-                        Güçlü bir şifre için gereksinimler:
-                    </p>
-                    <ul className="list-none pl-1 space-y-1">
-                        <li className="flex items-center">
-                            <ValidationIndicator
-                                isValid={validations.minLength}
-                            />
-                            <span
-                                className={
-                                    validations.minLength
-                                        ? 'text-green-700'
-                                        : ''
-                                }>
-                                En az 8 karakter
-                            </span>
-                        </li>
-                        <li className="flex items-center">
-                            <ValidationIndicator
-                                isValid={validations.hasUpperCase}
-                            />
-                            <span
-                                className={
-                                    validations.hasUpperCase
-                                        ? 'text-green-700'
-                                        : ''
-                                }>
-                                En az bir büyük harf (A-Z)
-                            </span>
-                        </li>
-                        <li className="flex items-center">
-                            <ValidationIndicator
-                                isValid={validations.hasLowerCase}
-                            />
-                            <span
-                                className={
-                                    validations.hasLowerCase
-                                        ? 'text-green-700'
-                                        : ''
-                                }>
-                                En az bir küçük harf (a-z)
-                            </span>
-                        </li>
-                        <li className="flex items-center">
-                            <ValidationIndicator
-                                isValid={validations.hasNumber}
-                            />
-                            <span
-                                className={
-                                    validations.hasNumber
-                                        ? 'text-green-700'
-                                        : ''
-                                }>
-                                En az bir sayı (0-9)
-                            </span>
-                        </li>
-                        <li className="flex items-center">
-                            <ValidationIndicator
-                                isValid={validations.hasSpecial}
-                            />
-                            <span
-                                className={
-                                    validations.hasSpecial
-                                        ? 'text-green-700'
-                                        : ''
-                                }>
-                                En az bir özel karakter
-                            </span>
-                        </li>
-                    </ul>
-                </div>
-
-                <div className="flex justify-end mt-8">
-                    <SubmitButton title="Güncelle" />
-                </div>
-            </form>
-        </div>
+                    <div className="flex justify-end mt-8">
+                        <SubmitButton title="Güncelle" />
+                    </div>
+                </form>
+            </div>
+        </>
     );
 }

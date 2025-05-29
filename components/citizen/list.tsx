@@ -1,13 +1,20 @@
 'use client';
 import React, { useRef } from 'react';
-import { CitezenUser, CitizenUserResponse } from '@/types';
+import { BreadcrumbItem, CitezenUser, CitizenUserResponse } from '@/types';
 import { usePagination } from '@/hooks/usePagination';
 import DynamicTable from '@/components/dynamic/table';
 import { formatDateTime } from '@/utils';
 import { PersonIcon, SearchIcon, TrashIcon } from '../icons';
 import ImageWithSkeleton from '../common/imageSkeleton';
+import Breadcrumb from '../common/breadCrumb';
 
-export default function CitizenList({ users }: { users: CitizenUserResponse }) {
+export default function CitizenList({
+    users,
+    breadcrumb,
+}: {
+    users: CitizenUserResponse;
+    breadcrumb: BreadcrumbItem[];
+}) {
     const filterParams = ['searchText'];
     const searchInputRef = useRef<HTMLInputElement>(
         null
@@ -98,53 +105,56 @@ export default function CitizenList({ users }: { users: CitizenUserResponse }) {
     ];
 
     return (
-        <div className="flex flex-col items-center w-full mb-6">
-            <div className="w-full overflow-hidden bg-white rounded-lg p-6">
-                <div className="flex flex-col lg:flex-row justify-between items-start gap-4 mb-4">
-                    <div className="flex flex-col sm:flex-row flex-wrap items-center gap-3 w-full lg:w-auto">
-                        <div className="flex items-center w-full sm:w-auto">
-                            <input
-                                type="text"
-                                placeholder="Arama..."
-                                defaultValue={
-                                    filters.searchText?.toString() || ''
-                                }
-                                ref={searchInputRef}
-                                className="border border-gray-300 border-r-transparent rounded-l p-2 flex-grow w-full sm:w-64"
-                            />
-                            <div className="flex items-center">
-                                <button
-                                    onClick={handleSearch}
-                                    className="border border-gray-300 border-r-0 flex items-center cursor-pointer justisfy-center bg-blue-500 hover:bg-blue-600 text-white p-2 h-full min-w-[41px]">
-                                    <SearchIcon />
-                                </button>
-                                <button
-                                    onClick={handleClearSearch}
-                                    className="border border-y-gray-300 border-l-0 border-r-gray-300  flex items-center cursor-pointer justify-center bg-red-500 hover:bg-red-600 text-white p-2 h-full min-w-[41px] rounded-r">
-                                    <TrashIcon />
-                                </button>
+        <>
+            <Breadcrumb breadcrumb={breadcrumb} />
+            <div className="flex flex-col items-center w-full mb-6">
+                <div className="w-full overflow-hidden bg-white rounded-lg p-6">
+                    <div className="flex flex-col lg:flex-row justify-between items-start gap-4 mb-4">
+                        <div className="flex flex-col sm:flex-row flex-wrap items-center gap-3 w-full lg:w-auto">
+                            <div className="flex items-center w-full sm:w-auto">
+                                <input
+                                    type="text"
+                                    placeholder="Arama..."
+                                    defaultValue={
+                                        filters.searchText?.toString() || ''
+                                    }
+                                    ref={searchInputRef}
+                                    className="border border-gray-300 border-r-transparent rounded-l p-2 flex-grow w-full sm:w-64"
+                                />
+                                <div className="flex items-center">
+                                    <button
+                                        onClick={handleSearch}
+                                        className="border border-gray-300 border-r-0 flex items-center cursor-pointer justisfy-center bg-blue-500 hover:bg-blue-600 text-white p-2 h-full min-w-[41px]">
+                                        <SearchIcon />
+                                    </button>
+                                    <button
+                                        onClick={handleClearSearch}
+                                        className="border border-y-gray-300 border-l-0 border-r-gray-300  flex items-center cursor-pointer justify-center bg-red-500 hover:bg-red-600 text-white p-2 h-full min-w-[41px] rounded-r">
+                                        <TrashIcon />
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className="overflow-x-auto">
-                    <DynamicTable<CitezenUser>
-                        data={users.users}
-                        columns={columns}
-                        rowKey="userId"
-                        showControls={false}
-                        pagination={{
-                            pageSize: pageSize,
-                            current: pageNumber,
-                            total: users.totalCount || 0,
-                            onChange: handlePageChange,
-                            onShowSizeChange: handlePageSizeChange,
-                            responsive: true,
-                            size: 'default',
-                        }}
-                    />
+                    <div className="overflow-x-auto">
+                        <DynamicTable<CitezenUser>
+                            data={users.users}
+                            columns={columns}
+                            rowKey="userId"
+                            showControls={false}
+                            pagination={{
+                                pageSize: pageSize,
+                                current: pageNumber,
+                                total: users.totalCount || 0,
+                                onChange: handlePageChange,
+                                onShowSizeChange: handlePageSizeChange,
+                                responsive: true,
+                                size: 'default',
+                            }}
+                        />
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }

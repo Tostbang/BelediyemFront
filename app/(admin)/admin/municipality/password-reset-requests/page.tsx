@@ -29,8 +29,14 @@ export default async function Page({
     const breadcrumb = [{ label: 'Belediye Şifre Sıfırlama Talepleri' }];
 
     return (
-        <PageContainer breadcrumb={breadcrumb}>
-            {response && <PWResetList requests={response || []} type="admin" />}
+        <PageContainer>
+            {response && (
+                <PWResetList
+                    requests={response || []}
+                    type="admin"
+                    breadcrumb={breadcrumb}
+                />
+            )}
         </PageContainer>
     );
 }
