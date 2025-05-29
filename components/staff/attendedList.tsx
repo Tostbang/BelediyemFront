@@ -49,7 +49,7 @@ export default function AttendedList({
         handleClearAllFilters,
         handleDateFilter,
         handleClearDateFilters,
-    } = usePagination({ filterParams, startDateRef, endDateRef });
+    } = usePagination({ filterParams ,startDateRef, endDateRef});
 
     const columns = [
         {
@@ -123,7 +123,7 @@ export default function AttendedList({
 
                     <button
                         onClick={() => setShowDateFilter(true)}
-                        className="hover:bg-gray-50 cursor-pointer flex items-center justify-center h-5 lg:h-20 w-full sm:w-auto text-sm sm:text-base p-4">
+                        className="hover:bg-gray-50 cursor-pointer flex items-center justify-center h-10 lg:h-20 w-full sm:w-auto text-sm sm:text-base p-4">
                         Tarih Seç
                     </button>
 
