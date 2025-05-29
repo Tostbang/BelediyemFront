@@ -15,16 +15,15 @@ export default async function Page({
     params,
     searchParams,
 }: {
-    params: { id: string };
-    searchParams: {
+    params: Promise<{ id?: string }>;
+    searchParams: Promise<{
         page?: string;
         pageSize?: string;
-        searchText?: string;
         categoryType?: string;
         complaintsStatusType?: string;
         startDate?: string;
         endDate?: string;
-    };
+    }>;
 }) {
     const resolvedParams = await params;
 
@@ -33,7 +32,6 @@ export default async function Page({
 
     const pageNumber = Number(resolvedSearchParams.page) || 1;
     const pageSize = Number(resolvedSearchParams.pageSize) || 20;
-    const searchText = resolvedSearchParams.searchText || '';
     const categoryType = Number(resolvedSearchParams.categoryType);
     const complaintsStatusType = Number(
         resolvedSearchParams.complaintsStatusType
@@ -44,7 +42,6 @@ export default async function Page({
     const paginationBody: StaffAttendedComplaintsPaginationBody = {
         pageNumber,
         pageSize,
-        searchText,
         municipalityStaffId,
         categoryType,
         complaintsStatusType,

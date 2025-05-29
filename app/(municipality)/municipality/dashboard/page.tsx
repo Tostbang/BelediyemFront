@@ -14,7 +14,7 @@ export async function generateMetadata() {
 export default async function Page({
     searchParams,
 }: {
-    searchParams: { page?: string; pageSize?: string };
+    searchParams: Promise<{ page?: string; pageSize?: string }>;
 }) {
     const params = await searchParams;
     const pageNumber = Number(params.page) || 1;
@@ -31,9 +31,13 @@ export default async function Page({
     const breadcrumb = [{ label: 'Anasayfa' }];
 
     return (
-        <PageContainer >
+        <PageContainer>
             {response && reportsData && (
-                <DashboardMuni dashboard={response} reports={reportsData} breadcrumb={breadcrumb}/>
+                <DashboardMuni
+                    dashboard={response}
+                    reports={reportsData}
+                    breadcrumb={breadcrumb}
+                />
             )}
         </PageContainer>
     );

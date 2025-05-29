@@ -14,11 +14,11 @@ export async function generateMetadata() {
 export default async function Page({
     searchParams,
 }: {
-    searchParams: {
+    searchParams: Promise<{
         page?: string;
         pageSize?: string;
         searchText?: string;
-    };
+    }>;
 }) {
     const resolvedSearchParams = await searchParams;
 

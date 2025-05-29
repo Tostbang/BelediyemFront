@@ -16,7 +16,7 @@ import { deleteAnnMuni } from '@/app/actions/municipality/ann';
 import { annType } from '@/data/annType';
 import { formatDateTime } from '@/utils';
 import Breadcrumb from '../common/breadCrumb';
-import Modal from '../common/modal';
+import DateFiltersModal from '../modals/dateFiltersModal';
 
 export default function EventList({
     events,
@@ -26,7 +26,11 @@ export default function EventList({
     breadcrumb: BreadcrumbItem[];
 }) {
     const filterParams = ['startDate', 'endDate', 'announcementsType'];
-    const searchInputRef = useRef<HTMLInputElement>(
+
+    const startDateRef = useRef<HTMLInputElement>(
+        null
+    ) as React.RefObject<HTMLInputElement>;
+    const endDateRef = useRef<HTMLInputElement>(
         null
     ) as React.RefObject<HTMLInputElement>;
 
@@ -38,7 +42,9 @@ export default function EventList({
         handleClearAllFilters,
         filters,
         handleFilterChange,
-    } = usePagination({ filterParams, searchInputRef });
+        handleDateFilter,
+        handleClearDateFilters,
+    } = usePagination({ filterParams, startDateRef, endDateRef });
 
     const [modal, setModal] = useState(false);
     const [selectedItem, setSelectedItem] = useState<string | null>(null);
@@ -145,6 +151,11 @@ export default function EventList({
         },
     ];
 
+    const handleDateFilterChange = () => {
+        handleDateFilter();
+        setShowDateFilter(false);
+    };
+
     return (
         <>
             <Breadcrumb
@@ -174,68 +185,17 @@ export default function EventList({
                     <div className="hidden sm:block h-10 lg:h-20 w-px bg-gray-300"></div>
                     <div className="block sm:hidden w-full h-px bg-gray-300"></div>
 
-                    {/* Date filter popup */}
-                    {showDateFilter && (
-                        <Modal
-                            isOpen={showDateFilter}
-                            onClose={() => setShowDateFilter(false)}>
-                            <div>
-                                <h2 className="text-lg font-semibold mb-4">
-                                    Tarih Seç
-                                </h2>
-
-                                <div className="mb-4">
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Başlangıç Tarihi
-                                    </label>
-                                    <div className="relative">
-                                        <input
-                                            type="date"
-                                            className="border border-gray-300 rounded p-2 w-full"
-                                            value={
-                                                filters.startDate?.toString() ||
-                                                ''
-                                            }
-                                            onChange={(e) =>
-                                                handleFilterChange(
-                                                    'startDate',
-                                                    e.target.value
-                                                )
-                                            }
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="mb-6">
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Bitiş Tarihi
-                                    </label>
-                                    <div className="relative">
-                                        <input
-                                            type="date"
-                                            className="border border-gray-300 rounded p-2 w-full"
-                                            value={
-                                                filters.endDate?.toString() ||
-                                                ''
-                                            }
-                                            onChange={(e) =>
-                                                handleFilterChange(
-                                                    'endDate',
-                                                    e.target.value
-                                                )
-                                            }
-                                        />
-                                    </div>
-                                </div>
-
-                                <button
-                                    onClick={() => setShowDateFilter(false)}
-                                    className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded transition-colors duration-200">
-                                    Seç
-                                </button>
-                            </div>
-                        </Modal>
-                    )}
+                    {/* Date filter modal using the new component */}
+                    <DateFiltersModal
+                        isOpen={showDateFilter}
+                        onClose={() => setShowDateFilter(false)}
+                        onFilter={handleDateFilterChange}
+                        onClear={handleClearDateFilters}
+                        startDateRef={startDateRef}
+                        endDateRef={endDateRef}
+                        startDate={filters.startDate?.toString()}
+                        endDate={filters.endDate?.toString()}
+                    />
 
                     <select
                         key={`ann-select-${filters.announcementsType || 'default'}`}
@@ -254,6 +214,9 @@ export default function EventList({
                             </option>
                         ))}
                     </select>
+
+                    <div className="hidden sm:block h-10 lg:h-20 w-px bg-gray-300"></div>
+                    <div className="block sm:hidden w-full h-px bg-gray-300"></div>
                 </div>
 
                 <button

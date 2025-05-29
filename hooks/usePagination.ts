@@ -15,6 +15,8 @@ interface PaginationOptions {
     filterParams?: string[];
     filterConfig?: Record<string, FilterConfig>; // Configuration for each filter
     searchInputRef?: RefObject<HTMLInputElement>;
+    startDateRef?: RefObject<HTMLInputElement>;
+    endDateRef?: RefObject<HTMLInputElement>;
 }
 
 export function usePagination(options: PaginationOptions = {}) {
@@ -25,7 +27,9 @@ export function usePagination(options: PaginationOptions = {}) {
         defaultPage = 1,
         defaultPageSize = 20,
         filterParams = [],
-        searchInputRef
+        searchInputRef,
+        startDateRef,
+        endDateRef,
     } = options;
 
     const parsePositiveInteger = (value: string | null, defaultValue: number): number => {
@@ -82,22 +86,69 @@ export function usePagination(options: PaginationOptions = {}) {
         params.delete('searchText');
         params.set('page', '1');
         router.push(`?${params.toString()}`);
-        
+
         if (searchInputRef?.current) {
             searchInputRef.current.value = '';
         }
     }
+
 
     const handleClearAllFilters = () => {
         const params = new URLSearchParams();
         params.set('page', '1');
         params.set('pageSize', pageSize.toString());
         router.push(`?${params.toString()}`);
-        
+
         if (searchInputRef?.current) {
             searchInputRef.current.value = '';
         }
+        if (startDateRef?.current) {
+            startDateRef.current.value = '';
+        }
+        if (endDateRef?.current) {
+            endDateRef.current.value = '';
+        }
     };
+
+    const handleDateFilter = () => {
+        const params = new URLSearchParams(searchParams?.toString() ?? '');
+
+        if (startDateRef?.current) {
+            const startDate = startDateRef.current.value;
+            if (startDate) {
+                params.set('startDate', startDate);
+            } else {
+                params.delete('startDate');
+            }
+        }
+
+        if (endDateRef?.current) {
+            const endDate = endDateRef.current.value;
+            if (endDate) {
+                params.set('endDate', endDate);
+            } else {
+                params.delete('endDate');
+            }
+        }
+
+        params.set('page', '1');
+        router.push(`?${params.toString()}`);
+    };
+
+    const handleClearDateFilters = () => {
+        const params = new URLSearchParams(searchParams?.toString() ?? '');
+        params.delete('startDate');
+        params.delete('endDate');
+        params.set('page', '1');
+        router.push(`?${params.toString()}`);
+
+        if (startDateRef?.current) {
+            startDateRef.current.value = '';
+        }
+        if (endDateRef?.current) {
+            endDateRef.current.value = '';
+        }
+    }
 
 
 
@@ -111,5 +162,7 @@ export function usePagination(options: PaginationOptions = {}) {
         handleClearAllFilters,
         filters,
         handleFilterChange,
+        handleDateFilter,
+        handleClearDateFilters,
     };
 }
