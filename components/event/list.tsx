@@ -247,7 +247,7 @@ export default function EventList({
                                 e.target.value
                             )
                         }>
-                        <option value="">İçerik Türüne göre Filtrele</option>
+                        <option value="">İçerik Türüne Göre Filtrele</option>
                         {annType.map((type) => (
                             <option key={type.id} value={type.id}>
                                 {type.name}
