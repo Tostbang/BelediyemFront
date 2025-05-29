@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import {
     BreadcrumbItem,
     StaffAttendedComplaintsResponse,
@@ -13,6 +13,8 @@ import { complaintStatusType } from '@/data/complaintStatus';
 import Breadcrumb from '../common/breadCrumb';
 import SelectFilter from '../filters/selectFilter';
 import ClearAllFilters from '../filters/clearAllFilters';
+import { FilterIcon } from '../icons';
+import DateFiltersModal from '../filters/dateFiltersModal';
 
 export default function AttendedList({
     complaints,
@@ -27,6 +29,14 @@ export default function AttendedList({
         'startDate',
         'endDate',
     ];
+    const [showDateFilter, setShowDateFilter] = useState(false);
+
+    const startDateRef = useRef<HTMLInputElement>(
+        null
+    ) as React.RefObject<HTMLInputElement>;
+    const endDateRef = useRef<HTMLInputElement>(
+        null
+    ) as React.RefObject<HTMLInputElement>;
 
     const {
         pageNumber,
@@ -37,6 +47,8 @@ export default function AttendedList({
         filterCount,
         handleFilterChange,
         handleClearAllFilters,
+        handleDateFilter,
+        handleClearDateFilters,
     } = usePagination({ filterParams });
 
     const columns = [
@@ -93,89 +105,78 @@ export default function AttendedList({
         },
     ];
 
+    const handleDateFilterChange = () => {
+        handleDateFilter();
+        setShowDateFilter(false);
+    };
+
     return (
         <>
             <Breadcrumb breadcrumb={breadcrumb} />
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-4 bg-white rounded-lg px-4">
+                <div className="flex flex-wrap sm:flex-nowrap items-center w-full lg:w-auto gap-2 sm:gap-0">
+                    <div className="w-8 h-8 min-h-8 min-w-8 mt-2 lg:mt-0 flex items-center justify-center sm:justify-start mx-auto sm:mx-0 sm:mr-4">
+                        <FilterIcon />
+                    </div>
+                    <div className="hidden sm:block h-10 lg:h-20 w-px bg-gray-300"></div>
+                    <div className="block sm:hidden w-full h-px bg-gray-300"></div>
+
+                    <button
+                        onClick={() => setShowDateFilter(true)}
+                        className="hover:bg-gray-50 cursor-pointer flex items-center justify-center h-5 lg:h-20 w-full sm:w-auto text-sm sm:text-base p-4">
+                        Tarih Seç
+                    </button>
+
+                    <div className="hidden sm:block h-10 lg:h-20 w-px bg-gray-300"></div>
+                    <div className="block sm:hidden w-full h-px bg-gray-300"></div>
+
+                    <DateFiltersModal
+                        isOpen={showDateFilter}
+                        onClose={() => setShowDateFilter(false)}
+                        onFilter={handleDateFilterChange}
+                        onClear={handleClearDateFilters}
+                        startDateRef={startDateRef}
+                        endDateRef={endDateRef}
+                        startDate={filters.startDate?.toString()}
+                        endDate={filters.endDate?.toString()}
+                    />
+
+                    <SelectFilter
+                        keyPrefix="category-select"
+                        className="hover:bg-gray-50 cursor-pointer h-10 lg:h-20 w-full sm:w-auto text-sm sm:text-base sm:px-4"
+                        value={filters.categoryType?.toString() || ''}
+                        onChange={handleFilterChange}
+                        placeholder="Tüm Kategoriler"
+                        options={categoryType}
+                        fieldName="categoryType"
+                    />
+                    <div className="hidden sm:block h-10 lg:h-20 w-px bg-gray-300"></div>
+                    <div className="block sm:hidden w-full h-px bg-gray-300"></div>
+
+                    <SelectFilter
+                        keyPrefix="complaintsStatusType-select"
+                        className="hover:bg-gray-50 cursor-pointer h-10 lg:h-20 w-full sm:w-auto text-sm sm:text-base sm:px-4"
+                        value={filters.complaintsStatusType?.toString() || ''}
+                        onChange={handleFilterChange}
+                        placeholder="Tüm Durumlar"
+                        options={complaintStatusType}
+                        fieldName="complaintsStatusType"
+                    />
+
+                    <div className="hidden sm:block h-10 lg:h-20 w-px bg-gray-300"></div>
+                    <div className="block sm:hidden w-full h-px bg-gray-300"></div>
+                </div>
+                <ClearAllFilters
+                    handleClear={handleClearAllFilters}
+                    filterCount={filterCount}
+                />
+            </div>
             <div className="flex flex-col items-center w-full mb-6">
                 <div className="w-full overflow-hidden bg-white rounded-lg p-6">
                     <h2 className="text-2xl font-semibold text-gray-800 mb-2">
                         {complaints.name} {complaints.surname}
                     </h2>
-                    <div className="flex flex-col lg:flex-row justify-between items-start gap-4 mb-4">
-                        <div className="flex flex-col sm:flex-row flex-wrap items-center gap-3 w-full lg:w-auto">
-                            <SelectFilter
-                                keyPrefix="category-select"
-                                className="border border-gray-300 rounded p-2 w-full sm:w-auto"
-                                value={filters.categoryType?.toString() || ''}
-                                onChange={handleFilterChange}
-                                placeholder="Tüm Kategoriler"
-                                options={categoryType}
-                                fieldName="categoryType"
-                            />
 
-                            <SelectFilter
-                                keyPrefix="complaintsStatusType-select"
-                                className="border border-gray-300 rounded p-2 w-full sm:w-auto"
-                                value={
-                                    filters.complaintsStatusType?.toString() ||
-                                    ''
-                                }
-                                onChange={handleFilterChange}
-                                placeholder="Tüm Durumlar"
-                                options={complaintStatusType}
-                                fieldName="complaintsStatusType"
-                            />
-
-                            <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                                <div className="flex items-center gap-1 w-full sm:w-auto">
-                                    <label
-                                        htmlFor="startDate"
-                                        className="text-sm whitespace-nowrap">
-                                        Başlangıç:
-                                    </label>
-                                    <input
-                                        id="startDate"
-                                        type="date"
-                                        className="border border-gray-300 rounded p-2 w-full"
-                                        value={
-                                            filters.startDate?.toString() || ''
-                                        }
-                                        onChange={(e) =>
-                                            handleFilterChange(
-                                                'startDate',
-                                                e.target.value
-                                            )
-                                        }
-                                    />
-                                </div>
-                                <div className="flex items-center gap-1 w-full sm:w-auto">
-                                    <label
-                                        htmlFor="endDate"
-                                        className="text-sm whitespace-nowrap">
-                                        Bitiş:
-                                    </label>
-                                    <input
-                                        id="endDate"
-                                        type="date"
-                                        className="border border-gray-300 rounded p-2 w-full"
-                                        value={
-                                            filters.endDate?.toString() || ''
-                                        }
-                                        onChange={(e) =>
-                                            handleFilterChange(
-                                                'endDate',
-                                                e.target.value
-                                            )
-                                        }
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <ClearAllFilters
-                            handleClear={handleClearAllFilters}
-                            filterCount={filterCount}
-                        />
-                    </div>
                     <div className="overflow-x-auto">
                         <DynamicTable<StaffComplaints>
                             data={complaints.complaints}

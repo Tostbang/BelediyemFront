@@ -181,7 +181,7 @@ export default function EventList({
             />
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-4 bg-white rounded-lg px-4">
                 <div className="flex flex-wrap sm:flex-nowrap items-center w-full lg:w-auto gap-2 sm:gap-0">
-                    <div className="w-8 h-8 mt-2 lg:mt-0 flex items-center mr-2 sm:mr-4">
+                    <div className="w-8 h-8 min-h-8 min-w-8 mt-2 lg:mt-0 flex items-center justify-center sm:justify-start mx-auto sm:mx-0 sm:mr-4">
                         <FilterIcon />
                     </div>
 
