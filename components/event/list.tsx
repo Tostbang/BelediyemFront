@@ -16,7 +16,9 @@ import { deleteAnnMuni } from '@/app/actions/municipality/ann';
 import { annType } from '@/data/annType';
 import { formatDateTime } from '@/utils';
 import Breadcrumb from '../common/breadCrumb';
-import DateFiltersModal from '../modals/dateFiltersModal';
+import DateFiltersModal from '../filters/dateFiltersModal';
+import SelectFilter from '../filters/selectFilter';
+import ClearAllFilters from '../filters/clearAllFilters';
 
 export default function EventList({
     events,
@@ -185,7 +187,6 @@ export default function EventList({
                     <div className="hidden sm:block h-10 lg:h-20 w-px bg-gray-300"></div>
                     <div className="block sm:hidden w-full h-px bg-gray-300"></div>
 
-                    {/* Date filter modal using the new component */}
                     <DateFiltersModal
                         isOpen={showDateFilter}
                         onClose={() => setShowDateFilter(false)}
@@ -197,33 +198,20 @@ export default function EventList({
                         endDate={filters.endDate?.toString()}
                     />
 
-                    <select
-                        key={`ann-select-${filters.announcementsType || 'default'}`}
+                    <SelectFilter
+                        keyPrefix="ann-select"
                         className="hover:bg-gray-50 cursor-pointer h-10 lg:h-20 w-full sm:w-auto text-sm sm:text-base sm:px-4"
                         value={filters.announcementsType?.toString() || ''}
-                        onChange={(e) =>
-                            handleFilterChange(
-                                'announcementsType',
-                                e.target.value
-                            )
-                        }>
-                        <option value="">İçerik Türüne Göre Filtrele</option>
-                        {annType.map((type) => (
-                            <option key={type.id} value={type.id}>
-                                {type.name}
-                            </option>
-                        ))}
-                    </select>
+                        onChange={handleFilterChange}
+                        placeholder="İçerik Türüne Göre Filtrele"
+                        options={annType}
+                        fieldName="announcementsType"
+                    />
 
                     <div className="hidden sm:block h-10 lg:h-20 w-px bg-gray-300"></div>
                     <div className="block sm:hidden w-full h-px bg-gray-300"></div>
                 </div>
-
-                <button
-                    onClick={handleClearAllFilters}
-                    className="cursor-pointer bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-md transition-colors duration-200 w-full sm:w-auto text-sm sm:text-base my-2 lg:my-0">
-                    Filtreleri Temizle
-                </button>
+                <ClearAllFilters handleClear={handleClearAllFilters} />
             </div>
 
             <div className="flex flex-col items-center w-full mb-6">

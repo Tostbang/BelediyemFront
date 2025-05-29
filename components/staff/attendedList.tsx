@@ -8,10 +8,11 @@ import {
 import { usePagination } from '@/hooks/usePagination';
 import DynamicTable from '@/components/dynamic/table';
 import { formatDateTime } from '@/utils';
-import { XIcon } from '../icons';
 import { categoryType } from '@/data/categoryType';
 import { complaintStatusType } from '@/data/complaintStatus';
 import Breadcrumb from '../common/breadCrumb';
+import SelectFilter from '../filters/selectFilter';
+import ClearAllFilters from '../filters/clearAllFilters';
 
 export default function AttendedList({
     complaints,
@@ -101,43 +102,29 @@ export default function AttendedList({
                     </h2>
                     <div className="flex flex-col lg:flex-row justify-between items-start gap-4 mb-4">
                         <div className="flex flex-col sm:flex-row flex-wrap items-center gap-3 w-full lg:w-auto">
-                            <select
-                                key={`category-select-${filters.categoryType || 'default'}`}
+                            <SelectFilter
+                                keyPrefix="category-select"
                                 className="border border-gray-300 rounded p-2 w-full sm:w-auto"
                                 value={filters.categoryType?.toString() || ''}
-                                onChange={(e) =>
-                                    handleFilterChange(
-                                        'categoryType',
-                                        e.target.value
-                                    )
-                                }>
-                                <option value="">Tüm Kategoriler</option>
-                                {categoryType.map((item) => (
-                                    <option key={item.id} value={item.id}>
-                                        {item.name}
-                                    </option>
-                                ))}
-                            </select>
-                            <select
-                                key={`complaintsStatusType-select-${filters.complaintsStatusType || 'default'}`}
+                                onChange={handleFilterChange}
+                                placeholder="Tüm Kategoriler"
+                                options={categoryType}
+                                fieldName="categoryType"
+                            />
+
+                            <SelectFilter
+                                keyPrefix="complaintsStatusType-select"
                                 className="border border-gray-300 rounded p-2 w-full sm:w-auto"
                                 value={
                                     filters.complaintsStatusType?.toString() ||
                                     ''
                                 }
-                                onChange={(e) =>
-                                    handleFilterChange(
-                                        'complaintsStatusType',
-                                        e.target.value
-                                    )
-                                }>
-                                <option value="">Tüm Durumlar</option>
-                                {complaintStatusType.map((item) => (
-                                    <option key={item.id} value={item.id}>
-                                        {item.name}
-                                    </option>
-                                ))}
-                            </select>
+                                onChange={handleFilterChange}
+                                placeholder="Tüm Durumlar"
+                                options={complaintStatusType}
+                                fieldName="complaintsStatusType"
+                            />
+
                             <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                                 <div className="flex items-center gap-1 w-full sm:w-auto">
                                     <label
@@ -183,14 +170,7 @@ export default function AttendedList({
                                 </div>
                             </div>
                         </div>
-                        <button
-                            onClick={handleClearAllFilters}
-                            className="cursor-pointer bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-md transition-colors duration-200 flex items-center gap-1 ml-auto mt-3 sm:mt-0">
-                            <div className="w-4 h-4">
-                                <XIcon />
-                            </div>
-                            Filtreleri Temizle
-                        </button>
+                        <ClearAllFilters handleClear={handleClearAllFilters} />
                     </div>
                     <div className="overflow-x-auto">
                         <DynamicTable<StaffComplaints>

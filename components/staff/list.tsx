@@ -12,8 +12,9 @@ import { departmans } from '@/data/departmans';
 import LinkButton from '@/components/common/LinkButton';
 import DynamicTable from '@/components/dynamic/table';
 import ConfirmModal from '@/components/modals/confirmModal';
-import { SearchIcon, TrashIcon } from '../icons';
 import Breadcrumb from '../common/breadCrumb';
+import SearchFilter from '../filters/searchFilter';
+import SelectFilter from '../filters/selectFilter';
 
 export default function StaffList({
     staffList,
@@ -206,49 +207,24 @@ export default function StaffList({
                 <div className="w-full overflow-hidden bg-white rounded-lg p-6">
                     <div className="flex flex-col lg:flex-row justify-between items-start gap-4 mb-4">
                         <div className="flex flex-col sm:flex-row flex-wrap items-center gap-3 w-full lg:w-auto">
-                            <select
-                                key={`membership-select-${filters.municipalityStaffType || 'default'}`}
+                            <SelectFilter
+                                keyPrefix="membership-select"
                                 className="border border-gray-300 rounded p-2 w-full sm:w-auto"
                                 value={
                                     filters.municipalityStaffType?.toString() ||
                                     ''
                                 }
-                                onChange={(e) =>
-                                    handleFilterChange(
-                                        'municipalityStaffType',
-                                        e.target.value
-                                    )
-                                }>
-                                <option value="">Tüm Departmanlar</option>
-                                {departmans.map((item) => (
-                                    <option key={item.id} value={item.id}>
-                                        {item.name}
-                                    </option>
-                                ))}
-                            </select>
-                            <div className="flex items-center w-full sm:w-auto">
-                                <input
-                                    type="text"
-                                    placeholder="Arama..."
-                                    defaultValue={
-                                        filters.searchText?.toString() || ''
-                                    }
-                                    ref={searchInputRef}
-                                    className="border border-gray-300 border-r-transparent rounded-l p-2 flex-grow w-full sm:w-64"
-                                />
-                                <div className="flex items-center">
-                                    <button
-                                        onClick={handleSearch}
-                                        className="border border-gray-300 border-r-0 flex items-center cursor-pointer justisfy-center bg-blue-500 hover:bg-blue-600 text-white p-2 h-full min-w-[41px]">
-                                        <SearchIcon />
-                                    </button>
-                                    <button
-                                        onClick={handleClearSearch}
-                                        className="border border-y-gray-300 border-l-0 border-r-gray-300  flex items-center cursor-pointer justify-center bg-red-500 hover:bg-red-600 text-white p-2 h-full min-w-[41px] rounded-r">
-                                        <TrashIcon />
-                                    </button>
-                                </div>
-                            </div>
+                                onChange={handleFilterChange}
+                                placeholder="Tüm Departmanlar"
+                                options={departmans}
+                                fieldName="municipalityStaffType"
+                            />
+                            <SearchFilter
+                                onClear={handleClearSearch}
+                                onFilter={handleSearch}
+                                searchInputRef={searchInputRef}
+                                searchText={filters.searchText?.toString()}
+                            />
                         </div>
                         <div className="w-full sm:w-auto">
                             <LinkButton
