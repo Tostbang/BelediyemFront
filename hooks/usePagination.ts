@@ -46,6 +46,11 @@ export function usePagination(options: PaginationOptions = {}) {
     filterParams.forEach(param => {
         filters[param] = searchParams?.get(param) ?? undefined;
     });
+    
+    // Calculate the filter count
+    const filterCount = Object.values(filters).filter(
+        value => value !== undefined && value !== ''
+    ).length;
 
     const handlePageChange = (page: number, size: number) => {
         const params = new URLSearchParams(searchParams?.toString() ?? '');
@@ -161,6 +166,7 @@ export function usePagination(options: PaginationOptions = {}) {
         handleClearSearch,
         handleClearAllFilters,
         filters,
+        filterCount,
         handleFilterChange,
         handleDateFilter,
         handleClearDateFilters,

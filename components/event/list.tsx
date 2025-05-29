@@ -43,6 +43,7 @@ export default function EventList({
         handlePageSizeChange,
         handleClearAllFilters,
         filters,
+        filterCount,
         handleFilterChange,
         handleDateFilter,
         handleClearDateFilters,
@@ -211,7 +212,10 @@ export default function EventList({
                     <div className="hidden sm:block h-10 lg:h-20 w-px bg-gray-300"></div>
                     <div className="block sm:hidden w-full h-px bg-gray-300"></div>
                 </div>
-                <ClearAllFilters handleClear={handleClearAllFilters} />
+                <ClearAllFilters
+                    handleClear={handleClearAllFilters}
+                    filterCount={filterCount}
+                />
             </div>
 
             <div className="flex flex-col items-center w-full mb-6">

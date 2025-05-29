@@ -34,6 +34,7 @@ export default function AttendedList({
         handlePageChange,
         handlePageSizeChange,
         filters,
+        filterCount,
         handleFilterChange,
         handleClearAllFilters,
     } = usePagination({ filterParams });
@@ -170,7 +171,10 @@ export default function AttendedList({
                                 </div>
                             </div>
                         </div>
-                        <ClearAllFilters handleClear={handleClearAllFilters} />
+                        <ClearAllFilters
+                            handleClear={handleClearAllFilters}
+                            filterCount={filterCount}
+                        />
                     </div>
                     <div className="overflow-x-auto">
                         <DynamicTable<StaffComplaints>
