@@ -157,17 +157,22 @@ export default function EventList({
                 }
             />
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-4 bg-white rounded-lg px-4">
-                <div className="flex flex-wrap sm:flex-nowrap items-center w-full lg:w-auto gap-2 sm:gap-3">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 flex items-center">
+                <div className="flex flex-wrap sm:flex-nowrap items-center w-full lg:w-auto gap-2 sm:gap-0">
+                    <div className="w-8 h-8 mt-2 lg:mt-0 flex items-center mr-2 sm:mr-4">
                         <FilterIcon />
                     </div>
 
-                    {/* Date filter button */}
+                    <div className="hidden sm:block h-10 lg:h-20 w-px bg-gray-300"></div>
+                    <div className="block sm:hidden w-full h-px bg-gray-300"></div>
+
                     <button
                         onClick={() => setShowDateFilter(true)}
-                        className="rounded p-2 hover:bg-gray-50 cursor-pointer flex items-center justify-center h-20 w-full sm:w-auto text-sm sm:text-base">
+                        className="hover:bg-gray-50 cursor-pointer flex items-center justify-center h-5 lg:h-20 w-full sm:w-auto text-sm sm:text-base p-4">
                         Tarih Seç
                     </button>
+
+                    <div className="hidden sm:block h-10 lg:h-20 w-px bg-gray-300"></div>
+                    <div className="block sm:hidden w-full h-px bg-gray-300"></div>
 
                     {/* Date filter popup */}
                     {showDateFilter && (
@@ -231,9 +236,10 @@ export default function EventList({
                             </div>
                         </Modal>
                     )}
+
                     <select
                         key={`ann-select-${filters.announcementsType || 'default'}`}
-                        className="rounded p-2 hover:bg-gray-50 cursor-pointer h-20 w-full sm:w-auto text-sm sm:text-base"
+                        className="hover:bg-gray-50 cursor-pointer h-10 lg:h-20 w-full sm:w-auto text-sm sm:text-base sm:px-4"
                         value={filters.announcementsType?.toString() || ''}
                         onChange={(e) =>
                             handleFilterChange(
@@ -250,7 +256,6 @@ export default function EventList({
                     </select>
                 </div>
 
-                {/* Clear button with better responsive alignment */}
                 <button
                     onClick={handleClearAllFilters}
                     className="cursor-pointer bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-md transition-colors duration-200 w-full sm:w-auto text-sm sm:text-base my-2 lg:my-0">
