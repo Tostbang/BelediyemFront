@@ -3,8 +3,8 @@ import PageContainer from '@/components/pageContainer';
 import { generatePageMetadata } from '@/lib/metadata';
 import { isPositiveNumber } from '@/utils';
 import AlertMessage from '@/components/ui/AlertMessage';
-import EventForm from '@/components/event/form';
 import { getAnnByIdMuni } from '@/app/actions/municipality/ann';
+import AnnDetail from '@/components/event/detail';
 
 export const dynamic = 'force-dynamic';
 
@@ -16,9 +16,7 @@ export async function generateMetadata({
     const resolvedParams = await params;
     const isEditing = resolvedParams.id !== 'new';
     return generatePageMetadata(
-        isEditing
-            ? 'Etkinlik - Duyuru Düzenle'
-            : 'Yeni Etkinlik / Duyuru Oluştur'
+        isEditing ? 'Etkinlik - Duyuru Detay' : 'Yeni Etkinlik / Duyuru Oluştur'
     );
 }
 
@@ -63,7 +61,7 @@ export default async function Page({
         {
             label: isNewRecord
                 ? 'Yeni Etkinlik / Duyuru Oluştur'
-                : 'Etkinlik - Duyuru Düzenle',
+                : 'Etkinlik - Duyuru Detay',
         },
     ];
 
@@ -76,7 +74,7 @@ export default async function Page({
                     title="Hata"
                 />
             ) : (
-                <EventForm
+                <AnnDetail
                     id={id}
                     detail={detail || null}
                     breadcrumb={breadcrumb}

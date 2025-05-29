@@ -129,11 +129,20 @@ export default function EventList({
                     menu={{
                         items: [
                             {
+                                key: 'detail',
+                                label: (
+                                    <Link
+                                        href={`/municipality/event/${record.id}/detail`}>
+                                        Görüntüle
+                                    </Link>
+                                ),
+                            },
+                            {
                                 key: 'edit',
                                 label: (
                                     <Link
                                         href={`/municipality/event/${record.id}`}>
-                                        Düzenle / Görüntüle
+                                        Düzenle
                                     </Link>
                                 ),
                             },
