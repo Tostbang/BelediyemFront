@@ -15,6 +15,7 @@ import ConfirmModal from '@/components/modals/confirmModal';
 import Breadcrumb from '../common/breadCrumb';
 import SearchFilter from '../filters/searchFilter';
 import SelectFilter from '../filters/selectFilter';
+import { FilterIcon } from '../icons';
 
 export default function StaffList({
     staffList,
@@ -203,37 +204,41 @@ export default function StaffList({
                     />
                 }
             />
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-4 bg-white rounded-lg px-4">
+                <div className="flex flex-wrap sm:flex-nowrap items-center w-full lg:w-auto gap-2 sm:gap-0">
+                    <div className="w-8 h-8 min-h-8 min-w-8 mt-2 lg:mt-0 flex items-center mr-2 sm:mr-4">
+                        <FilterIcon />
+                    </div>
+
+                    <div className="hidden sm:block h-10 lg:h-20 w-px bg-gray-300"></div>
+                    <div className="block sm:hidden w-full h-px bg-gray-300"></div>
+                    <SelectFilter
+                        keyPrefix="membership-select"
+                        className="hover:bg-gray-50 cursor-pointer h-10 lg:h-20 w-full sm:w-auto text-sm sm:text-base sm:px-4"
+                        value={filters.municipalityStaffType?.toString() || ''}
+                        onChange={handleFilterChange}
+                        placeholder="Tüm Departmanlar"
+                        options={departmans}
+                        fieldName="municipalityStaffType"
+                    />
+                    <div className="hidden sm:block h-10 lg:h-20 w-px bg-gray-300"></div>
+                    <div className="block sm:hidden w-full h-px bg-gray-300"></div>
+
+                    <SearchFilter
+                        onClear={handleClearSearch}
+                        onFilter={handleSearch}
+                        searchInputRef={searchInputRef}
+                        searchText={filters.searchText?.toString()}
+                    />
+                </div>
+                <LinkButton
+                    href="/municipality/staff/password-reset-requests"
+                    title="Şifre Sıfırlama Talepleri"
+                    className="w-full sm:w-auto mb-4 lg:mb-0"
+                />
+            </div>
             <div className="flex flex-col items-center w-full mb-6">
                 <div className="w-full overflow-hidden bg-white rounded-lg p-6">
-                    <div className="flex flex-col lg:flex-row justify-between items-start gap-4 mb-4">
-                        <div className="flex flex-col sm:flex-row flex-wrap items-center gap-3 w-full lg:w-auto">
-                            <SelectFilter
-                                keyPrefix="membership-select"
-                                className="border border-gray-300 rounded p-2 w-full sm:w-auto"
-                                value={
-                                    filters.municipalityStaffType?.toString() ||
-                                    ''
-                                }
-                                onChange={handleFilterChange}
-                                placeholder="Tüm Departmanlar"
-                                options={departmans}
-                                fieldName="municipalityStaffType"
-                            />
-                            <SearchFilter
-                                onClear={handleClearSearch}
-                                onFilter={handleSearch}
-                                searchInputRef={searchInputRef}
-                                searchText={filters.searchText?.toString()}
-                            />
-                        </div>
-                        <div className="w-full sm:w-auto">
-                            <LinkButton
-                                href="/municipality/staff/password-reset-requests"
-                                title="Şifre Sıfırlama Talepleri"
-                                className="w-full sm:w-auto"
-                            />
-                        </div>
-                    </div>
                     <div className="overflow-x-auto">
                         <DynamicTable<StaffUser>
                             data={staffList.municipalStaff}
