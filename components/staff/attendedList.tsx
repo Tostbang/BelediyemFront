@@ -49,7 +49,7 @@ export default function AttendedList({
         handleClearAllFilters,
         handleDateFilter,
         handleClearDateFilters,
-    } = usePagination({ filterParams });
+    } = usePagination({ filterParams, startDateRef, endDateRef });
 
     const columns = [
         {
