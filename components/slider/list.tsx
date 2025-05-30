@@ -5,7 +5,6 @@ import ConfirmModal from '../modals/confirmModal';
 import { deleteSliderMuni } from '@/app/actions';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import { useRouter } from 'next/navigation';
-import { Dropdown } from 'antd';
 import Link from 'next/link';
 import LinkButton from '../common/LinkButton';
 import Breadcrumb from '../common/breadCrumb';
@@ -14,9 +13,9 @@ import { usePagination } from '@/hooks/usePagination';
 import ImageWithSkeleton from '../common/imageSkeleton';
 import { formatDateTime } from '@/utils';
 import StatusBadge from '../common/StatusBadge';
-import { MoreOutlined } from '@ant-design/icons';
 import SliderDetail from './detail';
 import { roleType } from '@/data/roleType';
+import DynamicDropdown from '../common/DynamicDropdown';
 
 export default function SlaytList({
     sliders,
@@ -130,39 +129,31 @@ export default function SlaytList({
             dataIndex: 'actions',
             fixed: 'right' as const,
             width: 50,
-            render: (_: unknown, record: Slider) => (
-                <Dropdown
-                    menu={{
-                        items: [
-                            {
-                                key: 'detail',
-                                label: 'Detay',
-                                onClick: () =>
-                                    handleDetailClick(record.id.toString()),
-                            },
-                            {
-                                key: 'edit',
-                                label: (
-                                    <Link
-                                        href={`/municipality/slider/${record.id}`}>
-                                        Düzenle
-                                    </Link>
-                                ),
-                            },
-                            {
-                                key: 'delete',
-                                label: 'Sil',
-                                danger: true,
-                                onClick: () =>
-                                    handleDeleteClick(record.id.toString()),
-                            },
-                        ],
-                    }}>
-                    <a onClick={(e) => e.preventDefault()} className="text-2xl">
-                        <MoreOutlined />
-                    </a>
-                </Dropdown>
-            ),
+            render: (_: unknown, record: Slider) => {
+                const dropdownItems = [
+                    {
+                        key: 'detail',
+                        label: 'Detay',
+                        onClick: () => handleDetailClick(record.id.toString()),
+                    },
+                    {
+                        key: 'edit',
+                        label: (
+                            <Link href={`/municipality/slider/${record.id}`}>
+                                Düzenle
+                            </Link>
+                        ),
+                    },
+                    {
+                        key: 'delete',
+                        label: 'Sil',
+                        danger: true,
+                        onClick: () => handleDeleteClick(record.id.toString()),
+                    },
+                ];
+
+                return <DynamicDropdown items={dropdownItems} />;
+            },
         },
     ];
 
@@ -176,7 +167,6 @@ export default function SlaytList({
             />
             <div className="flex flex-col items-center w-full mb-6">
                 <div className="w-full overflow-hidden">
-                   
                     <div className="overflow-x-auto">
                         <DynamicTable<Slider>
                             data={sliders.sliders}

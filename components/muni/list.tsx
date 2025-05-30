@@ -8,13 +8,12 @@ import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import { useRouter } from 'next/navigation';
 import { formatDate } from '@/utils';
 import ImageWithSkeleton from '../common/imageSkeleton';
-import { Dropdown } from 'antd';
 import Link from 'next/link';
-import { MoreOutlined } from '@ant-design/icons';
 import { usePagination } from '@/hooks/usePagination';
 import LinkButton from '../common/LinkButton';
 import Breadcrumb from '../common/breadCrumb';
 import StatusBadge from '../common/StatusBadge';
+import DynamicDropdown from '../common/DynamicDropdown';
 
 export default function MuniList({
     munilist,
@@ -115,33 +114,26 @@ export default function MuniList({
             dataIndex: 'actions',
             fixed: 'right' as const,
             width: 50,
-            render: (_: unknown, record: Municipalities) => (
-                <Dropdown
-                    menu={{
-                        items: [
-                            {
-                                key: 'edit',
-                                label: (
-                                    <Link
-                                        href={`/admin/municipality/${record.id}`}>
-                                        Düzenle / Görüntüle
-                                    </Link>
-                                ),
-                            },
-                            {
-                                key: 'delete',
-                                label: 'Sil',
-                                danger: true,
-                                onClick: () =>
-                                    handleDeleteClick(record.id.toString()),
-                            },
-                        ],
-                    }}>
-                    <a onClick={(e) => e.preventDefault()} className="text-2xl">
-                        <MoreOutlined />
-                    </a>
-                </Dropdown>
-            ),
+            render: (_: unknown, record: Municipalities) => {
+                const dropdownItems = [
+                    {
+                        key: 'edit',
+                        label: (
+                            <Link href={`/admin/municipality/${record.id}`}>
+                                Düzenle / Görüntüle
+                            </Link>
+                        ),
+                    },
+                    {
+                        key: 'delete',
+                        label: 'Sil',
+                        danger: true,
+                        onClick: () => handleDeleteClick(record.id.toString()),
+                    },
+                ];
+
+                return <DynamicDropdown items={dropdownItems} />;
+            },
         },
     ];
 

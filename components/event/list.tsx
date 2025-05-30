@@ -3,9 +3,7 @@ import React, { useState, useRef } from 'react';
 import { Announcement, AnnouncementResponse, BreadcrumbItem } from '@/types';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import { useRouter } from 'next/navigation';
-import { Dropdown } from 'antd';
 import Link from 'next/link';
-import { MoreOutlined } from '@ant-design/icons';
 import { usePagination } from '@/hooks/usePagination';
 import LinkButton from '@/components/common/LinkButton';
 import DynamicTable from '@/components/dynamic/table';
@@ -19,6 +17,7 @@ import Breadcrumb from '../common/breadCrumb';
 import DateFiltersModal from '../filters/dateFiltersModal';
 import SelectFilter from '../filters/selectFilter';
 import ClearAllFilters from '../filters/clearAllFilters';
+import DynamicDropdown from '../common/DynamicDropdown';
 
 export default function EventList({
     events,
@@ -124,42 +123,35 @@ export default function EventList({
             dataIndex: 'actions',
             fixed: 'right' as const,
             width: 50,
-            render: (_: unknown, record: Announcement) => (
-                <Dropdown
-                    menu={{
-                        items: [
-                            {
-                                key: 'detail',
-                                label: (
-                                    <Link
-                                        href={`/municipality/event/${record.id}/detail`}>
-                                        Görüntüle
-                                    </Link>
-                                ),
-                            },
-                            {
-                                key: 'edit',
-                                label: (
-                                    <Link
-                                        href={`/municipality/event/${record.id}`}>
-                                        Düzenle
-                                    </Link>
-                                ),
-                            },
-                            {
-                                key: 'delete',
-                                label: 'Sil',
-                                danger: true,
-                                onClick: () =>
-                                    handleDeleteClick(record.id.toString()),
-                            },
-                        ],
-                    }}>
-                    <a onClick={(e) => e.preventDefault()} className="text-2xl">
-                        <MoreOutlined />
-                    </a>
-                </Dropdown>
-            ),
+            render: (_: unknown, record: Announcement) => {
+                const dropdownItems = [
+                    {
+                        key: 'detail',
+                        label: (
+                            <Link
+                                href={`/municipality/event/${record.id}/detail`}>
+                                Görüntüle
+                            </Link>
+                        ),
+                    },
+                    {
+                        key: 'edit',
+                        label: (
+                            <Link href={`/municipality/event/${record.id}`}>
+                                Düzenle
+                            </Link>
+                        ),
+                    },
+                    {
+                        key: 'delete',
+                        label: 'Sil',
+                        danger: true,
+                        onClick: () => handleDeleteClick(record.id.toString()),
+                    },
+                ];
+
+                return <DynamicDropdown items={dropdownItems} />;
+            },
         },
     ];
 

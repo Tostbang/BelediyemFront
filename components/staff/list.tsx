@@ -4,9 +4,7 @@ import { BreadcrumbItem, StaffUser, StaffUserListResponse } from '@/types';
 import { sendStaffPWMuni, updateStaffStatusMuni } from '@/app/actions';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import { useRouter } from 'next/navigation';
-import { Dropdown } from 'antd';
 import Link from 'next/link';
-import { MoreOutlined } from '@ant-design/icons';
 import { usePagination } from '@/hooks/usePagination';
 import { departmans } from '@/data/departmans';
 import LinkButton from '@/components/common/LinkButton';
@@ -17,6 +15,7 @@ import SearchFilter from '../filters/searchFilter';
 import SelectFilter from '../filters/selectFilter';
 import { FilterIcon } from '../icons';
 import StatusBadge from '../common/StatusBadge';
+import DynamicDropdown from '../common/DynamicDropdown';
 
 export default function StaffList({
     staffList,
@@ -144,42 +143,35 @@ export default function StaffList({
             dataIndex: 'actions',
             fixed: 'right' as const,
             width: 50,
-            render: (_: unknown, record: StaffUser) => (
-                <Dropdown
-                    menu={{
-                        items: [
-                            {
-                                key: 'detail',
-                                label: (
-                                    <Link
-                                        href={`/municipality/staff/${record.id}/detail`}>
-                                        Detay
-                                    </Link>
-                                ),
-                            },
-                            {
-                                key: 'edit',
-                                label: (
-                                    <Link
-                                        href={`/municipality/staff/${record.id}`}>
-                                        Düzenle
-                                    </Link>
-                                ),
-                            },
-                            {
-                                key: 'delete',
-                                label: 'Sil',
-                                danger: true,
-                                onClick: () =>
-                                    handleDeleteClick(record.id.toString()),
-                            },
-                        ],
-                    }}>
-                    <a onClick={(e) => e.preventDefault()} className="text-2xl">
-                        <MoreOutlined />
-                    </a>
-                </Dropdown>
-            ),
+            render: (_: unknown, record: StaffUser) => {
+                const dropdownItems = [
+                    {
+                        key: 'detail',
+                        label: (
+                            <Link
+                                href={`/municipality/staff/${record.id}/detail`}>
+                                Detay
+                            </Link>
+                        ),
+                    },
+                    {
+                        key: 'edit',
+                        label: (
+                            <Link href={`/municipality/staff/${record.id}`}>
+                                Düzenle
+                            </Link>
+                        ),
+                    },
+                    {
+                        key: 'delete',
+                        label: 'Sil',
+                        danger: true,
+                        onClick: () => handleDeleteClick(record.id.toString()),
+                    },
+                ];
+
+                return <DynamicDropdown items={dropdownItems} />;
+            },
         },
     ];
 
