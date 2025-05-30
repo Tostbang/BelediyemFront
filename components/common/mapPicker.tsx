@@ -17,14 +17,20 @@ interface Position {
 
 interface MapPickerProps {
     value?: string;
-    onChange: (type: string, position: Position) => void;
+    onChange?: (type: string, position: Position) => void;
+    isReadOnly?: boolean;
 }
 
 interface MapEventsHandlerProps {
     handleMapClick: (event: { latlng: Position }) => void;
+    isReadOnly?: boolean;
 }
 
-const MapPicker = ({ value, onChange }: MapPickerProps): React.ReactElement => {
+const MapPicker = ({
+    value,
+    onChange,
+    isReadOnly = false,
+}: MapPickerProps): React.ReactElement => {
     const lat = extractLatFromMapUrl(value || '');
     const lng = extractLngFromMapUrl(value || '');
     const defaultPosition = { lat: 39.9334, lng: 32.8597 };
@@ -33,16 +39,21 @@ const MapPicker = ({ value, onChange }: MapPickerProps): React.ReactElement => {
     );
 
     const handleMapClick = (event: { latlng: Position }): void => {
+        if (isReadOnly) return;
+
         const { lat, lng } = event.latlng;
         setPosition({ lat, lng });
-        onChange('map', { lat, lng });
+        if (onChange) {
+            onChange('map', { lat, lng });
+        }
     };
 
     const MapEventsHandler = ({
         handleMapClick,
+        isReadOnly,
     }: MapEventsHandlerProps): null => {
         useMapEvents({
-            click: (e) => handleMapClick(e),
+            click: (e) => !isReadOnly && handleMapClick(e),
         });
         return null;
     };
@@ -58,12 +69,21 @@ const MapPicker = ({ value, onChange }: MapPickerProps): React.ReactElement => {
         <MapContainer
             center={position}
             zoom={13}
-            style={{ width: '100%', height: '400px' }}>
+            style={{ width: '100%', height: '100%' }}
+            dragging={true}
+            zoomControl={true}
+            scrollWheelZoom={true}
+            doubleClickZoom={true}
+            attributionControl={true}>
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-            <MapEventsHandler handleMapClick={handleMapClick} />
+            <MapEventsHandler
+                handleMapClick={handleMapClick}
+                isReadOnly={isReadOnly}
+            />
             <Marker position={position} icon={customIcon}>
                 <Popup>
-                    Selected Location: {position.lat}, {position.lng}
+                    {isReadOnly ? 'Konum' : 'Seçilen Konum'}:{' '}
+                    {position.lat.toFixed(6)}, {position.lng.toFixed(6)}
                 </Popup>
             </Marker>
         </MapContainer>
