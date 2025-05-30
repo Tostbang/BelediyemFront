@@ -50,14 +50,14 @@ export default function CitizenList({
                 text + ' ' + record.surname,
         },
         {
-            title: 'Fotoğraf',
+            title: 'Görsel',
             dataIndex: 'profileImage',
             width: 180,
             render: (value: string) => {
                 return value ? (
                     <ImageWithSkeleton
                         src={value}
-                        alt="Vatandaş Fotoğrafı"
+                        alt="Vatandaş Görseli"
                         width={250}
                         height={250}
                         className="object-cover w-full h-full rounded-full"

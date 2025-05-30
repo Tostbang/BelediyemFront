@@ -41,14 +41,14 @@ export default function StaffDetail({
                     </h1>
                     <div className="flex flex-col gap-6">
                         <div className="flex justify-center mb-6 md:mb-0">
-                            <div className="rounded-full overflow-hidden border-2 border-blue-100 shadow-md">
+                            <div className="rounded-full overflow-hidden border-2 border-gray-100 shadow-md">
                                 {detail?.municipalityStaff.profileImage ? (
                                     <ImageWithSkeleton
                                         src={
                                             detail.municipalityStaff
                                                 .profileImage
                                         }
-                                        alt="Personel Fotoğrafı"
+                                        alt="Personel Görseli"
                                         width={250}
                                         height={250}
                                         className="object-cover w-full h-full rounded-full"

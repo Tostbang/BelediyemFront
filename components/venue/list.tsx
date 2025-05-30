@@ -1,8 +1,8 @@
 'use client';
 import React, { useState } from 'react';
-import { BreadcrumbItem, RoleType, Slider, SliderResponse } from '@/types';
+import { BreadcrumbItem, RoleType, Venue, VenueResponse } from '@/types';
 import ConfirmModal from '../modals/confirmModal';
-import { deleteSliderMuni } from '@/app/actions';
+import { deleteVenueMuni } from '@/app/actions';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -13,16 +13,15 @@ import { usePagination } from '@/hooks/usePagination';
 import ImageWithSkeleton from '../common/imageSkeleton';
 import { formatDateTime } from '@/utils';
 import StatusBadge from '../common/StatusBadge';
-import SliderDetail from './detail';
-import { roleType } from '@/data/roleType';
 import DynamicDropdown from '../common/DynamicDropdown';
+import VenueDetail from './detail';
 
-export default function SlaytList({
-    sliders,
+export default function VenueList({
+    venues,
     type,
     breadcrumb,
 }: {
-    sliders: SliderResponse;
+    venues: VenueResponse;
     type: RoleType;
     breadcrumb: BreadcrumbItem[];
 }) {
@@ -49,7 +48,7 @@ export default function SlaytList({
             let result;
             switch (type) {
                 case 'municipality':
-                    result = await deleteSliderMuni(selectedItem);
+                    result = await deleteVenueMuni(selectedItem);
                     break;
                 default:
                     result = {
@@ -72,7 +71,7 @@ export default function SlaytList({
     let url;
     switch (type) {
         case 'municipality':
-            url = '/municipality/slider';
+            url = '/municipality/venue';
             break;
         default:
             url = '';
@@ -106,15 +105,19 @@ export default function SlaytList({
             },
         },
         {
-            title: 'Ekleyen',
-            dataIndex: 'createdByRole',
+            title: 'Başlık',
+            dataIndex: 'title',
             width: 180,
-            render: (value: number) =>
-                roleType.find((item) => item.id === value)?.name,
         },
         {
-            title: 'Tarih',
+            title: 'Oluşturma Tarihi',
             dataIndex: 'createdDate',
+            width: 180,
+            render: (text: string) => formatDateTime(text),
+        },
+        {
+            title: 'Düzenleme Tarihi',
+            dataIndex: 'modifiedDate',
             width: 180,
             render: (text: string) => formatDateTime(text),
         },
@@ -129,7 +132,7 @@ export default function SlaytList({
             dataIndex: 'actions',
             fixed: 'right' as const,
             width: 50,
-            render: (_: unknown, record: Slider) => {
+            render: (_: unknown, record: Venue) => {
                 const dropdownItems = [
                     {
                         key: 'detail',
@@ -139,7 +142,7 @@ export default function SlaytList({
                     {
                         key: 'edit',
                         label: (
-                            <Link href={`/municipality/slider/${record.id}`}>
+                            <Link href={`/municipality/venue/${record.id}`}>
                                 Düzenle
                             </Link>
                         ),
@@ -162,43 +165,45 @@ export default function SlaytList({
             <Breadcrumb
                 breadcrumb={breadcrumb}
                 buttonComponent={
-                    <LinkButton href={`${url}/new`} title="Yeni Slayt Ekle" />
+                    <LinkButton href={`${url}/new`} title="Yeni Mekan Ekle" />
                 }
             />
-            <div className="flex flex-col items-center w-full mb-6">
-                <div className="w-full overflow-hidden bg-white rounded-lg p-6">
-                    <div className="overflow-x-auto">
-                        <DynamicTable<Slider>
-                            data={sliders.sliders}
-                            columns={columns}
-                            rowKey="id"
-                            showControls={false}
-                            pagination={{
-                                pageSize: pageSize,
-                                current: pageNumber,
-                                total: sliders.totalCount || 0,
-                                onChange: handlePageChange,
-                                onShowSizeChange: handlePageSizeChange,
-                                responsive: true,
-                                size: 'default',
-                            }}
-                        />
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-4 bg-white rounded-lg px-4">
+                <div className="flex flex-col items-center w-full mb-6">
+                    <div className="w-full overflow-hidden bg-white rounded-lg p-6">
+                        <div className="overflow-x-auto">
+                            <DynamicTable<Venue>
+                                data={venues.venues}
+                                columns={columns}
+                                rowKey="id"
+                                showControls={false}
+                                pagination={{
+                                    pageSize: pageSize,
+                                    current: pageNumber,
+                                    total: venues.totalCount || 0,
+                                    onChange: handlePageChange,
+                                    onShowSizeChange: handlePageSizeChange,
+                                    responsive: true,
+                                    size: 'default',
+                                }}
+                            />
+                        </div>
                     </div>
+                    <ConfirmModal
+                        isOpen={modal}
+                        onClose={() => setModal(false)}
+                        title="Mekan Sil"
+                        message="Bu içeriği silmek istediğinize emin misiniz? Bu işlem geri alınamaz."
+                        onConfirm={handleConfirm}
+                    />
+                    <VenueDetail
+                        isOpen={detailsModal}
+                        onClose={() => setDetailsModal(false)}
+                        detail={venues.venues.find(
+                            (item) => item.id.toString() === selectedItem
+                        )}
+                    />
                 </div>
-                <ConfirmModal
-                    isOpen={modal}
-                    onClose={() => setModal(false)}
-                    title="Slayt Sil"
-                    message="Bu içeriği silmek istediğinize emin misiniz? Bu işlem geri alınamaz."
-                    onConfirm={handleConfirm}
-                />
-                <SliderDetail
-                    isOpen={detailsModal}
-                    onClose={() => setDetailsModal(false)}
-                    detail={sliders.sliders.find(
-                        (item) => item.id.toString() === selectedItem
-                    )}
-                />
             </div>
         </>
     );

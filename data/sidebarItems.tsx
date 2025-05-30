@@ -98,12 +98,12 @@ export const sidebarItemsMuni: SidebarItem[] = [
             {
                 title: 'Mekan',
                 icon: <FlagIcon />,
-                path: '/municipality/place',
+                path: '/municipality/venue',
             },
             {
                 title: 'Toplanma Alanı',
                 icon: <PeopleIcon />,
-                path: '/municipality/gathering-place',
+                path: '/municipality/gathering-area',
             },
             {
                 title: 'Tesis',

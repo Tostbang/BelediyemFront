@@ -18,6 +18,7 @@ import DateFiltersModal from '../filters/dateFiltersModal';
 import SelectFilter from '../filters/selectFilter';
 import ClearAllFilters from '../filters/clearAllFilters';
 import DynamicDropdown from '../common/DynamicDropdown';
+import AnnDetail from './detail';
 
 export default function EventList({
     events,
@@ -49,10 +50,16 @@ export default function EventList({
     } = usePagination({ filterParams, startDateRef, endDateRef });
 
     const [modal, setModal] = useState(false);
+    const [detailsModal, setDetailsModal] = useState(false);
     const [selectedItem, setSelectedItem] = useState<string | null>(null);
     const [showDateFilter, setShowDateFilter] = useState(false);
     const { handleSuccess, handleError } = useNotificationHandler();
     const router = useRouter();
+
+    const handleDetailClick = (id: string) => {
+        setSelectedItem(id);
+        setDetailsModal(true);
+    };
 
     const handleDeleteClick = (id: string) => {
         setSelectedItem(id);
@@ -90,7 +97,7 @@ export default function EventList({
                         {record.image ? (
                             <ImageWithSkeleton
                                 src={record.image}
-                                alt="Etkinlik Fotoğrafı"
+                                alt="Etkinlik Görseli"
                                 width={80}
                                 height={80}
                                 className="object-cover w-full h-full rounded-full"
@@ -127,12 +134,8 @@ export default function EventList({
                 const dropdownItems = [
                     {
                         key: 'detail',
-                        label: (
-                            <Link
-                                href={`/municipality/event/${record.id}/detail`}>
-                                Görüntüle
-                            </Link>
-                        ),
+                        label: 'Detay',
+                        onClick: () => handleDetailClick(record.id.toString()),
                     },
                     {
                         key: 'edit',
@@ -245,6 +248,13 @@ export default function EventList({
                     title="Personel Sil"
                     message="Bu kaydı silmek istediğinize emin misiniz? Bu işlem geri alınamaz."
                     onConfirm={handleConfirm}
+                />
+                <AnnDetail
+                    isOpen={detailsModal}
+                    onClose={() => setDetailsModal(false)}
+                    detail={events.announcements.find(
+                        (item) => item.id.toString() === selectedItem
+                    )}
                 />
             </div>
         </>

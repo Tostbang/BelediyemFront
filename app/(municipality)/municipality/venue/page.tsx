@@ -1,14 +1,14 @@
 import React from 'react';
 import PageContainer from '@/components/pageContainer';
 import { generatePageMetadata } from '@/lib/metadata';
-import { getSlidersMuni } from '@/app/actions';
-import SlaytList from '@/components/slider/list';
+import { getVenuesMuni } from '@/app/actions';
 import { PaginationBody } from '@/types';
+import VenueList from '@/components/venue/list';
 
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata() {
-    return generatePageMetadata('Slayt İçerikleri');
+    return generatePageMetadata('Mekan İçerikleri');
 }
 
 export default async function Page({
@@ -24,16 +24,16 @@ export default async function Page({
         pageNumber,
         pageSize,
     };
-    
-    const response = await getSlidersMuni(paginationBody);
 
-    const breadcrumb = [{ label: 'Slayt İçerikleri' }];
+    const response = await getVenuesMuni(paginationBody);
+
+    const breadcrumb = [{ label: 'Mekan İçerikleri' }];
 
     return (
         <PageContainer>
             {response && (
-                <SlaytList
-                    sliders={response || []}
+                <VenueList
+                    venues={response || []}
                     type="municipality"
                     breadcrumb={breadcrumb}
                 />
