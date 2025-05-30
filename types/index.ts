@@ -436,3 +436,27 @@ export type AnnouncementPaginationBody = PaginationBody & {
     endDate?: string;
 };
 
+
+export type Slider = {
+    id: number;
+    image: string;
+    url: string;
+    createdBy: number;
+    createdByRole: number;
+    muncipalityId: number;
+    status: boolean;
+}
+
+export type SliderResponse = ApiResponse & {
+    sliders: Slider[];
+    totalCount: number;
+    pageNumber: number;
+    pageSize: number;
+    lastPage: boolean;
+    backPage: boolean;
+    nextPage: boolean;
+};
+
+export type SliderDetailResponse = ApiResponse & {
+    slider: Slider;
+};
