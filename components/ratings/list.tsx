@@ -10,6 +10,7 @@ import DynamicTable from '../dynamic/table';
 import { usePagination } from '@/hooks/usePagination';
 import { Rate } from 'antd';
 import Breadcrumb from '../common/breadCrumb';
+import StatusBadge from '../common/StatusBadge';
 
 export default function RatingList({
     ratings,
@@ -83,18 +84,7 @@ export default function RatingList({
             title: 'Durum',
             dataIndex: 'status',
             width: 180,
-            render: (text: boolean) => {
-                switch (text) {
-                    case false:
-                        return <span className="text-red-500">Pasif</span>;
-                    case true:
-                        return <span className="text-green-500">Aktif</span>;
-                    default:
-                        return (
-                            <span className="text-gray-500">Bilinmiyor</span>
-                        );
-                }
-            },
+            render: (text: boolean) => <StatusBadge status={text} />,
         },
         {
             title: 'İşlemler',

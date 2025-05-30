@@ -1,13 +1,19 @@
 "use server"
 
-import { ApiResponse, SliderDetailResponse, SliderResponse } from "@/types";
+import { ApiResponse, PaginationBody, SliderDetailResponse, SliderResponse } from "@/types";
 import { apiFetch } from "@/utils/api";
 import { validateBase64Size } from "@/utils/fileUtils";
 import { uploadImage } from "../file";
 
-export const getSlidersMuni = async () => {
+export const getSlidersMuni = async (body: PaginationBody) => {
     try {
-        const data = await apiFetch('municipality/listmunicipalityslider');
+        const data = await apiFetch('municipality/listmunicipalityslider', {
+            method: 'POST',
+            body: {
+                pageNumber: body.pageNumber - 1,
+                pageSize: body.pageSize
+            }
+        });
 
         return data as SliderResponse
     } catch (error) {

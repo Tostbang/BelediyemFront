@@ -16,6 +16,7 @@ import Breadcrumb from '../common/breadCrumb';
 import SearchFilter from '../filters/searchFilter';
 import SelectFilter from '../filters/selectFilter';
 import { FilterIcon } from '../icons';
+import StatusBadge from '../common/StatusBadge';
 
 export default function StaffList({
     staffList,
@@ -119,18 +120,7 @@ export default function StaffList({
             title: 'Durum',
             dataIndex: 'status',
             width: 100,
-            render: (text: boolean) => {
-                switch (text) {
-                    case false:
-                        return <span className="text-red-500">Pasif</span>;
-                    case true:
-                        return <span className="text-green-500">Aktif</span>;
-                    default:
-                        return (
-                            <span className="text-gray-500">Bilinmiyor</span>
-                        );
-                }
-            },
+            render: (text: boolean) => <StatusBadge status={text} />,
         },
         {
             title: 'Şifre Sırfılama',
