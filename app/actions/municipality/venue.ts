@@ -40,6 +40,8 @@ export const addVenueMuni = async (formData: FormData) => {
         const imageData = formData.get('image') as string;
         const latitude = formData.get('latitude') as string;
         const longitude = formData.get('longitude') as string;
+        const statusRaw = formData.get('status') as string | null;
+        const status = statusRaw === 'on' ? true : false;
 
         if (!title || !imageData || !description || !latitude || !longitude) {
             return { success: false, message: "", errors: 'Lütfen tüm alanları doldurun.' };
@@ -71,6 +73,7 @@ export const addVenueMuni = async (formData: FormData) => {
             description,
             latitude,
             longitude,
+            status,
             image: imagePath
         };
 
@@ -103,6 +106,8 @@ export const updateVenueMuni = async (formData: FormData) => {
         const imageData = formData.get('image') as string;
         const latitude = formData.get('latitude') as string;
         const longitude = formData.get('longitude') as string;
+        const statusRaw = formData.get('status') as string | null;
+        const status = statusRaw === 'on' ? true : false;
 
 
         if (!id || !title || !imageData || !description || !latitude || !longitude) {
@@ -136,6 +141,7 @@ export const updateVenueMuni = async (formData: FormData) => {
             description,
             latitude,
             longitude,
+            status,
             image: imagePath
         };
 
