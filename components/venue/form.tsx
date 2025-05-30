@@ -2,19 +2,24 @@
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import SubmitButton from '@/components/common/submitButton';
 import React, { useActionState } from 'react';
-import { BreadcrumbItem, RoleType, SliderDetailResponse } from '@/types';
+import { BreadcrumbItem, RoleType, VenueDetailResponse } from '@/types';
 import { addSliderMuni, updateSliderMuni } from '@/app/actions';
 import Breadcrumb from '../common/breadCrumb';
 import ImageUploader from '../dynamic/imageUploader';
+import dynamic from 'next/dynamic';
 
-export default function SliderForm({
+const LocationPicker = dynamic(() => import('../common/mapPicker'), {
+    ssr: false,
+});
+
+export default function VenueForm({
     id,
     detail,
     type,
     breadcrumb,
 }: {
     id?: string | null;
-    detail?: SliderDetailResponse | null;
+    detail?: VenueDetailResponse | null;
     type: RoleType;
     breadcrumb: BreadcrumbItem[];
 }) {
@@ -22,9 +27,12 @@ export default function SliderForm({
     const isEditing = !!id;
 
     const initialState = {
-        url: detail?.slider.url || '',
-        image: detail?.slider.image || '',
-        status: detail?.slider.status || false,
+        title: detail?.venue.title || '',
+        description: detail?.venue.description || '',
+        image: detail?.venue.image || '',
+        status: detail?.venue.status || false,
+        latitude: detail?.venue.latitude || '',
+        longitude: detail?.venue.longitude || '',
     };
 
     const clientAction = async (_prevState: unknown, formData: FormData) => {
@@ -42,8 +50,11 @@ export default function SliderForm({
                 return {
                     success: false,
                     message: 'Unsupported role type',
-                    url: '',
+                    title: '',
                     image: '',
+                    latitude: '',
+                    longitude: '',
+                    description: '',
                     status: false,
                 };
         }
@@ -53,10 +64,34 @@ export default function SliderForm({
         handleResult(result);
         return {
             ...result,
-            url: formData.get('url') as string,
+            title: formData.get('title') as string,
             image: formData.get('image') as string,
+            description: formData.get('description') as string,
             status: (formData.get('status') as string) === 'on' ? true : false,
+            latitude: formData.get('latitude') as string,
+            longitude: formData.get('longitude') as string,
         };
+    };
+
+    const handleMapChange = (
+        name: string,
+        value: {
+            lat: number;
+            lng: number;
+        }
+    ) => {
+        // Update hidden input values using DOM manipulation
+        const latitudeInput = document.getElementById(
+            'latitude'
+        ) as HTMLInputElement;
+        const longitudeInput = document.getElementById(
+            'longitude'
+        ) as HTMLInputElement;
+
+        if (latitudeInput && longitudeInput) {
+            latitudeInput.value = value.lat.toString();
+            longitudeInput.value = value.lng.toString();
+        }
     };
 
     const [state, formAction] = useActionState(clientAction, initialState);
@@ -66,6 +101,19 @@ export default function SliderForm({
             <Breadcrumb breadcrumb={breadcrumb} />
             <div className="w-full bg-white shadow-lg rounded-xl p-8 border border-gray-100">
                 <form action={formAction} className="space-y-6">
+                    {/* Hidden inputs for latitude and longitude */}
+                    <input
+                        type="hidden"
+                        id="latitude"
+                        name="latitude"
+                        defaultValue={state?.latitude}
+                    />
+                    <input
+                        type="hidden"
+                        id="longitude"
+                        name="longitude"
+                        defaultValue={state?.longitude}
+                    />
                     <div className="space-y-5">
                         <ImageUploader
                             name="image"
@@ -79,13 +127,28 @@ export default function SliderForm({
                     <div className="space-y-5">
                         <div className="mb-4">
                             <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Url
+                                Başlık
                             </label>
                             <input
                                 type="text"
-                                name="url"
+                                name="title"
                                 placeholder="Soru"
-                                defaultValue={state?.url}
+                                defaultValue={state?.title}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required
+                            />
+                        </div>
+                    </div>
+                    <div className="space-y-5">
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Açıklama
+                            </label>
+                            <textarea
+                                rows={3}
+                                name="description"
+                                placeholder="Açıklama"
+                                defaultValue={state?.description}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 required
                             />
@@ -113,6 +176,10 @@ export default function SliderForm({
                             </p>
                         </div>
                     </div>
+                    <LocationPicker
+                        value={`https://www.google.com/maps?q=${state?.latitude},${state?.longitude}`}
+                        onChange={handleMapChange}
+                    />
                     <div className="flex justify-end mt-8">
                         <SubmitButton
                             title={isEditing ? 'Güncelle' : 'Oluştur'}

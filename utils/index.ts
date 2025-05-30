@@ -79,3 +79,15 @@ export const isPositiveNumber = (str: string) => {
     const num = Number(str);
     return !isNaN(num) && num > 0;
 };
+
+export const extractLatFromMapUrl = (mapUrl: string) => {
+    const regex = /maps\?q=([-+]?\d*\.\d+),([-+]?\d*\.\d+)/;
+    const match = mapUrl.match(regex);
+    return match ? parseFloat(match[1]) : null;
+};
+
+export const extractLngFromMapUrl = (mapUrl: string) => {
+    const regex = /maps\?q=([-+]?\d*\.\d+),([-+]?\d*\.\d+)/;
+    const match = mapUrl.match(regex);
+    return match ? parseFloat(match[2]) : null;
+};

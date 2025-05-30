@@ -2,9 +2,9 @@ import React from 'react';
 import PageContainer from '@/components/pageContainer';
 import { generatePageMetadata } from '@/lib/metadata';
 import { isPositiveNumber } from '@/utils';
-import { getSliderByIdMuni } from '@/app/actions';
+import { getVenueByIdMuni } from '@/app/actions';
 import AlertMessage from '@/components/ui/AlertMessage';
-import SliderForm from '@/components/slider/form';
+import VenueForm from '@/components/venue/form';
 
 export const dynamic = 'force-dynamic';
 
@@ -16,7 +16,7 @@ export async function generateMetadata({
     const resolvedParams = await params;
     const isEditing = resolvedParams.id !== 'new';
     return generatePageMetadata(
-        isEditing ? 'Slayt Düzenle' : 'Yeni Slayt Ekle'
+        isEditing ? 'Mekan Düzenle' : 'Yeni Mekan Ekle'
     );
 }
 
@@ -39,24 +39,24 @@ export default async function Page({
     let detail = null;
     if (id) {
         try {
-            detail = await getSliderByIdMuni(id);
+            detail = await getVenueByIdMuni(id);
             if (!detail) {
-                errorMessage = `Slayt bulunamadı: #${id} ID'li kayıt mevcut değil veya erişim yetkiniz yok.`;
+                errorMessage = `Mekan bulunamadı: #${id} ID'li kayıt mevcut değil veya erişim yetkiniz yok.`;
                 isNewRecord = true;
                 id = null;
             }
         } catch (error) {
-            console.log('Slayt detayı alınamadı:', error);
-            errorMessage = `Slayt detayı alınamadı: ${error instanceof Error ? error.message : 'Bilinmeyen bir hata oluştu'}`;
+            console.log('Mekan detayı alınamadı:', error);
+            errorMessage = `Mekan detayı alınamadı: ${error instanceof Error ? error.message : 'Bilinmeyen bir hata oluştu'}`;
             isNewRecord = true;
             id = null;
         }
     }
 
     const breadcrumb = [
-        { label: 'Slayt Listesi', href: '/municipality/slider' },
+        { label: 'Mekan Listesi', href: '/municipality/venue' },
         {
-            label: isNewRecord ? 'Yeni Slayt Ekle' : 'Slayt Düzenle',
+            label: isNewRecord ? 'Yeni Mekan Ekle' : 'Mekan Düzenle',
         },
     ];
 
@@ -69,7 +69,7 @@ export default async function Page({
                     title="Hata"
                 />
             ) : (
-                <SliderForm
+                <VenueForm
                     id={id}
                     detail={detail || null}
                     type="municipality"
