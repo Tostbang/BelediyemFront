@@ -1,3 +1,4 @@
+import { BuildingIcon, PersonIcon, UserIcon } from '@/components/icons';
 import { generatePageMetadata } from '@/lib/metadata';
 import Link from 'next/link';
 
@@ -14,19 +15,9 @@ export default function Home() {
                 <div className="z-10 flex flex-col md:flex-row gap-8 items-center justify-center w-full mt-8 md:mt-0">
                     <div className="bg-white rounded-lg shadow-lg p-6 w-full md:w-64 text-center hover:shadow-xl transition-shadow">
                         <div className="mb-4">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-12 w-12 mx-auto text-blue-600"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                                />
-                            </svg>
+                            <div className="mb-4 w-12 h-12 mx-auto text-blue-600">
+                                <UserIcon />
+                            </div>
                         </div>
                         <h3 className="text-xl font-semibold mb-2">
                             Admin Girişi
@@ -43,19 +34,9 @@ export default function Home() {
 
                     <div className="bg-white rounded-lg shadow-lg p-6 w-full md:w-64 text-center hover:shadow-xl transition-shadow">
                         <div className="mb-4">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-12 w-12 mx-auto text-green-600"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                                />
-                            </svg>
+                            <div className="mb-4 w-12 h-12 mx-auto text-green-600">
+                                <BuildingIcon />
+                            </div>
                         </div>
                         <h3 className="text-xl font-semibold mb-2">
                             Belediye Girişi
@@ -71,20 +52,8 @@ export default function Home() {
                     </div>
 
                     <div className="bg-white rounded-lg shadow-lg p-6 w-full md:w-64 text-center hover:shadow-xl transition-shadow">
-                        <div className="mb-4">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-12 w-12 mx-auto text-purple-600"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                                />
-                            </svg>
+                        <div className="mb-4 w-12 h-12 mx-auto text-purple-600">
+                            <PersonIcon />
                         </div>
                         <h3 className="text-xl font-semibold mb-2">
                             Personel Girişi
