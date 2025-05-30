@@ -93,7 +93,7 @@ export const sidebarItemsMuni: SidebarItem[] = [
             {
                 title: 'Slayt',
                 icon: <SlideIcon />,
-                path: '/municipality/slide',
+                path: '/municipality/slider',
             },
             {
                 title: 'Mekan',
