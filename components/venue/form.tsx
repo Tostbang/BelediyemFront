@@ -3,14 +3,10 @@ import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import SubmitButton from '@/components/common/submitButton';
 import React, { useActionState } from 'react';
 import { BreadcrumbItem, RoleType, VenueDetailResponse } from '@/types';
-import { addSliderMuni, updateSliderMuni } from '@/app/actions';
+import { addVenueMuni, updateVenueMuni } from '@/app/actions';
 import Breadcrumb from '../common/breadCrumb';
 import ImageUploader from '../dynamic/imageUploader';
-import dynamic from 'next/dynamic';
-
-const LocationPicker = dynamic(() => import('../common/mapPicker'), {
-    ssr: false,
-});
+import MapModal from '../modals/mapModal';
 
 export default function VenueForm({
     id,
@@ -44,7 +40,7 @@ export default function VenueForm({
 
         switch (type) {
             case 'municipality':
-                actionFunction = isEditing ? updateSliderMuni : addSliderMuni;
+                actionFunction = isEditing ? updateVenueMuni : addVenueMuni;
                 break;
             default:
                 return {
@@ -73,27 +69,6 @@ export default function VenueForm({
         };
     };
 
-    const handleMapChange = (
-        name: string,
-        value: {
-            lat: number;
-            lng: number;
-        }
-    ) => {
-        // Update hidden input values using DOM manipulation
-        const latitudeInput = document.getElementById(
-            'latitude'
-        ) as HTMLInputElement;
-        const longitudeInput = document.getElementById(
-            'longitude'
-        ) as HTMLInputElement;
-
-        if (latitudeInput && longitudeInput) {
-            latitudeInput.value = value.lat.toString();
-            longitudeInput.value = value.lng.toString();
-        }
-    };
-
     const [state, formAction] = useActionState(clientAction, initialState);
 
     return (
@@ -101,19 +76,6 @@ export default function VenueForm({
             <Breadcrumb breadcrumb={breadcrumb} />
             <div className="w-full bg-white shadow-lg rounded-xl p-8 border border-gray-100">
                 <form action={formAction} className="space-y-6">
-                    {/* Hidden inputs for latitude and longitude */}
-                    <input
-                        type="hidden"
-                        id="latitude"
-                        name="latitude"
-                        defaultValue={state?.latitude}
-                    />
-                    <input
-                        type="hidden"
-                        id="longitude"
-                        name="longitude"
-                        defaultValue={state?.longitude}
-                    />
                     <div className="space-y-5">
                         <ImageUploader
                             name="image"
@@ -176,10 +138,27 @@ export default function VenueForm({
                             </p>
                         </div>
                     </div>
-                    <LocationPicker
-                        value={`https://www.google.com/maps?q=${state?.latitude},${state?.longitude}`}
-                        onChange={handleMapChange}
+
+                    {/* Hidden inputs for form submission */}
+                    <input
+                        type="hidden"
+                        id="latitude"
+                        name="latitude"
+                        defaultValue={state?.latitude || ''}
                     />
+                    <input
+                        type="hidden"
+                        id="longitude"
+                        name="longitude"
+                        defaultValue={state?.longitude || ''}
+                    />
+
+                    {/* Map Modal Component */}
+                    <MapModal
+                        initialLatitude={state?.latitude || ''}
+                        initialLongitude={state?.longitude || ''}
+                    />
+
                     <div className="flex justify-end mt-8">
                         <SubmitButton
                             title={isEditing ? 'Güncelle' : 'Oluştur'}
