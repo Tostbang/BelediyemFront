@@ -1,0 +1,182 @@
+"use server"
+
+import { ApiResponse, PaginationBody, VenueDetailResponse, VenueResponse } from "@/types";
+import { apiFetch } from "@/utils/api";
+import { validateBase64Size } from "@/utils/fileUtils";
+import { uploadImage } from "../file";
+
+export const getVenuesMuni = async (body: PaginationBody) => {
+    try {
+        const data = await apiFetch('municipality/getallvenue', {
+            method: 'POST',
+            body: {
+                pageNumber: body.pageNumber - 1,
+                pageSize: body.pageSize
+            }
+        });
+
+        return data as VenueResponse
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
+
+export const getVenueByIdMuni = async (id: string) => {
+    try {
+        const data = await apiFetch(`municipality/getvenuedetail?venueId=${id}`);
+
+        return data as VenueDetailResponse
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
+
+export const addVenueMuni = async (formData: FormData) => {
+    try {
+        const title = formData.get('title') as string;
+        const description = formData.get('description') as string;
+        const imageData = formData.get('image') as string;
+        const latitude = formData.get('latitude') as string;
+        const longitude = formData.get('longitude') as string;
+
+        if (!title || !imageData || !description || !latitude || !longitude) {
+            return { success: false, message: "", errors: 'Lütfen tüm alanları doldurun.' };
+        }
+
+        let imagePath = imageData;
+        if (imageData.startsWith('data:image')) {
+            const sizeValidation = validateBase64Size(imageData);
+            if (!sizeValidation.valid) {
+                return { success: false, message: "", errors: sizeValidation.message };
+            }
+
+            const imageFormData = new FormData();
+            imageFormData.append('image', imageData);
+
+            const uploadResult = await uploadImage(imageFormData);
+            if (!uploadResult.success) {
+                return {
+                    success: false,
+                    message: "",
+                    errors: uploadResult.errors || 'Görsel yüklenemedi.'
+                };
+            }
+            imagePath = uploadResult.path ?? '';
+        }
+
+        const payload = {
+            title,
+            description,
+            latitude,
+            longitude,
+            image: imagePath
+        };
+
+        const response = await apiFetch<ApiResponse>('municipality/createvenues', {
+            method: 'POST',
+            body: payload
+        });
+
+        return {
+            success: true,
+            message: response.message || 'Mekan içeriği başarıyla eklendi.',
+            errors: [],
+            ...payload,
+        };
+    } catch (error) {
+        console.error(error);
+        return {
+            success: false,
+            message: "",
+            errors: error instanceof Error ? error.message : 'Mekan içeriği eklenemedi.',
+        };
+    }
+}
+
+export const updateVenueMuni = async (formData: FormData) => {
+    try {
+        const id = formData.get('id') as string;
+        const title = formData.get('title') as string;
+        const description = formData.get('description') as string;
+        const imageData = formData.get('image') as string;
+        const latitude = formData.get('latitude') as string;
+        const longitude = formData.get('longitude') as string;
+
+
+        if (!id || !title || !imageData || !description || !latitude || !longitude) {
+            return { success: false, message: "", errors: 'Lütfen tüm alanları doldurun.' };
+        }
+
+        let imagePath = imageData;
+        if (imageData.startsWith('data:image')) {
+            const sizeValidation = validateBase64Size(imageData);
+            if (!sizeValidation.valid) {
+                return { success: false, message: "", errors: sizeValidation.message };
+            }
+
+            const imageFormData = new FormData();
+            imageFormData.append('image', imageData);
+
+            const uploadResult = await uploadImage(imageFormData);
+            if (!uploadResult.success) {
+                return {
+                    success: false,
+                    message: "",
+                    errors: uploadResult.errors || 'Görsel yüklenemedi.'
+                };
+            }
+            imagePath = uploadResult.path ?? '';
+        }
+
+        const payload = {
+            venuesId: id,
+            title,
+            description,
+            latitude,
+            longitude,
+            image: imagePath
+        };
+
+        const response = await apiFetch<ApiResponse>('municipality/updatevenue', {
+            method: 'PUT',
+            body: payload
+        });
+
+        return {
+            success: true,
+            message: response.message || 'Mekan içeriği başarıyla güncellendi.',
+            errors: [],
+            ...payload,
+        };
+    } catch (error) {
+        console.error(error);
+        return {
+            success: false,
+            message: "",
+            errors: error instanceof Error ? error.message : 'Mekan içeriği güncellenemedi.',
+        };
+    }
+}
+
+export const deleteVenueMuni = async (id: string) => {
+    try {
+        const data = await apiFetch<ApiResponse>(`municipality/deletevenue?id=${id}`, {
+            method: 'DELETE'
+        });
+
+        return {
+            success: true,
+            message: data.message || 'Mekan içeriği başarıyla silindi.',
+            errors: [],
+        };
+    } catch (error) {
+        console.error(error);
+        return {
+            success: false,
+            message: "",
+            errors: error instanceof Error ? error.message : 'Mekan içeriği silinemedi.',
+        };
+    }
+}

@@ -460,3 +460,30 @@ export type SliderResponse = ApiResponse & {
 export type SliderDetailResponse = ApiResponse & {
     slider: Slider;
 };
+
+export type Venue = {
+    id: number;
+    title: string;
+    description: string;
+    image: string;
+    municipalityId: number;
+    latitude: string;
+    longitude: string;
+    status: boolean;
+    createdDate: string;
+    modifiedDate: string;
+}
+
+export type VenueResponse = ApiResponse & {
+    venues: Venue[];
+    totalCount: number;
+    pageNumber: number;
+    pageSize: number;
+    lastPage: boolean;
+    backPage: boolean;
+    nextPage: boolean;
+};
+
+export type VenueDetailResponse = ApiResponse & {
+    venue: Venue;
+};
