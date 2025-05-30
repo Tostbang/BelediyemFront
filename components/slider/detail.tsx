@@ -23,17 +23,18 @@ export default function SliderDetail({
                 </h1>
                 <div className="flex flex-col gap-6">
                     <div className="flex justify-center mb-6 md:mb-0">
-                        <div className="overflow-hidden border-2 border-blue-100 shadow-md">
+                        <div className="overflow-hidden border-2 border-blue-100 shadow-md rounded-lg w-full h-48 md:h-64">
                             {detail?.image ? (
                                 <ImageWithSkeleton
                                     src={detail.image}
                                     alt="Etkinlik Fotoğrafı"
-                                    width={800}
-                                    height={300}
+                                    width={100}
+                                    height={100}
+                                    applyStyle={false}
                                     className="object-cover w-full h-full"
                                 />
                             ) : (
-                                <div className="w-20 flex items-center justify-center h-full bg-gray-100 text-gray-500 rounded-full">
+                                <div className="w-full h-48 flex items-center justify-center bg-gray-100 text-gray-500">
                                     <span className="text-2xl">Görsel Yok</span>
                                 </div>
                             )}

@@ -73,7 +73,7 @@ export default function SlaytList({
     let url;
     switch (type) {
         case 'municipality':
-            url = '/municipality/slider/';
+            url = '/municipality/slider';
             break;
         default:
             url = '';
@@ -107,11 +107,6 @@ export default function SlaytList({
             },
         },
         {
-            title: 'Url',
-            dataIndex: 'url',
-            width: 180,
-        },
-        {
             title: 'Ekleyen',
             dataIndex: 'createdByRole',
             width: 180,
@@ -142,7 +137,6 @@ export default function SlaytList({
                             {
                                 key: 'detail',
                                 label: 'Detay',
-                                danger: true,
                                 onClick: () =>
                                     handleDetailClick(record.id.toString()),
                             },
@@ -177,11 +171,12 @@ export default function SlaytList({
             <Breadcrumb
                 breadcrumb={breadcrumb}
                 buttonComponent={
-                    <LinkButton href={`${url}/new`} title="Yeni SSS Ekle" />
+                    <LinkButton href={`${url}/new`} title="Yeni Slayt Ekle" />
                 }
             />
             <div className="flex flex-col items-center w-full mb-6">
                 <div className="w-full overflow-hidden">
+                   
                     <div className="overflow-x-auto">
                         <DynamicTable<Slider>
                             data={sliders.sliders}
