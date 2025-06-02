@@ -40,7 +40,7 @@ export default function AssemblyDetail({
                             <h3 className="text-sm font-medium text-gray-800 mb-2">
                                 Konum Bilgisi
                             </h3>
-                            <div className="h-[200px] border rounded-lg overflow-hidden">
+                            <div className="h-[200px] border rounded-lg overflow-hidden mb-2">
                                 <DynamicMapPicker
                                     value={`https://www.google.com/maps?q=${
                                         detail.latitude || 0
