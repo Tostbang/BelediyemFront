@@ -77,6 +77,8 @@ export const addSliderMuni = async (formData: FormData) => {
             body: payload
         });
 
+        console.log("payload", payload);
+
         return {
             success: true,
             message: response.message || 'Slayt içeriği başarıyla eklendi.',
@@ -158,8 +160,11 @@ export const updateSliderMuni = async (formData: FormData) => {
 
 export const deleteSliderMuni = async (id: string) => {
     try {
-        const data = await apiFetch<ApiResponse>(`municipality/deleteslider?sliderId=${id}`, {
-            method: 'DELETE'
+        const data = await apiFetch<ApiResponse>(`municipality/deleteslider`, {
+            method: 'DELETE',
+            body: {
+                sliderId: id
+            }
         });
 
         return {
