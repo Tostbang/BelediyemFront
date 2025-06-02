@@ -114,7 +114,7 @@ export default function MapModal({
                         <button
                             type="button"
                             onClick={closeModal}
-                            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 cursor-pointer">
                             Onayla
                         </button>
                     </div>

@@ -1,8 +1,8 @@
 'use client';
 import React, { useState } from 'react';
-import { BreadcrumbItem, RoleType, Venue, VenueResponse } from '@/types';
+import { BreadcrumbItem, Facility, FacilityResponse, RoleType } from '@/types';
 import ConfirmModal from '../modals/confirmModal';
-import { deleteVenueMuni } from '@/app/actions';
+import { deleteFacilityMuni } from '@/app/actions';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -14,14 +14,14 @@ import ImageWithSkeleton from '../common/imageSkeleton';
 import { formatDateTime } from '@/utils';
 import StatusBadge from '../common/StatusBadge';
 import DynamicDropdown from '../common/DynamicDropdown';
-import VenueDetail from './detail';
+import FacilityDetail from './detail';
 
-export default function VenueList({
-    venues,
+export default function FacilityList({
+    facilities,
     type,
     breadcrumb,
 }: {
-    venues: VenueResponse;
+    facilities: FacilityResponse;
     type: RoleType;
     breadcrumb: BreadcrumbItem[];
 }) {
@@ -48,7 +48,7 @@ export default function VenueList({
             let result;
             switch (type) {
                 case 'municipality':
-                    result = await deleteVenueMuni(selectedItem);
+                    result = await deleteFacilityMuni(selectedItem);
                     break;
                 default:
                     result = {
@@ -71,7 +71,7 @@ export default function VenueList({
     let url;
     switch (type) {
         case 'municipality':
-            url = '/municipality/venue';
+            url = '/municipality/facility';
             break;
         default:
             url = '';
@@ -92,7 +92,7 @@ export default function VenueList({
                 return value ? (
                     <ImageWithSkeleton
                         src={value}
-                        alt="Mekan Görseli"
+                        alt="Tesis Görseli"
                         width={80}
                         height={80}
                         className="object-cover w-full h-full rounded-full"
@@ -132,7 +132,7 @@ export default function VenueList({
             dataIndex: 'actions',
             fixed: 'right' as const,
             width: 50,
-            render: (_: unknown, record: Venue) => {
+            render: (_: unknown, record: Facility) => {
                 const dropdownItems = [
                     {
                         key: 'detail',
@@ -142,7 +142,7 @@ export default function VenueList({
                     {
                         key: 'edit',
                         label: (
-                            <Link href={`/municipality/venue/${record.id}`}>
+                            <Link href={`/municipality/facility/${record.id}`}>
                                 Düzenle
                             </Link>
                         ),
@@ -165,22 +165,22 @@ export default function VenueList({
             <Breadcrumb
                 breadcrumb={breadcrumb}
                 buttonComponent={
-                    <LinkButton href={`${url}/new`} title="Yeni Mekan Ekle" />
+                    <LinkButton href={`${url}/new`} title="Yeni Tesis Ekle" />
                 }
             />
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-4 bg-white rounded-lg px-4">
                 <div className="flex flex-col items-center w-full mb-6">
                     <div className="w-full overflow-hidden bg-white rounded-lg p-6">
                         <div className="overflow-x-auto">
-                            <DynamicTable<Venue>
-                                data={venues.venues}
+                            <DynamicTable<Facility>
+                                data={facilities.facilities}
                                 columns={columns}
                                 rowKey="id"
                                 showControls={false}
                                 pagination={{
                                     pageSize: pageSize,
                                     current: pageNumber,
-                                    total: venues.totalCount || 0,
+                                    total: facilities.totalCount || 0,
                                     onChange: handlePageChange,
                                     onShowSizeChange: handlePageSizeChange,
                                     responsive: true,
@@ -192,14 +192,14 @@ export default function VenueList({
                     <ConfirmModal
                         isOpen={modal}
                         onClose={() => setModal(false)}
-                        title="Mekan Sil"
+                        title="Tesis Sil"
                         message="Bu içeriği silmek istediğinize emin misiniz? Bu işlem geri alınamaz."
                         onConfirm={handleConfirm}
                     />
-                    <VenueDetail
+                    <FacilityDetail
                         isOpen={detailsModal}
                         onClose={() => setDetailsModal(false)}
-                        detail={venues.venues.find(
+                        detail={facilities.facilities.find(
                             (item) => item.id.toString() === selectedItem
                         )}
                     />

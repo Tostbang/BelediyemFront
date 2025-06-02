@@ -1,13 +1,13 @@
 "use server"
 
-import { ApiResponse, PaginationBody, SliderDetailResponse, SliderResponse } from "@/types";
+import { ApiResponse, PaginationBody, FacilityDetailResponse, FacilityResponse } from "@/types";
 import { apiFetch } from "@/utils/api";
 import { validateBase64Size } from "@/utils/fileUtils";
 import { uploadImage } from "../file";
 
-export const getSlidersMuni = async (body: PaginationBody) => {
+export const getFacilitiesMuni = async (body: PaginationBody) => {
     try {
-        const data = await apiFetch('municipality/listmunicipalityslider', {
+        const data = await apiFetch('municipality/listmunicipalityfacility', {
             method: 'POST',
             body: {
                 pageNumber: body.pageNumber - 1,
@@ -15,33 +15,37 @@ export const getSlidersMuni = async (body: PaginationBody) => {
             }
         });
 
-        return data as SliderResponse
+        return data as FacilityResponse
     } catch (error) {
         console.error(error);
         return null;
     }
 }
 
-export const getSliderByIdMuni = async (id: string) => {
+export const getFacilityByIdMuni = async (id: string) => {
     try {
-        const data = await apiFetch(`municipality/getsliderdetail?sliderId=${id}`);
+        const data = await apiFetch(`municipality/getfacilitydetail?facilityId=${id}`);
 
-        return data as SliderDetailResponse
+        return data as FacilityDetailResponse
     } catch (error) {
         console.error(error);
         return null;
     }
 }
 
-export const addSliderMuni = async (formData: FormData) => {
+export const addFacilityMuni = async (formData: FormData) => {
     try {
-        const url = formData.get('url') as string;
+        const title = formData.get('title') as string;
+        const description = formData.get('description') as string;
+        const imageData = formData.get('image') as string;
+        const latitude = formData.get('latitude') as string;
+        const longitude = formData.get('longitude') as string;
+        const address = formData.get('address') as string;
         const statusRaw = formData.get('status') as string | null;
         const status = statusRaw === 'on' ? true : false;
-        const imageData = formData.get('image') as string;
 
 
-        if (!url || !imageData) {
+        if (!title || !imageData || !description || !latitude || !longitude || !address) {
             return { success: false, message: "", errors: 'Lütfen tüm alanları doldurun.' };
         }
 
@@ -67,19 +71,23 @@ export const addSliderMuni = async (formData: FormData) => {
         }
 
         const payload = {
-            url,
+            title,
             status,
+            description,
+            latitude,
+            longitude,
+            address,
             image: imagePath
         };
 
-        const response = await apiFetch<ApiResponse>('municipality/createslider', {
+        const response = await apiFetch<ApiResponse>('municipality/createfacility', {
             method: 'POST',
             body: payload
         });
 
         return {
             success: true,
-            message: response.message || 'Slayt içeriği başarıyla eklendi.',
+            message: response.message || 'Tesis içeriği başarıyla eklendi.',
             errors: [],
             ...payload,
         };
@@ -88,20 +96,25 @@ export const addSliderMuni = async (formData: FormData) => {
         return {
             success: false,
             message: "",
-            errors: error instanceof Error ? error.message : 'Slayt içeriği eklenemedi.',
+            errors: error instanceof Error ? error.message : 'Tesis içeriği eklenemedi.',
         };
     }
 }
 
-export const updateSliderMuni = async (formData: FormData) => {
+export const updateFacilityMuni = async (formData: FormData) => {
     try {
         const id = formData.get('id') as string;
-        const url = formData.get('url') as string;
+        const title = formData.get('title') as string;
+        const description = formData.get('description') as string;
+        const imageData = formData.get('image') as string;
+        const latitude = formData.get('latitude') as string;
+        const longitude = formData.get('longitude') as string;
+        const address = formData.get('address') as string;
         const statusRaw = formData.get('status') as string | null;
         const status = statusRaw === 'on' ? true : false;
-        const imageData = formData.get('image') as string;
 
-        if (!id || !url || !imageData) {
+
+        if (!title || !imageData || !description || !latitude || !longitude || !address) {
             return { success: false, message: "", errors: 'Lütfen tüm alanları doldurun.' };
         }
 
@@ -129,20 +142,24 @@ export const updateSliderMuni = async (formData: FormData) => {
 
 
         const payload = {
-            sliderId: id,
-            url,
+            facilityId: id,
+            title,
             status,
+            description,
+            latitude,
+            longitude,
+            address,
             image: imagePath
         };
 
-        const response = await apiFetch<ApiResponse>('municipality/updateslider', {
+        const response = await apiFetch<ApiResponse>('municipality/updatefacility', {
             method: 'PUT',
             body: payload
         });
 
         return {
             success: true,
-            message: response.message || 'Slayt içeriği başarıyla güncellendi.',
+            message: response.message || 'Tesis içeriği başarıyla güncellendi.',
             errors: [],
             ...payload,
         };
@@ -151,23 +168,20 @@ export const updateSliderMuni = async (formData: FormData) => {
         return {
             success: false,
             message: "",
-            errors: error instanceof Error ? error.message : 'Slayt içeriği güncellenemedi.',
+            errors: error instanceof Error ? error.message : 'Tesis içeriği güncellenemedi.',
         };
     }
 }
 
-export const deleteSliderMuni = async (id: string) => {
+export const deleteFacilityMuni = async (id: string) => {
     try {
-        const data = await apiFetch<ApiResponse>(`municipality/deleteslider`, {
-            method: 'DELETE',
-            body: {
-                sliderId: id
-            }
+        const data = await apiFetch<ApiResponse>(`municipality/deletevenue?id=${id}`, {
+            method: 'DELETE'
         });
 
         return {
             success: true,
-            message: data.message || 'Slayt içeriği başarıyla silindi.',
+            message: data.message || 'Tesis içeriği başarıyla silindi.',
             errors: [],
         };
     } catch (error) {
@@ -175,7 +189,7 @@ export const deleteSliderMuni = async (id: string) => {
         return {
             success: false,
             message: "",
-            errors: error instanceof Error ? error.message : 'Slayt içeriği silinemedi.',
+            errors: error instanceof Error ? error.message : 'Tesis içeriği silinemedi.',
         };
     }
 }

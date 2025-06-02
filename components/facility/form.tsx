@@ -2,20 +2,20 @@
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import SubmitButton from '@/components/common/submitButton';
 import React, { useActionState } from 'react';
-import { BreadcrumbItem, RoleType, VenueDetailResponse } from '@/types';
-import { addVenueMuni, updateVenueMuni } from '@/app/actions';
+import { BreadcrumbItem, FacilityDetailResponse, RoleType } from '@/types';
+import { addFacilityMuni, updateFacilityMuni } from '@/app/actions';
 import Breadcrumb from '../common/breadCrumb';
 import ImageUploader from '../dynamic/imageUploader';
 import MapModal from '../modals/mapModal';
 
-export default function VenueForm({
+export default function FacilityForm({
     id,
     detail,
     type,
     breadcrumb,
 }: {
     id?: string | null;
-    detail?: VenueDetailResponse | null;
+    detail?: FacilityDetailResponse | null;
     type: RoleType;
     breadcrumb: BreadcrumbItem[];
 }) {
@@ -23,12 +23,13 @@ export default function VenueForm({
     const isEditing = !!id;
 
     const initialState = {
-        title: detail?.venue.title || '',
-        description: detail?.venue.description || '',
-        image: detail?.venue.image || '',
-        status: detail?.venue.status || false,
-        latitude: detail?.venue.latitude || '',
-        longitude: detail?.venue.longitude || '',
+        title: detail?.facility.title || '',
+        description: detail?.facility.description || '',
+        image: detail?.facility.image || '',
+        status: detail?.facility.status || false,
+        latitude: detail?.facility.latitude || '',
+        longitude: detail?.facility.longitude || '',
+        address: detail?.facility.address || '',
     };
 
     const clientAction = async (_prevState: unknown, formData: FormData) => {
@@ -40,7 +41,9 @@ export default function VenueForm({
 
         switch (type) {
             case 'municipality':
-                actionFunction = isEditing ? updateVenueMuni : addVenueMuni;
+                actionFunction = isEditing
+                    ? updateFacilityMuni
+                    : addFacilityMuni;
                 break;
             default:
                 return {
@@ -51,6 +54,7 @@ export default function VenueForm({
                     latitude: '',
                     longitude: '',
                     description: '',
+                    address: '',
                     status: false,
                 };
         }
@@ -63,6 +67,7 @@ export default function VenueForm({
             title: formData.get('title') as string,
             image: formData.get('image') as string,
             description: formData.get('description') as string,
+            address: formData.get('address') as string,
             status: (formData.get('status') as string) === 'on' ? true : false,
             latitude: formData.get('latitude') as string,
             longitude: formData.get('longitude') as string,
@@ -79,7 +84,7 @@ export default function VenueForm({
                     <div className="space-y-5">
                         <ImageUploader
                             name="image"
-                            label="Mekan Görseli"
+                            label="Tesis Görseli"
                             targetWidth={1920}
                             targetHeight={1080}
                             required
@@ -118,6 +123,21 @@ export default function VenueForm({
                     </div>
                     <div className="space-y-5">
                         <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Adres
+                            </label>
+                            <textarea
+                                rows={3}
+                                name="address"
+                                placeholder="Adres"
+                                defaultValue={state?.address}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required
+                            />
+                        </div>
+                    </div>
+                    <div className="space-y-5">
+                        <div className="mb-4">
                             <div className="flex items-center">
                                 <input
                                     type="checkbox"
@@ -133,7 +153,7 @@ export default function VenueForm({
                                 </label>
                             </div>
                             <p className="text-xs text-gray-500 mt-1">
-                                Mekan içeriğinin sistem üzerinde aktif olup
+                                Tesis içeriğinin sistem üzerinde aktif olup
                                 olmadığını belirler
                             </p>
                         </div>

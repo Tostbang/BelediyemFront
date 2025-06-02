@@ -487,3 +487,31 @@ export type VenueResponse = ApiResponse & {
 export type VenueDetailResponse = ApiResponse & {
     venue: Venue;
 };
+
+export type Facility = {
+    id: number;
+    title: string;
+    description: string;
+    image: string;
+    municipalityId: number;
+    latitude: string;
+    longitude: string;
+    address: string;
+    status: boolean;
+    createdDate: string;
+    modifiedDate: string;
+}
+
+export type FacilityResponse = ApiResponse & {
+    facilities: Facility[];
+    totalCount: number;
+    pageNumber: number;
+    pageSize: number;
+    lastPage: boolean;
+    backPage: boolean;
+    nextPage: boolean;
+};
+
+export type FacilityDetailResponse = ApiResponse & {
+    facility: Facility;
+};
