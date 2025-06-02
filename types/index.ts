@@ -552,6 +552,8 @@ export type Support = {
     supportStatusType: number;
     answeredText: string;
     municipalityId: number;
+    createdDate: string;
+    modifiedDate: string;
 }
 
 export type SupportResponse = ApiResponse & {
