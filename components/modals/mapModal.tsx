@@ -108,7 +108,7 @@ export default function MapModal({
                         <button
                             type="button"
                             onClick={closeModal}
-                            className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">
+                            className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 cursor-pointer">
                             Kapat
                         </button>
                         <button

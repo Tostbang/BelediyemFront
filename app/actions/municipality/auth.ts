@@ -123,6 +123,21 @@ export const getReportsMuni = async (body: PaginationBody) => {
     }
 }
 
+export const createReportMuni = async () => {
+    try {
+        const data = await apiFetch<ApiResponse>('municipality/createstatisticsreport');
+
+        return { success: true, message: data.message || 'Rapor oluşturuldu.', errors: [] };
+    } catch (error) {
+        console.error(error);
+        return {
+            success: false,
+            message: "",
+            errors: error instanceof Error ? error.message : 'Rapor oluşturulamadı.',
+        };
+    }
+}
+
 export const updateLastSeenMuni = async () => {
     try {
         const data = await apiFetch<ApiResponse>('municipality/lastseenupdate');

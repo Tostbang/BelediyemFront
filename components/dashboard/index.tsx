@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import StatsCard from '@/components/common/statatsCard';
+import { useRouter } from 'next/navigation';
 import {
     ClipboardIcon,
     ClockIcon,
@@ -20,9 +21,12 @@ import {
 import DynamicTable from '../dynamic/table';
 import { usePagination } from '@/hooks/usePagination';
 import { departmans } from '@/data/departmans';
-import { formatDate } from '@/utils';
+import { formatDateTime } from '@/utils';
 import ComplaintChart from './complaintChart';
 import Breadcrumb from '../common/breadCrumb';
+import SubmitButton from '../common/submitButton';
+import { useNotificationHandler } from '@/hooks/useNotificationHandler';
+import { createReportMuni } from '@/app/actions';
 
 export default function DashboardMuni({
     dashboard,
@@ -33,6 +37,7 @@ export default function DashboardMuni({
     reports?: ReportsMuniResponse;
     breadcrumb: BreadcrumbItem[];
 }) {
+    const router = useRouter();
     const { pageNumber, pageSize, handlePageChange, handlePageSizeChange } =
         usePagination();
 
@@ -137,7 +142,7 @@ export default function DashboardMuni({
             title: 'Oluşturulma Tarihi',
             dataIndex: 'createdDate',
             width: 180,
-            render: (date: string) => formatDate(date),
+            render: (date: string) => formatDateTime(date),
         },
         {
             title: 'İndir',
@@ -197,6 +202,19 @@ export default function DashboardMuni({
         },
     ];
 
+    const { handleSuccess, handleError } = useNotificationHandler();
+
+    const clientAction = async () => {
+        const result = await createReportMuni();
+
+        if (result.success) {
+            handleSuccess(result.message);
+            router.refresh();
+        } else {
+            handleError(result);
+        }
+    };
+
     return (
         <>
             <Breadcrumb breadcrumb={breadcrumb} />
@@ -218,9 +236,14 @@ export default function DashboardMuni({
                     />
 
                     <div className="w-full overflow-hidden mt-6 bg-white rounded-lg p-6">
-                        <h2 className="text-xl font-semibold mb-4">
-                            Şikayet Rapor Dosyaları
-                        </h2>
+                        <div className="flex justify-between items-centers flex-wrap mb-4">
+                            <h2 className="text-xl font-semibold mb-4">
+                                Şikayet Rapor Dosyaları
+                            </h2>
+                            <form action={clientAction}>
+                                <SubmitButton title="Yeni Rapor Dosyası Oluştur" />
+                            </form>
+                        </div>
                         <div className="overflow-x-auto">
                             {reports ? (
                                 <DynamicTable<ComplaintReports>

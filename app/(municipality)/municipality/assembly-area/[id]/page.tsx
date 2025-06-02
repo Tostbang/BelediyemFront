@@ -16,7 +16,7 @@ export async function generateMetadata({
     const resolvedParams = await params;
     const isEditing = resolvedParams.id !== 'new';
     return generatePageMetadata(
-        isEditing ? 'Toplanama Alanı Düzenle' : 'Yeni Toplanama Alanı Ekle'
+        isEditing ? 'Toplanma Alanı Düzenle' : 'Yeni Toplanma Alanı Ekle'
     );
 }
 
@@ -41,13 +41,13 @@ export default async function Page({
         try {
             detail = await getAssemblyByIdMuni(id);
             if (!detail) {
-                errorMessage = `Toplanama alanı bulunamadı: #${id} ID'li kayıt mevcut değil veya erişim yetkiniz yok.`;
+                errorMessage = `Toplanma alanı bulunamadı: #${id} ID'li kayıt mevcut değil veya erişim yetkiniz yok.`;
                 isNewRecord = true;
                 id = null;
             }
         } catch (error) {
-            console.log('Toplanama alanı detayı alınamadı:', error);
-            errorMessage = `Toplanama alanı detayı alınamadı: ${error instanceof Error ? error.message : 'Bilinmeyen bir hata oluştu'}`;
+            console.log('Toplanma alanı detayı alınamadı:', error);
+            errorMessage = `Toplanma alanı detayı alınamadı: ${error instanceof Error ? error.message : 'Bilinmeyen bir hata oluştu'}`;
             isNewRecord = true;
             id = null;
         }
@@ -55,13 +55,13 @@ export default async function Page({
 
     const breadcrumb = [
         {
-            label: 'Toplanama Alanı Listesi',
+            label: 'Toplanma Alanı Listesi',
             href: '/municipality/assembly-area',
         },
         {
             label: isNewRecord
-                ? 'Yeni Toplanama Alanı Ekle'
-                : 'Toplanama Alanı Düzenle',
+                ? 'Yeni Toplanma Alanı Ekle'
+                : 'Toplanma Alanı Düzenle',
         },
     ];
 
