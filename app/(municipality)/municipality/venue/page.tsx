@@ -8,7 +8,7 @@ import VenueList from '@/components/venue/list';
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata() {
-    return generatePageMetadata('Mekan İçerikleri');
+    return generatePageMetadata('Mekan Listesi');
 }
 
 export default async function Page({
@@ -27,7 +27,7 @@ export default async function Page({
 
     const response = await getVenuesMuni(paginationBody);
 
-    const breadcrumb = [{ label: 'Mekan İçerikleri' }];
+    const breadcrumb = [{ label: 'Mekan Listesi' }];
 
     return (
         <PageContainer>

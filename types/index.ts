@@ -540,3 +540,30 @@ export type AssemblyResponse = ApiResponse & {
 export type AssemblyDetailResponse = ApiResponse & {
     assemblyArea: Assembly;
 };
+
+export type Support = {
+    id: number;
+    name: string;
+    surname: string;
+    email: string;
+    phone: string;
+    title: string;
+    message: string;
+    supportStatusType: number;
+    answeredText: string;
+    municipalityId: number;
+}
+
+export type SupportResponse = ApiResponse & {
+    supports: Support[];
+    totalCount: number;
+    pageNumber: number;
+    pageSize: number;
+    lastPage: boolean;
+    backPage: boolean;
+    nextPage: boolean;
+};
+
+export type SupportDetailResponse = ApiResponse & {
+    support: Support;
+};

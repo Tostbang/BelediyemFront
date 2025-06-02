@@ -1,39 +1,45 @@
 import React from 'react';
 import PageContainer from '@/components/pageContainer';
 import { generatePageMetadata } from '@/lib/metadata';
+import { getSupportsMuni } from '@/app/actions';
 import { PaginationBody } from '@/types';
-import { getAssembliesMuni } from '@/app/actions';
-import AssemblyList from '@/components/assembly-area/list';
+import SupportList from '@/components/support/list';
 
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata() {
-    return generatePageMetadata('Toplanma Alanı Listesi');
+    return generatePageMetadata('Destek Listesi');
 }
 
 export default async function Page({
     searchParams,
 }: {
-    searchParams: Promise<{ page?: string; pageSize?: string }>;
+    searchParams: Promise<{
+        page?: string;
+        pageSize?: string;
+        searchText?: string;
+    }>;
 }) {
     const params = await searchParams;
     const pageNumber = Number(params.page) || 1;
     const pageSize = Number(params.pageSize) || 20;
+    const searchText = params.searchText || '';
 
     const paginationBody: PaginationBody = {
         pageNumber,
         pageSize,
+        searchText,
     };
 
-    const response = await getAssembliesMuni(paginationBody);
+    const response = await getSupportsMuni(paginationBody);
 
-    const breadcrumb = [{ label: 'Toplanma Alanı Listesi' }];
+    const breadcrumb = [{ label: 'Destek Listesi' }];
 
     return (
         <PageContainer>
             {response && (
-                <AssemblyList
-                    assemblies={response || []}
+                <SupportList
+                    supports={response || []}
                     type="municipality"
                     breadcrumb={breadcrumb}
                 />

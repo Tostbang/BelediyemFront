@@ -121,7 +121,7 @@ export default function AssemblyList({
                     {
                         key: 'edit',
                         label: (
-                            <Link href={`/municipality/venue/${record.id}`}>
+                            <Link href={`/municipality/assembly-area/${record.id}`}>
                                 Düzenle
                             </Link>
                         ),

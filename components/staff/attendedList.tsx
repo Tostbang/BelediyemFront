@@ -97,7 +97,7 @@ export default function AttendedList({
 
                 return (
                     <span
-                        className={`bg-${status?.color || 'gray'}-500 p-1 px-4 rounded-2xl text-white text-center w-fit`}>
+                        className={`${status ? status.bgColor : 'bg-gray-500'} p-1 px-4 rounded-2xl  text-white text-center w-fit`}>
                         {status?.name || 'Bilinmiyor'}
                     </span>
                 );

@@ -8,7 +8,7 @@ import FacilityList from '@/components/facility/list';
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata() {
-    return generatePageMetadata('Tesis İçerikleri');
+    return generatePageMetadata('Tesis Listesi');
 }
 
 export default async function Page({
@@ -27,7 +27,7 @@ export default async function Page({
 
     const response = await getFacilitiesMuni(paginationBody);
 
-    const breadcrumb = [{ label: 'Tesis İçerikleri' }];
+    const breadcrumb = [{ label: 'Tesis Listesi' }];
 
     return (
         <PageContainer>

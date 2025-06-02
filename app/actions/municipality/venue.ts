@@ -43,16 +43,6 @@ export const addVenueMuni = async (formData: FormData) => {
         const statusRaw = formData.get('status') as string | null;
         const status = statusRaw === 'on' ? true : false;
 
-        console.log("Form Data:", {
-            title,
-            description,
-            imageData,
-            latitude,
-            longitude,
-            status
-        });
-
-
         if (!title || !imageData || !description || !latitude || !longitude) {
             return { success: false, message: "", errors: 'Lütfen tüm alanları doldurun.' };
         }

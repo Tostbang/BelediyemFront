@@ -8,7 +8,7 @@ import { PaginationBody } from '@/types';
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata() {
-    return generatePageMetadata('Slayt İçerikleri');
+    return generatePageMetadata('Slayt Listesi');
 }
 
 export default async function Page({
@@ -27,7 +27,7 @@ export default async function Page({
     
     const response = await getSlidersMuni(paginationBody);
 
-    const breadcrumb = [{ label: 'Slayt İçerikleri' }];
+    const breadcrumb = [{ label: 'Slayt Listesi' }];
 
     return (
         <PageContainer>

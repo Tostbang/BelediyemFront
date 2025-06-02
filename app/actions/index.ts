@@ -16,6 +16,7 @@ export * from '@/app/actions/municipality/slider';
 export * from '@/app/actions/municipality/venue';
 export * from '@/app/actions/municipality/facility';
 export * from '@/app/actions/municipality/assembly';
+export * from '@/app/actions/municipality/support';
 
 // staff
 export * from '@/app/actions/staff/auth';
