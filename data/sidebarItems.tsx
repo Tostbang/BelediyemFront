@@ -103,7 +103,7 @@ export const sidebarItemsMuni: SidebarItem[] = [
             {
                 title: 'Toplanma Alanı',
                 icon: <PeopleIcon />,
-                path: '/municipality/gathering-area',
+                path: '/municipality/assembly-area',
             },
             {
                 title: 'Tesis',

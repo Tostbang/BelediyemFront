@@ -2,20 +2,19 @@
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import SubmitButton from '@/components/common/submitButton';
 import React, { useActionState } from 'react';
-import { BreadcrumbItem, FacilityDetailResponse, RoleType } from '@/types';
-import { addFacilityMuni, updateFacilityMuni } from '@/app/actions';
+import { AssemblyDetailResponse, BreadcrumbItem, RoleType } from '@/types';
+import { addVenueMuni, updateVenueMuni } from '@/app/actions';
 import Breadcrumb from '../common/breadCrumb';
-import ImageUploader from '../dynamic/imageUploader';
 import MapModal from '../modals/mapModal';
 
-export default function FacilityForm({
+export default function AssemblyForm({
     id,
     detail,
     type,
     breadcrumb,
 }: {
     id?: string | null;
-    detail?: FacilityDetailResponse | null;
+    detail?: AssemblyDetailResponse | null;
     type: RoleType;
     breadcrumb: BreadcrumbItem[];
 }) {
@@ -23,13 +22,10 @@ export default function FacilityForm({
     const isEditing = !!id;
 
     const initialState = {
-        title: detail?.facility.title || '',
-        description: detail?.facility.description || '',
-        image: detail?.facility.image || '',
-        status: detail?.facility.status || false,
-        latitude: detail?.facility.latitude || '',
-        longitude: detail?.facility.longitude || '',
-        address: detail?.facility.address || '',
+        title: detail?.assemblyArea.title || '',
+        status: detail?.assemblyArea.status || false,
+        latitude: detail?.assemblyArea.latitude || '',
+        longitude: detail?.assemblyArea.longitude || '',
     };
 
     const clientAction = async (_prevState: unknown, formData: FormData) => {
@@ -41,20 +37,15 @@ export default function FacilityForm({
 
         switch (type) {
             case 'municipality':
-                actionFunction = isEditing
-                    ? updateFacilityMuni
-                    : addFacilityMuni;
+                actionFunction = isEditing ? updateVenueMuni : addVenueMuni;
                 break;
             default:
                 return {
                     success: false,
                     message: 'Unsupported role type',
                     title: '',
-                    image: '',
                     latitude: '',
                     longitude: '',
-                    description: '',
-                    address: '',
                     status: false,
                 };
         }
@@ -65,9 +56,6 @@ export default function FacilityForm({
         return {
             ...result,
             title: formData.get('title') as string,
-            image: formData.get('image') as string,
-            description: formData.get('description') as string,
-            address: formData.get('address') as string,
             status: (formData.get('status') as string) === 'on' ? true : false,
             latitude: formData.get('latitude') as string,
             longitude: formData.get('longitude') as string,
@@ -82,16 +70,6 @@ export default function FacilityForm({
             <div className="w-full bg-white shadow-lg rounded-xl p-8 border border-gray-100">
                 <form action={formAction} className="space-y-6">
                     <div className="space-y-5">
-                        <ImageUploader
-                            name="image"
-                            label="Tesis Görseli"
-                            targetWidth={1920}
-                            targetHeight={1080}
-                            required
-                            initialImage={state?.image}
-                        />
-                    </div>
-                    <div className="space-y-5">
                         <div className="mb-4">
                             <label className="block text-sm font-medium text-gray-700 mb-1">
                                 Başlık
@@ -101,36 +79,6 @@ export default function FacilityForm({
                                 name="title"
                                 placeholder="Başlık"
                                 defaultValue={state?.title}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required
-                            />
-                        </div>
-                    </div>
-                    <div className="space-y-5">
-                        <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Açıklama
-                            </label>
-                            <textarea
-                                rows={3}
-                                name="description"
-                                placeholder="Açıklama"
-                                defaultValue={state?.description}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required
-                            />
-                        </div>
-                    </div>
-                    <div className="space-y-5">
-                        <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Adres
-                            </label>
-                            <textarea
-                                rows={3}
-                                name="address"
-                                placeholder="Adres"
-                                defaultValue={state?.address}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 required
                             />
@@ -153,8 +101,8 @@ export default function FacilityForm({
                                 </label>
                             </div>
                             <p className="text-xs text-gray-500 mt-1">
-                                Tesis içeriğinin sistem üzerinde aktif olup
-                                olmadığını belirler
+                                Toplanma alanı içeriğinin sistem üzerinde aktif
+                                olup olmadığını belirler
                             </p>
                         </div>
                     </div>

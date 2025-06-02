@@ -515,3 +515,28 @@ export type FacilityResponse = ApiResponse & {
 export type FacilityDetailResponse = ApiResponse & {
     facility: Facility;
 };
+
+export type Assembly = {
+    id: number;
+    title: string;
+    longitude: string;
+    latitude: string;
+    status: boolean;
+    createdDate: string;
+    modifiedDate: string;
+    municipalityId: number;
+}
+
+export type AssemblyResponse = ApiResponse & {
+    assemblyAreas: Assembly[];
+    totalCount: number;
+    pageNumber: number;
+    pageSize: number;
+    lastPage: boolean;
+    backPage: boolean;
+    nextPage: boolean;
+};
+
+export type AssemblyDetailResponse = ApiResponse & {
+    assemblyArea: Assembly;
+};
