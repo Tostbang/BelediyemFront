@@ -349,6 +349,8 @@ export type Complaints = {
     firstImage: string;
     secondImage: string;
     thirdImage: string;
+    userName: string;
+    userSurname: string;
     createdDate: string;
     modifiedDate: string;
     categoryType: number;

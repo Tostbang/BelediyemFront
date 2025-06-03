@@ -10,8 +10,8 @@ export const getStaffsMuni = async (body: StaffPaginationBody) => {
             body: {
                 pageNumber: body.pageNumber - 1,
                 pageSize: body.pageSize,
+                municipalStaffType: body.municipalStaffType || undefined,
                 searchText: body.searchText || '',
-                municipalStaffType: body.municipalStaffType || undefined
             }
         });
 

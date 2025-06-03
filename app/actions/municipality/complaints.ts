@@ -153,18 +153,15 @@ export const updateCompletedComplaintStatusMuni = async (formData: FormData) => 
     }
 }
 
-export const attendtComplaintToStaffMuni = async (formData: FormData) => {
+export const attendtComplaintToStaffMuni = async (complaintId: string, staffId: string) => {
     try {
 
-        const id = formData.get('id') as string;
-        const staffId = formData.get('staffId') as string;
-
-        if (!id || !staffId) {
+        if (!complaintId || !staffId) {
             return { success: false, message: "", errors: 'Lütfen tüm alanları doldurun.' };
         }
 
         const payload = {
-            complaintId: id,
+            complaintId,
             staffId,
         };
 

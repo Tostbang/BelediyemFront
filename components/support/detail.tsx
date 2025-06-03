@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { BreadcrumbItem, RoleType, SupportDetailResponse } from '@/types';
-import { formatDate } from '@/utils';
+import { formatDateTime } from '@/utils';
 import { DateIcon, EnvelopeIcon, PhoneIcon } from '../icons';
 import Breadcrumb from '../common/breadCrumb';
 import { supportType } from '@/data/supportType';
@@ -170,7 +170,7 @@ export default function SupportDetail({
                                 </span>
                             </div>
                             <span className="text-gray-700 sm:ml-4">
-                                {formatDate(detail?.support.createdDate ?? '')}
+                                {formatDateTime(detail?.support.createdDate ?? '')}
                             </span>
                         </div>
                     </div>
@@ -197,7 +197,7 @@ export default function SupportDetail({
                                     </span>
                                 </div>
                                 <span className="text-gray-700 sm:ml-4">
-                                    {formatDate(
+                                    {formatDateTime(
                                         detail?.support.modifiedDate ?? ''
                                     )}
                                 </span>

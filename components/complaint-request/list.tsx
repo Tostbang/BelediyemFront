@@ -6,7 +6,6 @@ import { usePagination } from '@/hooks/usePagination';
 import DynamicTable from '@/components/dynamic/table';
 import { FilterIcon } from '../icons';
 import ImageWithSkeleton from '../common/imageSkeleton';
-import { annType } from '@/data/annType';
 import { formatDateTime } from '@/utils';
 import Breadcrumb from '../common/breadCrumb';
 import DateFiltersModal from '../filters/dateFiltersModal';
@@ -85,10 +84,10 @@ export default function ComplaintList({
         },
         {
             title: 'Ad Soyad',
-            dataIndex: 'announcementsType',
+            dataIndex: 'userName',
             width: 100,
-            render: (value: number) =>
-                annType.find((item) => item.id === value)?.name || 'Bilinmiyor',
+            render: (value: number, record: Complaints) =>
+                value + ' ' + record.userSurname || 'Belirtilmedi',
         },
         {
             title: 'Başlık',
@@ -121,12 +120,6 @@ export default function ComplaintList({
         },
         {
             title: 'Başlama Tarihi',
-            dataIndex: 'createdDate',
-            width: 100,
-            render: (value: string) => formatDateTime(value),
-        },
-        {
-            title: 'Bitiş Tarihi',
             dataIndex: 'createdDate',
             width: 100,
             render: (value: string) => formatDateTime(value),
