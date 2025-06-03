@@ -1,5 +1,6 @@
 export * from '@/app/actions/navigate';
 export * from '@/app/actions/file';
+export * from '@/app/actions/message';
 
 //admin
 export * from '@/app/actions/admin/auth';

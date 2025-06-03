@@ -15,12 +15,13 @@ import ImageWithSkeleton from '../common/imageSkeleton';
 import dynamic from 'next/dynamic';
 // Import Swiper and modules
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+import { Navigation, Pagination } from 'swiper/modules';
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import AttendStaffModal from './AttendStaffModal';
+import AttendStaffModal from './attendModal';
+import MessageModal from './messageModal';
 
 // Dynamically import MapPicker with no SSR to avoid leaflet issues
 const DynamicMapPicker = dynamic(() => import('../common/mapPicker'), {
@@ -39,6 +40,7 @@ export default function ComplaintDetail({
     type: RoleType;
 }) {
     const [staffModal, setStaffModal] = useState(false);
+    const [messageModal, setMessageModal] = useState(false);
 
     return (
         <>
@@ -173,7 +175,7 @@ export default function ComplaintDetail({
                             </h3>
                             <div className="carousel-container rounded-lg overflow-hidden border h-full">
                                 <Swiper
-                                    modules={[Navigation, Pagination, Autoplay]}
+                                    modules={[Navigation, Pagination]}
                                     navigation
                                     pagination={{ clickable: true }}
                                     autoplay={{ delay: 5000 }}
@@ -230,9 +232,22 @@ export default function ComplaintDetail({
                 </div>
 
                 <div className="mb-6 p-8 bg-white rounded-lg shadow-md">
-                    <h2 className="text-xl font-semibold mb-4">
-                        Kişi Bilgileri
-                    </h2>
+                    <div className="flex items-center justify-between mb-4">
+                        <h2 className="text-xl font-semibold mb-4">
+                            Kişi Bilgileri
+                        </h2>
+                        <button
+                            onClick={() => setMessageModal(true)}
+                            className="px-4 py-2 bg-blue-600 text-white  rounded-2xl hover:bg-blue-700 w-full md:w-auto cursor-pointer">
+                            Mesaj Gönder
+                        </button>
+                        <MessageModal
+                            isOpen={messageModal}
+                            onClose={() => setMessageModal(false)}
+                            id={id || ''}
+                            type={type}
+                        />
+                    </div>
                     <div className="grid grid-cols-1 gap-3">
                         <div className="flex flex-col sm:flex-row sm:items-center gap-2">
                             <div className="flex items-center mb-2 sm:mb-0">

@@ -605,3 +605,27 @@ export type ComplaintStatuses = {
     createdDate: string;
     complaintsStatusType: number;
 }
+
+export type Message = {
+    id: number;
+    senderId: number;
+    senderName: string;
+    senderProfileImage: string;
+    senderType: string;
+    receiverId: number;
+    receiverName: string;
+    receiverProfileImage: string;
+    receiverType: string;
+    content: string;
+    createdDate: string;
+    isRead: boolean;
+    isFromCurrentUser: boolean;
+    isToCurrentUser: boolean;
+}
+
+export type MessagesResponse = ApiResponse & {
+    messageGroups: {
+        date: string;
+        messages: Message[];
+    }[];
+};
