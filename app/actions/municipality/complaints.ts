@@ -73,7 +73,7 @@ export const updateComplaintStatusMuni = async (formData: FormData) => {
         };
 
         const response = await apiFetch<ApiResponse>('municipality/updatecomplaintstatus', {
-            method: 'PUT',
+            method: 'POST',
             body: payload
         });
 
@@ -133,7 +133,7 @@ export const updateCompletedComplaintStatusMuni = async (formData: FormData) => 
         };
 
         const response = await apiFetch<ApiResponse>('municipality/municipalitycreatecomplatedcomplaints', {
-            method: 'PUT',
+            method: 'POST',
             body: payload
         });
 
@@ -166,7 +166,7 @@ export const attendtComplaintToStaffMuni = async (complaintId: string, staffId: 
         };
 
         const response = await apiFetch<ApiResponse>('municipality/assigncomplaint', {
-            method: 'PUT',
+            method: 'POST',
             body: payload
         });
 
