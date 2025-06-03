@@ -1,6 +1,6 @@
 "use server";
 
-import { ApiResponse, ComplaintsDetailResponse, ComplaintsPaginationBody, ComplaintsResponse, ComplaintsStatusPBody } from "@/types";
+import { ApiResponse, ComplaintsDetailResponse, ComplaintsPaginationBody, ComplaintsResponse, ComplaintsStatusPBody, ComplaintStatusesResponse } from "@/types";
 import { apiFetch } from "@/utils/api";
 import { validateBase64Size } from "@/utils/fileUtils";
 import { uploadImage } from "../file";
@@ -40,7 +40,7 @@ export const getComplaintByIdMuni = async (id: string) => {
 export const getComplaintStatusesMuni = async (body: ComplaintsStatusPBody) => {
     try {
 
-        const data = await apiFetch('municipality/getcomplaintstatuses', {
+        const data = await apiFetch('municipality/getcomplaintsstatus', {
             method: 'POST',
             body: {
                 pageNumber: body.pageNumber - 1,
@@ -50,7 +50,7 @@ export const getComplaintStatusesMuni = async (body: ComplaintsStatusPBody) => {
         });
 
 
-        return data as ComplaintsResponse
+        return data as ComplaintStatusesResponse
     } catch (error) {
         console.error(error);
         return null;

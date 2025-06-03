@@ -606,6 +606,16 @@ export type ComplaintStatuses = {
     complaintsStatusType: number;
 }
 
+export type ComplaintStatusesResponse = ApiResponse & {
+    complaintsStatuses: ComplaintStatuses[];
+    totalCount: number;
+    pageNumber: number;
+    pageSize: number;
+    lastPage: boolean;
+    backPage: boolean;
+    nextPage: boolean;
+};
+
 export type Message = {
     id: number;
     senderId: number;

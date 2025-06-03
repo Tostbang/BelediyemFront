@@ -22,6 +22,9 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import AttendStaffModal from './attendModal';
 import MessageModal from './messageModal';
+import { complaintStatusType } from '@/data/complaintStatus';
+import { Timeline } from 'antd';
+import LinkButton from '../common/LinkButton';
 
 // Dynamically import MapPicker with no SSR to avoid leaflet issues
 const DynamicMapPicker = dynamic(() => import('../common/mapPicker'), {
@@ -41,6 +44,31 @@ export default function ComplaintDetail({
 }) {
     const [staffModal, setStaffModal] = useState(false);
     const [messageModal, setMessageModal] = useState(false);
+
+    const timeline =
+        detail?.complaint.complaintsStatus
+            ?.slice()
+            .reverse()
+            .map((status) => ({
+                dot: (
+                    <div className="border-3 border-green-500  bg-white rounded-full h-6 w-6" />
+                ),
+                children: (
+                    <div className="flex items-center gap-2">
+                        <span className="text-gray-700 text-base font-medium">
+                            {
+                                complaintStatusType.find(
+                                    (item) =>
+                                        item.id === status.complaintsStatusType
+                                )?.name
+                            }
+                        </span>
+                        <span className="text-gray-500 text-base">
+                            {formatDateTime(status.createdDate)}
+                        </span>
+                    </div>
+                ),
+            })) || [];
 
     return (
         <>
@@ -232,8 +260,24 @@ export default function ComplaintDetail({
                 </div>
 
                 <div className="mb-6 p-8 bg-white rounded-lg shadow-md">
-                    <div className="flex items-center justify-between mb-4">
-                        <h2 className="text-xl font-semibold mb-4">
+                    <div className="flex items-center justify-between">
+                        <h2 className="text-xl font-semibold mb-6">
+                            Şikayet / Talep Durumu
+                        </h2>
+                        <LinkButton
+                            title="Tüm Durumları Göster"
+                            href={`/municipality/complaint-request/${id}/statuses`}
+                            className="px-4 py-2 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 w-full md:w-auto"
+                        />
+                    </div>
+                    <div className="relative">
+                        <Timeline items={timeline} className="px-4 py-2" />
+                    </div>
+                </div>
+
+                <div className="mb-6 p-8 bg-white rounded-lg shadow-md">
+                    <div className="flex items-center justify-between">
+                        <h2 className="text-xl font-semibold mb-6">
                             Kişi Bilgileri
                         </h2>
                         <button
@@ -295,8 +339,8 @@ export default function ComplaintDetail({
                 </div>
 
                 <div className="mb-6 p-8 bg-white rounded-lg shadow-md">
-                    <div className="flex items-center justify-between mb-4">
-                        <h2 className="text-xl font-semibold mb-4">
+                    <div className="flex items-center justify-between">
+                        <h2 className="text-xl font-semibold mb-6">
                             Personel Bilgileri
                         </h2>
                         <button

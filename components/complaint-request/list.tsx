@@ -105,17 +105,17 @@ export default function ComplaintList({
             title: 'Durum',
             dataIndex: 'complaintsStatusType',
             width: 100,
-            render: (value: number, record: Complaints) => {
-                if (value === 4 && record.complaintsStatus?.length > 0) {
-                    const matchingStatus = record.complaintsStatus.find(
-                        (status) => status.complaintsStatusType === 4
-                    );
+            render: (value: number) => {
+                const status = complaintStatusType.find(
+                    (item) => item.id === value
+                );
 
-                    if (matchingStatus) {
-                        return formatDateTime(matchingStatus.createdDate);
-                    }
-                }
-                return 'Henüz Çözülmedi';
+                return (
+                    <span
+                        className={`${status ? status.bgColor : 'bg-gray-500'} p-1 px-4 rounded-2xl  text-white text-center w-fit`}>
+                        {status?.name || 'Bilinmiyor'}
+                    </span>
+                );
             },
         },
         {
