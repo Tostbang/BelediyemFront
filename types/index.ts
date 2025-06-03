@@ -342,7 +342,7 @@ export type StaffAttendedComplaintsPaginationBody = PaginationBody & {
     endDate?: string;
 };
 
-export type StaffComplaints = {
+export type Complaints = {
     id: number;
     title: string;
     description: string;
@@ -364,11 +364,13 @@ export type StaffComplaints = {
         complaintId: number;
         complaintsStatusType: number;
     }[];
+    user: CitezenUser;
+    assignedStaff: StaffUser
 }
 
 
-export type StaffAttendedComplaintsResponse = ApiResponse & {
-    complaints: StaffComplaints[];
+export type ComplaintsResponse = ApiResponse & {
+    complaints: Complaints[];
     name: string;
     surname: string;
     totalCount: number;
@@ -378,6 +380,16 @@ export type StaffAttendedComplaintsResponse = ApiResponse & {
     backPage: boolean;
     nextPage: boolean;
 };
+
+export type ComplaintsDetailResponse = ApiResponse & {
+    complaint: Complaints;
+    totalCount: number;
+    pageNumber: number;
+    pageSize: number;
+    lastPage: boolean;
+    backPage: boolean;
+    nextPage: boolean;
+}
 
 export type CitezenUser = {
     userId: number;
@@ -569,3 +581,25 @@ export type SupportResponse = ApiResponse & {
 export type SupportDetailResponse = ApiResponse & {
     support: Support;
 };
+
+
+export type ComplaintsPaginationBody = PaginationBody & {
+    complaintsStatusType?: number;
+    categoryType?: number;
+    startDate?: string;
+    endDate?: string;
+};
+
+export type ComplaintsStatusPBody = PaginationBody & {
+    complaintId?: number;
+};
+
+export type ComplaintStatuses = {
+    id: number;
+    name: string;
+    surname: string;
+    role: number;
+    profileImage: string;
+    createdDate: string;
+    complaintsStatusType: number;
+}

@@ -1,6 +1,6 @@
 "use server";
 
-import { ApiResponse, CitizenUserDetailResponse, CitizenUserResponse, PaginationBody, PasswordResetResponse, StaffAttendedComplaintsPaginationBody, StaffAttendedComplaintsResponse, StaffPaginationBody, StaffUserDetailResponse, StaffUserListResponse } from "@/types";
+import { ApiResponse, CitizenUserDetailResponse, CitizenUserResponse, PaginationBody, PasswordResetResponse, StaffAttendedComplaintsPaginationBody, ComplaintsResponse, StaffPaginationBody, StaffUserDetailResponse, StaffUserListResponse } from "@/types";
 import { apiFetch } from "@/utils/api";
 
 export const getStaffsMuni = async (body: StaffPaginationBody) => {
@@ -205,7 +205,7 @@ export const getStaffComplaintsMuni = async (body: StaffAttendedComplaintsPagina
             }
         });
 
-        return data as StaffAttendedComplaintsResponse
+        return data as ComplaintsResponse
     } catch (error) {
         console.error(error);
         return null;

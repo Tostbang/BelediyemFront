@@ -1,18 +1,22 @@
 'use client';
-import React, { useRef, useState } from 'react';
-import { BreadcrumbItem, ComplaintsResponse, Complaints } from '@/types';
+import React, { useState, useRef } from 'react';
+import { BreadcrumbItem, Complaints, ComplaintsResponse } from '@/types';
+import Link from 'next/link';
 import { usePagination } from '@/hooks/usePagination';
 import DynamicTable from '@/components/dynamic/table';
+import { FilterIcon } from '../icons';
+import ImageWithSkeleton from '../common/imageSkeleton';
+import { annType } from '@/data/annType';
 import { formatDateTime } from '@/utils';
-import { categoryType } from '@/data/categoryType';
-import { complaintStatusType } from '@/data/complaintStatus';
 import Breadcrumb from '../common/breadCrumb';
+import DateFiltersModal from '../filters/dateFiltersModal';
 import SelectFilter from '../filters/selectFilter';
 import ClearAllFilters from '../filters/clearAllFilters';
-import { FilterIcon } from '../icons';
-import DateFiltersModal from '../filters/dateFiltersModal';
+import DynamicDropdown from '../common/DynamicDropdown';
+import { categoryType } from '@/data/categoryType';
+import { complaintStatusType } from '@/data/complaintStatus';
 
-export default function AttendedList({
+export default function ComplaintList({
     complaints,
     breadcrumb,
 }: {
@@ -20,12 +24,11 @@ export default function AttendedList({
     breadcrumb: BreadcrumbItem[];
 }) {
     const filterParams = [
-        'categoryType',
-        'complaintsStatusType',
         'startDate',
         'endDate',
+        'categoryType',
+        'complaintsStatusType',
     ];
-    const [showDateFilter, setShowDateFilter] = useState(false);
 
     const startDateRef = useRef<HTMLInputElement>(
         null
@@ -39,38 +42,70 @@ export default function AttendedList({
         pageSize,
         handlePageChange,
         handlePageSizeChange,
+        handleClearAllFilters,
         filters,
         filterCount,
         handleFilterChange,
-        handleClearAllFilters,
         handleDateFilter,
         handleClearDateFilters,
     } = usePagination({ filterParams, startDateRef, endDateRef });
+
+    const [showDateFilter, setShowDateFilter] = useState(false);
 
     const columns = [
         {
             title: 'Id',
             dataIndex: 'id',
             width: 180,
+        },
+        {
+            title: 'Görsel',
+            dataIndex: 'firstImage',
             fixed: 'left' as const,
+            width: 180,
+            render: (value: string) => {
+                return (
+                    <div className="flex items-center gap-3">
+                        {value ? (
+                            <ImageWithSkeleton
+                                src={value}
+                                alt="Etkinlik Görseli"
+                                width={80}
+                                height={80}
+                                className="object-cover w-full h-full rounded-full"
+                            />
+                        ) : (
+                            <div className="w-20 flex items-center justify-center h-full bg-gray-100 text-gray-500 rounded-full">
+                                Görsel Yok
+                            </div>
+                        )}
+                    </div>
+                );
+            },
+        },
+        {
+            title: 'Ad Soyad',
+            dataIndex: 'announcementsType',
+            width: 100,
+            render: (value: number) =>
+                annType.find((item) => item.id === value)?.name || 'Bilinmiyor',
+        },
+        {
+            title: 'Başlık',
+            dataIndex: 'title',
+            width: 100,
         },
         {
             title: 'Kategori',
             dataIndex: 'categoryType',
-            width: 180,
+            width: 100,
             render: (value: number) =>
                 categoryType.find((item) => item.id === value)?.name,
         },
         {
-            title: 'Talep Tarihi',
-            dataIndex: 'createdDate',
-            width: 180,
-            render: (text: string) => formatDateTime(text),
-        },
-        {
-            title: 'Çözülme Tarihi',
+            title: 'Durum',
             dataIndex: 'complaintsStatusType',
-            width: 180,
+            width: 100,
             render: (value: number, record: Complaints) => {
                 if (value === 4 && record.complaintsStatus?.length > 0) {
                     const matchingStatus = record.complaintsStatus.find(
@@ -85,20 +120,36 @@ export default function AttendedList({
             },
         },
         {
-            title: 'Durum',
-            dataIndex: 'complaintsStatusType',
+            title: 'Başlama Tarihi',
+            dataIndex: 'createdDate',
             width: 100,
-            render: (value: number) => {
-                const status = complaintStatusType.find(
-                    (item) => item.id === value
-                );
+            render: (value: string) => formatDateTime(value),
+        },
+        {
+            title: 'Bitiş Tarihi',
+            dataIndex: 'createdDate',
+            width: 100,
+            render: (value: string) => formatDateTime(value),
+        },
+        {
+            title: 'İşlemler',
+            dataIndex: 'actions',
+            fixed: 'right' as const,
+            width: 50,
+            render: (_: unknown, record: Complaints) => {
+                const dropdownItems = [
+                    {
+                        key: 'detail',
+                        label: (
+                            <Link
+                                href={`/municipality/complaint-request/${record.id}`}>
+                                Detay
+                            </Link>
+                        ),
+                    },
+                ];
 
-                return (
-                    <span
-                        className={`${status ? status.bgColor : 'bg-gray-500'} p-1 px-4 rounded-2xl  text-white text-center w-fit`}>
-                        {status?.name || 'Bilinmiyor'}
-                    </span>
-                );
+                return <DynamicDropdown items={dropdownItems} />;
             },
         },
     ];
@@ -116,6 +167,7 @@ export default function AttendedList({
                     <div className="w-8 h-8 min-h-8 min-w-8 mt-2 lg:mt-0 flex items-center justify-center sm:justify-start mx-auto sm:mx-0 sm:mr-4">
                         <FilterIcon />
                     </div>
+
                     <div className="hidden sm:block h-10 lg:h-20 w-px bg-gray-300"></div>
                     <div className="block sm:hidden w-full h-px bg-gray-300"></div>
 
@@ -148,9 +200,9 @@ export default function AttendedList({
                         options={categoryType}
                         fieldName="categoryType"
                     />
+
                     <div className="hidden sm:block h-10 lg:h-20 w-px bg-gray-300"></div>
                     <div className="block sm:hidden w-full h-px bg-gray-300"></div>
-
                     <SelectFilter
                         keyPrefix="complaintsStatusType-select"
                         className="hover:bg-gray-50 cursor-pointer h-10 lg:h-20 w-full sm:w-auto text-sm sm:text-base sm:px-4"
@@ -169,12 +221,9 @@ export default function AttendedList({
                     filterCount={filterCount}
                 />
             </div>
+
             <div className="flex flex-col items-center w-full mb-6">
                 <div className="w-full overflow-hidden bg-white rounded-lg p-6">
-                    <h2 className="text-2xl font-semibold text-gray-800 mb-2">
-                        {complaints.name} {complaints.surname}
-                    </h2>
-
                     <div className="overflow-x-auto">
                         <DynamicTable<Complaints>
                             data={complaints.complaints}
