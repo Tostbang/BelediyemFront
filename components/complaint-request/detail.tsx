@@ -25,6 +25,7 @@ import MessageModal from './messageModal';
 import { complaintStatusType } from '@/data/complaintStatus';
 import { Timeline } from 'antd';
 import LinkButton from '../common/LinkButton';
+import StatusModal from './statusModal';
 
 // Dynamically import MapPicker with no SSR to avoid leaflet issues
 const DynamicMapPicker = dynamic(() => import('../common/mapPicker'), {
@@ -44,6 +45,7 @@ export default function ComplaintDetail({
 }) {
     const [staffModal, setStaffModal] = useState(false);
     const [messageModal, setMessageModal] = useState(false);
+    const [statusModal, setStatusModal] = useState(false);
 
     const timeline =
         detail?.complaint.complaintsStatus
@@ -133,13 +135,13 @@ export default function ComplaintDetail({
                                     detail?.complaint.longitude && (
                                         <div>
                                             <div className="h-[300px] border rounded-lg overflow-hidden">
-                                                {/* <DynamicMapPicker
+                                                <DynamicMapPicker
                                                     value={`https://www.google.com/maps?q=${
                                                         detail.complaint
                                                             .latitude || 0
                                                     },${detail.complaint.longitude || 0}`}
                                                     isReadOnly={true}
-                                                /> */}
+                                                />
                                             </div>
                                         </div>
                                     )}
@@ -264,11 +266,24 @@ export default function ComplaintDetail({
                         <h2 className="text-xl font-semibold mb-6">
                             Şikayet / Talep Durumu
                         </h2>
-                        <LinkButton
-                            title="Tüm Durumları Göster"
-                            href={`/municipality/complaint-request/${id}/statuses`}
-                            className="px-4 py-2 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 w-full md:w-auto"
-                        />
+                        <div className="flex flex-col items-center gap-4 mb-4">
+                            <button
+                                onClick={() => setStatusModal(true)}
+                                className="px-4 py-2 min-w-[200px] bg-blue-600 text-white rounded-lg hover:bg-blue-700 w-full md:w-auto cursor-pointer">
+                                Durum Değiştir
+                            </button>
+                            <LinkButton
+                                title="Tüm Durumları Göster"
+                                href={`/municipality/complaint-request/${id}/statuses`}
+                                className="min-w-[200px]"
+                            />
+                            <StatusModal
+                                isOpen={statusModal}
+                                onClose={() => setStatusModal(false)}
+                                id={id || ''}
+                                type={type}
+                            />
+                        </div>
                     </div>
                     <div className="relative">
                         <Timeline items={timeline} className="px-4 py-2" />
@@ -282,7 +297,7 @@ export default function ComplaintDetail({
                         </h2>
                         <button
                             onClick={() => setMessageModal(true)}
-                            className="px-4 py-2 bg-blue-600 text-white  rounded-2xl hover:bg-blue-700 w-full md:w-auto cursor-pointer">
+                            className="px-4 py-2 bg-blue-600 text-white  rounded-lg hover:bg-blue-700 w-full md:w-auto cursor-pointer">
                             Mesaj Gönder
                         </button>
                         <MessageModal
@@ -345,7 +360,7 @@ export default function ComplaintDetail({
                         </h2>
                         <button
                             onClick={() => setStaffModal(true)}
-                            className="px-4 py-2 bg-blue-600 text-white  rounded-2xl hover:bg-blue-700 w-full md:w-auto cursor-pointer">
+                            className="px-4 py-2 bg-blue-600 text-white  rounded-lg hover:bg-blue-700 w-full md:w-auto cursor-pointer">
                             Personel Yönlendir
                         </button>
                         <AttendStaffModal
