@@ -24,7 +24,7 @@ export default function StaffList({
     staffList: StaffUserListResponse;
     breadcrumb: BreadcrumbItem[];
 }) {
-    const filterParams = ['searchText', 'municipalityStaffType'];
+    const filterParams = ['searchText', 'municipalStaffType'];
     const searchInputRef = useRef<HTMLInputElement>(
         null
     ) as React.RefObject<HTMLInputElement>;
@@ -197,11 +197,11 @@ export default function StaffList({
                     <SelectFilter
                         keyPrefix="membership-select"
                         className="hover:bg-gray-50 cursor-pointer h-10 lg:h-20 w-full sm:w-auto text-sm sm:text-base sm:px-4"
-                        value={filters.municipalityStaffType?.toString() || ''}
+                        value={filters.municipalStaffType?.toString() || ''}
                         onChange={handleFilterChange}
                         placeholder="Departmana Göre"
                         options={departmans}
-                        fieldName="municipalityStaffType"
+                        fieldName="municipalStaffType"
                     />
                     <div className="hidden sm:block h-10 lg:h-20 w-px bg-gray-300"></div>
                     <div className="block sm:hidden w-full h-px bg-gray-300"></div>
