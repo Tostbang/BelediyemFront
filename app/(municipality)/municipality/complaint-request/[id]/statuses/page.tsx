@@ -36,7 +36,13 @@ export default async function Page({
 
     const response = await getComplaintStatusesMuni(paginationBody);
 
-    const breadcrumb = [{ label: 'Şikayet / Talep Tüm Durumlar' }];
+    const breadcrumb = [
+        {
+            label: 'Şikayet / Talep Detay',
+            href: `/municipality/complaint-request/${complaintId}`,
+        },
+        { label: 'Şikayet / Talep Tüm Durumlar' },
+    ];
 
     return (
         <PageContainer>
