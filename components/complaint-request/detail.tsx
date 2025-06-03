@@ -10,10 +10,6 @@ import {
     PhoneIcon,
 } from '../icons';
 import Breadcrumb from '../common/breadCrumb';
-import ConfirmModal from '../modals/confirmModal';
-import { forwardSupportToAdminMuni, rejecetSupportMuni } from '@/app/actions';
-import { useNotificationHandler } from '@/hooks/useNotificationHandler';
-import { useRouter } from 'next/navigation';
 import { categoryType } from '@/data/categoryType';
 import ImageWithSkeleton from '../common/imageSkeleton';
 import dynamic from 'next/dynamic';
@@ -42,11 +38,7 @@ export default function ComplaintDetail({
     breadcrumb: BreadcrumbItem[];
     type: RoleType;
 }) {
-    const [modal, setModal] = useState(false);
     const [staffModal, setStaffModal] = useState(false);
-    const [rejectModal, setRejectModal] = useState(false);
-    const { handleSuccess, handleError } = useNotificationHandler();
-    const router = useRouter();
 
     return (
         <>
