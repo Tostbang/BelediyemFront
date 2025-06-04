@@ -90,7 +90,7 @@ export default function ComplaintDetail({
                 ? isRejected
                     ? 'red-500'
                     : 'green-500'
-                : 'gray-500';
+                : 'gray-300';
 
             // Select appropriate icon
             const IconComponent = isRejected ? XIcon : TickIcon;
@@ -154,9 +154,8 @@ export default function ComplaintDetail({
             .timeline-item-red-500 .ant-timeline-item-tail {
                 border-left: 2px solid #EF4444 !important;
             }
-            .timeline-item-gray-500 .ant-timeline-item-tail {
+            .timeline-item-gray-300 .ant-timeline-item-tail {
                 border-left: 2px solid #E3E3E3 !important;
-                
             }
             
             /* Make the last item's line invisible */
