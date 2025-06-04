@@ -1,6 +1,6 @@
 "use server";
 
-import { ApiResponse, MessagesResponse } from "@/types";
+import { ApiResponse, ChatHistoryResponse, MessagesResponse, PaginationBody } from "@/types";
 import { apiFetch } from "@/utils/api";
 
 export const sendMessage = async (formData: FormData) => {
@@ -40,15 +40,42 @@ export const sendMessage = async (formData: FormData) => {
 export const getMessages = async (complaintId: string) => {
     try {
         if (!complaintId) {
-            return { success: false, message: "", errors: 'Şikayet ID boş olamaz.' };
+            return {
+                success: false,
+                message: "",
+                code: "400",
+                errors: 'Şikayet ID boş olamaz.',
+                messageGroups: []
+            } as MessagesResponse;
         }
 
-        const data = await apiFetch<ApiResponse>('message/getmessages', {
+        const data = await apiFetch(`message/getmessages?complaintId=${complaintId}`);
+
+        return data as MessagesResponse;
+
+    } catch (error) {
+        console.error(error);
+        return {
+            success: false,
+            message: "",
+            code: "400",
+            errors: error instanceof Error ? error.message : 'Mesaj alınamadı.',
+            messageGroups: []
+        } as MessagesResponse;
+    }
+}
+
+export const getChatHistyory = async (body: PaginationBody) => {
+    try {
+        const data = await apiFetch('message/getcomplaintsummaries', {
             method: 'POST',
-            body: { complaintId }
+            body: {
+                pageNumber: body.pageNumber - 1,
+                pageSize: body.pageSize,
+            }
         });
 
-        return data as MessagesResponse
+        return data as ChatHistoryResponse
     } catch (error) {
         console.error(error);
         return null;

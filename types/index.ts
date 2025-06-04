@@ -633,9 +633,31 @@ export type Message = {
     isToCurrentUser: boolean;
 }
 
+export type MessageGroup = {
+    date: string;
+    messages: Message[];
+};
+
 export type MessagesResponse = ApiResponse & {
-    messageGroups: {
-        date: string;
-        messages: Message[];
-    }[];
+    messageGroups: MessageGroup[];
+};
+
+export type ChatHistory = {
+    complaintId: number;
+    complaintTitle: string;
+    complaintCreatedDate: string;
+    complaintOwnerName: string;
+    lastMessageContent: string;
+    lastMessageDate: string;
+    lastMessageSenderName: string;
+}
+
+export type ChatHistoryResponse = ApiResponse & {
+    complaintWithLastMessages: ChatHistory[];
+    totalCount: number;
+    pageNumber: number;
+    pageSize: number;
+    lastPage: boolean;
+    backPage: boolean;
+    nextPage: boolean;
 };

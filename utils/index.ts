@@ -1,3 +1,5 @@
+import { Message } from "@/types";
+
 export const truncateText = (text: string, maxLength: number): string => {
     if (text.length > maxLength) {
         return text.slice(0, maxLength) + '...';
@@ -74,7 +76,6 @@ export const formatDateInput = (dateString: string | undefined) => {
     return new Date(dateString).toISOString().split('T')[0];
 };
 
-
 export const isPositiveNumber = (str: string) => {
     const num = Number(str);
     return !isNaN(num) && num > 0;
@@ -91,3 +92,58 @@ export const extractLngFromMapUrl = (mapUrl: string) => {
     const match = mapUrl.match(regex);
     return match ? parseFloat(match[2]) : null;
 };
+
+export const isEmptyObject = (obj: unknown) => {
+    if (obj === null || obj === undefined) {
+        return true;
+    } else {
+        return Object.keys(obj as object).length === 0;
+    }
+};
+
+export const handleDateLong = (date: string) => {
+    const newDate = new Date(date).toLocaleDateString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+    });
+
+    return newDate;
+};
+
+export function groupMessagesByDay(messages: Message[]) {
+    const messasgesWithDay = messages?.map((message) => {
+        return {
+            ...message,
+            day: new Date(message.createdDate).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "numeric",
+                day: "numeric",
+            }),
+        };
+    });
+
+    const groupedMessages = messasgesWithDay?.reduce<Record<string, Message[]>>((result, message) => {
+        if (!result[message.day]) {
+            result[message.day] = [];
+        }
+        result[message.day].push(message);
+        return result;
+    }, {});
+    return groupedMessages || {};
+}
+
+export const today = new Date().toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+});
+
+export const yesterday = new Date(new Date().setDate(new Date().getDate() - 1)).toLocaleTimeString(
+    "en-US",
+    {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+    }
+);
