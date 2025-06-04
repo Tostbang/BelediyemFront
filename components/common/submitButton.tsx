@@ -6,7 +6,7 @@ import { useFormStatus } from 'react-dom';
 type SubmitButtonProps = {
     isLoading?: boolean;
     disabled?: boolean;
-    title: string;
+    title: React.ReactNode | string;
     className?: string;
 };
 

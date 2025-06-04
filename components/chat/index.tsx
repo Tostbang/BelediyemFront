@@ -8,6 +8,7 @@ import { sendMessage } from '@/app/actions';
 import SubmitButton from '../common/submitButton';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import { useRouter } from 'next/navigation';
+import { SendIcon } from '../icons';
 
 // Define a set of 4 distinct colors for different senders
 const SENDER_COLORS = ['#e0e0e0', '#E5CF54', '#9463C2', '#E94F87'];
@@ -184,7 +185,13 @@ export default function ChatArea({ chatId, messageGroups }: ChatAreaProps) {
                     name="content"
                     placeholder="Mesajınızı yazın..."
                 />
-                <SubmitButton title="Gönder" />
+                <SubmitButton
+                    title={
+                        <div className="w-4 h-4">
+                            <SendIcon />
+                        </div>
+                    }
+                />
             </form>
         </div>
     );

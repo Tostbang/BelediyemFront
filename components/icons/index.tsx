@@ -722,3 +722,16 @@ export const InfoIcon = () => (
         />
     </svg>
 );
+
+export const SendIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+        <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M20.5622 11.1055C21.3031 11.4729 21.3031 12.5297 20.5622 12.8971L4.44436 20.8921C3.77965 21.2218 3 20.7382 3 19.9963V13.9998L12 11.9998L3 9.79418L3 4.00635C3 3.26436 3.77966 2.78079 4.44437 3.1105L20.5622 11.1055Z"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinejoin="round"
+        />
+    </svg>
+);
