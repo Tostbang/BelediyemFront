@@ -8,6 +8,9 @@ import { getClientCookie, safelyParseJSON } from '@/utils/auth';
 import { Message, User } from '@/types';
 import { sendMessage } from '@/app/actions';
 
+// Define a set of 4 distinct colors for different senders
+const SENDER_COLORS = ['#e0e0e0', '#E5CF54', '#9463C2', '#E94F87'];
+
 // Updated interface to match the new messageGroups structure
 interface ChatAreaProps {
     chatId: string;
@@ -29,12 +32,40 @@ export default function ChatArea({
     const [showScrollButton, setShowScrollButton] = useState<boolean>(false);
     const scrollbarRef = useRef<HTMLDivElement>(null);
     const [userDetails, setUserDetails] = useState<User | null>(null);
+    const [senderColorMap, setSenderColorMap] = useState<
+        Record<number, string>
+    >({});
 
     useEffect(() => {
         const userData = getClientCookie('user');
         const parsedUser = safelyParseJSON<User>(userData);
         setUserDetails(parsedUser);
-    }, []);
+
+        // Initialize color map for senders when messages load
+        if (messageGroups && messageGroups.length > 0) {
+            const uniqueSenderIds = new Set<number>();
+            const colorMap: Record<number, string> = {};
+
+            messageGroups.forEach((group) => {
+                group.messages.forEach((msg) => {
+                    if (
+                        msg.senderId !== parsedUser?.userId &&
+                        !uniqueSenderIds.has(msg.senderId)
+                    ) {
+                        uniqueSenderIds.add(msg.senderId);
+                    }
+                });
+            });
+
+            // Assign colors to unique sender IDs
+            Array.from(uniqueSenderIds).forEach((senderId, index) => {
+                colorMap[senderId] =
+                    SENDER_COLORS[index % SENDER_COLORS.length];
+            });
+
+            setSenderColorMap(colorMap);
+        }
+    }, [messageGroups]);
 
     const handlSendMessage = (messageText: string) => {
         const formData = new FormData();
@@ -112,6 +143,11 @@ export default function ChatArea({
                                             <IncomingMessage
                                                 key={index}
                                                 message={msg}
+                                                messageColor={
+                                                    senderColorMap[
+                                                        msg.senderId
+                                                    ] || '#e0e0e0'
+                                                }
                                             />
                                         )
                                 )}
@@ -141,7 +177,8 @@ export default function ChatArea({
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 onKeyUp={(e) => {
-                    if (e.key === 'Enter' && message.trim() !== '') handlSendMessage(message.trim());
+                    if (e.key === 'Enter' && message.trim() !== '')
+                        handlSendMessage(message.trim());
                 }}
                 placeholder="Mesajınızı yazın..."
             />

@@ -2,15 +2,21 @@ import { Message } from '@/types';
 import ImageWithSkeleton from '../common/imageSkeleton';
 import { PersonIcon } from '../icons';
 
-const IncomingMessage = ({ message }: { message: Message }) => {
+const IncomingMessage = ({
+    message,
+    messageColor = '#e0e0e0',
+}: {
+    message: Message;
+    messageColor?: string;
+}) => {
     const now = new Date(message.createdDate);
     const hour = now.getHours();
     const minute = now.getMinutes();
 
     const boxStyle: React.CSSProperties = {
         maxWidth: '50%',
-        backgroundColor: '#e0e0e0',
-        color: 'black',
+        backgroundColor: messageColor,
+        color: messageColor === '#e0e0e0' ? 'black' : 'white',
         padding: 16,
         borderRadius: '10px 10px 10px 0px',
         marginBottom: 8,
@@ -20,7 +26,7 @@ const IncomingMessage = ({ message }: { message: Message }) => {
 
     const timeStyle: React.CSSProperties = {
         fontSize: '0.75rem',
-        color: '#666',
+        color: messageColor === '#e0e0e0' ? '#666' : 'rgba(255, 255, 255, 0.8)',
         position: 'absolute',
         bottom: 4,
         right: 8,
@@ -33,9 +39,9 @@ const IncomingMessage = ({ message }: { message: Message }) => {
             </div>
             <div className="flex justify-start gap-2 w-full">
                 <div className="flex items-center gap-3">
-                    {message.receiverProfileImage ? (
+                    {message.senderProfileImage ? (
                         <ImageWithSkeleton
-                            src={message.receiverProfileImage}
+                            src={message.senderProfileImage}
                             alt="Alıcı Profil Görseli"
                             width={40}
                             height={40}
