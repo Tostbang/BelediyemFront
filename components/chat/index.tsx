@@ -98,14 +98,14 @@ export default function ChatArea({
     }, [messageGroups]);
 
     return (
-        <div className="flex flex-col gap-2">
-            <div className="relative border border-gray-200 rounded p-4">
+        <div className="flex flex-col gap-2 h-full">
+            <div className="relative border border-gray-200 rounded p-4 flex-grow">
                 <div
                     ref={scrollbarRef}
                     onScroll={handleScroll}
                     className="overflow-y-auto pr-2"
                     style={{
-                        height: '400px',
+                        height: '70vh' /* Increased height to fill available space */,
                         scrollBehavior: 'smooth',
                     }}>
                     {(!messageGroups || messageGroups.length === 0) &&
@@ -172,19 +172,19 @@ export default function ChatArea({
                 )}
             </div>
 
-            <input
-                className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                onKeyUp={(e) => {
-                    if (e.key === 'Enter' && message.trim() !== '')
-                        handlSendMessage(message.trim());
-                }}
-                placeholder="Mesajınızı yazın..."
-            />
-            <div className="flex justify-end gap-2">
+            <div className="flex gap-2 items-center">
+                <input
+                    className="flex-grow p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    onKeyUp={(e) => {
+                        if (e.key === 'Enter' && message.trim() !== '')
+                            handlSendMessage(message.trim());
+                    }}
+                    placeholder="Mesajınızı yazın..."
+                />
                 <button
-                    className={`px-4 py-2 rounded font-medium ${
+                    className={`px-6 py-2 rounded font-medium whitespace-nowrap ${
                         chatSendLoading || message.trim() === ''
                             ? 'bg-blue-300 cursor-not-allowed'
                             : 'bg-blue-600 hover:bg-blue-700 text-white'
