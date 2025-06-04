@@ -72,8 +72,10 @@ export default function ChatArea({
                 <div
                     ref={scrollbarRef}
                     onScroll={handleScroll}
+                    className="overflow-y-auto pr-2"
                     style={{
                         height: '400px',
+                        scrollBehavior: 'smooth',
                     }}>
                     {(!messageGroups || messageGroups.length === 0) &&
                         !chatLoading && (
@@ -139,7 +141,7 @@ export default function ChatArea({
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 onKeyUp={(e) => {
-                    if (e.key === 'Enter') handlSendMessage(message.trim());
+                    if (e.key === 'Enter' && message.trim() !== '') handlSendMessage(message.trim());
                 }}
                 placeholder="Mesajınızı yazın..."
             />
