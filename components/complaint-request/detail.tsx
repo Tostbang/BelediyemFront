@@ -86,6 +86,11 @@ export default function ComplaintDetail({
                     ? 'text-red-500'
                     : 'text-[#45A200]'
                 : 'text-gray-400';
+            const lineColor = exists
+                ? isRejected
+                    ? 'red-500'
+                    : 'green-500'
+                : 'gray-500';
 
             // Select appropriate icon
             const IconComponent = isRejected ? XIcon : TickIcon;
@@ -99,6 +104,7 @@ export default function ComplaintDetail({
                         </div>
                     </div>
                 ),
+                className: `timeline-item-${lineColor}`,
                 children: (
                     <div className="flex flex-col gap-2">
                         <div className={`${textColor} text-base font-medium`}>
@@ -128,6 +134,34 @@ export default function ComplaintDetail({
             };
         })
         .filter(Boolean);
+
+    // Add custom CSS for timeline lines
+    React.useEffect(() => {
+        // Add custom CSS to document head for timeline lines
+        const styleElement = document.createElement('style');
+        styleElement.innerHTML = `
+            .timeline-item-green-500 .ant-timeline-item-tail {
+                border-left: 2px solid #45A200 !important;
+            }
+            .timeline-item-red-500 .ant-timeline-item-tail {
+                border-left: 2px solid #EF4444 !important;
+            }
+            .timeline-item-gray-500 .ant-timeline-item-tail {
+                border-left: 2px dashed #D1D5DB !important;
+            }
+            
+            /* Make the last item's line invisible */
+            .ant-timeline-item:last-child .ant-timeline-item-tail {
+                display: none;
+            }
+        `;
+        document.head.appendChild(styleElement);
+
+        // Clean up function to remove the style element when component unmounts
+        return () => {
+            document.head.removeChild(styleElement);
+        };
+    }, []);
 
     return (
         <>
