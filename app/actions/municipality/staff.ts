@@ -22,6 +22,17 @@ export const getStaffsMuni = async (body: StaffPaginationBody) => {
     }
 }
 
+export const getStaffsAllMuni = async (id: string) => {
+    try {
+        const data = await apiFetch(`municipality/listdepartmenttostaff?municipalStaffId=${id}`);
+
+        return data as StaffUserListResponse
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
+
 export const getStaffByIdMuni = async (id: string) => {
     try {
         const data = await apiFetch(`municipality/municipalitystaffdetail?staffid=${id}`);

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Modal from '../common/modal';
 import SubmitButton from '../common/submitButton';
-import { attendtComplaintToStaffMuni, getStaffsMuni } from '@/app/actions';
+import { attendtComplaintToStaffMuni, getStaffsAllMuni } from '@/app/actions';
 import { RoleType, StaffUser } from '@/types';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import { useRouter } from 'next/navigation';
@@ -38,11 +38,7 @@ export default function AttendStaffModal({
             }
             setIsLoading(true);
             try {
-                const response = await getStaffsMuni({
-                    pageNumber: 0,
-                    pageSize: 100,
-                    municipalStaffType: parseInt(selectedDepartment),
-                });
+                const response = await getStaffsAllMuni(selectedDepartment);
 
                 if (response && response.municipalStaff) {
                     setStaffList(response.municipalStaff);
