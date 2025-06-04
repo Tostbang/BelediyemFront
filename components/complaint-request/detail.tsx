@@ -155,7 +155,7 @@ export default function ComplaintDetail({
                 border-left: 2px solid #EF4444 !important;
             }
             .timeline-item-gray-500 .ant-timeline-item-tail {
-                border-left: 2px dashed #D1D5DB !important;
+                border-left: 2px solid #E3E3E3 !important;
             }
             
             /* Make the last item's line invisible */
