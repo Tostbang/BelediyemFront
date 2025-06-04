@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useActionState, useState, useEffect } from 'react';
+import React, { useActionState, useState } from 'react';
 import Modal from '../common/modal';
 import SubmitButton from '../common/submitButton';
 import {
@@ -26,10 +26,6 @@ export default function StatusModal({
     id,
     type,
 }: MessageModalProps) {
-    const handleCancel = () => {
-        onClose();
-    };
-
     const { handleSuccess, handleError } = useNotificationHandler();
     const router = useRouter();
 
@@ -41,6 +37,10 @@ export default function StatusModal({
         image: '',
         complaintStatus: false,
         complaintsStatusType: 0,
+    };
+
+    const handleCancel = () => {
+        onClose();
     };
 
     const clientAction = async (_prevState: unknown, formData: FormData) => {
@@ -102,12 +102,6 @@ export default function StatusModal({
     };
 
     const [state, formAction] = useActionState(clientAction, initialState);
-
-    useEffect(() => {
-        if (state?.complaintsStatusType) {
-            setSelectedStatusType(Number(state.complaintsStatusType));
-        }
-    }, [state?.complaintsStatusType]);
 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>

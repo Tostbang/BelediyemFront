@@ -128,9 +128,10 @@ export const updateCompletedComplaintStatusMuni = async (formData: FormData) => 
         const payload = {
             complaintId: id,
             description,
-            complaintStatus,
+            complaintStatus: complaintStatus === 'true' ? true : false,
             image: imagePath
         };
+
 
         const response = await apiFetch<ApiResponse>('municipality/municipalitycreatecomplatedcomplaints', {
             method: 'POST',
