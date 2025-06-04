@@ -8,6 +8,8 @@ import {
     EnvelopeIcon,
     PersonIcon,
     PhoneIcon,
+    TickIcon,
+    XIcon,
 } from '../icons';
 import Breadcrumb from '../common/breadCrumb';
 import { categoryType } from '@/data/categoryType';
@@ -47,30 +49,85 @@ export default function ComplaintDetail({
     const [messageModal, setMessageModal] = useState(false);
     const [statusModal, setStatusModal] = useState(false);
 
-    const timeline =
-        detail?.complaint.complaintsStatus
-            ?.slice()
-            .reverse()
-            .map((status) => ({
+    // Define the order of status types to display
+    const statusOrder = [1, 2, 3, 4, 5]; // Bekleniyor, İnceleniyor, Ekip Yönlendirildi, Çözüldü, Reddedildi
+
+    // Create a map of existing status types
+    const existingStatusTypes = new Set(
+        detail?.complaint.complaintsStatus?.map(
+            (status) => status.complaintsStatusType
+        ) || []
+    );
+
+    // Check if rejected or solved statuses exist
+    const hasRejectedStatus = existingStatusTypes.has(5);
+    const hasSolvedStatus = existingStatusTypes.has(4);
+
+    // Generate timeline items with proper styling
+    const timeline = statusOrder
+        .map((statusId) => {
+            // Skip "Çözüldü" if "Reddedildi" exists, or skip "Reddedildi" if "Çözüldü" exists
+            if (
+                (statusId === 4 && hasRejectedStatus) ||
+                (statusId === 5 && hasSolvedStatus)
+            )
+                return null;
+
+            const exists = existingStatusTypes.has(statusId);
+            const isRejected = statusId === 5;
+
+            const dotColor = exists
+                ? isRejected
+                    ? 'border-red-500 bg-red-50'
+                    : 'border-[#45A200] bg-green-50'
+                : 'border-gray-300 bg-gray-50';
+            const textColor = exists
+                ? isRejected
+                    ? 'text-red-500'
+                    : 'text-[#45A200]'
+                : 'text-gray-400';
+
+            // Select appropriate icon
+            const IconComponent = isRejected ? XIcon : TickIcon;
+
+            return {
                 dot: (
-                    <div className="border-3 border-green-500  bg-white rounded-full h-6 w-6" />
-                ),
-                children: (
-                    <div className="flex items-center gap-2">
-                        <span className="text-gray-700 text-base font-medium">
-                            {
-                                complaintStatusType.find(
-                                    (item) =>
-                                        item.id === status.complaintsStatusType
-                                )?.name
-                            }
-                        </span>
-                        <span className="text-gray-500 text-base">
-                            {formatDateTime(status.createdDate)}
-                        </span>
+                    <div
+                        className={`border-2 ${dotColor} rounded-full h-8 w-8 flex items-center justify-center`}>
+                        <div className={`w-6 h-6 ${textColor}`}>
+                            {exists && <IconComponent />}
+                        </div>
                     </div>
                 ),
-            })) || [];
+                children: (
+                    <div className="flex flex-col gap-2">
+                        <div className={`${textColor} text-base font-medium`}>
+                            {
+                                complaintStatusType.find(
+                                    (item) => item.id === statusId
+                                )?.name
+                            }
+                        </div>
+                        {exists &&
+                            detail?.complaint.complaintsStatus?.find(
+                                (status) =>
+                                    status.complaintsStatusType === statusId
+                            ) && (
+                                <div className="text-gray-500 text-base">
+                                    {formatDateTime(
+                                        detail?.complaint.complaintsStatus?.find(
+                                            (status) =>
+                                                status.complaintsStatusType ===
+                                                statusId
+                                        )?.createdDate || ''
+                                    )}
+                                </div>
+                            )}
+                    </div>
+                ),
+            };
+        })
+        .filter(Boolean);
 
     return (
         <>
@@ -135,13 +192,13 @@ export default function ComplaintDetail({
                                     detail?.complaint.longitude && (
                                         <div>
                                             <div className="h-[300px] border rounded-lg overflow-hidden">
-                                                <DynamicMapPicker
+                                                {/* <DynamicMapPicker
                                                     value={`https://www.google.com/maps?q=${
                                                         detail.complaint
                                                             .latitude || 0
                                                     },${detail.complaint.longitude || 0}`}
                                                     isReadOnly={true}
-                                                />
+                                                /> */}
                                             </div>
                                         </div>
                                     )}
