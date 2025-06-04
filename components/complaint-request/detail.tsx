@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { JSX, useState } from 'react';
 import { BreadcrumbItem, ComplaintsDetailResponse, RoleType } from '@/types';
 import { formatDateTime } from '@/utils';
 import {
@@ -133,7 +133,15 @@ export default function ComplaintDetail({
                 ),
             };
         })
-        .filter(Boolean);
+        .filter(
+            (
+                item
+            ): item is {
+                dot: JSX.Element;
+                className: string;
+                children: JSX.Element;
+            } => item !== null
+        );
 
     // Add custom CSS for timeline lines
     React.useEffect(() => {
@@ -226,13 +234,13 @@ export default function ComplaintDetail({
                                     detail?.complaint.longitude && (
                                         <div>
                                             <div className="h-[300px] border rounded-lg overflow-hidden">
-                                                {/* <DynamicMapPicker
+                                                <DynamicMapPicker
                                                     value={`https://www.google.com/maps?q=${
                                                         detail.complaint
                                                             .latitude || 0
                                                     },${detail.complaint.longitude || 0}`}
                                                     isReadOnly={true}
-                                                /> */}
+                                                />
                                             </div>
                                         </div>
                                     )}
@@ -409,8 +417,8 @@ export default function ComplaintDetail({
                                 </span>
                             </div>
                             <span className="text-gray-700">
-                                {detail?.complaint.user.name}{' '}
-                                {detail?.complaint.user.surname}
+                                {detail?.complaint.user?.name}{' '}
+                                {detail?.complaint.user?.surname}
                             </span>
                         </div>
 
@@ -424,7 +432,7 @@ export default function ComplaintDetail({
                                 </span>
                             </div>
                             <span className="text-gray-700 break-all">
-                                {detail?.complaint.user.email}
+                                {detail?.complaint.user?.email}
                             </span>
                         </div>
 
@@ -438,7 +446,7 @@ export default function ComplaintDetail({
                                 </span>
                             </div>
                             <span className="text-gray-700">
-                                {detail?.complaint.user.phone}
+                                {detail?.complaint.user?.phone}
                             </span>
                         </div>
                     </div>
@@ -465,7 +473,7 @@ export default function ComplaintDetail({
                         <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                             <div className="flex items-center">
                                 {detail?.complaint.assignedStaff
-                                    .profileImage ? (
+                                    ?.profileImage ? (
                                     <div className="h-16 w-16 relative rounded-full overflow-hidden">
                                         <ImageWithSkeleton
                                             src={
@@ -495,10 +503,10 @@ export default function ComplaintDetail({
                                         </span>
                                     </div>
                                     <span className="text-gray-700">
-                                        {detail?.complaint.assignedStaff.name}{' '}
+                                        {detail?.complaint.assignedStaff?.name}{' '}
                                         {
                                             detail?.complaint.assignedStaff
-                                                .surname
+                                                ?.surname
                                         }
                                     </span>
                                 </div>
@@ -518,7 +526,7 @@ export default function ComplaintDetail({
                                                 (item) =>
                                                     item.id ===
                                                     detail?.complaint
-                                                        .assignedStaff.role
+                                                        .assignedStaff?.role
                                             )?.name
                                         }
                                     </span>
