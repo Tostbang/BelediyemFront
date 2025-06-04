@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useActionState } from 'react';
 import OutgoingMessage from './outgoingMessage';
 import IncomingMessage from './incomingMessage';
-import { Spin } from 'antd';
-import { AiOutlineLoading } from 'react-icons/ai';
 import { handleDateLong, today, yesterday } from '@/utils';
 import { getClientCookie, safelyParseJSON } from '@/utils/auth';
 import { Message, User } from '@/types';
 import { sendMessage } from '@/app/actions';
+import SubmitButton from '../common/submitButton';
+import { useNotificationHandler } from '@/hooks/useNotificationHandler';
+import { useRouter } from 'next/navigation';
 
 // Define a set of 4 distinct colors for different senders
 const SENDER_COLORS = ['#e0e0e0', '#E5CF54', '#9463C2', '#E94F87'];
@@ -14,27 +15,25 @@ const SENDER_COLORS = ['#e0e0e0', '#E5CF54', '#9463C2', '#E94F87'];
 // Updated interface to match the new messageGroups structure
 interface ChatAreaProps {
     chatId: string;
-    chatLoading: boolean;
-    chatSendLoading: boolean;
     messageGroups: {
         date: string;
         messages: Message[];
     }[];
 }
 
-export default function ChatArea({
-    chatId,
-    chatLoading,
-    chatSendLoading,
-    messageGroups,
-}: ChatAreaProps) {
-    const [message, setMessage] = useState<string>('');
+export default function ChatArea({ chatId, messageGroups }: ChatAreaProps) {
     const [showScrollButton, setShowScrollButton] = useState<boolean>(false);
     const scrollbarRef = useRef<HTMLDivElement>(null);
+    const { handleSuccess, handleError } = useNotificationHandler();
     const [userDetails, setUserDetails] = useState<User | null>(null);
     const [senderColorMap, setSenderColorMap] = useState<
         Record<number, string>
     >({});
+    const router = useRouter();
+
+    const initialState = {
+        content: '',
+    };
 
     useEffect(() => {
         const userData = getClientCookie('user');
@@ -67,12 +66,24 @@ export default function ChatArea({
         }
     }, [messageGroups]);
 
-    const handlSendMessage = (messageText: string) => {
-        const formData = new FormData();
-        formData.append('complaintId', chatId);
-        formData.append('content', messageText);
-        sendMessage(formData);
-        setMessage('');
+    const clientAction = async (_prevState: unknown, formData: FormData) => {
+        if (chatId) {
+            formData.append('id', chatId);
+        }
+
+        const result = await sendMessage(formData);
+
+        if (result.success) {
+            handleSuccess(result.message);
+            router.refresh();
+        } else {
+            handleError(result);
+        }
+
+        return {
+            ...result,
+            content: formData.get('content') as string,
+        };
     };
 
     const scrollToBottom = () => {
@@ -97,8 +108,10 @@ export default function ChatArea({
         scrollToBottom();
     }, [messageGroups]);
 
+    const [, formAction] = useActionState(clientAction, initialState);
+
     return (
-        <div className="flex flex-col gap-2 h-full">
+        <div className="flex flex-col h-full">
             <div className="relative border border-gray-200 rounded p-4 flex-grow">
                 <div
                     ref={scrollbarRef}
@@ -108,19 +121,12 @@ export default function ChatArea({
                         height: '70vh' /* Increased height to fill available space */,
                         scrollBehavior: 'smooth',
                     }}>
-                    {(!messageGroups || messageGroups.length === 0) &&
-                        !chatLoading && (
-                            <div className="flex items-center justify-center h-full text-gray-500 gap-2">
-                                Henüz mesaj yok
-                            </div>
-                        )}
-                    {chatLoading ? (
-                        <div className="flex justify-center">
-                            <Spin indicator={<AiOutlineLoading />} />
+                    {(!messageGroups || messageGroups.length === 0) && (
+                        <div className="flex items-center justify-center h-full text-gray-500 gap-2">
+                            Henüz mesaj yok
                         </div>
-                    ) : (
-                        // Updated mapping logic for the new messageGroups structure
-                        messageGroups &&
+                    )}
+                    {messageGroups &&
                         messageGroups.map((group, groupIndex) => (
                             <div key={groupIndex}>
                                 <div className="flex justify-center gap-1.5">
@@ -152,8 +158,7 @@ export default function ChatArea({
                                         )
                                 )}
                             </div>
-                        ))
-                    )}
+                        ))}
                 </div>
 
                 {showScrollButton && (
@@ -172,35 +177,15 @@ export default function ChatArea({
                 )}
             </div>
 
-            <div className="flex gap-2 items-center">
+            <form action={formAction} className="flex gap-2 items-center">
                 <input
-                    className="flex-grow p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    onKeyUp={(e) => {
-                        if (e.key === 'Enter' && message.trim() !== '')
-                            handlSendMessage(message.trim());
-                    }}
+                    className="flex-grow p-6 border border-gray-300 focus:outline-none"
+                    required
+                    name="content"
                     placeholder="Mesajınızı yazın..."
                 />
-                <button
-                    className={`px-6 py-2 rounded font-medium whitespace-nowrap ${
-                        chatSendLoading || message.trim() === ''
-                            ? 'bg-blue-300 cursor-not-allowed'
-                            : 'bg-blue-600 hover:bg-blue-700 text-white'
-                    }`}
-                    onClick={() => handlSendMessage(message.trim())}
-                    disabled={chatSendLoading || message.trim() === ''}>
-                    {chatSendLoading ? (
-                        <div className="flex items-center">
-                            <div className="w-4 h-4 border-t-2 border-b-2 border-white rounded-full animate-spin mr-2"></div>
-                            Gönderiliyor...
-                        </div>
-                    ) : (
-                        'Gönder'
-                    )}
-                </button>
-            </div>
+                <SubmitButton title="Gönder" />
+            </form>
         </div>
     );
 }

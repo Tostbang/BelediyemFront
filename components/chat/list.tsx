@@ -25,24 +25,21 @@ export default function ChatList({
     const pathname = usePathname();
     const searchParams = useSearchParams();
 
-    // Get current page from URL or default to 1
     const currentChatId = searchParams.get('chatId');
 
-    // Handle chat selection
     const handleChatClick = (chatId: number) => {
         const params = new URLSearchParams(searchParams.toString());
         params.set('chatId', chatId.toString());
         router.push(`${pathname}?${params.toString()}`);
     };
 
-    // Function to determine complaint status color
     const getStatusColor = (date: string) => {
         const daysSinceLastMessage = Math.floor(
             (Date.now() - new Date(date).getTime()) / (1000 * 60 * 60 * 24)
         );
-        if (daysSinceLastMessage < 1) return 'bg-green-500'; // Recent
-        if (daysSinceLastMessage < 3) return 'bg-yellow-500'; // Medium
-        return 'bg-red-500'; // Old
+        if (daysSinceLastMessage < 1) return 'bg-green-500';
+        if (daysSinceLastMessage < 3) return 'bg-yellow-500';
+        return 'bg-red-500';
     };
 
     return (
@@ -53,7 +50,6 @@ export default function ChatList({
             </div>
 
             <div className="flex flex-col lg:flex-row gap-4">
-                {/* Chat List Panel */}
                 <div className="w-full lg:w-1/3 bg-white rounded-lg shadow-sm overflow-hidden">
                     <div className="p-3 bg-gray-50 border-b">
                         <h3 className="text-md font-medium text-gray-700">
@@ -144,8 +140,6 @@ export default function ChatList({
                 <div className="w-full lg:w-2/3 bg-white rounded-lg shadow-sm">
                     {currentChatId ? (
                         <ChatArea
-                            chatLoading={false}
-                            chatSendLoading={false}
                             chatId={chatId || ''}
                             messageGroups={messages || []}
                         />
