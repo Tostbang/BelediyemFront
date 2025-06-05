@@ -1,7 +1,7 @@
 "use server"
 
 import { ApiResponse, CustomJwtPayload, DashboardStatisticsStaff, LoginResponse } from "@/types";
-import { apiFetch } from "@/utils/api";
+import axiosInstance from "@/utils/axios";
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
 
@@ -17,10 +17,9 @@ export const handleLoginStaff = async (formData: FormData) => {
             password,
         };
 
-        const data = await apiFetch<LoginResponse>('municipalstaff/loginmunicipalitystaff', {
-            method: 'POST',
-            body: payload
-        });
+        const response = await axiosInstance.post('municipalstaff/loginmunicipalitystaff', payload);
+        const data = response.data as LoginResponse;
+
 
         const token = data.token;
         const decoded = jwtDecode<CustomJwtPayload>(token);
@@ -63,10 +62,8 @@ export const handleForgetPasswordStaff = async (formData: FormData) => {
             email,
         };
 
-        const data = await apiFetch<ApiResponse>('municipalstaff/passwordforgot', {
-            method: 'POST',
-            body: payload
-        });
+        const response = await axiosInstance.post('municipalstaff/passwordforgot', payload);
+        const data = response.data as ApiResponse;
 
         return { success: true, message: data.message || 'Şifre sıfırlama bağlantısı gönderildi.', errors: [] };
     } catch (error) {
@@ -81,7 +78,9 @@ export const handleForgetPasswordStaff = async (formData: FormData) => {
 
 export const handleLogoutStaf = async () => {
     try {
-        const data = await apiFetch<ApiResponse>('municipalstaff/logout');
+        const response = await axiosInstance.get('municipalstaff/logout');
+        const data = response.data as ApiResponse;
+
         return { success: true, message: data.message || 'Çıkış yapıldı.', errors: [] };
 
     } catch (error) {
@@ -96,7 +95,9 @@ export const handleLogoutStaf = async () => {
 
 export const getDashboardStaff = async () => {
     try {
-        const data = await apiFetch('municipalstaff/getdashboardstatistics');
+        const response = await axiosInstance.get('municipalstaff/getdashboardstatistics');
+        const data = response.data as ApiResponse;
+
 
         return data as DashboardStatisticsStaff
     } catch (error) {
@@ -107,7 +108,8 @@ export const getDashboardStaff = async () => {
 
 export const updateLastSeenStaff = async () => {
     try {
-        const data = await apiFetch<ApiResponse>('municipalstaff/lastseenupdate');
+        const response = await axiosInstance.get('municipalstaff/lastseenupdate');
+        const data = response.data as ApiResponse;
 
         return {
             success: true,

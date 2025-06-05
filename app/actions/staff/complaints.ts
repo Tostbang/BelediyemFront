@@ -1,25 +1,23 @@
 "use server";
 
-import { ApiResponse, ComplaintsDetailResponse, ComplaintsPaginationBody, ComplaintsResponse } from "@/types";
-import { apiFetch } from "@/utils/api";
+import { ComplaintsDetailResponse, ComplaintsPaginationBody, ComplaintsResponse } from "@/types";
 import { validateBase64Size } from "@/utils/fileUtils";
 import { uploadImage } from "../file";
+import axiosInstance from "@/utils/axios";
 
 export const getComplaintsStaff = async (body: ComplaintsPaginationBody) => {
     try {
-        const data = await apiFetch('municipalstaff/getstaffcomplaints', {
-            method: 'POST',
-            body: {
-                pageNumber: body.pageNumber - 1,
-                pageSize: body.pageSize,
-                categoryType: body.categoryType || null,
-                complaintsStatusType: body.complaintsStatusType || null,
-                startDate: body.startDate || undefined,
-                endDate: body.endDate || undefined,
-            }
-        });
+        const response = await axiosInstance.post('municipalstaff/getstaffcomplaints', {
+            pageNumber: body.pageNumber - 1,
+            pageSize: body.pageSize,
+            categoryType: body.categoryType || null,
+            complaintsStatusType: body.complaintsStatusType || null,
+            startDate: body.startDate || undefined,
+            endDate: body.endDate || undefined,
+        }
+        );
 
-        return data as ComplaintsResponse
+        return response.data as ComplaintsResponse
     } catch (error) {
         console.error(error);
         return null;
@@ -28,19 +26,16 @@ export const getComplaintsStaff = async (body: ComplaintsPaginationBody) => {
 
 export const getComplaintsDepartmentStaff = async (body: ComplaintsPaginationBody) => {
     try {
-        const data = await apiFetch('municipalstaff/getdepartmentcomplaints', {
-            method: 'POST',
-            body: {
-                pageNumber: body.pageNumber - 1,
-                pageSize: body.pageSize,
-                categoryType: body.categoryType || null,
-                complaintsStatusType: body.complaintsStatusType || null,
-                startDate: body.startDate || undefined,
-                endDate: body.endDate || undefined,
-            }
+        const response = await axiosInstance.post('municipalstaff/getdepartmentcomplaints', {
+            pageNumber: body.pageNumber - 1,
+            pageSize: body.pageSize,
+            categoryType: body.categoryType || null,
+            complaintsStatusType: body.complaintsStatusType || null,
+            startDate: body.startDate || undefined,
+            endDate: body.endDate || undefined,
         });
 
-        return data as ComplaintsResponse
+        return response.data as ComplaintsResponse
     } catch (error) {
         console.error(error);
         return null;
@@ -49,9 +44,9 @@ export const getComplaintsDepartmentStaff = async (body: ComplaintsPaginationBod
 
 export const getComplaintByIdStaff = async (id: string) => {
     try {
-        const data = await apiFetch(`municipalstaff/getcomplaintdetail?complaintId=${id}`);
+        const response = await axiosInstance.get(`municipalstaff/getcomplaintdetail?complaintId=${id}`);
 
-        return data as ComplaintsDetailResponse
+        return response.data as ComplaintsDetailResponse
     } catch (error) {
         console.error(error);
         return null;
@@ -73,14 +68,13 @@ export const updateComplaintStatusStaff = async (formData: FormData) => {
             complaintsStatusType: parseInt(complaintsStatusType)
         };
 
-        const response = await apiFetch<ApiResponse>('municipalstaff/updatecomplaintstatus', {
-            method: 'POST',
-            body: payload
-        });
+        const response = await axiosInstance.post('municipalstaff/updatecomplaintstatus',
+            payload
+        );
 
         return {
             success: true,
-            message: response.message || 'Şikayet durumu başarıyla güncellendi.',
+            message: response.data.message || 'Şikayet durumu başarıyla güncellendi.',
             errors: [],
             ...payload,
         };
@@ -134,14 +128,14 @@ export const updateCompletedComplaintStatusStaff = async (formData: FormData) =>
         };
 
 
-        const response = await apiFetch<ApiResponse>('municipalstaff/createcomplatedcomplaints', {
+        const response = await axiosInstance.post('municipalstaff/createcomplatedcomplaints', {
             method: 'POST',
             body: payload
         });
 
         return {
             success: true,
-            message: response.message || 'Şikayet durumu başarıyla güncellendi.',
+            message: response.data.message || 'Şikayet durumu başarıyla güncellendi.',
             errors: [],
             ...payload,
         };

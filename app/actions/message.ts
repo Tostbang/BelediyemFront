@@ -1,7 +1,7 @@
 "use server";
 
-import { ApiResponse, ChatHistoryResponse, MessagesResponse, PaginationBody } from "@/types";
-import { apiFetch } from "@/utils/api";
+import { ChatHistoryResponse, MessagesResponse, PaginationBody } from "@/types";
+import axiosInstance from "@/utils/axios";
 
 export const sendMessage = async (formData: FormData) => {
     try {
@@ -16,14 +16,11 @@ export const sendMessage = async (formData: FormData) => {
             content
         };
 
-        const response = await apiFetch<ApiResponse>('message/sendmessage', {
-            method: 'POST',
-            body: payload
-        });
+        const response = await axiosInstance.post('message/sendmessage', payload);
 
         return {
             success: true,
-            message: response.message || 'Mesaj başarıyla güncellendi.',
+            message: response.data.message || 'Mesaj başarıyla güncellendi.',
             errors: [],
             ...payload,
         };
@@ -49,9 +46,9 @@ export const getMessages = async (complaintId: string) => {
             } as MessagesResponse;
         }
 
-        const data = await apiFetch(`message/getmessages?complaintId=${complaintId}`);
+        const response = await axiosInstance.get(`message/getmessages?complaintId=${complaintId}`);
 
-        return data as MessagesResponse;
+        return response.data as MessagesResponse;
 
     } catch (error) {
         console.error(error);
@@ -67,15 +64,12 @@ export const getMessages = async (complaintId: string) => {
 
 export const getChatHistyory = async (body: PaginationBody) => {
     try {
-        const data = await apiFetch('message/getcomplaintsummaries', {
-            method: 'POST',
-            body: {
-                pageNumber: body.pageNumber - 1,
-                pageSize: body.pageSize,
-            }
+        const response = await axiosInstance.post('message/getcomplaintsummaries', {
+            pageNumber: body.pageNumber - 1,
+            pageSize: body.pageSize,
         });
 
-        return data as ChatHistoryResponse
+        return response.data as ChatHistoryResponse
     } catch (error) {
         console.error(error);
         return null;

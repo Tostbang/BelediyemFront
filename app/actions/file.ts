@@ -1,5 +1,5 @@
 "use server"
-import { apiFetch } from "@/utils/api";
+import axiosInstance from "@/utils/axios";
 import { validateBase64Size } from "@/utils/fileUtils";
 
 export const uploadImage = async (formData: FormData) => {
@@ -43,19 +43,18 @@ export const uploadImage = async (formData: FormData) => {
         actualFormData.append('file', blob, fileName);
 
         // Don't specify Content-Type header for FormData
-        const data = await apiFetch<{ url: string }>('fileupload/uploadfile', {
-            method: 'POST',
-            body: actualFormData,
-        });
+        const response = await axiosInstance.post('fileupload/uploadfile',
+            actualFormData,
+        );
 
-        if (!data.url) {
+        if (!response.data.url) {
             return { success: false, message: "", errors: 'Görsel yüklenemedi.' };
         }
 
         return {
             success: true,
             message: 'Görsel yüklendi.',
-            path: data.url
+            path: response.data.url
         };
     } catch (error) {
         console.error(error);

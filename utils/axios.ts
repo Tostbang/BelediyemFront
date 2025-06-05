@@ -2,16 +2,14 @@ import axios, { AxiosInstance, AxiosResponse, AxiosError, InternalAxiosRequestCo
 import { getCookie, deleteCookie } from "../app/actions/cookies";
 import { notification } from "antd";
 
-const baseAPI = process.env.NEXT_PUBLIC_API_URL;
+const baseURL = process.env.NEXT_PUBLIC_API_URL;
 
 export const customHeaders = {
     Accept: "application/json",
 };
 
-export const baseApi = `${baseAPI}`;
-
 const axiosInstance: AxiosInstance = axios.create({
-    baseURL: baseApi,
+    baseURL,
     validateStatus: () => {
         return true;
     },
@@ -21,7 +19,7 @@ const getAuthToken = async () => {
     try {
         return await getCookie("token");
     } catch (error) {
-        console.error("Error getting auth token:", error);
+        console.error("auth token hatası ", error);
         return null;
     }
 };
@@ -53,23 +51,28 @@ axiosInstance.interceptors.response.use(
                 deleteCookie("municipalityId")
             ]).then(() => {
                 window.location.href = "/login";
-                notification.error({ message: "Unauthorized Request" });
+                notification.error({ message: "Yetkisiz İstek" });
             });
             return Promise.reject(response);
         }
 
         if (response.status === 404) {
-            notification.error({ message: "Source Not Found" });
+            notification.error({ message: "Kaynak Bulunamadı" });
             return Promise.reject(response);
         }
 
         if (response.status === 400) {
-            notification.error({ message: "Invalid Request" });
+            notification.error({ message: "Hatalı İstek" });
+            return Promise.reject(response);
+        }
+
+        if (response.status === 413) {
+            notification.error({ message: "Dosya boyutu çok büyük (maksimum 10MB)" });
             return Promise.reject(response);
         }
 
         if (response.status >= 500) {
-            notification.error({ message: "Service Unavailable" });
+            notification.error({ message: "Servis Kullanım Dışı" });
             return Promise.reject(response);
         }
 
@@ -81,12 +84,17 @@ axiosInstance.interceptors.response.use(
             return Promise.reject(error);
         }
         if (error.code === "ECONNABORTED") {
-            notification.error({ message: "Connection Timeout" });
+            notification.error({ message: "Bağlantı Zaman Aşımına Uğradı" });
+            return Promise.reject(error);
+        }
+
+        if (error.response?.status === 413) {
+            notification.error({ message: "Dosya boyutu çok büyük (maksimum 10MB)" });
             return Promise.reject(error);
         }
 
         if (!error.response) {
-            notification.error({ message: "Connection Network Error" });
+            notification.error({ message: "Ağ Bağlantı Hatası" });
             return Promise.reject(error);
         }
 

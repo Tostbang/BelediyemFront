@@ -1,15 +1,15 @@
 "use server";
 
-import { ApiResponse, DevicesResponse, FAQResponse, InfoStaff } from "@/types";
-import { apiFetch } from "@/utils/api";
+import { DevicesResponse, FAQResponse, InfoStaff } from "@/types";
 import { validateBase64Size } from "@/utils/fileUtils";
 import { uploadImage } from "../file";
+import axiosInstance from "@/utils/axios";
 
 export const getInfoStaff = async () => {
     try {
-        const data = await apiFetch('municipalstaff/getinfo');
+        const response = await axiosInstance.get('municipalstaff/getinfo');
 
-        return data as InfoStaff
+        return response.data as InfoStaff
     } catch (error) {
         console.error(error);
         return null;
@@ -55,14 +55,13 @@ export const updateInfoStaff = async (formData: FormData) => {
             profileImage: imagePath,
         };
 
-        const response = await apiFetch<ApiResponse>('municipalstaff/putinfo', {
-            method: 'PUT',
-            body: payload
-        });
+        const response = await axiosInstance.put('municipalstaff/putinfo',
+            payload
+        );
 
         return {
             success: true,
-            message: response.message || 'Bilgiler başarıyla güncellendi.',
+            message: response.data.message || 'Bilgiler başarıyla güncellendi.',
             errors: [],
             ...payload,
         };
@@ -96,14 +95,11 @@ export const changePasswordStaff = async (formData: FormData) => {
             confirmPassword
         };
 
-        const response = await apiFetch<ApiResponse>('municipalstaff/changepassword', {
-            method: 'POST',
-            body: payload
-        });
+        const response = await axiosInstance.post('municipalstaff/changepassword', payload);
 
         return {
             success: true,
-            message: response.message || 'Şifre başarıyla güncellendi.',
+            message: response.data.message || 'Şifre başarıyla güncellendi.',
             errors: [],
             ...payload,
         };
@@ -119,11 +115,11 @@ export const changePasswordStaff = async (formData: FormData) => {
 
 export const sendResetRequestStaff = async () => {
     try {
-        const data = await apiFetch<ApiResponse>('municipalstaff/municipalitystaffresetrequest');
+        const response = await axiosInstance.get('municipalstaff/municipalitystaffresetrequest');
 
         return {
             success: true,
-            message: data.message || 'Şifre sıfırlama isteği gönderildi.',
+            message: response.data.message || 'Şifre sıfırlama isteği gönderildi.',
             errors: [],
         };
 
@@ -139,9 +135,9 @@ export const sendResetRequestStaff = async () => {
 
 export const getDevicesStaff = async () => {
     try {
-        const data = await apiFetch('municipalstaff/getalldevice');
+        const response = await axiosInstance.get('municipalstaff/getalldevice');
 
-        return data as DevicesResponse
+        return response.data as DevicesResponse
     } catch (error) {
         console.error(error);
         return null;
@@ -150,11 +146,11 @@ export const getDevicesStaff = async () => {
 
 export const closeDeviceStaff = async (id: string) => {
     try {
-        const data = await apiFetch<ApiResponse>(`municipalstaff/closedevice?deviceId=${id}`);
+        const response = await axiosInstance.get(`municipalstaff/closedevice?deviceId=${id}`);
 
         return {
             success: true,
-            message: data.message || 'Oturum başarıyla kapatıldı.',
+            message: response.data.message || 'Oturum başarıyla kapatıldı.',
             errors: [],
         };
     } catch (error) {
@@ -169,9 +165,9 @@ export const closeDeviceStaff = async (id: string) => {
 
 export const getFAQsStaff = async () => {
     try {
-        const data = await apiFetch('municipalstaff/getmunicipalityfrequentlyaskedquestions');
+        const response = await axiosInstance.get('municipalstaff/getmunicipalityfrequentlyaskedquestions');
 
-        return data as FAQResponse
+        return response.data as FAQResponse
     } catch (error) {
         console.error(error);
         return null;
