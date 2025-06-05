@@ -175,6 +175,106 @@ export const sidebarItemsMuni: SidebarItem[] = [
     },
 ];
 
+export const sidebarItemsMuniAdmin: SidebarItem[] = [
+    {
+        title: 'Anasayfa',
+        icon: <HomeIcon />,
+        path: '/adminmuncipality/dashboard',
+    },
+    {
+        title: 'Modüle Yönetimi',
+        icon: <ModuleIcon />,
+        children: [
+            {
+                title: 'Etkinlik',
+                icon: <DateIcon />,
+                path: '/adminmuncipality/event',
+            },
+            {
+                title: 'Slayt',
+                icon: <SlideIcon />,
+                path: '/adminmuncipality/slider',
+            },
+            {
+                title: 'Mekan',
+                icon: <FlagIcon />,
+                path: '/adminmuncipality/venue',
+            },
+            {
+                title: 'Toplanma Alanı',
+                icon: <PeopleIcon />,
+                path: '/adminmuncipality/assembly-area',
+            },
+            {
+                title: 'Tesis',
+                icon: <BuildingIcon />,
+                path: '/adminmuncipality/facility',
+            },
+        ],
+    },
+    {
+        title: 'Şikayet Talebi',
+        icon: <EnvelopeIcon />,
+        path: '/adminmuncipality/complaint-request',
+    },
+    {
+        title: 'Ödeme',
+        icon: <MoneyIcon />,
+        path: '/adminmuncipality/payment',
+    },
+    {
+        title: 'Sohbet',
+        icon: <ChatIcon />,
+        path: '/adminmuncipality/chat',
+    },
+    {
+        title: 'Personel',
+        icon: <PeopleIcon />,
+        path: '/adminmuncipality/staff/list',
+    },
+    {
+        title: 'Vatandaş',
+        icon: <PeopleIcon />,
+        path: '/adminmuncipality/citizen',
+    },
+    {
+        title: 'Değerlendirme',
+        icon: <StarIcon />,
+        path: '/adminmuncipality/ratings',
+    },
+    {
+        title: 'Destek',
+        icon: <SupportIcon />,
+        path: '/adminmuncipality/support',
+    },
+    {
+        title: 'SSS',
+        icon: <HornIcon />,
+        path: '/adminmuncipality/faq',
+    },
+    {
+        title: 'Ayarlar',
+        icon: <SettingsIcon />,
+        children: [
+            {
+                title: 'Belediye Bilgileri',
+                icon: <UserIcon />,
+                path: '/adminmuncipality/settings/profile',
+            },
+            {
+                title: 'Şifre Değiştirme',
+                icon: <LockIcon />,
+                path: '/adminmuncipality/settings/change-password',
+            },
+            {
+                title: 'Cihaz Oturumları',
+                icon: <MobileIcon />,
+                path: '/adminmuncipality/settings/sessions',
+            },
+        ],
+    },
+];
+
 export const sidebarItemsStaff: SidebarItem[] = [
     {
         title: 'Anasayfa',

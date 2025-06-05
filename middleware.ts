@@ -6,15 +6,32 @@ export function middleware(req: NextRequest) {
     const token = req.cookies.get('token');
     const user = req.cookies.get('user')?.value;
     const role = user ? JSON.parse(user).role : null;
+    const municipalityId = req.cookies.get('municipalityId')?.value;
 
     const authPaths = ['/login', '/login/admin', '/login/municipality', '/login/staff'];
     const isAdminPath = path.startsWith('/admin');
     const isMunicipalityPath = path.startsWith('/municipality');
     const isStaffPath = path.startsWith('/staff');
+    const isAdminMunicipalityPath = path.startsWith('/adminmunicipality');
     const isAuthPath = authPaths.includes(path);
 
     // If user has a token (is authenticated)
     if (token) {
+        // Special handling for adminmunicipality paths
+        if (isAdminMunicipalityPath) {
+            // Only admins with a valid municipalityId cookie can access these paths
+            if (role !== 2) {
+                return NextResponse.redirect(new URL("/", req.url));
+            }
+
+            // If admin but no municipalityId cookie, redirect to admin dashboard
+            if (!municipalityId) {
+                return NextResponse.redirect(new URL("/admin/dashboard", req.url));
+            }
+
+            return NextResponse.next();
+        }
+
         // Redirect from login pages to appropriate dashboard based on role
         if (isAuthPath) {
             if (role === 2) {
@@ -54,8 +71,8 @@ export function middleware(req: NextRequest) {
     }
     // If user has no token (not authenticated)
     else {
-        if ((isAdminPath || isMunicipalityPath || isStaffPath) && !isAuthPath) {
-            if (isAdminPath) {
+        if ((isAdminPath || isMunicipalityPath || isStaffPath || isAdminMunicipalityPath) && !isAuthPath) {
+            if (isAdminPath || isAdminMunicipalityPath) {
                 return NextResponse.redirect(new URL("/login/admin", req.url));
             } else if (isMunicipalityPath) {
                 return NextResponse.redirect(new URL("/login/municipality", req.url));

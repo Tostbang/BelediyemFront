@@ -1,13 +1,15 @@
 'use client';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import SubmitButton from '@/components/common/submitButton';
-import React, { useActionState } from 'react';
+import React, { useActionState, useState } from 'react';
 import { BreadcrumbItem, MuniDetailResponse } from '@/types';
 import { addMuniAdmin, updateMuniAdmin } from '@/app/actions';
 import { membershipTypes } from '@/data/membershipType';
 import ImageUploader from '../dynamic/imageUploader';
 import { formatDateInput } from '@/utils';
 import Breadcrumb from '../common/breadCrumb';
+import { setCookie } from '@/app/actions/cookies';
+import { useRouter } from 'next/navigation';
 
 export default function MuniForm({
     id,
@@ -20,6 +22,24 @@ export default function MuniForm({
 }) {
     const { handleResult } = useNotificationHandler();
     const isEditing = !!id;
+    const router = useRouter();
+    const [isTransitioning, setIsTransitioning] = useState(false);
+
+    const handleSwitchToMunicipalityPanel = async () => {
+        if (id) {
+            setIsTransitioning(true);
+            await setCookie('municipalityId', id);
+            setTimeout(() => {
+                router.push('/adminmunicipality/dashboard');
+            }, 1000);
+        } else {
+            handleResult({
+                success: false,
+                message:
+                    'Belediye ID bulunamadı. Lütfen önce belediye kaydını tamamlayın.',
+            });
+        }
+    };
 
     const initialState = {
         name: detail?.municipality.name || '',
@@ -75,7 +95,31 @@ export default function MuniForm({
 
     return (
         <>
-            <Breadcrumb breadcrumb={breadcrumb} />
+            {isTransitioning && (
+                <div className="fixed inset-0 bg-blue-900/80 backdrop-blur-sm z-50 flex justify-center items-center transition-all duration-300 ease-in-out">
+                    <div className="bg-white p-8 rounded-lg shadow-2xl flex flex-col items-center transform scale-up">
+                        <div className="w-20 h-20 border-t-4 border-b-4 border-blue-600 rounded-full animate-spin mb-4"></div>
+                        <h2 className="text-xl font-semibold text-gray-800 mb-2">
+                            Belediye Paneline Geçiliyor
+                        </h2>
+                        <p className="text-gray-600">Lütfen bekleyiniz...</p>
+                    </div>
+                </div>
+            )}
+            <Breadcrumb
+                breadcrumb={breadcrumb}
+                buttonComponent={
+                    isEditing ? (
+                        <button
+                            type="button"
+                            onClick={handleSwitchToMunicipalityPanel}
+                            disabled={isTransitioning}
+                            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors cursor-pointer disabled:bg-blue-400 disabled:cursor-not-allowed">
+                            Belediye Paneline Geç
+                        </button>
+                    ) : null
+                }
+            />
             <div className="w-full bg-white shadow-lg rounded-xl p-8 border border-gray-100">
                 <form action={formAction} className="space-y-6">
                     {/* Common fields for both create and edit */}
