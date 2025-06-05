@@ -1,15 +1,14 @@
 "use server"
 
 import { ApiResponse, DevicesResponse, FAQDetail, FAQResponse, InfoAdmin } from "@/types";
-import { apiFetch } from "@/utils/api";
+import axiosInstance from "@/utils/axios";
 import { uploadImage } from "../file";
 import { validateBase64Size } from "@/utils/fileUtils";
 
 export const getInfoAdmin = async () => {
     try {
-        const data = await apiFetch('admin/getinfo');
-
-        return data as InfoAdmin
+        const response = await axiosInstance.get('admin/getinfo');
+        return response.data as InfoAdmin;
     } catch (error) {
         console.error(error);
         return null;
@@ -57,14 +56,12 @@ export const updateInfoAdmin = async (formData: FormData) => {
             profileImage: imagePath,
         };
 
-        const response = await apiFetch<ApiResponse>('admin/putinfo', {
-            method: 'PUT',
-            body: payload
-        });
+        const response = await axiosInstance.put('admin/putinfo', payload);
+        const data = response.data as ApiResponse;
 
         return {
             success: true,
-            message: response.message || 'Bilgiler başarıyla güncellendi.',
+            message: data.message || 'Bilgiler başarıyla güncellendi.',
             errors: [],
             ...payload,
         };
@@ -98,14 +95,12 @@ export const changePasswordAdmin = async (formData: FormData) => {
             confirmPassword
         };
 
-        const response = await apiFetch<ApiResponse>('admin/changepassword', {
-            method: 'POST',
-            body: payload
-        });
+        const response = await axiosInstance.post('admin/changepassword', payload);
+        const data = response.data as ApiResponse;
 
         return {
             success: true,
-            message: response.message || 'Şifre başarıyla güncellendi.',
+            message: data.message || 'Şifre başarıyla güncellendi.',
             errors: [],
             ...payload,
         };
@@ -121,9 +116,8 @@ export const changePasswordAdmin = async (formData: FormData) => {
 
 export const getDevicesAdmin = async () => {
     try {
-        const data = await apiFetch('admin/getalldevice');
-
-        return data as DevicesResponse
+        const response = await axiosInstance.get('admin/getalldevice');
+        return response.data as DevicesResponse;
     } catch (error) {
         console.error(error);
         return null;
@@ -132,7 +126,8 @@ export const getDevicesAdmin = async () => {
 
 export const closeDeviceAdmin = async (id: string) => {
     try {
-        const data = await apiFetch<ApiResponse>(`admin/closedevice?deviceId=${id}`);
+        const response = await axiosInstance.get(`admin/closedevice?deviceId=${id}`);
+        const data = response.data as ApiResponse;
 
         return {
             success: true,
@@ -151,9 +146,8 @@ export const closeDeviceAdmin = async (id: string) => {
 
 export const getFAQsAdmin = async () => {
     try {
-        const data = await apiFetch('admin/getfrequentlyaskedquestions');
-
-        return data as FAQResponse
+        const response = await axiosInstance.get('admin/getfrequentlyaskedquestions');
+        return response.data as FAQResponse;
     } catch (error) {
         console.error(error);
         return null;
@@ -162,9 +156,8 @@ export const getFAQsAdmin = async () => {
 
 export const getFAQByIdAdmin = async (id: string) => {
     try {
-        const data = await apiFetch(`admin/getfrequentlyaskedquestiondetail?faqId=${id}`);
-
-        return data as FAQDetail
+        const response = await axiosInstance.get(`admin/getfrequentlyaskedquestiondetail?faqId=${id}`);
+        return response.data as FAQDetail;
     } catch (error) {
         console.error(error);
         return null;
@@ -185,14 +178,12 @@ export const addFAQAdmin = async (formData: FormData) => {
             description
         };
 
-        const response = await apiFetch<ApiResponse>('admin/createfrequentlyaskedquestions', {
-            method: 'POST',
-            body: payload
-        });
+        const response = await axiosInstance.post('admin/createfrequentlyaskedquestions', payload);
+        const data = response.data as ApiResponse;
 
         return {
             success: true,
-            message: response.message || 'Sıkça Sorulan Sorular başarıyla eklendi.',
+            message: data.message || 'Sıkça Sorulan Sorular başarıyla eklendi.',
             errors: [],
             ...payload,
         };
@@ -222,14 +213,12 @@ export const updateFAQAdmin = async (formData: FormData) => {
             description
         };
 
-        const response = await apiFetch<ApiResponse>('admin/updatefrequentlyaskedquestion', {
-            method: 'PUT',
-            body: payload
-        });
+        const response = await axiosInstance.put('admin/updatefrequentlyaskedquestion', payload);
+        const data = response.data as ApiResponse;
 
         return {
             success: true,
-            message: response.message || 'Sıkça Sorulan Sorular başarıyla güncellendi.',
+            message: data.message || 'Sıkça Sorulan Sorular başarıyla güncellendi.',
             errors: [],
             ...payload,
         };
@@ -245,9 +234,8 @@ export const updateFAQAdmin = async (formData: FormData) => {
 
 export const deleteFAQAdmin = async (id: string) => {
     try {
-        const data = await apiFetch<ApiResponse>(`admin/deletefrequentlyaskedquestion?faqId=${id}`, {
-            method: 'DELETE'
-        });
+        const response = await axiosInstance.delete(`admin/deletefrequentlyaskedquestion?faqId=${id}`);
+        const data = response.data as ApiResponse;
 
         return {
             success: true,

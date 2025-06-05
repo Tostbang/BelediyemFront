@@ -1,21 +1,18 @@
 "use server"
 
 import { ApiResponse, MuniDetailResponse, MuniListResponse, PaginationBody, PasswordResetResponse } from "@/types";
-import { apiFetch } from "@/utils/api";
+import axiosInstance from "@/utils/axios";
 import { validateBase64Size } from "@/utils/fileUtils";
 import { uploadImage } from "../file";
 
 export const getMunisAdmin = async (body: PaginationBody) => {
     try {
-        const data = await apiFetch('admin/municipalitylist', {
-            method: 'POST',
-            body: {
-                pageNumber: body.pageNumber - 1,
-                pageSize: body.pageSize
-            }
+        const response = await axiosInstance.post('admin/municipalitylist', {
+            pageNumber: body.pageNumber - 1,
+            pageSize: body.pageSize
         });
 
-        return data as MuniListResponse
+        return response.data as MuniListResponse;
     } catch (error) {
         console.error(error);
         return null;
@@ -24,9 +21,8 @@ export const getMunisAdmin = async (body: PaginationBody) => {
 
 export const getMuniByIdAdmin = async (id: string) => {
     try {
-        const data = await apiFetch(`admin/adminmunicipalitydetail?municipalId=${id}`);
-
-        return data as MuniDetailResponse
+        const response = await axiosInstance.get(`admin/adminmunicipalitydetail?municipalId=${id}`);
+        return response.data as MuniDetailResponse;
     } catch (error) {
         console.error(error);
         return null;
@@ -53,17 +49,14 @@ export const addMuniAdmin = async (formData: FormData) => {
             phone,
             landlinePhone,
             membershipType: parseInt(membershipType),
-
         };
 
-        const response = await apiFetch<ApiResponse>('admin/registermunicipality', {
-            method: 'POST',
-            body: payload
-        });
+        const response = await axiosInstance.post('admin/registermunicipality', payload);
+        const data = response.data as ApiResponse;
 
         return {
             success: true,
-            message: response.message || 'Belediye başarıyla eklendi.',
+            message: data.message || 'Belediye başarıyla eklendi.',
             errors: [],
             ...payload,
         };
@@ -142,15 +135,12 @@ export const updateMuniAdmin = async (formData: FormData) => {
             url
         };
 
-
-        const response = await apiFetch<ApiResponse>('admin/putinfomunicipality', {
-            method: 'PUT',
-            body: payload
-        });
+        const response = await axiosInstance.put('admin/putinfomunicipality', payload);
+        const data = response.data as ApiResponse;
 
         return {
             success: true,
-            message: response.message || 'Belediye bilgileri başarıyla güncellendi.',
+            message: data.message || 'Belediye bilgileri başarıyla güncellendi.',
             errors: [],
             ...payload,
         };
@@ -166,17 +156,15 @@ export const updateMuniAdmin = async (formData: FormData) => {
 
 export const updateMuniStatusAdmin = async (id: string, status: boolean) => {
     try {
-        const response = await apiFetch<ApiResponse>('admin/municipalityupdatestatus', {
-            method: 'PUT',
-            body: {
-                municipalityId: id,
-                status
-            }
+        const response = await axiosInstance.put('admin/municipalityupdatestatus', {
+            municipalityId: id,
+            status
         });
+        const data = response.data as ApiResponse;
 
         return {
             success: true,
-            message: response.message || 'Belediye durumu başarıyla güncellendi.',
+            message: data.message || 'Belediye durumu başarıyla güncellendi.',
             errors: [],
         };
     }
@@ -192,15 +180,11 @@ export const updateMuniStatusAdmin = async (id: string, status: boolean) => {
 
 export const getMunisPWResetRequestAdmin = async (body: PaginationBody) => {
     try {
-        const data = await apiFetch('admin/getmunicipalitypasswordresetlist', {
-            method: 'POST',
-            body: {
-                pageNumber: body.pageNumber - 1,
-                pageSize: body.pageSize
-            }
+        const response = await axiosInstance.post('admin/getmunicipalitypasswordresetlist', {
+            pageNumber: body.pageNumber - 1,
+            pageSize: body.pageSize
         });
-
-        return data as PasswordResetResponse
+        return response.data as PasswordResetResponse;
     } catch (error) {
         console.error(error);
         return null;
@@ -209,12 +193,10 @@ export const getMunisPWResetRequestAdmin = async (body: PaginationBody) => {
 
 export const sendMunisPWAdmin = async (id: string) => {
     try {
-        const data = await apiFetch<ApiResponse>('admin/adminsendnewpassword', {
-            method: 'POST',
-            body: {
-                staffId: id
-            }
+        const response = await axiosInstance.post('admin/adminsendnewpassword', {
+            staffId: id
         });
+        const data = response.data as ApiResponse;
 
         return {
             success: true,

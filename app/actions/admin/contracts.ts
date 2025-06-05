@@ -1,13 +1,12 @@
 "use server"
 
 import { ApiResponse, ContractsResponse, ContractDetailResponse } from "@/types";
-import { apiFetch } from "@/utils/api";
+import axiosInstance from "@/utils/axios";
 
 export const getContractsAdmin = async () => {
     try {
-        const data = await apiFetch('admin/getallcontract');
-
-        return data as ContractsResponse
+        const response = await axiosInstance.get('admin/getallcontract');
+        return response.data as ContractsResponse;
     } catch (error) {
         console.error(error);
         return null;
@@ -16,9 +15,8 @@ export const getContractsAdmin = async () => {
 
 export const getContractByIDAdmin = async (id: string) => {
     try {
-        const data = await apiFetch(`admin/getcontractdetail?contractId=${id}`);
-
-        return data as ContractDetailResponse;
+        const response = await axiosInstance.get(`admin/getcontractdetail?contractId=${id}`);
+        return response.data as ContractDetailResponse;
     } catch (error) {
         console.error(error);
         return null;
@@ -41,14 +39,12 @@ export const updateContractAdmin = async (formData: FormData) => {
             content
         };
 
-        const response = await apiFetch<ApiResponse>('admin/contractupdate', {
-            method: 'PUT',
-            body: payload
-        });
+        const response = await axiosInstance.put('admin/contractupdate', payload);
+        const data = response.data as ApiResponse;
 
         return {
             success: true,
-            message: response.message || 'Sözleşme İçerik başarıyla güncellendi.',
+            message: data.message || 'Sözleşme İçerik başarıyla güncellendi.',
             errors: [],
             ...payload,
         };

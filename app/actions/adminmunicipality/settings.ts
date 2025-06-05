@@ -1,6 +1,6 @@
 "use server";
 import { ApiResponse, DashboardStatisticsMuni, DevicesResponse, PaginationBody, ReportsMuniResponse } from "@/types";
-import { apiFetch } from "@/utils/api";
+import axiosInstance from "@/utils/axios";
 import { getCookie } from "../cookies";
 
 
@@ -8,9 +8,8 @@ export const getDashboardMuniAdmin = async () => {
     const municipalityId = await getCookie('municipalityId');
 
     try {
-        const data = await apiFetch(`adminmunicipalitypanel/getdashboardstatistics?municipalityId=${municipalityId}`);
-
-        return data as DashboardStatisticsMuni
+        const response = await axiosInstance.get(`adminmunicipalitypanel/getdashboardstatistics?municipalityId=${municipalityId}`);
+        return response.data as DashboardStatisticsMuni;
     } catch (error) {
         console.error(error);
         return null;
@@ -21,15 +20,12 @@ export const getReportsMuniAdmin = async (body: PaginationBody) => {
     const municipalityId = await getCookie('municipalityId');
 
     try {
-        const data = await apiFetch(`adminmunicipalitypanel/getallreports?municipalityId=${municipalityId}`, {
-            method: 'POST',
-            body: {
-                pageNumber: body.pageNumber - 1,
-                pageSize: body.pageSize
-            }
+        const response = await axiosInstance.post(`adminmunicipalitypanel/getallreports?municipalityId=${municipalityId}`, {
+            pageNumber: body.pageNumber - 1,
+            pageSize: body.pageSize
         });
 
-        return data as ReportsMuniResponse
+        return response.data as ReportsMuniResponse;
     } catch (error) {
         console.error(error);
         return null;
@@ -40,9 +36,8 @@ export const createReportMuniAdmin = async () => {
     const municipalityId = await getCookie('municipalityId');
 
     try {
-        const data = await apiFetch<ApiResponse>(`adminmunicipalitypanel/createstatisticsreport?municipalityId=${municipalityId}`);
-
-        return { success: true, message: data.message || 'Rapor oluşturuldu.', errors: [] };
+        const response = await axiosInstance.get(`adminmunicipalitypanel/createstatisticsreport?municipalityId=${municipalityId}`);
+        return { success: true, message: response.data.message || 'Rapor oluşturuldu.', errors: [] };
     } catch (error) {
         console.error(error);
         return {
@@ -57,9 +52,8 @@ export const getDevicesMuniAdmin = async () => {
     const municipalityId = await getCookie('municipalityId');
 
     try {
-        const data = await apiFetch(`adminmunicipalitypanel/getalldevice?municipalityId=${municipalityId}`);
-
-        return data as DevicesResponse
+        const response = await axiosInstance.get(`adminmunicipalitypanel/getalldevice?municipalityId=${municipalityId}`);
+        return response.data as DevicesResponse;
     } catch (error) {
         console.error(error);
         return null;
@@ -70,11 +64,10 @@ export const closeDeviceMuniAdmin = async (id: string) => {
     const municipalityId = await getCookie('municipalityId');
 
     try {
-        const data = await apiFetch<ApiResponse>(`adminmunicipalitypanel/closedevice?deviceId=${id}&municipalityId=${municipalityId}`);
-
+        const response = await axiosInstance.get<ApiResponse>(`adminmunicipalitypanel/closedevice?deviceId=${id}&municipalityId=${municipalityId}`);
         return {
             success: true,
-            message: data.message || 'Oturum başarıyla kapatıldı.',
+            message: response.data.message || 'Oturum başarıyla kapatıldı.',
             errors: [],
         };
     } catch (error) {

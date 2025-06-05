@@ -1,7 +1,7 @@
 "use server"
 
 import { ApiResponse, CustomJwtPayload, DashboardStatisticsAdmin, LoginResponse } from "@/types";
-import { apiFetch } from "@/utils/api";
+import axiosInstance from "@/utils/axios";
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
 
@@ -17,10 +17,8 @@ export const handleLoginAdmin = async (formData: FormData) => {
             password,
         };
 
-        const data = await apiFetch<LoginResponse>('admin/login', {
-            method: 'POST',
-            body: payload
-        });
+        const response = await axiosInstance.post('admin/login', payload);
+        const data = response.data as LoginResponse;
 
         const token = data.token;
         const decoded = jwtDecode<CustomJwtPayload>(token);
@@ -55,7 +53,8 @@ export const handleLoginAdmin = async (formData: FormData) => {
 
 export const handleLogoutAdmin = async () => {
     try {
-        const data = await apiFetch<ApiResponse>('admin/logout');
+        const response = await axiosInstance.get('admin/logout');
+        const data = response.data as ApiResponse;
         return { success: true, message: data.message || 'Çıkış yapıldı.', errors: [] };
 
     } catch (error) {
@@ -70,9 +69,8 @@ export const handleLogoutAdmin = async () => {
 
 export const getDashboardAdmin = async () => {
     try {
-        const data = await apiFetch('admin/getdashboardstatistics');
-
-        return data as DashboardStatisticsAdmin
+        const response = await axiosInstance.get('admin/getdashboardstatistics');
+        return response.data as DashboardStatisticsAdmin;
     } catch (error) {
         console.error(error);
         return null;
@@ -81,7 +79,8 @@ export const getDashboardAdmin = async () => {
 
 export const updateLastSeenAdmin = async () => {
     try {
-        const data = await apiFetch<ApiResponse>('admin/lastseenupdate');
+        const response = await axiosInstance.get('admin/lastseenupdate');
+        const data = response.data as ApiResponse;
 
         return {
             success: true,
