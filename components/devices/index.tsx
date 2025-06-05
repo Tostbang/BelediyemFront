@@ -6,6 +6,7 @@ import ConfirmModal from '../modals/confirmModal';
 import {
     closeDeviceAdmin,
     closeDeviceMuni,
+    closeDeviceMuniAdmin,
     closeDeviceStaff,
 } from '@/app/actions';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
@@ -44,6 +45,9 @@ export default function DevicesList({
                     break;
                 case 'staff':
                     result = await closeDeviceStaff(selectedItem);
+                    break;
+                case 'admin-muni':
+                    result = await closeDeviceMuniAdmin(selectedItem);
                     break;
                 default:
                     result = {

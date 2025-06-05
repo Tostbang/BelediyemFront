@@ -180,7 +180,7 @@ export const sidebarItemsMuniAdmin: SidebarItem[] = [
     {
         title: 'Anasayfa',
         icon: <HomeIcon />,
-        path: '/adminmuncipality/dashboard',
+        path: '/adminmunicipality/dashboard',
     },
     {
         title: 'Modüle Yönetimi',
@@ -189,69 +189,69 @@ export const sidebarItemsMuniAdmin: SidebarItem[] = [
             {
                 title: 'Etkinlik',
                 icon: <DateIcon />,
-                path: '/adminmuncipality/event',
+                path: '/adminmunicipality/event',
             },
             {
                 title: 'Slayt',
                 icon: <SlideIcon />,
-                path: '/adminmuncipality/slider',
+                path: '/adminmunicipality/slider',
             },
             {
                 title: 'Mekan',
                 icon: <FlagIcon />,
-                path: '/adminmuncipality/venue',
+                path: '/adminmunicipality/venue',
             },
             {
                 title: 'Toplanma Alanı',
                 icon: <PeopleIcon />,
-                path: '/adminmuncipality/assembly-area',
+                path: '/adminmunicipality/assembly-area',
             },
             {
                 title: 'Tesis',
                 icon: <BuildingIcon />,
-                path: '/adminmuncipality/facility',
+                path: '/adminmunicipality/facility',
             },
         ],
     },
     {
         title: 'Şikayet Talebi',
         icon: <EnvelopeIcon />,
-        path: '/adminmuncipality/complaint-request',
+        path: '/adminmunicipality/complaint-request',
     },
     {
         title: 'Ödeme',
         icon: <MoneyIcon />,
-        path: '/adminmuncipality/payment',
+        path: '/adminmunicipality/payment',
     },
     {
         title: 'Personel',
         icon: <PeopleIcon />,
-        path: '/adminmuncipality/staff/list',
+        path: '/adminmunicipality/staff/list',
     },
     {
         title: 'Vatandaş',
         icon: <PeopleIcon />,
-        path: '/adminmuncipality/citizen',
+        path: '/adminmunicipality/citizen',
     },
     {
         title: 'Değerlendirme',
         icon: <StarIcon />,
-        path: '/adminmuncipality/ratings',
+        path: '/adminmunicipality/ratings',
     },
     {
         title: 'Destek',
         icon: <SupportIcon />,
-        path: '/adminmuncipality/support',
+        path: '/adminmunicipality/support',
     },
     {
         title: 'SSS',
         icon: <HornIcon />,
-        path: '/adminmuncipality/faq',
+        path: '/adminmunicipality/faq',
     },
     {
         title: 'Cihaz Oturumları',
         icon: <MobileIcon />,
-        path: '/adminmuncipality/settings/sessions',
+        path: '/adminmunicipality/sessions',
     },
     {
         title: 'Panelden Ayrıl',
