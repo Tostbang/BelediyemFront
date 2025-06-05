@@ -34,7 +34,7 @@ export default function DashboardMuni({
     breadcrumb,
 }: {
     dashboard: DashboardStatisticsMuni;
-    reports?: ReportsMuniResponse;
+    reports?: ReportsMuniResponse | null;
     breadcrumb: BreadcrumbItem[];
 }) {
     const router = useRouter();
@@ -263,7 +263,10 @@ export default function DashboardMuni({
                                 />
                             ) : (
                                 <div className="text-center py-4">
-                                    Veri yükleniyor...
+                                    <p className="text-gray-500">
+                                        Şu anda görüntülenecek rapor dosyası
+                                        yok.
+                                    </p>
                                 </div>
                             )}
                         </div>

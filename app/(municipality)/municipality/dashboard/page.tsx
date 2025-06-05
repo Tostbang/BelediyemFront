@@ -32,7 +32,7 @@ export default async function Page({
 
     return (
         <PageContainer>
-            {response && reportsData && (
+            {response && (
                 <DashboardMuni
                     dashboard={response}
                     reports={reportsData}

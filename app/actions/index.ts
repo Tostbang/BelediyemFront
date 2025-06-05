@@ -24,3 +24,6 @@ export * from '@/app/actions/municipality/complaints';
 export * from '@/app/actions/staff/auth';
 export * from '@/app/actions/staff/settings';
 export * from '@/app/actions/staff/complaints';
+
+// admin municipality
+export * from '@/app/actions/adminmunicipality/settings';

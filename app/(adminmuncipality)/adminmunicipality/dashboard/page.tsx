@@ -1,7 +1,7 @@
 import React from 'react';
 import PageContainer from '@/components/pageContainer';
 import { generatePageMetadata } from '@/lib/metadata';
-import { getDashboardMuni, getReportsMuni } from '@/app/actions';
+import { getDashboardMuniAdmin, getReportsMuniAdmin } from '@/app/actions';
 import DashboardMuni from '@/components/dashboard';
 import { PaginationBody } from '@/types';
 
@@ -20,19 +20,19 @@ export default async function Page({
     const pageNumber = Number(params.page) || 1;
     const pageSize = Number(params.pageSize) || 20;
 
-    const response = await getDashboardMuni();
+    const response = await getDashboardMuniAdmin();
 
     const paginationBody: PaginationBody = {
         pageNumber,
         pageSize,
     };
-    const reportsData = await getReportsMuni(paginationBody);
+    const reportsData = await getReportsMuniAdmin(paginationBody);
 
     const breadcrumb = [{ label: 'Anasayfa' }];
 
     return (
         <PageContainer>
-            {response && reportsData && (
+            {response && (
                 <DashboardMuni
                     dashboard={response}
                     reports={reportsData}

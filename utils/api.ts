@@ -62,7 +62,7 @@ export const apiFetch = async <T>(
     const data = await response.json();
     // Check for custom error format
     if (data && data.code !== "200" && data.errors) {
-      throw new Error(data.errors[0] || 'Bir hata oluştu');
+      throw new Error(data.errors[0] || data.message || 'Bir hata oluştu');
     }
 
     return data as T;
