@@ -1,7 +1,7 @@
 import React from 'react';
 import PageContainer from '@/components/pageContainer';
 import { generatePageMetadata } from '@/lib/metadata';
-import { getComplaintsMuni } from '@/app/actions';
+import { getComplaintsStaff } from '@/app/actions';
 import { ComplaintsPaginationBody } from '@/types';
 import ComplaintList from '@/components/complaint-request/list';
 
@@ -40,7 +40,7 @@ export default async function Page({
         endDate,
     };
 
-    const response = await getComplaintsMuni(paginationBody);
+    const response = await getComplaintsStaff(paginationBody);
 
     const breadcrumb = [{ label: 'Şikayet / Talep' }];
 
@@ -50,7 +50,7 @@ export default async function Page({
                 <ComplaintList
                     complaints={response || []}
                     breadcrumb={breadcrumb}
-                    type='municipality'
+                    type='staff'
                 />
             )}
         </PageContainer>

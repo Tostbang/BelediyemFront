@@ -23,3 +23,4 @@ export * from '@/app/actions/municipality/complaints';
 // staff
 export * from '@/app/actions/staff/auth';
 export * from '@/app/actions/staff/settings';
+export * from '@/app/actions/staff/complaints';

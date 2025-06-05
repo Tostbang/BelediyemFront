@@ -1,6 +1,11 @@
 'use client';
 import React, { useState, useRef } from 'react';
-import { BreadcrumbItem, Complaints, ComplaintsResponse } from '@/types';
+import {
+    BreadcrumbItem,
+    Complaints,
+    ComplaintsResponse,
+    RoleType,
+} from '@/types';
 import Link from 'next/link';
 import { usePagination } from '@/hooks/usePagination';
 import DynamicTable from '@/components/dynamic/table';
@@ -14,13 +19,18 @@ import ClearAllFilters from '../filters/clearAllFilters';
 import DynamicDropdown from '../common/DynamicDropdown';
 import { categoryType } from '@/data/categoryType';
 import { complaintStatusType } from '@/data/complaintStatus';
+import LinkButton from '../common/LinkButton';
 
 export default function ComplaintList({
     complaints,
     breadcrumb,
+    type,
+    isDepartment = false,
 }: {
     complaints: ComplaintsResponse;
     breadcrumb: BreadcrumbItem[];
+    type: RoleType;
+    isDepartment?: boolean;
 }) {
     const filterParams = [
         'startDate',
@@ -50,6 +60,18 @@ export default function ComplaintList({
     } = usePagination({ filterParams, startDateRef, endDateRef });
 
     const [showDateFilter, setShowDateFilter] = useState(false);
+
+    let url;
+    switch (type) {
+        case 'municipality':
+            url = '/municipality/complaint-request';
+            break;
+        case 'staff':
+            url = '/staff/complaint-request';
+            break;
+        default:
+            url = '';
+    }
 
     const columns = [
         {
@@ -133,12 +155,7 @@ export default function ComplaintList({
                 const dropdownItems = [
                     {
                         key: 'detail',
-                        label: (
-                            <Link
-                                href={`/municipality/complaint-request/${record.id}`}>
-                                Detay
-                            </Link>
-                        ),
+                        label: <Link href={`${url}/${record.id}`}>Detay</Link>,
                     },
                 ];
 
@@ -154,7 +171,18 @@ export default function ComplaintList({
 
     return (
         <>
-            <Breadcrumb breadcrumb={breadcrumb} />
+            <Breadcrumb
+                breadcrumb={breadcrumb}
+                buttonComponent={
+                    type !== 'municipality' &&
+                    !isDepartment && (
+                        <LinkButton
+                            href={`/staff/complaint-request/department`}
+                            title="Departmana Gelen Şikayetler"
+                        />
+                    )
+                }
+            />
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-4 bg-white rounded-lg px-4">
                 <div className="flex flex-wrap sm:flex-nowrap items-center w-full lg:w-auto gap-2 sm:gap-0">
                     <div className="w-8 h-8 min-h-8 min-w-8 mt-2 lg:mt-0 flex items-center justify-center sm:justify-start mx-auto sm:mx-0 sm:mr-4">
