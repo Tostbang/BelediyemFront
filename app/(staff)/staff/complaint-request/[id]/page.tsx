@@ -63,7 +63,7 @@ export default async function Page({
                 <ComplaintDetail
                     id={id}
                     detail={detail || null}
-                    type="municipality"
+                    type="staff"
                     breadcrumb={breadcrumb}
                 />
             )}

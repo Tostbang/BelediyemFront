@@ -12,6 +12,7 @@ import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import { useRouter } from 'next/navigation';
 import { complaintStatusType } from '@/data/complaintStatus';
 import ImageUploader from '../dynamic/imageUploader';
+import { updateComplaintStatusStaff, updateCompletedComplaintStatusStaff } from '@/app/actions';
 
 type MessageModalProps = {
     isOpen: boolean;
@@ -56,8 +57,8 @@ export default function StatusModal({
 
             if (type === 'municipality') {
                 result = await updateComplaintStatusMuni(formData);
-            } else if (type === 'admin') {
-                result = await updateComplaintStatusMuni(formData);
+            } else if (type === 'staff') {
+                result = await updateComplaintStatusStaff(formData);
             } else {
                 result = {
                     success: false,
@@ -73,8 +74,8 @@ export default function StatusModal({
 
             if (type === 'municipality') {
                 result = await updateCompletedComplaintStatusMuni(formData);
-            } else if (type === 'admin') {
-                result = await updateCompletedComplaintStatusMuni(formData);
+            } else if (type === 'staff') {
+                result = await updateCompletedComplaintStatusStaff(formData);
             } else {
                 result = {
                     success: false,
