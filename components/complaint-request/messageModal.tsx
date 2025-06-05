@@ -4,7 +4,6 @@ import React, { useActionState } from 'react';
 import Modal from '../common/modal';
 import SubmitButton from '../common/submitButton';
 import { sendMessage } from '@/app/actions';
-import { RoleType } from '@/types';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import { useRouter } from 'next/navigation';
 
@@ -12,14 +11,12 @@ type MessageModalProps = {
     isOpen: boolean;
     onClose: () => void;
     id: string;
-    type: RoleType;
 };
 
 export default function MessageModal({
     isOpen,
     onClose,
     id,
-    type,
 }: MessageModalProps) {
     const handleCancel = () => {
         onClose();
@@ -37,21 +34,7 @@ export default function MessageModal({
             formData.append('id', id);
         }
 
-        let actionFunction;
-
-        switch (type) {
-            case 'municipality':
-                actionFunction = sendMessage;
-                break;
-            default:
-                return {
-                    success: false,
-                    message: 'Unsupported role type',
-                    content: '',
-                    status: false,
-                };
-        }
-        const result = await actionFunction(formData);
+        const result = await sendMessage(formData);
 
         if (result.success) {
             handleSuccess(result.message);

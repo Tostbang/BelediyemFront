@@ -1,5 +1,5 @@
 'use client';
-import React, { JSX, useState } from 'react';
+import React, { JSX, useEffect, useState } from 'react';
 import { BreadcrumbItem, ComplaintsDetailResponse, RoleType } from '@/types';
 import { formatDateTime } from '@/utils';
 import {
@@ -48,22 +48,17 @@ export default function ComplaintDetail({
     const [staffModal, setStaffModal] = useState(false);
     const [messageModal, setMessageModal] = useState(false);
     const [statusModal, setStatusModal] = useState(false);
+    const statusOrder = [1, 2, 3, 4, 5];
 
-    // Define the order of status types to display
-    const statusOrder = [1, 2, 3, 4, 5]; // Bekleniyor, İnceleniyor, Ekip Yönlendirildi, Çözüldü, Reddedildi
-
-    // Create a map of existing status types
     const existingStatusTypes = new Set(
         detail?.complaint.complaintsStatus?.map(
             (status) => status.complaintsStatusType
         ) || []
     );
 
-    // Check if rejected or solved statuses exist
     const hasRejectedStatus = existingStatusTypes.has(5);
     const hasSolvedStatus = existingStatusTypes.has(4);
 
-    // Generate timeline items with proper styling
     const timeline = statusOrder
         .map((statusId) => {
             // Skip "Çözüldü" if "Reddedildi" exists, or skip "Reddedildi" if "Çözüldü" exists
@@ -143,9 +138,7 @@ export default function ComplaintDetail({
             } => item !== null
         );
 
-    // Add custom CSS for timeline lines
-    React.useEffect(() => {
-        // Add custom CSS to document head for timeline lines
+    useEffect(() => {
         const styleElement = document.createElement('style');
         styleElement.innerHTML = `
             .timeline-item-green-500 .ant-timeline-item-tail {
@@ -165,7 +158,6 @@ export default function ComplaintDetail({
         `;
         document.head.appendChild(styleElement);
 
-        // Clean up function to remove the style element when component unmounts
         return () => {
             document.head.removeChild(styleElement);
         };
@@ -371,11 +363,13 @@ export default function ComplaintDetail({
                                 className="px-4 py-2 min-w-[200px] bg-blue-600 text-white rounded-lg hover:bg-blue-700 w-full md:w-auto cursor-pointer">
                                 Durum Değiştir
                             </button>
-                            <LinkButton
-                                title="Tüm Durumları Göster"
-                                href={`/municipality/complaint-request/${id}/statuses`}
-                                className="min-w-[200px]"
-                            />
+                            {type === 'municipality' && (
+                                <LinkButton
+                                    title="Tüm Durumları Göster"
+                                    href={`/municipality/complaint-request/${id}/statuses`}
+                                    className="min-w-[200px]"
+                                />
+                            )}
                             <StatusModal
                                 isOpen={statusModal}
                                 onClose={() => setStatusModal(false)}
@@ -403,7 +397,6 @@ export default function ComplaintDetail({
                             isOpen={messageModal}
                             onClose={() => setMessageModal(false)}
                             id={id || ''}
-                            type={type}
                         />
                     </div>
                     <div className="grid grid-cols-1 gap-3">
@@ -457,83 +450,97 @@ export default function ComplaintDetail({
                         <h2 className="text-xl font-semibold mb-6">
                             Personel Bilgileri
                         </h2>
-                        <button
-                            onClick={() => setStaffModal(true)}
-                            className="px-4 py-2 bg-blue-600 text-white  rounded-lg hover:bg-blue-700 w-full md:w-auto cursor-pointer">
-                            Personel Yönlendir
-                        </button>
-                        <AttendStaffModal
-                            isOpen={staffModal}
-                            onClose={() => setStaffModal(false)}
-                            id={id || ''}
-                            type={type}
-                        />
+                        {type === 'municipality' && (
+                            <>
+                                <button
+                                    onClick={() => setStaffModal(true)}
+                                    className="px-4 py-2 bg-blue-600 text-white  rounded-lg hover:bg-blue-700 w-full md:w-auto cursor-pointer">
+                                    Personel Yönlendir
+                                </button>
+                                <AttendStaffModal
+                                    isOpen={staffModal}
+                                    onClose={() => setStaffModal(false)}
+                                    id={id || ''}
+                                    type={type}
+                                />
+                            </>
+                        )}
                     </div>
-                    <div className="grid grid-cols-1 gap-3">
-                        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                            <div className="flex items-center">
-                                {detail?.complaint.assignedStaff
-                                    ?.profileImage ? (
-                                    <div className="h-16 w-16 relative rounded-full overflow-hidden">
-                                        <ImageWithSkeleton
-                                            src={
-                                                detail.complaint.assignedStaff
-                                                    .profileImage
-                                            }
-                                            alt="Personel Görseli"
-                                            width={64}
-                                            height={64}
-                                            className="object-cover"
-                                        />
-                                    </div>
-                                ) : (
-                                    <div className="w-16 h-16 flex items-center justify-center rounded-full bg-gray-100 text-gray-500">
-                                        <PersonIcon />
-                                    </div>
-                                )}
-                            </div>
-                            <div>
-                                <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-                                    <div className="flex items-center mb-2 sm:mb-0">
-                                        <div className="w-4 h-4 mr-2 flex items-center justify-center text-blue-600">
+                    {detail?.complaint.assignedStaff ? (
+                        <div className="grid grid-cols-1 gap-3">
+                            <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                                <div className="flex items-center">
+                                    {detail?.complaint.assignedStaff
+                                        ?.profileImage ? (
+                                        <div className="h-16 w-16 relative rounded-full overflow-hidden">
+                                            <ImageWithSkeleton
+                                                src={
+                                                    detail.complaint
+                                                        .assignedStaff
+                                                        .profileImage
+                                                }
+                                                alt="Personel Görseli"
+                                                width={64}
+                                                height={64}
+                                                className="object-cover"
+                                            />
+                                        </div>
+                                    ) : (
+                                        <div className="w-16 h-16 flex items-center justify-center rounded-full bg-gray-100 text-gray-500">
                                             <PersonIcon />
                                         </div>
-                                        <span className="font-medium text-gray-600">
-                                            Ad Soyad:
-                                        </span>
-                                    </div>
-                                    <span className="text-gray-700">
-                                        {detail?.complaint.assignedStaff?.name}{' '}
-                                        {
-                                            detail?.complaint.assignedStaff
-                                                ?.surname
-                                        }
-                                    </span>
+                                    )}
                                 </div>
-
-                                <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-                                    <div className="flex items-center mb-2 sm:mb-0">
-                                        <div className="w-4 h-4 mr-2 flex items-center justify-center text-blue-600">
-                                            <BuildingIcon />
+                                <div>
+                                    <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                                        <div className="flex items-center mb-2 sm:mb-0">
+                                            <div className="w-4 h-4 mr-2 flex items-center justify-center text-blue-600">
+                                                <PersonIcon />
+                                            </div>
+                                            <span className="font-medium text-gray-600">
+                                                Ad Soyad:
+                                            </span>
                                         </div>
-                                        <span className="font-medium text-gray-600">
-                                            Departman:
+                                        <span className="text-gray-700">
+                                            {
+                                                detail?.complaint.assignedStaff
+                                                    ?.name
+                                            }{' '}
+                                            {
+                                                detail?.complaint.assignedStaff
+                                                    ?.surname
+                                            }
                                         </span>
                                     </div>
-                                    <span className="text-gray-700 break-all">
-                                        {
-                                            categoryType.find(
-                                                (item) =>
-                                                    item.id ===
-                                                    detail?.complaint
-                                                        .assignedStaff?.role
-                                            )?.name
-                                        }
-                                    </span>
+
+                                    <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                                        <div className="flex items-center mb-2 sm:mb-0">
+                                            <div className="w-4 h-4 mr-2 flex items-center justify-center text-blue-600">
+                                                <BuildingIcon />
+                                            </div>
+                                            <span className="font-medium text-gray-600">
+                                                Departman:
+                                            </span>
+                                        </div>
+                                        <span className="text-gray-700 break-all">
+                                            {
+                                                categoryType.find(
+                                                    (item) =>
+                                                        item.id ===
+                                                        detail?.complaint
+                                                            .assignedStaff?.role
+                                                )?.name
+                                            }
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    ) : (
+                        <div className="text-gray-500">
+                            Henüz personel atanmadı.
+                        </div>
+                    )}
                 </div>
             </div>
         </>

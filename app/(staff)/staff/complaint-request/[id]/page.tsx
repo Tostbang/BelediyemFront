@@ -2,7 +2,7 @@ import React from 'react';
 import PageContainer from '@/components/pageContainer';
 import { generatePageMetadata } from '@/lib/metadata';
 import { isPositiveNumber } from '@/utils';
-import { getComplaintByIdMuni } from '@/app/actions';
+import { getComplaintByIdStaff } from '@/app/actions';
 import AlertMessage from '@/components/ui/AlertMessage';
 import ComplaintDetail from '@/components/complaint-request/detail';
 
@@ -29,7 +29,7 @@ export default async function Page({
     let detail = null;
     if (id) {
         try {
-            detail = await getComplaintByIdMuni(id);
+            detail = await getComplaintByIdStaff(id);
             if (!detail) {
                 errorMessage = `Şikayet / Talep bulunamadı: #${id} ID'li kayıt mevcut değil veya erişim yetkiniz yok.`;
                 id = null;
@@ -44,7 +44,7 @@ export default async function Page({
     const breadcrumb = [
         {
             label: 'Şikayet / Talep Listesi',
-            href: '/municipality/complaint-request',
+            href: '/staff/complaint-request',
         },
         {
             label: 'Şikayet / Talep Detayı',
