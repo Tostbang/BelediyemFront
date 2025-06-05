@@ -37,6 +37,7 @@ export default async function Page({
                     dashboard={response}
                     reports={reportsData}
                     breadcrumb={breadcrumb}
+                    type="admin-muni"
                 />
             )}
         </PageContainer>

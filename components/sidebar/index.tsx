@@ -12,11 +12,14 @@ import {
     Transition,
 } from '@headlessui/react';
 import { BiChevronDown } from 'react-icons/bi';
+import { deleteCookie } from '@/app/actions/cookies';
+import AdminMuniLoading from '../common/adminMuniLoading';
 
 const SideBar = ({ items }: { items: SidebarItem[] }) => {
     const pathname = usePathname();
     const router = useRouter();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [isTransitioning, setIsTransitioning] = useState(false);
 
     const adminAuthPaths = useMemo(
         () => ['/admin/login', '/admin/resetpassword'],
@@ -50,6 +53,14 @@ const SideBar = ({ items }: { items: SidebarItem[] }) => {
         router.push('/admin/login');
     };
 
+    const handleLeaveMuniPanel = async () => {
+        setIsTransitioning(true);
+        await deleteCookie('municipalityId');
+        setTimeout(() => {
+            router.push('/admin/dashboard');
+        }, 1000);
+    };
+
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
     };
@@ -58,6 +69,10 @@ const SideBar = ({ items }: { items: SidebarItem[] }) => {
 
     return (
         <>
+            {isTransitioning && (
+                <AdminMuniLoading title=" Admin Paneline Dönülüyor" />
+            )}
+
             {/* Sidebar */}
             <div
                 className={`fixed top-0 left-0 p-4 h-full bg-white transition-transform transform ${
@@ -149,6 +164,24 @@ const SideBar = ({ items }: { items: SidebarItem[] }) => {
                                             </>
                                         )}
                                     </Disclosure>
+                                );
+                            }
+
+                            // Special item for leaving municipality panel
+                            if (item.isLeaveMuniPanel) {
+                                return (
+                                    <button
+                                        key={`leave-panel-${index}`}
+                                        onClick={handleLeaveMuniPanel}
+                                        disabled={isTransitioning}
+                                        className={`group cursor-pointer flex w-full items-center px-2 py-2 text-sm font-medium rounded-md hover:bg-blue-600 hover:text-white focus:outline-none text-black disabled:bg-gray-300 disabled:text-gray-500`}>
+                                        <span className="flex items-center gap-4">
+                                            <span className="w-4 h-4">
+                                                {item.icon}
+                                            </span>
+                                            <span>{item.title}</span>
+                                        </span>
+                                    </button>
                                 );
                             }
 

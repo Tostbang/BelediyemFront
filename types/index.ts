@@ -5,6 +5,7 @@ export type SidebarItem = {
     icon: React.ReactNode;
     title: string;
     isLogout?: boolean;
+    isLeaveMuniPanel?: boolean;
     children?: SidebarItem[];
 };
 

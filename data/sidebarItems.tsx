@@ -18,6 +18,7 @@ import {
     MoneyIcon,
     HornIcon,
     EnvelopeIcon,
+    ExitIcon,
 } from '@/components/icons';
 
 export const sidebarItemsAdmin: SidebarItem[] = [
@@ -223,11 +224,6 @@ export const sidebarItemsMuniAdmin: SidebarItem[] = [
         path: '/adminmuncipality/payment',
     },
     {
-        title: 'Sohbet',
-        icon: <ChatIcon />,
-        path: '/adminmuncipality/chat',
-    },
-    {
         title: 'Personel',
         icon: <PeopleIcon />,
         path: '/adminmuncipality/staff/list',
@@ -253,25 +249,14 @@ export const sidebarItemsMuniAdmin: SidebarItem[] = [
         path: '/adminmuncipality/faq',
     },
     {
-        title: 'Ayarlar',
-        icon: <SettingsIcon />,
-        children: [
-            {
-                title: 'Belediye Bilgileri',
-                icon: <UserIcon />,
-                path: '/adminmuncipality/settings/profile',
-            },
-            {
-                title: 'Şifre Değiştirme',
-                icon: <LockIcon />,
-                path: '/adminmuncipality/settings/change-password',
-            },
-            {
-                title: 'Cihaz Oturumları',
-                icon: <MobileIcon />,
-                path: '/adminmuncipality/settings/sessions',
-            },
-        ],
+        title: 'Cihaz Oturumları',
+        icon: <MobileIcon />,
+        path: '/adminmuncipality/settings/sessions',
+    },
+    {
+        title: 'Panelden Ayrıl',
+        icon: <ExitIcon />,
+        isLeaveMuniPanel: true,
     },
 ];
 

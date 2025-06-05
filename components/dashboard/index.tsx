@@ -17,6 +17,7 @@ import {
     DashboardStatisticsMuni,
     DepartmentStatistics,
     ReportsMuniResponse,
+    RoleType,
 } from '@/types';
 import DynamicTable from '../dynamic/table';
 import { usePagination } from '@/hooks/usePagination';
@@ -26,16 +27,18 @@ import ComplaintChart from './complaintChart';
 import Breadcrumb from '../common/breadCrumb';
 import SubmitButton from '../common/submitButton';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
-import { createReportMuni } from '@/app/actions';
+import { createReportMuni, createReportMuniAdmin } from '@/app/actions';
 
 export default function DashboardMuni({
     dashboard,
     reports,
     breadcrumb,
+    type,
 }: {
     dashboard: DashboardStatisticsMuni;
     reports?: ReportsMuniResponse | null;
     breadcrumb: BreadcrumbItem[];
+    type: RoleType;
 }) {
     const router = useRouter();
     const { pageNumber, pageSize, handlePageChange, handlePageSizeChange } =
@@ -205,7 +208,24 @@ export default function DashboardMuni({
     const { handleSuccess, handleError } = useNotificationHandler();
 
     const clientAction = async () => {
-        const result = await createReportMuni();
+        let actionFunction;
+
+        switch (type) {
+            case 'municipality':
+                actionFunction = createReportMuni;
+                break;
+            case 'admin-muni':
+                actionFunction = createReportMuniAdmin;
+                break;
+            default:
+                handleError({
+                    success: false,
+                    message: 'Unsupported role type',
+                });
+                return;
+        }
+
+        const result = await actionFunction();
 
         if (result.success) {
             handleSuccess(result.message);

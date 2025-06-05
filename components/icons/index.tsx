@@ -735,3 +735,29 @@ export const SendIcon = () => (
         />
     </svg>
 );
+
+export const ExitIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+        <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M15 4V20H4L4 4L15 4Z"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        />
+        <path
+            d="M12.5 12H21.5"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+        />
+        <path
+            d="M18.5 15L21.5 12L18.5 9"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+        />
+    </svg>
+);

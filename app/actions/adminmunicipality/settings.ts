@@ -1,5 +1,5 @@
 "use server";
-import { DashboardStatisticsMuni, PaginationBody, ReportsMuniResponse } from "@/types";
+import { ApiResponse, DashboardStatisticsMuni, PaginationBody, ReportsMuniResponse } from "@/types";
 import { apiFetch } from "@/utils/api";
 import { getCookie } from "../cookies";
 
@@ -33,5 +33,22 @@ export const getReportsMuniAdmin = async (body: PaginationBody) => {
     } catch (error) {
         console.error(error);
         return null;
+    }
+}
+
+export const createReportMuniAdmin = async () => {
+    const municipalityId = await getCookie('municipalityId');
+
+    try {
+        const data = await apiFetch<ApiResponse>(`adminmunicipalitypanel/createstatisticsreport?municipalityId=${municipalityId}`);
+
+        return { success: true, message: data.message || 'Rapor oluşturuldu.', errors: [] };
+    } catch (error) {
+        console.error(error);
+        return {
+            success: false,
+            message: "",
+            errors: error instanceof Error ? error.message : 'Rapor oluşturulamadı.',
+        };
     }
 }
