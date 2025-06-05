@@ -1,7 +1,7 @@
 "use server"
 
 import { ApiResponse, CustomJwtPayload, DashboardStatisticsMuni, LoginResponse, PaginationBody, ReportsMuniResponse } from "@/types";
-import { apiFetch } from "@/utils/api";
+import axiosInstance from "@/utils/axios";
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
 
@@ -18,10 +18,8 @@ export const handleLoginMun = async (formData: FormData) => {
             password,
         };
 
-        const data = await apiFetch<LoginResponse>('municipality/loginmunicipality', {
-            method: 'POST',
-            body: payload
-        });
+        const response = await axiosInstance.post('municipality/loginmunicipality', payload);
+        const data = response.data as LoginResponse;
 
         const token = data.token;
         const decoded = jwtDecode<CustomJwtPayload>(token);
@@ -64,10 +62,8 @@ export const handleForgetPasswordMun = async (formData: FormData) => {
             email,
         };
 
-        const data = await apiFetch<ApiResponse>('municipality/passwordforgot', {
-            method: 'POST',
-            body: payload
-        });
+        const response = await axiosInstance.post('municipality/passwordforgot', payload);
+        const data = response.data as ApiResponse;
 
         return { success: true, message: data.message || 'Şifre sıfırlama bağlantısı gönderildi.', errors: [] };
     } catch (error) {
@@ -82,7 +78,8 @@ export const handleForgetPasswordMun = async (formData: FormData) => {
 
 export const handleLogoutMuni = async () => {
     try {
-        const data = await apiFetch<ApiResponse>('municipality/logout');
+        const response = await axiosInstance.get('municipality/logout');
+        const data = response.data as ApiResponse;
         return { success: true, message: data.message || 'Çıkış yapıldı.', errors: [] };
 
     } catch (error) {
@@ -97,9 +94,8 @@ export const handleLogoutMuni = async () => {
 
 export const getDashboardMuni = async () => {
     try {
-        const data = await apiFetch('municipality/getdashboardstatistics');
-
-        return data as DashboardStatisticsMuni
+        const response = await axiosInstance.get('municipality/getdashboardstatistics');
+        return response.data as DashboardStatisticsMuni;
     } catch (error) {
         console.error(error);
         return null;
@@ -108,15 +104,12 @@ export const getDashboardMuni = async () => {
 
 export const getReportsMuni = async (body: PaginationBody) => {
     try {
-        const data = await apiFetch('municipality/getallreports', {
-            method: 'POST',
-            body: {
-                pageNumber: body.pageNumber - 1,
-                pageSize: body.pageSize
-            }
+        const response = await axiosInstance.post('municipality/getallreports', {
+            pageNumber: body.pageNumber - 1,
+            pageSize: body.pageSize
         });
 
-        return data as ReportsMuniResponse
+        return response.data as ReportsMuniResponse;
     } catch (error) {
         console.error(error);
         return null;
@@ -125,7 +118,8 @@ export const getReportsMuni = async (body: PaginationBody) => {
 
 export const createReportMuni = async () => {
     try {
-        const data = await apiFetch<ApiResponse>('municipality/createstatisticsreport');
+        const response = await axiosInstance.get('municipality/createstatisticsreport');
+        const data = response.data as ApiResponse;
 
         return { success: true, message: data.message || 'Rapor oluşturuldu.', errors: [] };
     } catch (error) {
@@ -140,7 +134,8 @@ export const createReportMuni = async () => {
 
 export const updateLastSeenMuni = async () => {
     try {
-        const data = await apiFetch<ApiResponse>('municipality/lastseenupdate');
+        const response = await axiosInstance.get('municipality/lastseenupdate');
+        const data = response.data as ApiResponse;
 
         return {
             success: true,

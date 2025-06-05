@@ -1,5 +1,5 @@
 "use server";
-import { ApiResponse, DashboardStatisticsMuni, DevicesResponse, PaginationBody, ReportsMuniResponse } from "@/types";
+import { DashboardStatisticsMuni, DevicesResponse, PaginationBody, ReportsMuniResponse } from "@/types";
 import axiosInstance from "@/utils/axios";
 import { getCookie } from "../cookies";
 
@@ -64,7 +64,7 @@ export const closeDeviceMuniAdmin = async (id: string) => {
     const municipalityId = await getCookie('municipalityId');
 
     try {
-        const response = await axiosInstance.get<ApiResponse>(`adminmunicipalitypanel/closedevice?deviceId=${id}&municipalityId=${municipalityId}`);
+        const response = await axiosInstance.get(`adminmunicipalitypanel/closedevice?deviceId=${id}&municipalityId=${municipalityId}`);
         return {
             success: true,
             message: response.data.message || 'Oturum başarıyla kapatıldı.',

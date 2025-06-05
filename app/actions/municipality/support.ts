@@ -1,20 +1,17 @@
 "use server"
 
-import { ApiResponse, PaginationBody, SupportDetailResponse, SupportResponse } from "@/types";
-import { apiFetch } from "@/utils/api";
+import { PaginationBody, SupportDetailResponse, SupportResponse } from "@/types";
+import axiosInstance from "@/utils/axios";
 
 export const getSupportsMuni = async (body: PaginationBody) => {
     try {
-        const data = await apiFetch('municipality/municipalitygetsupports', {
-            method: 'POST',
-            body: {
-                pageNumber: body.pageNumber - 1,
-                pageSize: body.pageSize,
-                searchText: body.searchText || ''
-            }
+        const response = await axiosInstance.post('municipality/municipalitygetsupports', {
+            pageNumber: body.pageNumber - 1,
+            pageSize: body.pageSize,
+            searchText: body.searchText || ''
         });
 
-        return data as SupportResponse
+        return response.data as SupportResponse
     } catch (error) {
         console.error(error);
         return null;
@@ -23,11 +20,9 @@ export const getSupportsMuni = async (body: PaginationBody) => {
 
 export const getSupporByIdMuni = async (id: string) => {
     try {
-        const data = await apiFetch(`municipality/municipalitygetsupportdetail?supportId=${id}`, {
-            method: 'GET'
-        });
+        const response = await axiosInstance.get(`municipality/municipalitygetsupportdetail?supportId=${id}`);
 
-        return data as SupportDetailResponse;
+        return response.data as SupportDetailResponse;
     } catch (error) {
         console.error(error);
         return null;
@@ -36,17 +31,14 @@ export const getSupporByIdMuni = async (id: string) => {
 
 export const answerToSupportMuni = async (id: string, message: string) => {
     try {
-        const response = await apiFetch<ApiResponse>('municipality/answeredsupporttoemail', {
-            method: 'POST',
-            body: {
-                supportId: id,
-                message,
-            }
+        const response = await axiosInstance.post('municipality/answeredsupporttoemail', {
+            supportId: id,
+            message,
         });
 
         return {
             success: true,
-            message: response.message || 'Destek talebine cevap verildi.'
+            message: response.data.message || 'Destek talebine cevap verildi.'
         };
     } catch (error) {
         console.error(error);
@@ -56,11 +48,11 @@ export const answerToSupportMuni = async (id: string, message: string) => {
 
 export const forwardSupportToAdminMuni = async (id: string) => {
     try {
-        const response = await apiFetch<ApiResponse>(`municipality/supporttoadmin?supportId=${id}`);
+        const response = await axiosInstance.get(`municipality/supporttoadmin?supportId=${id}`);
 
         return {
             success: true,
-            message: response.message || 'Destek talebi admine başarıyla yönlendirildi.'
+            message: response.data.message || 'Destek talebi admine başarıyla yönlendirildi.'
         };
     } catch (error) {
         console.error(error);
@@ -70,11 +62,11 @@ export const forwardSupportToAdminMuni = async (id: string) => {
 
 export const rejecetSupportMuni = async (id: string) => {
     try {
-        const response = await apiFetch<ApiResponse>(`municipality/supporttoreject?supportId=${id}`);
+        const response = await axiosInstance.get(`municipality/supporttoreject?supportId=${id}`);
 
         return {
             success: true,
-            message: response.message || 'Destek talebi reddedildi.'
+            message: response.data.message || 'Destek talebi reddedildi.'
         };
     } catch (error) {
         console.error(error);

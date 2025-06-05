@@ -1,21 +1,18 @@
 "use server";
 
-import { ApiResponse, CitizenUserDetailResponse, CitizenUserResponse, PaginationBody, PasswordResetResponse, StaffAttendedComplaintsPaginationBody, ComplaintsResponse, StaffPaginationBody, StaffUserDetailResponse, StaffUserListResponse } from "@/types";
-import { apiFetch } from "@/utils/api";
+import { CitizenUserDetailResponse, CitizenUserResponse, PaginationBody, PasswordResetResponse, StaffAttendedComplaintsPaginationBody, ComplaintsResponse, StaffPaginationBody, StaffUserDetailResponse, StaffUserListResponse } from "@/types";
+import axiosInstance from "@/utils/axios";
 
 export const getStaffsMuni = async (body: StaffPaginationBody) => {
     try {
-        const data = await apiFetch('municipality/municipalitystafflist', {
-            method: 'POST',
-            body: {
-                pageNumber: body.pageNumber - 1,
-                pageSize: body.pageSize,
-                municipalStaffType: body.municipalStaffType || undefined,
-                searchText: body.searchText || '',
-            }
+        const response = await axiosInstance.post('municipality/municipalitystafflist', {
+            pageNumber: body.pageNumber - 1,
+            pageSize: body.pageSize,
+            municipalStaffType: body.municipalStaffType || undefined,
+            searchText: body.searchText || '',
         });
 
-        return data as StaffUserListResponse
+        return response.data as StaffUserListResponse
     } catch (error) {
         console.error(error);
         return null;
@@ -24,9 +21,9 @@ export const getStaffsMuni = async (body: StaffPaginationBody) => {
 
 export const getStaffsAllMuni = async (id: string) => {
     try {
-        const data = await apiFetch(`municipality/listdepartmenttostaff?municipalStaffId=${id}`);
+        const response = await axiosInstance.get(`municipality/listdepartmenttostaff?municipalStaffId=${id}`);
 
-        return data as StaffUserListResponse
+        return response.data as StaffUserListResponse
     } catch (error) {
         console.error(error);
         return null;
@@ -35,9 +32,9 @@ export const getStaffsAllMuni = async (id: string) => {
 
 export const getStaffByIdMuni = async (id: string) => {
     try {
-        const data = await apiFetch(`municipality/municipalitystaffdetail?staffid=${id}`);
+        const response = await axiosInstance.get(`municipality/municipalitystaffdetail?staffid=${id}`);
 
-        return data as StaffUserDetailResponse
+        return response.data as StaffUserDetailResponse
     } catch (error) {
         console.error(error);
         return null;
@@ -66,14 +63,11 @@ export const addStaffMuni = async (formData: FormData) => {
             role: parseInt(role),
         };
 
-        const response = await apiFetch<ApiResponse>('municipality/registermunicipalitystaff', {
-            method: 'POST',
-            body: payload
-        });
+        const response = await axiosInstance.post('municipality/registermunicipalitystaff', payload);
 
         return {
             success: true,
-            message: response.message || 'Personel başarıyla eklendi.',
+            message: response.data.message || 'Personel başarıyla eklendi.',
             errors: [],
             ...payload,
         };
@@ -113,14 +107,11 @@ export const updateStaffMuni = async (formData: FormData) => {
             role: parseInt(role)
         };
 
-        const response = await apiFetch<ApiResponse>('municipality/putinfostaff', {
-            method: 'PUT',
-            body: payload
-        });
+        const response = await axiosInstance.put('municipality/putinfostaff', payload);
 
         return {
             success: true,
-            message: response.message || 'Personel bilgileri başarıyla güncellendi.',
+            message: response.data.message || 'Personel bilgileri başarıyla güncellendi.',
             errors: [],
             ...payload,
         };
@@ -136,17 +127,14 @@ export const updateStaffMuni = async (formData: FormData) => {
 
 export const updateStaffStatusMuni = async (id: string, status: boolean) => {
     try {
-        const response = await apiFetch<ApiResponse>('municipality/staffupdatestatus', {
-            method: 'PUT',
-            body: {
-                staffId: id,
-                status
-            }
+        const response = await axiosInstance.put('municipality/staffupdatestatus', {
+            staffId: id,
+            status
         });
 
         return {
             success: true,
-            message: response.message || 'Personel durumu başarıyla güncellendi.',
+            message: response.data.message || 'Personel durumu başarıyla güncellendi.',
             errors: [],
         };
     }
@@ -162,15 +150,12 @@ export const updateStaffStatusMuni = async (id: string, status: boolean) => {
 
 export const getStaffPWResetRequestMuni = async (body: PaginationBody) => {
     try {
-        const data = await apiFetch('municipality/municipalitystaffresetrequestlist', {
-            method: 'POST',
-            body: {
-                pageNumber: body.pageNumber - 1,
-                pageSize: body.pageSize
-            }
+        const response = await axiosInstance.post('municipality/municipalitystaffresetrequestlist', {
+            pageNumber: body.pageNumber - 1,
+            pageSize: body.pageSize
         });
 
-        return data as PasswordResetResponse
+        return response.data as PasswordResetResponse
     } catch (error) {
         console.error(error);
         return null;
@@ -179,16 +164,13 @@ export const getStaffPWResetRequestMuni = async (body: PaginationBody) => {
 
 export const sendStaffPWMuni = async (id: string) => {
     try {
-        const data = await apiFetch<ApiResponse>('municipality/municipalitysendnewpassword', {
-            method: 'POST',
-            body: {
-                staffId: id
-            }
+        const response = await axiosInstance.post('municipality/municipalitysendnewpassword', {
+            staffId: id
         });
 
         return {
             success: true,
-            message: data.message || 'Yeni şifre başarıyla gönderilidi.',
+            message: response.data.message || 'Yeni şifre başarıyla gönderilidi.',
             errors: [],
         };
     } catch (error) {
@@ -203,20 +185,17 @@ export const sendStaffPWMuni = async (id: string) => {
 
 export const getStaffComplaintsMuni = async (body: StaffAttendedComplaintsPaginationBody) => {
     try {
-        const data = await apiFetch('municipality/getstaffcomplaints', {
-            method: 'POST',
-            body: {
-                municipalityStaffId: body.municipalityStaffId || undefined,
-                pageNumber: body.pageNumber - 1,
-                pageSize: body.pageSize,
-                categoryType: body.categoryType || undefined,
-                complaintsStatusType: body.complaintsStatusType || undefined,
-                startDate: body.startDate || undefined,
-                endDate: body.endDate || undefined,
-            }
+        const response = await axiosInstance.post('municipality/getstaffcomplaints', {
+            municipalityStaffId: body.municipalityStaffId || undefined,
+            pageNumber: body.pageNumber - 1,
+            pageSize: body.pageSize,
+            categoryType: body.categoryType || undefined,
+            complaintsStatusType: body.complaintsStatusType || undefined,
+            startDate: body.startDate || undefined,
+            endDate: body.endDate || undefined,
         });
 
-        return data as ComplaintsResponse
+        return response.data as ComplaintsResponse
     } catch (error) {
         console.error(error);
         return null;
@@ -225,16 +204,13 @@ export const getStaffComplaintsMuni = async (body: StaffAttendedComplaintsPagina
 
 export const getCitizenMuni = async (body: PaginationBody) => {
     try {
-        const data = await apiFetch('municipality/citizenlist', {
-            method: 'POST',
-            body: {
-                pageNumber: body.pageNumber - 1,
-                pageSize: body.pageSize,
-                searchText: body.searchText || '',
-            }
+        const response = await axiosInstance.post('municipality/citizenlist', {
+            pageNumber: body.pageNumber - 1,
+            pageSize: body.pageSize,
+            searchText: body.searchText || '',
         });
 
-        return data as CitizenUserResponse
+        return response.data as CitizenUserResponse
     } catch (error) {
         console.error(error);
         return null;
@@ -243,9 +219,9 @@ export const getCitizenMuni = async (body: PaginationBody) => {
 
 export const getCitizenByIdMuni = async (id: string) => {
     try {
-        const data = await apiFetch(`municipality/citizendetail?citizenid=${id}`);
+        const response = await axiosInstance.get(`municipality/citizendetail?citizenid=${id}`);
 
-        return data as CitizenUserDetailResponse
+        return response.data as CitizenUserDetailResponse
     } catch (error) {
         console.error(error);
         return null;

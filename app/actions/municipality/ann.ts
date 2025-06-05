@@ -1,24 +1,21 @@
 "use server";
 
-import { AnnouncementDetailResponse, AnnouncementPaginationBody, AnnouncementResponse, ApiResponse } from "@/types";
-import { apiFetch } from "@/utils/api";
+import { AnnouncementDetailResponse, AnnouncementPaginationBody, AnnouncementResponse } from "@/types";
+import axiosInstance from "@/utils/axios";
 import { validateBase64Size } from "@/utils/fileUtils";
 import { uploadImage } from "../file";
 
 export const getAnnsMuni = async (body: AnnouncementPaginationBody) => {
     try {
-        const data = await apiFetch('municipality/getallannouncements', {
-            method: 'POST',
-            body: {
-                pageNumber: body.pageNumber - 1,
-                pageSize: body.pageSize,
-                announcementsType: body.announcementsType || null,
-                startDate: body.startDate || undefined,
-                endDate: body.endDate || undefined,
-            }
+        const response = await axiosInstance.post('municipality/getallannouncements', {
+            pageNumber: body.pageNumber - 1,
+            pageSize: body.pageSize,
+            announcementsType: body.announcementsType || null,
+            startDate: body.startDate || undefined,
+            endDate: body.endDate || undefined,
         });
 
-        return data as AnnouncementResponse
+        return response.data as AnnouncementResponse;
     } catch (error) {
         console.error(error);
         return null;
@@ -27,9 +24,9 @@ export const getAnnsMuni = async (body: AnnouncementPaginationBody) => {
 
 export const getAnnByIdMuni = async (id: string) => {
     try {
-        const data = await apiFetch(`municipality/getannouncementdetail?announcementId=${id}`);
+        const response = await axiosInstance.get(`municipality/getannouncementdetail?announcementId=${id}`);
 
-        return data as AnnouncementDetailResponse
+        return response.data as AnnouncementDetailResponse;
     } catch (error) {
         console.error(error);
         return null;
@@ -76,14 +73,11 @@ export const addAnnfMuni = async (formData: FormData) => {
             announcementsType: parseInt(announcementsType),
         };
 
-        const response = await apiFetch<ApiResponse>('municipality/createannouncement', {
-            method: 'POST',
-            body: payload
-        });
+        const response = await axiosInstance.post('municipality/createannouncement', payload);
 
         return {
             success: true,
-            message: response.message || 'Etkinlik başarıyla eklendi.',
+            message: response.data.message || 'Etkinlik başarıyla eklendi.',
             errors: [],
             ...payload,
         };
@@ -138,14 +132,11 @@ export const updateAnnMuni = async (formData: FormData) => {
             announcementsType: parseInt(announcementsType),
         };
 
-        const response = await apiFetch<ApiResponse>('municipality/updateannouncement', {
-            method: 'PUT',
-            body: payload
-        });
+        const response = await axiosInstance.put('municipality/updateannouncement', payload);
 
         return {
             success: true,
-            message: response.message || 'Etkinlik bilgileri başarıyla güncellendi.',
+            message: response.data.message || 'Etkinlik bilgileri başarıyla güncellendi.',
             errors: [],
             ...payload,
         };
@@ -161,16 +152,15 @@ export const updateAnnMuni = async (formData: FormData) => {
 
 export const deleteAnnMuni = async (id: string) => {
     try {
-        const response = await apiFetch<ApiResponse>('municipality/deleteannouncement', {
-            method: 'DELETE',
-            body: {
-                announcementId: id,
+        const response = await axiosInstance.delete('municipality/deleteannouncement', {
+            data: {
+                announcementId: id
             }
         });
 
         return {
             success: true,
-            message: response.message || 'Etkinlik başarıyla silindi.',
+            message: response.data.message || 'Etkinlik başarıyla silindi.',
             errors: [],
         };
     }

@@ -1,15 +1,15 @@
 "use server"
-import { ApiResponse, DevicesResponse, FAQDetail, FAQResponse, InfoMuni } from "@/types";
-import { apiFetch } from "@/utils/api";
+import { DevicesResponse, FAQDetail, FAQResponse, InfoMuni } from "@/types";
+import axiosInstance from "@/utils/axios";
 
 import { validateBase64Size } from "@/utils/fileUtils";
 import { uploadImage } from "../file";
 
 export const getInfoMuni = async () => {
     try {
-        const data = await apiFetch('municipality/getinfo');
+        const response = await axiosInstance.get('municipality/getinfo');
 
-        return data as InfoMuni
+        return response.data as InfoMuni
     } catch (error) {
         console.error(error);
         return null;
@@ -63,14 +63,11 @@ export const updateInfoMuni = async (formData: FormData) => {
             adressline,
         };
 
-        const response = await apiFetch<ApiResponse>('municipality/putinfo', {
-            method: 'PUT',
-            body: payload
-        });
+        const response = await axiosInstance.put('municipality/putinfo', payload);
 
         return {
             success: true,
-            message: response.message || 'Bilgiler başarıyla güncellendi.',
+            message: response.data.message || 'Bilgiler başarıyla güncellendi.',
             errors: [],
             ...payload,
         };
@@ -104,14 +101,11 @@ export const changePasswordMuni = async (formData: FormData) => {
             confirmPassword
         };
 
-        const response = await apiFetch<ApiResponse>('municipality/changepassword', {
-            method: 'POST',
-            body: payload
-        });
+        const response = await axiosInstance.post('municipality/changepassword', payload);
 
         return {
             success: true,
-            message: response.message || 'Şifre başarıyla güncellendi.',
+            message: response.data.message || 'Şifre başarıyla güncellendi.',
             errors: [],
             ...payload,
         };
@@ -127,11 +121,11 @@ export const changePasswordMuni = async (formData: FormData) => {
 
 export const sendResetRequestMuni = async () => {
     try {
-        const data = await apiFetch<ApiResponse>('municipality/municipalityresetrequest');
+        const data = await axiosInstance.get('municipality/municipalityresetrequest');
 
         return {
             success: true,
-            message: data.message || 'Şifre sıfırlama isteği gönderildi.',
+            message: data.data.message || 'Şifre sıfırlama isteği gönderildi.',
             errors: [],
         };
 
@@ -147,9 +141,9 @@ export const sendResetRequestMuni = async () => {
 
 export const getDevicesMuni = async () => {
     try {
-        const data = await apiFetch('municipality/getalldevice');
+        const response = await axiosInstance.get('municipality/getalldevice');
 
-        return data as DevicesResponse
+        return response.data as DevicesResponse
     } catch (error) {
         console.error(error);
         return null;
@@ -158,11 +152,11 @@ export const getDevicesMuni = async () => {
 
 export const closeDeviceMuni = async (id: string) => {
     try {
-        const data = await apiFetch<ApiResponse>(`municipality/closedevice?deviceId=${id}`);
+        const response = await axiosInstance.get(`municipality/closedevice?deviceId=${id}`);
 
         return {
             success: true,
-            message: data.message || 'Oturum başarıyla kapatıldı.',
+            message: response.data.message || 'Oturum başarıyla kapatıldı.',
             errors: [],
         };
     } catch (error) {
@@ -177,9 +171,9 @@ export const closeDeviceMuni = async (id: string) => {
 
 export const getFAQsMuni = async () => {
     try {
-        const data = await apiFetch('municipality/getfrequentlyaskedquestions');
+        const response = await axiosInstance.get('municipality/getfrequentlyaskedquestions');
 
-        return data as FAQResponse
+        return response.data as FAQResponse
     } catch (error) {
         console.error(error);
         return null;
@@ -188,9 +182,9 @@ export const getFAQsMuni = async () => {
 
 export const getFAQByIdMuni = async (id: string) => {
     try {
-        const data = await apiFetch(`municipality/getfrequentlyaskedquestiondetail?faqId=${id}`);
+        const response = await axiosInstance.get(`municipality/getfrequentlyaskedquestiondetail?faqId=${id}`);
 
-        return data as FAQDetail
+        return response.data as FAQDetail
     } catch (error) {
         console.error(error);
         return null;
@@ -211,14 +205,13 @@ export const addFAQMuni = async (formData: FormData) => {
             description
         };
 
-        const response = await apiFetch<ApiResponse>('municipality/createfrequentlyaskedquestions', {
-            method: 'POST',
-            body: payload
-        });
+        const response = await axiosInstance.post('municipality/createfrequentlyaskedquestions',
+            payload
+        );
 
         return {
             success: true,
-            message: response.message || 'Sıkça Sorulan Sorular başarıyla eklendi.',
+            message: response.data.message || 'Sıkça Sorulan Sorular başarıyla eklendi.',
             errors: [],
             ...payload,
         };
@@ -248,14 +241,11 @@ export const updateFAQMuni = async (formData: FormData) => {
             description
         };
 
-        const response = await apiFetch<ApiResponse>('municipality/updatefrequentlyaskedquestion', {
-            method: 'PUT',
-            body: payload
-        });
+        const response = await axiosInstance.put('municipality/updatefrequentlyaskedquestion', payload);
 
         return {
             success: true,
-            message: response.message || 'Sıkça Sorulan Sorular başarıyla güncellendi.',
+            message: response.data.message || 'Sıkça Sorulan Sorular başarıyla güncellendi.',
             errors: [],
             ...payload,
         };
@@ -271,13 +261,11 @@ export const updateFAQMuni = async (formData: FormData) => {
 
 export const deleteFAQMuni = async (id: string) => {
     try {
-        const data = await apiFetch<ApiResponse>(`municipality/deletefrequentlyaskedquestion?faqId=${id}`, {
-            method: 'DELETE'
-        });
+        const response = await axiosInstance.delete(`municipality/deletefrequentlyaskedquestion?faqId=${id}`);
 
         return {
             success: true,
-            message: data.message || 'Sıkça Sorulan Sorular başarıyla silindi.',
+            message: response.data.message || 'Sıkça Sorulan Sorular başarıyla silindi.',
             errors: [],
         };
     } catch (error) {

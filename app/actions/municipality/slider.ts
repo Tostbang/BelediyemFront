@@ -4,18 +4,19 @@ import { ApiResponse, PaginationBody, SliderDetailResponse, SliderResponse } fro
 import { apiFetch } from "@/utils/api";
 import { validateBase64Size } from "@/utils/fileUtils";
 import { uploadImage } from "../file";
+import axiosInstance from "@/utils/axios";
 
 export const getSlidersMuni = async (body: PaginationBody) => {
     try {
-        const data = await apiFetch('municipality/listmunicipalityslider', {
-            method: 'POST',
-            body: {
-                pageNumber: body.pageNumber - 1,
-                pageSize: body.pageSize
-            }
-        });
+        const payload = {
+            pageNumber: body.pageNumber - 1,
+            pageSize: body.pageSize
+        }
 
-        return data as SliderResponse
+        const response = await axiosInstance.post('municipality/listmunicipalityslider', payload);
+
+        return response.data as SliderResponse;
+
     } catch (error) {
         console.error(error);
         return null;
@@ -24,9 +25,9 @@ export const getSlidersMuni = async (body: PaginationBody) => {
 
 export const getSliderByIdMuni = async (id: string) => {
     try {
-        const data = await apiFetch(`municipality/getsliderdetail?sliderId=${id}`);
+        const response = await axiosInstance.get(`municipality/getsliderdetail?sliderId=${id}`);
 
-        return data as SliderDetailResponse
+        return response.data as SliderDetailResponse
     } catch (error) {
         console.error(error);
         return null;
@@ -72,14 +73,10 @@ export const addSliderMuni = async (formData: FormData) => {
             image: imagePath
         };
 
-        const response = await apiFetch<ApiResponse>('municipality/createslider', {
-            method: 'POST',
-            body: payload
-        });
-
+        const response = await axiosInstance.post('municipality/createslider', payload);
         return {
             success: true,
-            message: response.message || 'Slayt içeriği başarıyla eklendi.',
+            message: response.data.message || 'Slayt içeriği başarıyla eklendi.',
             errors: [],
             ...payload,
         };
@@ -158,16 +155,18 @@ export const updateSliderMuni = async (formData: FormData) => {
 
 export const deleteSliderMuni = async (id: string) => {
     try {
-        const data = await apiFetch<ApiResponse>(`municipality/deleteslider`, {
-            method: 'DELETE',
-            body: {
-                sliderId: id
-            }
+
+        const payload = {
+            sliderId: id
+        };
+
+        const response = await axiosInstance.delete(`municipality/deleteslider`, {
+            data: payload
         });
 
         return {
             success: true,
-            message: data.message || 'Slayt içeriği başarıyla silindi.',
+            message: response.data.message || 'Slayt içeriği başarıyla silindi.',
             errors: [],
         };
     } catch (error) {

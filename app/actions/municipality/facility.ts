@@ -1,21 +1,18 @@
 "use server"
 
-import { ApiResponse, PaginationBody, FacilityDetailResponse, FacilityResponse } from "@/types";
-import { apiFetch } from "@/utils/api";
+import { PaginationBody, FacilityDetailResponse, FacilityResponse } from "@/types";
+import axiosInstance from "@/utils/axios";
 import { validateBase64Size } from "@/utils/fileUtils";
 import { uploadImage } from "../file";
 
 export const getFacilitiesMuni = async (body: PaginationBody) => {
     try {
-        const data = await apiFetch('municipality/listmunicipalityfacility', {
-            method: 'POST',
-            body: {
-                pageNumber: body.pageNumber - 1,
-                pageSize: body.pageSize
-            }
+        const response = await axiosInstance.post('municipality/listmunicipalityfacility', {
+            pageNumber: body.pageNumber - 1,
+            pageSize: body.pageSize
         });
 
-        return data as FacilityResponse
+        return response.data as FacilityResponse
     } catch (error) {
         console.error(error);
         return null;
@@ -24,9 +21,9 @@ export const getFacilitiesMuni = async (body: PaginationBody) => {
 
 export const getFacilityByIdMuni = async (id: string) => {
     try {
-        const data = await apiFetch(`municipality/getfacilitydetail?facilityId=${id}`);
+        const response = await axiosInstance.get(`municipality/getfacilitydetail?facilityId=${id}`);
 
-        return data as FacilityDetailResponse
+        return response.data as FacilityDetailResponse
     } catch (error) {
         console.error(error);
         return null;
@@ -80,14 +77,11 @@ export const addFacilityMuni = async (formData: FormData) => {
             image: imagePath
         };
 
-        const response = await apiFetch<ApiResponse>('municipality/createfacility', {
-            method: 'POST',
-            body: payload
-        });
+        const response = await axiosInstance.post('municipality/createfacility', payload);
 
         return {
             success: true,
-            message: response.message || 'Tesis içeriği başarıyla eklendi.',
+            message: response.data.message || 'Tesis içeriği başarıyla eklendi.',
             errors: [],
             ...payload,
         };
@@ -152,14 +146,11 @@ export const updateFacilityMuni = async (formData: FormData) => {
             image: imagePath
         };
 
-        const response = await apiFetch<ApiResponse>('municipality/updatefacility', {
-            method: 'PUT',
-            body: payload
-        });
+        const response = await axiosInstance.put('municipality/updatefacility', payload);
 
         return {
             success: true,
-            message: response.message || 'Tesis içeriği başarıyla güncellendi.',
+            message: response.data.message || 'Tesis içeriği başarıyla güncellendi.',
             errors: [],
             ...payload,
         };
@@ -175,13 +166,11 @@ export const updateFacilityMuni = async (formData: FormData) => {
 
 export const deleteFacilityMuni = async (id: string) => {
     try {
-        const data = await apiFetch<ApiResponse>(`municipality/deletevenue?id=${id}`, {
-            method: 'DELETE'
-        });
+        const response = await axiosInstance.delete(`municipality/deletevenue?id=${id}`);
 
         return {
             success: true,
-            message: data.message || 'Tesis içeriği başarıyla silindi.',
+            message: response.data.message || 'Tesis içeriği başarıyla silindi.',
             errors: [],
         };
     } catch (error) {

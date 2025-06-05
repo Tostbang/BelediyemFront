@@ -1,19 +1,16 @@
 "use server"
 
-import { ApiResponse, PaginationBody, AssemblyDetailResponse, AssemblyResponse } from "@/types";
-import { apiFetch } from "@/utils/api";
+import { PaginationBody, AssemblyDetailResponse, AssemblyResponse } from "@/types";
+import axiosInstance from "@/utils/axios";
 
 export const getAssembliesMuni = async (body: PaginationBody) => {
     try {
-        const data = await apiFetch('municipality/listmunicipalityassemblyarea', {
-            method: 'POST',
-            body: {
-                pageNumber: body.pageNumber - 1,
-                pageSize: body.pageSize
-            }
+        const response = await axiosInstance.post('municipality/listmunicipalityassemblyarea', {
+            pageNumber: body.pageNumber - 1,
+            pageSize: body.pageSize
         });
 
-        return data as AssemblyResponse
+        return response.data as AssemblyResponse
     } catch (error) {
         console.error(error);
         return null;
@@ -22,9 +19,9 @@ export const getAssembliesMuni = async (body: PaginationBody) => {
 
 export const getAssemblyByIdMuni = async (id: string) => {
     try {
-        const data = await apiFetch(`municipality/getassemblyareasdetail?assemblyAreaId=${id}`);
+        const response = await axiosInstance.get(`municipality/getassemblyareasdetail?assemblyAreaId=${id}`);
 
-        return data as AssemblyDetailResponse
+        return response.data as AssemblyDetailResponse
     } catch (error) {
         console.error(error);
         return null;
@@ -50,14 +47,11 @@ export const addAssemblyMuni = async (formData: FormData) => {
             longitude,
         };
 
-        const response = await apiFetch<ApiResponse>('municipality/createassemblyareas', {
-            method: 'POST',
-            body: payload
-        });
+        const response = await axiosInstance.post('municipality/createassemblyareas', payload);
 
         return {
             success: true,
-            message: response.message || 'Toplanma alanı içeriği başarıyla eklendi.',
+            message: response.data.message || 'Toplanma alanı içeriği başarıyla eklendi.',
             errors: [],
             ...payload,
         };
@@ -93,14 +87,11 @@ export const updateAssemblyMuni = async (formData: FormData) => {
             longitude,
         };
 
-        const response = await apiFetch<ApiResponse>('municipality/updatessemblyareas', {
-            method: 'PUT',
-            body: payload
-        });
+        const response = await axiosInstance.put('municipality/updatessemblyareas', payload);
 
         return {
             success: true,
-            message: response.message || 'Toplanma alanı içeriği başarıyla güncellendi.',
+            message: response.data.message || 'Toplanma alanı içeriği başarıyla güncellendi.',
             errors: [],
             ...payload,
         };
@@ -116,13 +107,11 @@ export const updateAssemblyMuni = async (formData: FormData) => {
 
 export const deleteAssemblyMuni = async (id: string) => {
     try {
-        const data = await apiFetch<ApiResponse>(`municipality/deletevenue?id=${id}`, {
-            method: 'DELETE'
-        });
+        const response = await axiosInstance.delete(`municipality/deletevenue?id=${id}`);
 
         return {
             success: true,
-            message: data.message || 'Toplanma alanı içeriği başarıyla silindi.',
+            message: response.data.message || 'Toplanma alanı içeriği başarıyla silindi.',
             errors: [],
         };
     } catch (error) {

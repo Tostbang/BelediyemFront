@@ -1,19 +1,16 @@
 "use server"
 
-import { ApiResponse, PaginationBody, RatingDetail, RatingResponse } from "@/types";
-import { apiFetch } from "@/utils/api";
+import { PaginationBody, RatingDetail, RatingResponse } from "@/types";
+import axiosInstance from "@/utils/axios";
 
 export const getRatingsMuni = async (body: PaginationBody) => {
     try {
-        const data = await apiFetch('municipality/listmunicipalityallratings', {
-            method: 'POST',
-            body: {
-                pageNumber: body.pageNumber - 1,
-                pageSize: body.pageSize
-            }
+        const response = await axiosInstance.post('municipality/listmunicipalityallratings', {
+            pageNumber: body.pageNumber - 1,
+            pageSize: body.pageSize
         });
 
-        return data as RatingResponse
+        return response.data as RatingResponse;
     } catch (error) {
         console.error(error);
         return null;
@@ -22,9 +19,9 @@ export const getRatingsMuni = async (body: PaginationBody) => {
 
 export const getRatingByIdMuni = async (id: string) => {
     try {
-        const data = await apiFetch(`municipality/getratingdetail?ratingId=${id}`);
+        const response = await axiosInstance.get(`municipality/getratingdetail?ratingId=${id}`);
 
-        return data as RatingDetail;
+        return response.data as RatingDetail;
     } catch (error) {
         console.error(error);
         return null;
@@ -33,10 +30,10 @@ export const getRatingByIdMuni = async (id: string) => {
 
 export const approvedRatingMuni = async (id: string) => {
     try {
-        const data = await apiFetch<ApiResponse>(`municipality/approvedrating?ratingId=${id}`);
+        const response = await axiosInstance.get(`municipality/approvedrating?ratingId=${id}`);
         return {
             success: true,
-            message: data.message || 'Değerlendirme başarıyla onaylandı.',
+            message: response.data.message || 'Değerlendirme başarıyla onaylandı.',
             errors: [],
         };
 

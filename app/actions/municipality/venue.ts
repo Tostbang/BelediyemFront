@@ -1,21 +1,18 @@
 "use server"
 
-import { ApiResponse, PaginationBody, VenueDetailResponse, VenueResponse } from "@/types";
-import { apiFetch } from "@/utils/api";
+import { PaginationBody, VenueDetailResponse, VenueResponse } from "@/types";
+import axiosInstance from "@/utils/axios";
 import { validateBase64Size } from "@/utils/fileUtils";
 import { uploadImage } from "../file";
 
 export const getVenuesMuni = async (body: PaginationBody) => {
     try {
-        const data = await apiFetch('municipality/getallvenue', {
-            method: 'POST',
-            body: {
-                pageNumber: body.pageNumber - 1,
-                pageSize: body.pageSize
-            }
+        const response = await axiosInstance.post('municipality/getallvenue', {
+            pageNumber: body.pageNumber - 1,
+            pageSize: body.pageSize
         });
 
-        return data as VenueResponse
+        return response.data as VenueResponse
     } catch (error) {
         console.error(error);
         return null;
@@ -24,9 +21,9 @@ export const getVenuesMuni = async (body: PaginationBody) => {
 
 export const getVenueByIdMuni = async (id: string) => {
     try {
-        const data = await apiFetch(`municipality/getvenuedetail?venueId=${id}`);
+        const response = await axiosInstance.get(`municipality/getvenuedetail?venueId=${id}`);
 
-        return data as VenueDetailResponse
+        return response.data as VenueDetailResponse
     } catch (error) {
         console.error(error);
         return null;
@@ -77,14 +74,11 @@ export const addVenueMuni = async (formData: FormData) => {
             image: imagePath
         };
 
-        const response = await apiFetch<ApiResponse>('municipality/createvenues', {
-            method: 'POST',
-            body: payload
-        });
+        const response = await axiosInstance.post('municipality/createvenues', payload);
 
         return {
             success: true,
-            message: response.message || 'Mekan içeriği başarıyla eklendi.',
+            message: response.data.message || 'Mekan içeriği başarıyla eklendi.',
             errors: [],
             ...payload,
         };
@@ -145,14 +139,11 @@ export const updateVenueMuni = async (formData: FormData) => {
             image: imagePath
         };
 
-        const response = await apiFetch<ApiResponse>('municipality/updatevenue', {
-            method: 'PUT',
-            body: payload
-        });
+        const response = await axiosInstance.put('municipality/updatevenue', payload);
 
         return {
             success: true,
-            message: response.message || 'Mekan içeriği başarıyla güncellendi.',
+            message: response.data.message || 'Mekan içeriği başarıyla güncellendi.',
             errors: [],
             ...payload,
         };
@@ -168,13 +159,11 @@ export const updateVenueMuni = async (formData: FormData) => {
 
 export const deleteVenueMuni = async (id: string) => {
     try {
-        const data = await apiFetch<ApiResponse>(`municipality/deletevenue?id=${id}`, {
-            method: 'DELETE'
-        });
+        const response = await axiosInstance.delete(`municipality/deletevenue?id=${id}`);
 
         return {
             success: true,
-            message: data.message || 'Mekan içeriği başarıyla silindi.',
+            message: response.data.message || 'Mekan içeriği başarıyla silindi.',
             errors: [],
         };
     } catch (error) {
