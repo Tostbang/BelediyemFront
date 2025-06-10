@@ -2,10 +2,13 @@
 import { ApiResponseT, FAQDetail, FAQResponse } from "@/types";
 import axiosInstance from "@/utils/axios";
 import { handleApiError } from "@/utils/errorHandler";
+import { getCookie } from "../cookies";
 
 export const getFAQsMuniAdmin = async (): Promise<ApiResponseT<FAQResponse>> => {
+    const municipalityId = await getCookie('municipalityId');
+
     try {
-        const response = await axiosInstance.get('adminmunicipalitypanel/getfrequentlyaskedquestions');
+        const response = await axiosInstance.get(`adminmunicipalitypanel/getfrequentlyaskedquestions?municipalityId=${municipalityId}`);
 
         return {
             success: true,
@@ -18,6 +21,7 @@ export const getFAQsMuniAdmin = async (): Promise<ApiResponseT<FAQResponse>> => 
 }
 
 export const getFAQByIdMuniAdmin = async (id: string): Promise<ApiResponseT<FAQDetail>> => {
+
     try {
         const response = await axiosInstance.get(`adminmunicipalitypanel/getfrequentlyaskedquestiondetail?faqId=${id}`);
 
@@ -31,6 +35,8 @@ export const getFAQByIdMuniAdmin = async (id: string): Promise<ApiResponseT<FAQD
 }
 
 export const addFAQMuniAdmin = async (formData: FormData) => {
+    const municipalityId = await getCookie('municipalityId');
+
     try {
         const title = formData.get('title') as string;
         const description = formData.get('description') as string;
@@ -44,7 +50,7 @@ export const addFAQMuniAdmin = async (formData: FormData) => {
             description
         };
 
-        const response = await axiosInstance.post('adminmunicipalitypanel/createfrequentlyaskedquestions',
+        const response = await axiosInstance.post(`adminmunicipalitypanel/createfrequentlyaskedquestions?municipalityId=${municipalityId}`,
             payload
         );
 

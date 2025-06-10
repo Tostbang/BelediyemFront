@@ -7,6 +7,7 @@ export interface DropdownMenuItem {
     label: ReactNode;
     danger?: boolean;
     onClick?: () => void;
+    show?: boolean;
 }
 
 interface DynamicDropdownProps {
@@ -20,8 +21,10 @@ const DynamicDropdown: React.FC<DynamicDropdownProps> = ({
     icon = <MoreOutlined />,
     className = 'text-2xl',
 }) => {
+    const filteredItems = items.filter((item) => item.show !== false);
+
     const menuProps: MenuProps = {
-        items: items,
+        items: filteredItems,
     };
 
     return (

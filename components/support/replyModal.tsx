@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Modal from '../common/modal';
 import SubmitButton from '../common/submitButton';
-import { answerToSupportMuni } from '@/app/actions';
+import { answerToSupportMuni, answerToSupportMuniAdmin } from '@/app/actions';
 import { RoleType } from '@/types';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import { useRouter } from 'next/navigation';
@@ -37,6 +37,9 @@ export default function ReplyModal({
             switch (type) {
                 case 'municipality':
                     result = await answerToSupportMuni(id, replyText);
+                    break;
+                case 'admin-muni':
+                    result = await answerToSupportMuniAdmin(id, replyText);
                     break;
                 default:
                     result = {

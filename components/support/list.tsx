@@ -2,7 +2,11 @@
 import React, { useRef, useState } from 'react';
 import { BreadcrumbItem, RoleType, Support, SupportResponse } from '@/types';
 import ConfirmModal from '../modals/confirmModal';
-import { forwardSupportToAdminMuni, rejecetSupportMuni } from '@/app/actions';
+import {
+    forwardSupportToAdminMuni,
+    rejecetSupportMuni,
+    rejecetSupportMuniAdmin,
+} from '@/app/actions';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -93,6 +97,9 @@ export default function SupportList({
                 case 'municipality':
                     result = await rejecetSupportMuni(selectedItem);
                     break;
+                case 'admin-muni':
+                    result = await rejecetSupportMuniAdmin(selectedItem);
+                    break;
                 default:
                     result = {
                         success: false,
@@ -110,6 +117,18 @@ export default function SupportList({
             }
         }
     };
+
+    let url;
+    switch (type) {
+        case 'municipality':
+            url = '/municipality/support';
+            break;
+        case 'admin-muni':
+            url = '/adminmunicipality/support';
+            break;
+        default:
+            url = '';
+    }
 
     const columns = [
         {
@@ -171,11 +190,7 @@ export default function SupportList({
                 const dropdownItems = [
                     {
                         key: 'detail',
-                        label: (
-                            <Link href={`/municipality/support/${record.id}`}>
-                                Detay
-                            </Link>
-                        ),
+                        label: <Link href={`${url}/${record.id}`}>Detay</Link>,
                     },
                     {
                         key: 'reply',
@@ -188,6 +203,7 @@ export default function SupportList({
                             <div className="text-blue-600 ">Admine İlet</div>
                         ),
                         onClick: () => handleForwardClick(record.id.toString()),
+                        show: type === 'municipality',
                     },
                     {
                         key: 'reject',
