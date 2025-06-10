@@ -52,7 +52,17 @@ export type ApiResponse = {
     success?: boolean;
     message: string;
     errors: string | string[];
+    status?: string; // Optional, as not all responses will have a status
 }
+
+// Create a standardized response type for GET requests
+export type ApiResponseT<T> = {
+    data?: T;
+    success: boolean;
+    errors?: string;
+    status?: string;
+};
+
 
 export type LoginResponse = ApiResponse & User & {
     token: string;

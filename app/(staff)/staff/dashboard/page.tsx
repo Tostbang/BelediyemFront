@@ -3,6 +3,7 @@ import PageContainer from '@/components/pageContainer';
 import { generatePageMetadata } from '@/lib/metadata';
 import DashboardStaff from '@/components/dashboard/staffDash';
 import { getDashboardStaff } from '@/app/actions';
+import AuthErrorHandler from '@/components/AuthErrorHandler';
 
 export const dynamic = 'force-dynamic';
 
@@ -17,8 +18,14 @@ export default async function Page() {
 
     return (
         <PageContainer>
-            {response && (
-                <DashboardStaff dashboard={response} breadcrumb={breadcrumb} />
+            <AuthErrorHandler
+                error={!response?.success ? response : undefined}
+            />
+            {response?.success && response.data && (
+                <DashboardStaff
+                    dashboard={response.data}
+                    breadcrumb={breadcrumb}
+                />
             )}
         </PageContainer>
     );

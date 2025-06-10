@@ -1,3 +1,4 @@
+import { clearAllCookies } from '@/utils/cookieClient';
 import toast from 'react-hot-toast';
 
 type NotificationResult = {
@@ -5,6 +6,7 @@ type NotificationResult = {
     success?: boolean;
     message?: string;
     errors?: string | string[];
+    status?: string; // Make status optional since not all results will have it
 };
 
 export const useNotificationHandler = () => {
@@ -23,6 +25,13 @@ export const useNotificationHandler = () => {
             toast.error(result.message);
         } else {
             toast.error('Bir hata oluştu');
+        }
+
+        if (result.status === 'UNAUTHORIZED') {
+            setTimeout(() => {
+                clearAllCookies();
+            }, 1000);
+
         }
     };
 

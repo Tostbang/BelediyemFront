@@ -1,7 +1,8 @@
 "use server"
 
-import { ApiResponse, CustomJwtPayload, DashboardStatisticsStaff, LoginResponse } from "@/types";
+import { ApiResponse, ApiResponseT, CustomJwtPayload, DashboardStatisticsStaff, LoginResponse } from "@/types";
 import axiosInstance from "@/utils/axios";
+import { handleApiError } from "@/utils/errorHandler";
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
 
@@ -43,12 +44,7 @@ export const handleLoginStaff = async (formData: FormData) => {
 
         return { success: true, message: data.message || 'Giriş başarılı, yönlendiriliyorsunuz.', errors: [], email, password };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Giriş yapılamadı.',
-        };
+        return handleApiError(error);
     }
 }
 
@@ -67,12 +63,7 @@ export const handleForgetPasswordStaff = async (formData: FormData) => {
 
         return { success: true, message: data.message || 'Şifre sıfırlama bağlantısı gönderildi.', errors: [] };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Şifre sıfırlama bağlantısı gönderilemedi.',
-        };
+        return handleApiError(error);
     }
 }
 
@@ -84,25 +75,20 @@ export const handleLogoutStaf = async () => {
         return { success: true, message: data.message || 'Çıkış yapıldı.', errors: [] };
 
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Çıkış yapılamadı.',
-        };
+        return handleApiError(error);
     }
 }
 
-export const getDashboardStaff = async () => {
+export const getDashboardStaff = async (): Promise<ApiResponseT<DashboardStatisticsStaff>> => {
     try {
         const response = await axiosInstance.get('municipalstaff/getdashboardstatistics');
-        const data = response.data as ApiResponse;
 
-
-        return data as DashboardStatisticsStaff
+        return {
+            success: true,
+            data: response.data as DashboardStatisticsStaff,
+        }
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
@@ -117,11 +103,6 @@ export const updateLastSeenStaff = async () => {
             errors: [],
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Son görülme güncellenemedi.',
-        };
+        return handleApiError(error);
     }
 }

@@ -1,6 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosError, InternalAxiosRequestConfig } from "axios";
-import { getCookie, deleteCookie } from "../app/actions/cookies";
-import { notification } from "antd";
+import { getCookie } from "../app/actions/cookies";
 
 const baseURL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -45,35 +44,45 @@ axiosInstance.interceptors.response.use(
         }
 
         if (response.status === 401) {
-            Promise.all([
-                deleteCookie("token"),
-                deleteCookie("user"),
-                deleteCookie("municipalityId")
-            ]).then(() => {
-                window.location.href = "/login";
-                notification.error({ message: "Yetkisiz İstek" });
-            });
-            return Promise.reject(response);
+            const formattedError = {
+                type: "UNAUTHORIZED",
+                message: "Yetkisiz Erişim: Token geçersiz veya süresi dolmuş.",
+                originalResponse: response
+            };
+            return Promise.reject(formattedError);
         }
 
         if (response.status === 404) {
-            notification.error({ message: "Kaynak Bulunamadı" });
-            return Promise.reject(response);
+            const formattedError = {
+                type: "NOT_FOUND",
+                message: `Kaynak Bulunamadı: ${response.config.url}`,
+                originalResponse: response
+            };
+
+            return Promise.reject(formattedError);
         }
 
         if (response.status === 400) {
-            notification.error({ message: "Hatalı İstek" });
-            return Promise.reject(response);
+            return Promise.reject(response.data);
         }
 
         if (response.status === 413) {
-            notification.error({ message: "Dosya boyutu çok büyük (maksimum 10MB)" });
-            return Promise.reject(response);
+            const formattedError = {
+                type: "PAYLOAD_TOO_LARGE",
+                message: "Dosya boyutu çok büyük (maksimum 10MB)",
+                originalResponse: response
+            };
+
+            return Promise.reject(formattedError);
         }
 
         if (response.status >= 500) {
-            notification.error({ message: "Servis Kullanım Dışı" });
-            return Promise.reject(response);
+            const formattedError = {
+                type: "SERVER_ERROR",
+                message: "Sunucu Hatası",
+                originalResponse: response
+            };
+            return Promise.reject(formattedError);
         }
 
         return Promise.reject(response);
@@ -84,18 +93,21 @@ axiosInstance.interceptors.response.use(
             return Promise.reject(error);
         }
         if (error.code === "ECONNABORTED") {
-            notification.error({ message: "Bağlantı Zaman Aşımına Uğradı" });
-            return Promise.reject(error);
-        }
-
-        if (error.response?.status === 413) {
-            notification.error({ message: "Dosya boyutu çok büyük (maksimum 10MB)" });
-            return Promise.reject(error);
+            const formattedError = {
+                type: "ECONNABORTED",
+                message: "Bağlantı Zaman Aşımına Uğradı",
+                originalResponse: error.response
+            };
+            return Promise.reject(formattedError);
         }
 
         if (!error.response) {
-            notification.error({ message: "Ağ Bağlantı Hatası" });
-            return Promise.reject(error);
+            const formattedError = {
+                type: "NETWORK_ERROR",
+                message: "Ağ Bağlantı Hatası",
+                originalResponse: error
+            };
+            return Promise.reject(formattedError);
         }
 
         return Promise.reject(error);

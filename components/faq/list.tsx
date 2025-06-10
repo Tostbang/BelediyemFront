@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { BreadcrumbItem, FAQ, RoleType } from '@/types';
+import { BreadcrumbItem, FAQResponse, RoleType } from '@/types';
 import ConfirmModal from '../modals/confirmModal';
 import { deleteFAQAdmin, deleteFAQMuni } from '@/app/actions';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
@@ -16,7 +16,7 @@ export default function FaqList({
     type,
     breadcrumb,
 }: {
-    faqs: FAQ[];
+    faqs: FAQResponse;
     type: RoleType;
     breadcrumb: BreadcrumbItem[];
 }) {
@@ -70,7 +70,7 @@ export default function FaqList({
             url = '';
     }
 
-    const editedItems = faqs?.map((item, index) => ({
+    const editedItems = faqs?.frequentlyAskedQuestions?.map((item, index) => ({
         key: index,
         label: <div className="text-2xl"> {item.title}</div>,
         children: (

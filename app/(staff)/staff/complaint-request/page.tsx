@@ -4,6 +4,7 @@ import { generatePageMetadata } from '@/lib/metadata';
 import { getComplaintsStaff } from '@/app/actions';
 import { ComplaintsPaginationBody } from '@/types';
 import ComplaintList from '@/components/complaint-request/list';
+import AuthErrorHandler from '@/components/AuthErrorHandler';
 
 export const dynamic = 'force-dynamic';
 
@@ -46,11 +47,14 @@ export default async function Page({
 
     return (
         <PageContainer>
-            {response && (
+            <AuthErrorHandler
+                error={!response?.success ? response : undefined}
+            />
+            {response?.success && response.data && (
                 <ComplaintList
-                    complaints={response || []}
+                    complaints={response.data}
                     breadcrumb={breadcrumb}
-                    type='staff'
+                    type="staff"
                 />
             )}
         </PageContainer>

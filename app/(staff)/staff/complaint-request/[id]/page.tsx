@@ -5,6 +5,7 @@ import { isPositiveNumber } from '@/utils';
 import { getComplaintByIdStaff } from '@/app/actions';
 import AlertMessage from '@/components/ui/AlertMessage';
 import ComplaintDetail from '@/components/complaint-request/detail';
+import AuthErrorHandler from '@/components/AuthErrorHandler';
 
 export const dynamic = 'force-dynamic';
 
@@ -21,6 +22,7 @@ export default async function Page({
 
     let id = null;
     let errorMessage = null;
+    let response = null;
 
     if (resolvedParams.id !== 'new' && isPositiveNumber(resolvedParams.id)) {
         id = resolvedParams.id;
@@ -29,10 +31,21 @@ export default async function Page({
     let detail = null;
     if (id) {
         try {
-            detail = await getComplaintByIdStaff(id);
-            if (!detail) {
-                errorMessage = `Şikayet / Talep bulunamadı: #${id} ID'li kayıt mevcut değil veya erişim yetkiniz yok.`;
+            response = await getComplaintByIdStaff(id);
+            if (response.success) {
+                detail = response.data;
+                if (detail?.code === 'NOT_FOUND' || detail?.code === '400') {
+                    errorMessage = `Şikayet / Talep bulunamadı: #${id} ID'li kayıt mevcut değil veya erişim yetkiniz yok.`;
+                }
+            } else {
                 id = null;
+                if (response.status === 'UNAUTHORIZED') {
+                    return (
+                        <AuthErrorHandler
+                            error={!response?.success ? response : undefined}
+                        />
+                    );
+                }
             }
         } catch (error) {
             console.log('Şikayet / Talep detayı alınamadı:', error);
@@ -59,14 +72,14 @@ export default async function Page({
                     type="error"
                     title="Hata"
                 />
-            ) : (
+            ) : detail ? (
                 <ComplaintDetail
                     id={id}
-                    detail={detail || null}
+                    detail={detail}
                     type="staff"
                     breadcrumb={breadcrumb}
                 />
-            )}
+            ) : null}
         </PageContainer>
     );
 }

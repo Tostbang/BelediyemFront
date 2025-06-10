@@ -1,18 +1,21 @@
 "use server";
 
-import { DevicesResponse, FAQResponse, InfoStaff } from "@/types";
+import { DevicesResponse, FAQResponse, InfoStaff, ApiResponseT } from "@/types";
 import { validateBase64Size } from "@/utils/fileUtils";
 import { uploadImage } from "../file";
 import axiosInstance from "@/utils/axios";
+import { handleApiError } from "@/utils/errorHandler";
 
-export const getInfoStaff = async () => {
+
+export const getInfoStaff = async (): Promise<ApiResponseT<InfoStaff>> => {
     try {
         const response = await axiosInstance.get('municipalstaff/getinfo');
-
-        return response.data as InfoStaff
+        return {
+            success: true,
+            data: response.data as InfoStaff
+        };
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
@@ -55,9 +58,7 @@ export const updateInfoStaff = async (formData: FormData) => {
             profileImage: imagePath,
         };
 
-        const response = await axiosInstance.put('municipalstaff/putinfo',
-            payload
-        );
+        const response = await axiosInstance.put('municipalstaff/putinfo', payload);
 
         return {
             success: true,
@@ -66,12 +67,7 @@ export const updateInfoStaff = async (formData: FormData) => {
             ...payload,
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Bilgiler güncellenemedi.',
-        };
+        return handleApiError(error);
     }
 }
 
@@ -104,12 +100,7 @@ export const changePasswordStaff = async (formData: FormData) => {
             ...payload,
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Şifre güncellenemedi.',
-        };
+        return handleApiError(error);
     }
 }
 
@@ -124,23 +115,20 @@ export const sendResetRequestStaff = async () => {
         };
 
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Şifre sıfırlama isteği gönderilemedi.',
-        };
+        return handleApiError(error);
     }
 }
 
-export const getDevicesStaff = async () => {
+export const getDevicesStaff = async (): Promise<ApiResponseT<DevicesResponse>> => {
     try {
         const response = await axiosInstance.get('municipalstaff/getalldevice');
 
-        return response.data as DevicesResponse
+        return {
+            success: true,
+            data: response.data as DevicesResponse
+        };
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
@@ -154,22 +142,19 @@ export const closeDeviceStaff = async (id: string) => {
             errors: [],
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Oturum kapatılamadı.',
-        };
+        return handleApiError(error);
     }
 }
 
-export const getFAQsStaff = async () => {
+export const getFAQsStaff = async (): Promise<ApiResponseT<FAQResponse>> => {
     try {
         const response = await axiosInstance.get('municipalstaff/getmunicipalityfrequentlyaskedquestions');
 
-        return response.data as FAQResponse
+        return {
+            success: true,
+            data: response.data as FAQResponse
+        };
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }

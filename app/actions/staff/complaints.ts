@@ -1,11 +1,12 @@
 "use server";
 
-import { ComplaintsDetailResponse, ComplaintsPaginationBody, ComplaintsResponse } from "@/types";
+import { ApiResponseT, ComplaintsDetailResponse, ComplaintsPaginationBody, ComplaintsResponse } from "@/types";
 import { validateBase64Size } from "@/utils/fileUtils";
 import { uploadImage } from "../file";
 import axiosInstance from "@/utils/axios";
+import { handleApiError } from "@/utils/errorHandler";
 
-export const getComplaintsStaff = async (body: ComplaintsPaginationBody) => {
+export const getComplaintsStaff = async (body: ComplaintsPaginationBody): Promise<ApiResponseT<ComplaintsResponse>> => {
     try {
         const response = await axiosInstance.post('municipalstaff/getstaffcomplaints', {
             pageNumber: body.pageNumber - 1,
@@ -17,14 +18,16 @@ export const getComplaintsStaff = async (body: ComplaintsPaginationBody) => {
         }
         );
 
-        return response.data as ComplaintsResponse
+        return {
+            success: true,
+            data: response.data as ComplaintsResponse,
+        }
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
-export const getComplaintsDepartmentStaff = async (body: ComplaintsPaginationBody) => {
+export const getComplaintsDepartmentStaff = async (body: ComplaintsPaginationBody): Promise<ApiResponseT<ComplaintsResponse>> => {
     try {
         const response = await axiosInstance.post('municipalstaff/getdepartmentcomplaints', {
             pageNumber: body.pageNumber - 1,
@@ -34,28 +37,30 @@ export const getComplaintsDepartmentStaff = async (body: ComplaintsPaginationBod
             startDate: body.startDate || undefined,
             endDate: body.endDate || undefined,
         });
-
-        return response.data as ComplaintsResponse
+        return {
+            success: true,
+            data: response.data as ComplaintsResponse,
+        }
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
-export const getComplaintByIdStaff = async (id: string) => {
+export const getComplaintByIdStaff = async (id: string): Promise<ApiResponseT<ComplaintsDetailResponse>> => {
     try {
         const response = await axiosInstance.get(`municipalstaff/getcomplaintdetail?complaintId=${id}`);
 
-        return response.data as ComplaintsDetailResponse
+        return {
+            success: true,
+            data: response.data as ComplaintsDetailResponse,
+        }
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
 export const updateComplaintStatusStaff = async (formData: FormData) => {
     try {
-
         const id = formData.get('id') as string;
         const complaintsStatusType = formData.get('complaintsStatusType') as string;
 
@@ -79,12 +84,7 @@ export const updateComplaintStatusStaff = async (formData: FormData) => {
             ...payload,
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Şikayet durumu güncellenemedi.',
-        };
+        return handleApiError(error);
     }
 }
 
@@ -140,11 +140,6 @@ export const updateCompletedComplaintStatusStaff = async (formData: FormData) =>
             ...payload,
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Şikayet durumu güncellenemedi.',
-        };
+        return handleApiError(error);
     }
 }

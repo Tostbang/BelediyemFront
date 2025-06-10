@@ -3,6 +3,7 @@ import PageContainer from '@/components/pageContainer';
 import { generatePageMetadata } from '@/lib/metadata';
 import { getFAQsStaff } from '@/app/actions';
 import FaqList from '@/components/faq/list';
+import AuthErrorHandler from '@/components/AuthErrorHandler';
 
 export const dynamic = 'force-dynamic';
 
@@ -17,11 +18,16 @@ export default async function Page() {
 
     return (
         <PageContainer>
-            <FaqList
-                faqs={response?.frequentlyAskedQuestions || []}
-                type="staff"
-                breadcrumb={breadcrumb}
+            <AuthErrorHandler
+                error={!response?.success ? response : undefined}
             />
+            {response?.success && response.data && (
+                <FaqList
+                    faqs={response?.data || []}
+                    type="staff"
+                    breadcrumb={breadcrumb}
+                />
+            )}
         </PageContainer>
     );
 }

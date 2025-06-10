@@ -3,6 +3,7 @@ import PageContainer from '@/components/pageContainer';
 import { generatePageMetadata } from '@/lib/metadata';
 import { getInfoStaff } from '@/app/actions';
 import InfoFormStaff from '@/components/staff/infoForm';
+import AuthErrorHandler from '@/components/AuthErrorHandler';
 
 export const dynamic = 'force-dynamic';
 
@@ -16,8 +17,11 @@ export default async function Page() {
 
     return (
         <PageContainer>
-            {response && (
-                <InfoFormStaff detail={response} breadcrumb={breadcrumb} />
+            <AuthErrorHandler
+                error={!response?.success ? response : undefined}
+            />
+            {response?.success && response.data && (
+                <InfoFormStaff detail={response.data} breadcrumb={breadcrumb} />
             )}
         </PageContainer>
     );

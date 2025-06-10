@@ -34,3 +34,12 @@ export async function deleteCookie(name: string) {
     (await cookies()).delete(name);
     return { success: true };
 }
+
+export async function clearCookies() {
+    const cookieStore = await cookies();
+    const allCookies = cookieStore.getAll();
+    for (const cookie of allCookies) {
+        cookieStore.delete(cookie.name);
+    }
+    return { success: true };
+}

@@ -85,7 +85,7 @@ const AlertMessage: React.FC<AlertMessageProps> = ({
 
     return (
         <div
-            className={`mb-4 p-4 border-l-4 ${currentStyle.border} ${currentStyle.bg} rounded-md`}>
+            className={`mb-4 p-4 mt-16 border-l-4 ${currentStyle.border} ${currentStyle.bg} rounded-md `}>
             <div className="flex items-center">
                 <div className="flex-shrink-0">
                     <svg
