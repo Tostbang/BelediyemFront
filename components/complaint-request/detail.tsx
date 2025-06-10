@@ -25,7 +25,7 @@ import 'swiper/css/pagination';
 import AttendStaffModal from './attendModal';
 import MessageModal from './messageModal';
 import { complaintStatusType } from '@/data/complaintStatus';
-import { Timeline } from 'antd';
+import { Timeline, Rate } from 'antd';
 import LinkButton from '../common/LinkButton';
 import StatusModal from './statusModal';
 
@@ -195,7 +195,7 @@ export default function ComplaintDetail({
                                 </span>
                             </div>
                             <span className="text-gray-700 break-all">
-                                # {detail?.complaint.id}
+                                #{detail?.complaint.id}
                             </span>
                         </div>
 
@@ -539,6 +539,59 @@ export default function ComplaintDetail({
                     ) : (
                         <div className="text-gray-500">
                             Henüz personel atanmadı.
+                        </div>
+                    )}
+                </div>
+                <div className="mb-6 p-8 bg-white rounded-lg shadow-md">
+                    <div className="flex items-center justify-between">
+                        <h2 className="text-xl font-semibold mb-6">
+                            Değerlendirme
+                        </h2>
+                    </div>
+                    {detail?.complaint.complaintRating ? (
+                        <div className="p-4 ">
+                            <div className="flex flex-col gap-4">
+                                <div className="flex items-center flex-wrap">
+                                    <div className="mr-2">
+                                        <Rate
+                                            defaultValue={
+                                                detail.complaint.complaintRating
+                                                    .rating
+                                            }
+                                            disabled
+                                        />
+                                    </div>
+                                    <span className="text-gray-500 text-sm">
+                                        {formatDateTime(
+                                            detail.complaint.complaintRating
+                                                .createdDate
+                                        )}
+                                    </span>
+                                </div>
+
+                                <div className="mt-2 text-gray-700 whitespace-pre-wrap bg-white p-3">
+                                    <p className="italic">
+                                        {
+                                            detail.complaint.complaintRating
+                                                .comment
+                                        }
+                                    </p>
+                                </div>
+
+                                <div className="flex justify-end">
+                                    <div className="text-xs text-gray-500">
+                                        Değerlendirme ID: #
+                                        {detail.complaint.complaintRating.id}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="text-gray-500 p-4 bg-gray-50 rounded-lg flex items-center justify-center">
+                            <div className="text-center">
+                                <div className="text-xl mb-2">⭐</div>
+                                <div>Henüz değerlendirme yapılmamış.</div>
+                            </div>
                         </div>
                     )}
                 </div>

@@ -59,7 +59,7 @@ export type ApiResponse = {
 export type ApiResponseT<T> = {
     data?: T;
     success: boolean;
-    errors?: string ;
+    errors?: string;
     status?: string;
 };
 
@@ -284,6 +284,7 @@ export type Ratings = {
     complaintId: number;
     complaintTitle: string;
     complaintDescription: string;
+    showName: boolean;
     complaintStatusType: number;
     userId: number;
     userName: string;
@@ -379,6 +380,7 @@ export type Complaints = {
     }[];
     user: CitezenUser;
     assignedStaff: StaffUser
+    complaintRating: Ratings;
 }
 
 
