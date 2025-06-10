@@ -4,6 +4,7 @@ import { generatePageMetadata } from '@/lib/metadata';
 import { getDashboardMuniAdmin, getReportsMuniAdmin } from '@/app/actions';
 import DashboardMuni from '@/components/dashboard';
 import { PaginationBody } from '@/types';
+import AuthErrorHandler from '@/components/AuthErrorHandler';
 
 export const dynamic = 'force-dynamic';
 
@@ -32,10 +33,13 @@ export default async function Page({
 
     return (
         <PageContainer>
-            {response && (
+            <AuthErrorHandler
+                error={!response?.success ? response : undefined}
+            />
+            {response?.success && response.data && (
                 <DashboardMuni
-                    dashboard={response}
-                    reports={reportsData}
+                    dashboard={response.data}
+                    reports={reportsData.data}
                     breadcrumb={breadcrumb}
                     type="admin-muni"
                 />

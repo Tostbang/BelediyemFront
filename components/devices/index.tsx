@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { BreadcrumbItem, Devices, RoleType } from '@/types';
+import { BreadcrumbItem, Devices, DevicesResponse, RoleType } from '@/types';
 import DynamicTable from '../dynamic/table';
 import ConfirmModal from '../modals/confirmModal';
 import {
@@ -19,7 +19,7 @@ export default function DevicesList({
     type,
     breadcrumb,
 }: {
-    devices: Devices[];
+    devices: DevicesResponse;
     type: RoleType;
     breadcrumb: BreadcrumbItem[];
 }) {
@@ -114,7 +114,7 @@ export default function DevicesList({
                 <div className="w-full overflow-hidden bg-white rounded-lg p-6">
                     <div className="overflow-x-auto">
                         <DynamicTable<Devices>
-                            data={devices}
+                            data={devices.devices}
                             columns={columns}
                             rowKey="id"
                             showControls={false}
