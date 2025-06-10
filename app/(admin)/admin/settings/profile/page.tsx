@@ -3,6 +3,7 @@ import PageContainer from '@/components/pageContainer';
 import { generatePageMetadata } from '@/lib/metadata';
 import { getInfoAdmin } from '@/app/actions';
 import InfoFormAdmin from '@/components/admin/infoForm';
+import AuthErrorHandler from '@/components/AuthErrorHandler';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,8 +16,13 @@ export default async function Page() {
     const breadcrumb = [{ label: 'Admin Bilgileri' }];
 
     return (
-        <PageContainer >
-            {response && <InfoFormAdmin detail={response} breadcrumb={breadcrumb} />}
+        <PageContainer>
+            <AuthErrorHandler
+                error={!response?.success ? response : undefined}
+            />
+            {response?.success && response.data && (
+                <InfoFormAdmin detail={response.data} breadcrumb={breadcrumb} />
+            )}
         </PageContainer>
     );
 }
