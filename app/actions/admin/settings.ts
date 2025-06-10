@@ -107,10 +107,13 @@ export const changePasswordAdmin = async (formData: FormData) => {
     }
 }
 
-export const getDevicesAdmin = async () => {
+export const getDevicesAdmin = async (): Promise<ApiResponseT<DevicesResponse>> => {
     try {
         const response = await axiosInstance.get('admin/getalldevice');
-        return response.data as DevicesResponse;
+        return {
+            success: true,
+            data: response.data as DevicesResponse
+        }
     } catch (error) {
         return handleApiError(error);
     }

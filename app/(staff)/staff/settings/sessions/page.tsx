@@ -3,6 +3,7 @@ import PageContainer from '@/components/pageContainer';
 import { generatePageMetadata } from '@/lib/metadata';
 import { getDevicesStaff } from '@/app/actions';
 import DevicesList from '@/components/devices';
+import AuthErrorHandler from '@/components/AuthErrorHandler';
 
 export const dynamic = 'force-dynamic';
 
@@ -16,11 +17,16 @@ export default async function Page() {
 
     return (
         <PageContainer>
-            <DevicesList
-                devices={response?.devices || []}
-                type="staff"
-                breadcrumb={breadcrumb}
+            <AuthErrorHandler
+                error={!response?.success ? response : undefined}
             />
+            {response?.success && response.data && (
+                <DevicesList
+                    devices={response?.data || []}
+                    type="staff"
+                    breadcrumb={breadcrumb}
+                />
+            )}
         </PageContainer>
     );
 }

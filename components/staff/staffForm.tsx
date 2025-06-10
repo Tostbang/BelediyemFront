@@ -38,7 +38,11 @@ export default function StaffForm({
 
         // Execute action and handle result
         const result = await actionFunction(formData);
-        handleResult(result);
+        handleResult({
+            success: result.success,
+            message: result.message,
+            errors: result.errors || [],
+        });
 
         const returnState = {
             ...result,
