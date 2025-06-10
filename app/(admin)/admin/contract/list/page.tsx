@@ -3,6 +3,7 @@ import PageContainer from '@/components/pageContainer';
 import { generatePageMetadata } from '@/lib/metadata';
 import { getContractsAdmin } from '@/app/actions';
 import ContractList from '@/components/contract/list';
+import AuthErrorHandler from '@/components/AuthErrorHandler';
 
 export const dynamic = 'force-dynamic';
 
@@ -17,9 +18,12 @@ export default async function Page() {
 
     return (
         <PageContainer>
-            {response && (
+            <AuthErrorHandler
+                error={!response?.success ? response : undefined}
+            />
+            {response?.success && response.data && (
                 <ContractList
-                    contracts={response || []}
+                    contracts={response.data}
                     breadcrumb={breadcrumb}
                 />
             )}

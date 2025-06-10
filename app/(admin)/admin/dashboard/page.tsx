@@ -3,6 +3,7 @@ import PageContainer from '@/components/pageContainer';
 import { generatePageMetadata } from '@/lib/metadata';
 import { getDashboardAdmin } from '@/app/actions';
 import DashboardAdmin from '@/components/dashboard/adminDash';
+import AuthErrorHandler from '@/components/AuthErrorHandler';
 
 export const dynamic = 'force-dynamic';
 
@@ -16,8 +17,16 @@ export default async function Page() {
     const breadcrumb = [{ label: 'Anasayfa' }];
 
     return (
-        <PageContainer >
-            {response && <DashboardAdmin dashboard={response} breadcrumb={breadcrumb}/>}
+        <PageContainer>
+            <AuthErrorHandler
+                error={!response?.success ? response : undefined}
+            />
+            {response?.success && response.data && (
+                <DashboardAdmin
+                    dashboard={response.data}
+                    breadcrumb={breadcrumb}
+                />
+            )}
         </PageContainer>
     );
 }

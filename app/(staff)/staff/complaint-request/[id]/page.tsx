@@ -34,7 +34,11 @@ export default async function Page({
             response = await getComplaintByIdStaff(id);
             if (response.success) {
                 detail = response.data;
-                if (detail?.code === 'NOT_FOUND' || detail?.code === '400') {
+                if (
+                    detail?.code === 'NOT_FOUND' ||
+                    detail?.code === '400' ||
+                    detail?.code === '404'
+                ) {
                     errorMessage = `Şikayet / Talep bulunamadı: #${id} ID'li kayıt mevcut değil veya erişim yetkiniz yok.`;
                 }
             } else {
@@ -72,14 +76,14 @@ export default async function Page({
                     type="error"
                     title="Hata"
                 />
-            ) : detail ? (
+            ) : (
                 <ComplaintDetail
                     id={id}
-                    detail={detail}
+                    detail={detail || null}
                     type="staff"
                     breadcrumb={breadcrumb}
                 />
-            ) : null}
+            )}
         </PageContainer>
     );
 }

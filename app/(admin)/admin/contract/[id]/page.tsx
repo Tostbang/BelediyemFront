@@ -5,6 +5,7 @@ import { isPositiveNumber } from '@/utils';
 import { getContractByIDAdmin } from '@/app/actions';
 import AlertMessage from '@/components/ui/AlertMessage';
 import ContractForm from '@/components/contract/form';
+import AuthErrorHandler from '@/components/AuthErrorHandler';
 
 export const dynamic = 'force-dynamic';
 
@@ -21,6 +22,7 @@ export default async function Page({
 
     let id = null;
     let errorMessage = null;
+    let response = null;
 
     if (isPositiveNumber(resolvedParams.id)) {
         id = resolvedParams.id;
@@ -31,10 +33,25 @@ export default async function Page({
     let detail = null;
     if (id) {
         try {
-            detail = await getContractByIDAdmin(id);
-            if (!detail) {
-                errorMessage = `Sözleşme bulunamadı: #${id} ID'li sözleşme mevcut değil veya erişim yetkiniz yok.`;
+            response = await getContractByIDAdmin(id);
+            if (response.success) {
+                detail = response.data;
+                if (
+                    detail?.code === 'NOT_FOUND' ||
+                    detail?.code === '400' ||
+                    detail?.code === '404'
+                ) {
+                    errorMessage = `Sözleşme bulunamadı: #${id} ID'li kayıt mevcut değil veya erişim yetkiniz yok.`;
+                }
+            } else {
                 id = null;
+                if (response.status === 'UNAUTHORIZED') {
+                    return (
+                        <AuthErrorHandler
+                            error={!response?.success ? response : undefined}
+                        />
+                    );
+                }
             }
         } catch (error) {
             console.log('Sözleşme detayı alınamadı:', error);

@@ -1,17 +1,20 @@
 "use server"
 
-import { ApiResponse, DevicesResponse, FAQDetail, FAQResponse, InfoAdmin } from "@/types";
+import { ApiResponse, ApiResponseT, DevicesResponse, FAQDetail, FAQResponse, InfoAdmin } from "@/types";
 import axiosInstance from "@/utils/axios";
 import { uploadImage } from "../file";
 import { validateBase64Size } from "@/utils/fileUtils";
+import { handleApiError } from "@/utils/errorHandler";
 
-export const getInfoAdmin = async () => {
+export const getInfoAdmin = async (): Promise<ApiResponseT<InfoAdmin>> => {
     try {
         const response = await axiosInstance.get('admin/getinfo');
-        return response.data as InfoAdmin;
+        return {
+            success: true,
+            data: response.data as InfoAdmin
+        }
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
@@ -66,12 +69,7 @@ export const updateInfoAdmin = async (formData: FormData) => {
             ...payload,
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Bilgiler güncellenemedi.',
-        };
+        return handleApiError(error);
     }
 }
 
@@ -105,12 +103,7 @@ export const changePasswordAdmin = async (formData: FormData) => {
             ...payload,
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Şifre güncellenemedi.',
-        };
+        return handleApiError(error);
     }
 }
 
@@ -119,8 +112,7 @@ export const getDevicesAdmin = async () => {
         const response = await axiosInstance.get('admin/getalldevice');
         return response.data as DevicesResponse;
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
@@ -135,32 +127,31 @@ export const closeDeviceAdmin = async (id: string) => {
             errors: [],
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Oturum kapatılamadı.',
-        };
+        return handleApiError(error);
     }
 }
 
-export const getFAQsAdmin = async () => {
+export const getFAQsAdmin = async (): Promise<ApiResponseT<FAQResponse>> => {
     try {
         const response = await axiosInstance.get('admin/getfrequentlyaskedquestions');
-        return response.data as FAQResponse;
+        return {
+            success: true,
+            data: response.data as FAQResponse
+        };
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
-export const getFAQByIdAdmin = async (id: string) => {
+export const getFAQByIdAdmin = async (id: string): Promise<ApiResponseT<FAQDetail>> => {
     try {
         const response = await axiosInstance.get(`admin/getfrequentlyaskedquestiondetail?faqId=${id}`);
-        return response.data as FAQDetail;
+        return {
+            success: true,
+            data: response.data as FAQDetail
+        };
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
@@ -188,12 +179,7 @@ export const addFAQAdmin = async (formData: FormData) => {
             ...payload,
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Sıkça Sorulan Sorular eklenemedi.',
-        };
+        return handleApiError(error);
     }
 }
 
@@ -223,12 +209,7 @@ export const updateFAQAdmin = async (formData: FormData) => {
             ...payload,
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Sıkça Sorulan Sorular güncellenemedi.',
-        };
+        return handleApiError(error);
     }
 }
 
@@ -243,11 +224,6 @@ export const deleteFAQAdmin = async (id: string) => {
             errors: [],
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Sıkça Sorulan Sorular silinemedi.',
-        };
+        return handleApiError(error);
     }
 }

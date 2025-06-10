@@ -1,7 +1,8 @@
 "use server"
 
-import { ApiResponse, CustomJwtPayload, DashboardStatisticsAdmin, LoginResponse } from "@/types";
+import { ApiResponse, ApiResponseT, CustomJwtPayload, DashboardStatisticsAdmin, LoginResponse } from "@/types";
 import axiosInstance from "@/utils/axios";
+import { handleApiError } from "@/utils/errorHandler";
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
 
@@ -42,12 +43,8 @@ export const handleLoginAdmin = async (formData: FormData) => {
 
         return { success: true, message: data.message || 'Giriş başarılı, yönlendiriliyorsunuz.', errors: [], email, password };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Giriş yapılamadı.',
-        };
+        return handleApiError(error);
+
     }
 }
 
@@ -58,22 +55,19 @@ export const handleLogoutAdmin = async () => {
         return { success: true, message: data.message || 'Çıkış yapıldı.', errors: [] };
 
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Çıkış yapılamadı.',
-        };
+        return handleApiError(error);
     }
 }
 
-export const getDashboardAdmin = async () => {
+export const getDashboardAdmin = async (): Promise<ApiResponseT<DashboardStatisticsAdmin>> => {
     try {
         const response = await axiosInstance.get('admin/getdashboardstatistics');
-        return response.data as DashboardStatisticsAdmin;
+        return {
+            success: true,
+            data: response.data as DashboardStatisticsAdmin,
+        }
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
@@ -88,11 +82,6 @@ export const updateLastSeenAdmin = async () => {
             errors: [],
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Son görülme güncellenemedi.',
-        };
+        return handleApiError(error);
     }
 }

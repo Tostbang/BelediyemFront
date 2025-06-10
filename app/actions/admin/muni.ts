@@ -1,31 +1,37 @@
 "use server"
 
-import { ApiResponse, MuniDetailResponse, MuniListResponse, PaginationBody, PasswordResetResponse } from "@/types";
+import { ApiResponse, ApiResponseT, MuniDetailResponse, MuniListResponse, PaginationBody, PasswordResetResponse } from "@/types";
 import axiosInstance from "@/utils/axios";
 import { validateBase64Size } from "@/utils/fileUtils";
 import { uploadImage } from "../file";
+import { handleApiError } from "@/utils/errorHandler";
 
-export const getMunisAdmin = async (body: PaginationBody) => {
+export const getMunisAdmin = async (body: PaginationBody): Promise<ApiResponseT<MuniListResponse>> => {
     try {
         const response = await axiosInstance.post('admin/municipalitylist', {
             pageNumber: body.pageNumber - 1,
             pageSize: body.pageSize
         });
 
-        return response.data as MuniListResponse;
+        return {
+            success: true,
+            data: response.data as MuniListResponse
+        }
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
+
     }
 }
 
-export const getMuniByIdAdmin = async (id: string) => {
+export const getMuniByIdAdmin = async (id: string): Promise<ApiResponseT<MuniDetailResponse>> => {
     try {
         const response = await axiosInstance.get(`admin/adminmunicipalitydetail?municipalId=${id}`);
-        return response.data as MuniDetailResponse;
+        return {
+            success: true,
+            data: response.data as MuniDetailResponse
+        }
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
@@ -61,12 +67,8 @@ export const addMuniAdmin = async (formData: FormData) => {
             ...payload,
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Belediye eklenemedi.',
-        };
+        return handleApiError(error);
+
     }
 }
 
@@ -145,12 +147,8 @@ export const updateMuniAdmin = async (formData: FormData) => {
             ...payload,
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Belediye bilgileri güncellenemedi.',
-        };
+        return handleApiError(error);
+
     }
 }
 
@@ -169,25 +167,23 @@ export const updateMuniStatusAdmin = async (id: string, status: boolean) => {
         };
     }
     catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Belediye durumu güncellenemedi.',
-        };
+        return handleApiError(error);
+
     }
 }
 
-export const getMunisPWResetRequestAdmin = async (body: PaginationBody) => {
+export const getMunisPWResetRequestAdmin = async (body: PaginationBody): Promise<ApiResponseT<PasswordResetResponse>> => {
     try {
         const response = await axiosInstance.post('admin/getmunicipalitypasswordresetlist', {
             pageNumber: body.pageNumber - 1,
             pageSize: body.pageSize
         });
-        return response.data as PasswordResetResponse;
+        return {
+            success: true,
+            data: response.data as PasswordResetResponse
+        }
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
@@ -204,11 +200,7 @@ export const sendMunisPWAdmin = async (id: string) => {
             errors: [],
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Yeni şifre gönderilemedi.',
-        };
+        return handleApiError(error);
+
     }
 }

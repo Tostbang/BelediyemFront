@@ -4,6 +4,7 @@ import { generatePageMetadata } from '@/lib/metadata';
 import MuniList from '@/components/muni/list';
 import { getMunisAdmin } from '@/app/actions';
 import { PaginationBody } from '@/types';
+import AuthErrorHandler from '@/components/AuthErrorHandler';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,8 +31,11 @@ export default async function Page({
 
     return (
         <PageContainer>
-            {response && (
-                <MuniList munilist={response || []} breadcrumb={breadcrumb} />
+            <AuthErrorHandler
+                error={!response?.success ? response : undefined}
+            />
+            {response?.success && response.data && (
+                <MuniList munilist={response.data} breadcrumb={breadcrumb} />
             )}
         </PageContainer>
     );

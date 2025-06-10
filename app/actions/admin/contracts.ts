@@ -1,25 +1,31 @@
 "use server"
 
-import { ApiResponse, ContractsResponse, ContractDetailResponse } from "@/types";
+import { ApiResponse, ContractsResponse, ContractDetailResponse, ApiResponseT } from "@/types";
 import axiosInstance from "@/utils/axios";
+import { handleApiError } from "@/utils/errorHandler";
 
-export const getContractsAdmin = async () => {
+export const getContractsAdmin = async (): Promise<ApiResponseT<ContractsResponse>> => {
     try {
         const response = await axiosInstance.get('admin/getallcontract');
-        return response.data as ContractsResponse;
+
+        return {
+            success: true,
+            data: response.data as ContractsResponse
+        }
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
-export const getContractByIDAdmin = async (id: string) => {
+export const getContractByIDAdmin = async (id: string): Promise<ApiResponseT<ContractDetailResponse>> => {
     try {
         const response = await axiosInstance.get(`admin/getcontractdetail?contractId=${id}`);
-        return response.data as ContractDetailResponse;
+        return {
+            success: true,
+            data: response.data as ContractDetailResponse
+        }
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
@@ -49,11 +55,6 @@ export const updateContractAdmin = async (formData: FormData) => {
             ...payload,
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Sözleşme İçerik güncellenemedi.',
-        };
+        return handleApiError(error);
     }
 }
