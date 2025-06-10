@@ -203,7 +203,7 @@ export default function SupportList({
                             <div className="text-blue-600 ">Admine İlet</div>
                         ),
                         onClick: () => handleForwardClick(record.id.toString()),
-                        show: type !== 'municipality',
+                        show: type === 'municipality',
                     },
                     {
                         key: 'reject',

@@ -2,7 +2,7 @@ import React from 'react';
 import PageContainer from '@/components/pageContainer';
 import { generatePageMetadata } from '@/lib/metadata';
 import { isPositiveNumber } from '@/utils';
-import { getSupporByIdMuni } from '@/app/actions';
+import { getSupporByIdMuniAdmin } from '@/app/actions';
 import AlertMessage from '@/components/ui/AlertMessage';
 import SupportDetail from '@/components/support/detail';
 import AuthErrorHandler from '@/components/AuthErrorHandler';
@@ -31,7 +31,7 @@ export default async function Page({
     let detail = null;
     if (id) {
         try {
-            response = await getSupporByIdMuni(id);
+            response = await getSupporByIdMuniAdmin(id);
             if (response.success) {
                 detail = response.data;
                 if (
@@ -77,7 +77,7 @@ export default async function Page({
                 <SupportDetail
                     id={id}
                     detail={detail || null}
-                    type="municipality"
+                    type="admin-muni"
                     breadcrumb={breadcrumb}
                 />
             )}

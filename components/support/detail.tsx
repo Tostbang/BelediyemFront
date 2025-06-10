@@ -170,7 +170,9 @@ export default function SupportDetail({
                                 </span>
                             </div>
                             <span className="text-gray-700 sm:ml-4">
-                                {formatDateTime(detail?.support.createdDate ?? '')}
+                                {formatDateTime(
+                                    detail?.support.createdDate ?? ''
+                                )}
                             </span>
                         </div>
                     </div>
@@ -217,11 +219,13 @@ export default function SupportDetail({
                             className="px-4 py-2 bg-green-600 text-white rounded-2xl hover:bg-green-700 w-full cursor-pointer">
                             Yanıtla
                         </button>
-                        <button
-                            onClick={() => setForwardModal(true)}
-                            className="px-4 py-2 bg-blue-600 text-white  rounded-2xl hover:bg-blue-700  w-full cursor-pointer">
-                            Admine İlet
-                        </button>
+                        {type === 'municipality' && (
+                            <button
+                                onClick={() => setForwardModal(true)}
+                                className="px-4 py-2 bg-blue-600 text-white  rounded-2xl hover:bg-blue-700  w-full cursor-pointer">
+                                Admine İlet
+                            </button>
+                        )}
                         <button
                             onClick={() => setRejectModal(true)}
                             className="px-4 py-2 bg-red-600 text-white  rounded-2xl hover:bg-red-700  w-full cursor-pointer">
