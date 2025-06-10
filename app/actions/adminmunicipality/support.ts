@@ -28,7 +28,7 @@ export const getSupporByIdMuniAdmin = async (id: string): Promise<ApiResponseT<S
     const municipalityId = await getCookie('municipalityId');
 
     try {
-        const response = await axiosInstance.get(`adminmunicipalitypanel/municipalitygetsupportdetail?supportId=${id}&municipalityId=${municipalityId}`);
+        const response = await axiosInstance.get(`adminmunicipalitypanel/admingetsupportdetail?supportId=${id}&municipalityId=${municipalityId}`);
 
         return {
             success: true,

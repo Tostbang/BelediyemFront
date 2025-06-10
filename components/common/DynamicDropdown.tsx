@@ -21,6 +21,7 @@ const DynamicDropdown: React.FC<DynamicDropdownProps> = ({
     icon = <MoreOutlined />,
     className = 'text-2xl',
 }) => {
+    console.log("DynamicDropdown items:", items);
     const filteredItems = items.filter((item) => item.show !== false);
 
     const menuProps: MenuProps = {
