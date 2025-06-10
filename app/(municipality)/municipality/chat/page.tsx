@@ -4,6 +4,7 @@ import { generatePageMetadata } from '@/lib/metadata';
 import { getChatHistyory, getMessages } from '@/app/actions';
 import { ComplaintsPaginationBody } from '@/types';
 import ChatList from '@/components/chat/list';
+import AuthErrorHandler from '@/components/AuthErrorHandler';
 
 export const dynamic = 'force-dynamic';
 
@@ -38,10 +39,13 @@ export default async function Page({
 
     return (
         <PageContainer>
-            {response && (
+            <AuthErrorHandler
+                error={!response?.success ? response : undefined}
+            />
+            {response?.success && response.data && (
                 <ChatList
-                    chats={response}
-                    messages={messagesResponse?.messageGroups || []}
+                    chats={response.data}
+                    messages={messagesResponse?.data?.messageGroups || []}
                     breadcrumb={breadcrumb}
                     chatId={chatId}
                 />

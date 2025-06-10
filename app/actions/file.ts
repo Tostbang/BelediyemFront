@@ -1,5 +1,6 @@
 "use server"
 import axiosInstance from "@/utils/axios";
+import { handleApiError } from "@/utils/errorHandler";
 import { validateBase64Size } from "@/utils/fileUtils";
 
 export const uploadImage = async (formData: FormData) => {
@@ -57,12 +58,6 @@ export const uploadImage = async (formData: FormData) => {
             path: response.data.url
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Görsel yüklenemedi.',
-            path: ''
-        };
+        return handleApiError(error);
     }
 }

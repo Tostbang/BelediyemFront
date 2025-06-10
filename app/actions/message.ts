@@ -1,7 +1,8 @@
 "use server";
 
-import { ChatHistoryResponse, MessagesResponse, PaginationBody } from "@/types";
+import { ApiResponseT, ChatHistoryResponse, MessagesResponse, PaginationBody } from "@/types";
 import axiosInstance from "@/utils/axios";
+import { handleApiError } from "@/utils/errorHandler";
 
 export const sendMessage = async (formData: FormData) => {
     try {
@@ -25,53 +26,40 @@ export const sendMessage = async (formData: FormData) => {
             ...payload,
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Mesaj güncellenemedi.',
-        };
+        return handleApiError(error);
     }
 }
 
-export const getMessages = async (complaintId: string) => {
+export const getMessages = async (complaintId: string): Promise<ApiResponseT<MessagesResponse>> => {
     try {
         if (!complaintId) {
-            return {
-                success: false,
-                message: "",
-                code: "400",
-                errors: 'Şikayet ID boş olamaz.',
-                messageGroups: []
-            } as MessagesResponse;
+            return { success: false, errors: "Şikayet Id boş olamaz" };
         }
 
         const response = await axiosInstance.get(`message/getmessages?complaintId=${complaintId}`);
 
-        return response.data as MessagesResponse;
+        return {
+            success: true,
+            data: response.data as MessagesResponse
+        }
 
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            code: "400",
-            errors: error instanceof Error ? error.message : 'Mesaj alınamadı.',
-            messageGroups: []
-        } as MessagesResponse;
+        return handleApiError(error);
     }
 }
 
-export const getChatHistyory = async (body: PaginationBody) => {
+export const getChatHistyory = async (body: PaginationBody): Promise<ApiResponseT<ChatHistoryResponse>> => {
     try {
         const response = await axiosInstance.post('message/getcomplaintsummaries', {
             pageNumber: body.pageNumber - 1,
             pageSize: body.pageSize,
         });
 
-        return response.data as ChatHistoryResponse
+        return {
+            success: true,
+            data: response.data as ChatHistoryResponse
+        }
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }

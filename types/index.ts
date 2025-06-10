@@ -59,7 +59,7 @@ export type ApiResponse = {
 export type ApiResponseT<T> = {
     data?: T;
     success: boolean;
-    errors?: string;
+    errors?: string ;
     status?: string;
 };
 
