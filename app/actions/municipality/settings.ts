@@ -1,18 +1,22 @@
 "use server"
-import { DevicesResponse, FAQDetail, FAQResponse, InfoMuni } from "@/types";
+import { ApiResponseT, DevicesResponse, FAQDetail, FAQResponse, InfoMuni } from "@/types";
 import axiosInstance from "@/utils/axios";
 
 import { validateBase64Size } from "@/utils/fileUtils";
 import { uploadImage } from "../file";
+import { handleApiError } from "@/utils/errorHandler";
 
-export const getInfoMuni = async () => {
+export const getInfoMuni = async (): Promise<ApiResponseT<InfoMuni>> => {
     try {
         const response = await axiosInstance.get('municipality/getinfo');
 
-        return response.data as InfoMuni
+        return {
+            success: true,
+            data: response.data as InfoMuni
+        };
+
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
@@ -72,12 +76,7 @@ export const updateInfoMuni = async (formData: FormData) => {
             ...payload,
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Bilgiler güncellenemedi.',
-        };
+        return handleApiError(error);
     }
 }
 
@@ -110,12 +109,7 @@ export const changePasswordMuni = async (formData: FormData) => {
             ...payload,
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Şifre güncellenemedi.',
-        };
+        return handleApiError(error);
     }
 }
 
@@ -130,23 +124,20 @@ export const sendResetRequestMuni = async () => {
         };
 
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Şifre sıfırlama isteği gönderilemedi.',
-        };
+        return handleApiError(error);
     }
 }
 
-export const getDevicesMuni = async () => {
+export const getDevicesMuni = async (): Promise<ApiResponseT<DevicesResponse>> => {
     try {
         const response = await axiosInstance.get('municipality/getalldevice');
 
-        return response.data as DevicesResponse
+        return {
+            success: true,
+            data: response.data as DevicesResponse
+        };
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
@@ -160,34 +151,34 @@ export const closeDeviceMuni = async (id: string) => {
             errors: [],
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Oturum kapatılamadı.',
-        };
+        return handleApiError(error);
     }
 }
 
-export const getFAQsMuni = async () => {
+export const getFAQsMuni = async (): Promise<ApiResponseT<FAQResponse>> => {
     try {
         const response = await axiosInstance.get('municipality/getfrequentlyaskedquestions');
 
-        return response.data as FAQResponse
+        return {
+            success: true,
+            data: response.data as FAQResponse
+        };
+
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
-export const getFAQByIdMuni = async (id: string) => {
+export const getFAQByIdMuni = async (id: string): Promise<ApiResponseT<FAQDetail>> => {
     try {
         const response = await axiosInstance.get(`municipality/getfrequentlyaskedquestiondetail?faqId=${id}`);
 
-        return response.data as FAQDetail
+        return {
+            success: true,
+            data: response.data as FAQDetail
+        };
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
@@ -216,12 +207,7 @@ export const addFAQMuni = async (formData: FormData) => {
             ...payload,
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Sıkça Sorulan Sorular eklenemedi.',
-        };
+        return handleApiError(error);
     }
 }
 
@@ -250,12 +236,7 @@ export const updateFAQMuni = async (formData: FormData) => {
             ...payload,
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Sıkça Sorulan Sorular güncellenemedi.',
-        };
+        return handleApiError(error);
     }
 }
 
@@ -269,11 +250,6 @@ export const deleteFAQMuni = async (id: string) => {
             errors: [],
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Sıkça Sorulan Sorular silinemedi.',
-        };
+        return handleApiError(error);
     }
 }

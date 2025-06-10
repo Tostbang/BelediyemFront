@@ -4,6 +4,7 @@ import { generatePageMetadata } from '@/lib/metadata';
 import { getCitizenMuni } from '@/app/actions';
 import { PaginationBody } from '@/types';
 import CitizenList from '@/components/citizen/list';
+import AuthErrorHandler from '@/components/AuthErrorHandler';
 
 export const dynamic = 'force-dynamic';
 
@@ -38,8 +39,11 @@ export default async function Page({
 
     return (
         <PageContainer>
-            {response && (
-                <CitizenList users={response} breadcrumb={breadcrumb} />
+            <AuthErrorHandler
+                error={!response?.success ? response : undefined}
+            />
+            {response?.success && response.data && (
+                <CitizenList users={response.data} breadcrumb={breadcrumb} />
             )}
         </PageContainer>
     );

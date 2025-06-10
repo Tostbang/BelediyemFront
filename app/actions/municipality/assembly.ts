@@ -1,30 +1,36 @@
 "use server"
 
-import { PaginationBody, AssemblyDetailResponse, AssemblyResponse } from "@/types";
+import { PaginationBody, AssemblyDetailResponse, AssemblyResponse, ApiResponseT } from "@/types";
 import axiosInstance from "@/utils/axios";
+import { handleApiError } from "@/utils/errorHandler";
 
-export const getAssembliesMuni = async (body: PaginationBody) => {
+export const getAssembliesMuni = async (body: PaginationBody): Promise<ApiResponseT<AssemblyResponse>> => {
     try {
         const response = await axiosInstance.post('municipality/listmunicipalityassemblyarea', {
             pageNumber: body.pageNumber - 1,
             pageSize: body.pageSize
         });
 
-        return response.data as AssemblyResponse
+        return {
+            success: true,
+            data: response.data as AssemblyResponse
+        }
+
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
-export const getAssemblyByIdMuni = async (id: string) => {
+export const getAssemblyByIdMuni = async (id: string): Promise<ApiResponseT<AssemblyDetailResponse>> => {
     try {
         const response = await axiosInstance.get(`municipality/getassemblyareasdetail?assemblyAreaId=${id}`);
 
-        return response.data as AssemblyDetailResponse
+        return {
+            success: true,
+            data: response.data as AssemblyDetailResponse
+        }
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
@@ -56,12 +62,7 @@ export const addAssemblyMuni = async (formData: FormData) => {
             ...payload,
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Toplanma alanı içeriği eklenemedi.',
-        };
+        return handleApiError(error);
     }
 }
 
@@ -96,12 +97,7 @@ export const updateAssemblyMuni = async (formData: FormData) => {
             ...payload,
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Toplanma alanı içeriği güncellenemedi.',
-        };
+        return handleApiError(error);
     }
 }
 
@@ -115,11 +111,6 @@ export const deleteAssemblyMuni = async (id: string) => {
             errors: [],
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Toplanma alanı içeriği silinemedi.',
-        };
+        return handleApiError(error);
     }
 }

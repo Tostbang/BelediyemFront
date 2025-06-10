@@ -1,11 +1,12 @@
 "use server";
 
-import { AnnouncementDetailResponse, AnnouncementPaginationBody, AnnouncementResponse } from "@/types";
+import { AnnouncementDetailResponse, AnnouncementPaginationBody, AnnouncementResponse, ApiResponseT } from "@/types";
 import axiosInstance from "@/utils/axios";
 import { validateBase64Size } from "@/utils/fileUtils";
 import { uploadImage } from "../file";
+import { handleApiError } from "@/utils/errorHandler";
 
-export const getAnnsMuni = async (body: AnnouncementPaginationBody) => {
+export const getAnnsMuni = async (body: AnnouncementPaginationBody): Promise<ApiResponseT<AnnouncementResponse>> => {
     try {
         const response = await axiosInstance.post('municipality/getallannouncements', {
             pageNumber: body.pageNumber - 1,
@@ -15,21 +16,25 @@ export const getAnnsMuni = async (body: AnnouncementPaginationBody) => {
             endDate: body.endDate || undefined,
         });
 
-        return response.data as AnnouncementResponse;
+        return {
+            success: true,
+            data: response.data as AnnouncementResponse
+        }
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
-export const getAnnByIdMuni = async (id: string) => {
+export const getAnnByIdMuni = async (id: string): Promise<ApiResponseT<AnnouncementDetailResponse>> => {
     try {
         const response = await axiosInstance.get(`municipality/getannouncementdetail?announcementId=${id}`);
 
-        return response.data as AnnouncementDetailResponse;
+        return {
+            success: true,
+            data: response.data as AnnouncementDetailResponse
+        }
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
@@ -82,12 +87,7 @@ export const addAnnfMuni = async (formData: FormData) => {
             ...payload,
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Etkinlik eklenemedi.',
-        };
+        return handleApiError(error);
     }
 }
 
@@ -141,12 +141,7 @@ export const updateAnnMuni = async (formData: FormData) => {
             ...payload,
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Etkinlik bilgileri güncellenemedi.',
-        };
+        return handleApiError(error);
     }
 }
 
@@ -165,11 +160,6 @@ export const deleteAnnMuni = async (id: string) => {
         };
     }
     catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Etkinlik silinemedi.',
-        };
+        return handleApiError(error);
     }
 }

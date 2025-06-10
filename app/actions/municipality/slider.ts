@@ -1,12 +1,13 @@
 "use server"
 
-import { ApiResponse, PaginationBody, SliderDetailResponse, SliderResponse } from "@/types";
+import { ApiResponse, ApiResponseT, PaginationBody, SliderDetailResponse, SliderResponse } from "@/types";
 import { apiFetch } from "@/utils/api";
 import { validateBase64Size } from "@/utils/fileUtils";
 import { uploadImage } from "../file";
 import axiosInstance from "@/utils/axios";
+import { handleApiError } from "@/utils/errorHandler";
 
-export const getSlidersMuni = async (body: PaginationBody) => {
+export const getSlidersMuni = async (body: PaginationBody): Promise<ApiResponseT<SliderResponse>> => {
     try {
         const payload = {
             pageNumber: body.pageNumber - 1,
@@ -15,22 +16,26 @@ export const getSlidersMuni = async (body: PaginationBody) => {
 
         const response = await axiosInstance.post('municipality/listmunicipalityslider', payload);
 
-        return response.data as SliderResponse;
+        return {
+            success: true,
+            data: response.data as SliderResponse
+        }
 
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
-export const getSliderByIdMuni = async (id: string) => {
+export const getSliderByIdMuni = async (id: string): Promise<ApiResponseT<SliderDetailResponse>> => {
     try {
         const response = await axiosInstance.get(`municipality/getsliderdetail?sliderId=${id}`);
 
-        return response.data as SliderDetailResponse
+        return {
+            success: true,
+            data: response.data as SliderDetailResponse
+        }
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
@@ -81,12 +86,7 @@ export const addSliderMuni = async (formData: FormData) => {
             ...payload,
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Slayt içeriği eklenemedi.',
-        };
+        return handleApiError(error);
     }
 }
 
@@ -123,8 +123,6 @@ export const updateSliderMuni = async (formData: FormData) => {
             imagePath = uploadResult.path ?? '';
         }
 
-
-
         const payload = {
             sliderId: id,
             url,
@@ -144,12 +142,7 @@ export const updateSliderMuni = async (formData: FormData) => {
             ...payload,
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Slayt içeriği güncellenemedi.',
-        };
+        return handleApiError(error);
     }
 }
 
@@ -170,11 +163,6 @@ export const deleteSliderMuni = async (id: string) => {
             errors: [],
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Slayt içeriği silinemedi.',
-        };
+        return handleApiError(error);
     }
 }

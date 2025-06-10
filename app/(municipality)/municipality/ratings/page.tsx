@@ -4,6 +4,7 @@ import { generatePageMetadata } from '@/lib/metadata';
 import { getRatingsMuni } from '@/app/actions';
 import { PaginationBody } from '@/types';
 import RatingList from '@/components/ratings/list';
+import AuthErrorHandler from '@/components/AuthErrorHandler';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,8 +31,11 @@ export default async function Page({
 
     return (
         <PageContainer>
-            {response && (
-                <RatingList ratings={response || []} breadcrumb={breadcrumb} />
+            <AuthErrorHandler
+                error={!response?.success ? response : undefined}
+            />
+            {response?.success && response.data && (
+                <RatingList ratings={response.data} breadcrumb={breadcrumb} />
             )}
         </PageContainer>
     );

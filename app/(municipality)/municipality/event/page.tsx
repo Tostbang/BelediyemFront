@@ -4,6 +4,7 @@ import { generatePageMetadata } from '@/lib/metadata';
 import { AnnouncementPaginationBody } from '@/types';
 import { getAnnsMuni } from '@/app/actions/municipality/ann';
 import EventList from '@/components/event/list';
+import AuthErrorHandler from '@/components/AuthErrorHandler';
 
 export const dynamic = 'force-dynamic';
 
@@ -43,8 +44,11 @@ export default async function Page({
 
     return (
         <PageContainer>
-            {response && (
-                <EventList events={response} breadcrumb={breadcrumb} />
+            <AuthErrorHandler
+                error={!response?.success ? response : undefined}
+            />
+            {response?.success && response.data && (
+                <EventList events={response.data} breadcrumb={breadcrumb} />
             )}
         </PageContainer>
     );

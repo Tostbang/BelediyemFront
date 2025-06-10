@@ -1,7 +1,8 @@
 "use server"
 
-import { ApiResponse, CustomJwtPayload, DashboardStatisticsMuni, LoginResponse, PaginationBody, ReportsMuniResponse } from "@/types";
+import { ApiResponse, ApiResponseT, CustomJwtPayload, DashboardStatisticsMuni, LoginResponse, PaginationBody, ReportsMuniResponse } from "@/types";
 import axiosInstance from "@/utils/axios";
+import { handleApiError } from "@/utils/errorHandler";
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
 
@@ -43,12 +44,7 @@ export const handleLoginMun = async (formData: FormData) => {
 
         return { success: true, message: data.message || 'Giriş başarılı, yönlendiriliyorsunuz.', errors: [], email, password };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Giriş yapılamadı.',
-        };
+        return handleApiError(error);
     }
 }
 
@@ -67,12 +63,7 @@ export const handleForgetPasswordMun = async (formData: FormData) => {
 
         return { success: true, message: data.message || 'Şifre sıfırlama bağlantısı gönderildi.', errors: [] };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Şifre sıfırlama bağlantısı gönderilemedi.',
-        };
+        return handleApiError(error);
     }
 }
 
@@ -83,36 +74,36 @@ export const handleLogoutMuni = async () => {
         return { success: true, message: data.message || 'Çıkış yapıldı.', errors: [] };
 
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Çıkış yapılamadı.',
-        };
+        return handleApiError(error);
     }
 }
 
-export const getDashboardMuni = async () => {
+export const getDashboardMuni = async (): Promise<ApiResponseT<DashboardStatisticsMuni>> => {
     try {
         const response = await axiosInstance.get('municipality/getdashboardstatistics');
-        return response.data as DashboardStatisticsMuni;
+        return {
+            success: true,
+            data: response.data as DashboardStatisticsMuni
+        };
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
-export const getReportsMuni = async (body: PaginationBody) => {
+export const getReportsMuni = async (body: PaginationBody): Promise<ApiResponseT<ReportsMuniResponse>> => {
     try {
         const response = await axiosInstance.post('municipality/getallreports', {
             pageNumber: body.pageNumber - 1,
             pageSize: body.pageSize
         });
 
-        return response.data as ReportsMuniResponse;
+        return {
+            success: true,
+            data: response.data as ReportsMuniResponse
+        };
+
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
@@ -123,12 +114,7 @@ export const createReportMuni = async () => {
 
         return { success: true, message: data.message || 'Rapor oluşturuldu.', errors: [] };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Rapor oluşturulamadı.',
-        };
+        return handleApiError(error);
     }
 }
 
@@ -143,11 +129,6 @@ export const updateLastSeenMuni = async () => {
             errors: [],
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Son görülme güncellenemedi.',
-        };
+        return handleApiError(error);
     }
 }

@@ -8,6 +8,7 @@ import { RoleType, StaffUser } from '@/types';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import { useRouter } from 'next/navigation';
 import { departmans } from '@/data/departmans';
+import AuthErrorHandler from '../AuthErrorHandler';
 
 type AttendStaffModalProps = {
     isOpen: boolean;
@@ -40,8 +41,16 @@ export default function AttendStaffModal({
             try {
                 const response = await getStaffsAllMuni(selectedDepartment);
 
-                if (response && response.municipalStaff) {
-                    setStaffList(response.municipalStaff);
+                if (response.status === 'UNAUTHORIZED') {
+                    return (
+                        <AuthErrorHandler
+                            error={!response?.success ? response : undefined}
+                        />
+                    );
+                }
+
+                if (response && response.data?.municipalStaff) {
+                    setStaffList(response.data.municipalStaff);
                 }
             } catch (error) {
                 console.error('Error fetching staff:', error);

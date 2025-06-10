@@ -1,32 +1,37 @@
 "use server"
 
-import { PaginationBody, VenueDetailResponse, VenueResponse } from "@/types";
+import { ApiResponseT, PaginationBody, VenueDetailResponse, VenueResponse } from "@/types";
 import axiosInstance from "@/utils/axios";
 import { validateBase64Size } from "@/utils/fileUtils";
 import { uploadImage } from "../file";
+import { handleApiError } from "@/utils/errorHandler";
 
-export const getVenuesMuni = async (body: PaginationBody) => {
+export const getVenuesMuni = async (body: PaginationBody): Promise<ApiResponseT<VenueResponse>> => {
     try {
         const response = await axiosInstance.post('municipality/getallvenue', {
             pageNumber: body.pageNumber - 1,
             pageSize: body.pageSize
         });
 
-        return response.data as VenueResponse
+        return {
+            success: true,
+            data: response.data as VenueResponse
+        }
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
-export const getVenueByIdMuni = async (id: string) => {
+export const getVenueByIdMuni = async (id: string): Promise<ApiResponseT<VenueDetailResponse>> => {
     try {
         const response = await axiosInstance.get(`municipality/getvenuedetail?venueId=${id}`);
 
-        return response.data as VenueDetailResponse
+        return {
+            success: true,
+            data: response.data as VenueDetailResponse
+        };
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
@@ -83,12 +88,7 @@ export const addVenueMuni = async (formData: FormData) => {
             ...payload,
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Mekan içeriği eklenemedi.',
-        };
+        return handleApiError(error);
     }
 }
 
@@ -148,12 +148,7 @@ export const updateVenueMuni = async (formData: FormData) => {
             ...payload,
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Mekan içeriği güncellenemedi.',
-        };
+        return handleApiError(error);
     }
 }
 
@@ -167,11 +162,6 @@ export const deleteVenueMuni = async (id: string) => {
             errors: [],
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Mekan içeriği silinemedi.',
-        };
+        return handleApiError(error);
     }
 }

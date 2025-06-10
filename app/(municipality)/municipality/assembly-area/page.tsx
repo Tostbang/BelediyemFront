@@ -4,6 +4,7 @@ import { generatePageMetadata } from '@/lib/metadata';
 import { PaginationBody } from '@/types';
 import { getAssembliesMuni } from '@/app/actions';
 import AssemblyList from '@/components/assembly-area/list';
+import AuthErrorHandler from '@/components/AuthErrorHandler';
 
 export const dynamic = 'force-dynamic';
 
@@ -31,9 +32,12 @@ export default async function Page({
 
     return (
         <PageContainer>
-            {response && (
+            <AuthErrorHandler
+                error={!response?.success ? response : undefined}
+            />
+            {response?.success && response.data && (
                 <AssemblyList
-                    assemblies={response || []}
+                    assemblies={response.data}
                     type="municipality"
                     breadcrumb={breadcrumb}
                 />

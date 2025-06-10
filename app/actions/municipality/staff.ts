@@ -1,9 +1,10 @@
 "use server";
 
-import { CitizenUserDetailResponse, CitizenUserResponse, PaginationBody, PasswordResetResponse, StaffAttendedComplaintsPaginationBody, ComplaintsResponse, StaffPaginationBody, StaffUserDetailResponse, StaffUserListResponse } from "@/types";
+import { CitizenUserDetailResponse, CitizenUserResponse, PaginationBody, PasswordResetResponse, StaffAttendedComplaintsPaginationBody, ComplaintsResponse, StaffPaginationBody, StaffUserDetailResponse, StaffUserListResponse, ApiResponseT } from "@/types";
 import axiosInstance from "@/utils/axios";
+import { handleApiError } from "@/utils/errorHandler";
 
-export const getStaffsMuni = async (body: StaffPaginationBody) => {
+export const getStaffsMuni = async (body: StaffPaginationBody): Promise<ApiResponseT<StaffUserListResponse>> => {
     try {
         const response = await axiosInstance.post('municipality/municipalitystafflist', {
             pageNumber: body.pageNumber - 1,
@@ -12,32 +13,39 @@ export const getStaffsMuni = async (body: StaffPaginationBody) => {
             searchText: body.searchText || '',
         });
 
-        return response.data as StaffUserListResponse
+        return {
+            success: true,
+            data: response.data as StaffUserListResponse
+        }
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
-export const getStaffsAllMuni = async (id: string) => {
+export const getStaffsAllMuni = async (id: string): Promise<ApiResponseT<StaffUserListResponse>> => {
     try {
         const response = await axiosInstance.get(`municipality/listdepartmenttostaff?municipalStaffId=${id}`);
 
-        return response.data as StaffUserListResponse
+        return {
+            success: true,
+            data: response.data as StaffUserListResponse
+        }
+
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
-export const getStaffByIdMuni = async (id: string) => {
+export const getStaffByIdMuni = async (id: string): Promise<ApiResponseT<StaffUserDetailResponse>> => {
     try {
         const response = await axiosInstance.get(`municipality/municipalitystaffdetail?staffid=${id}`);
 
-        return response.data as StaffUserDetailResponse
+        return {
+            success: true,
+            data: response.data as StaffUserDetailResponse
+        }
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
@@ -72,12 +80,7 @@ export const addStaffMuni = async (formData: FormData) => {
             ...payload,
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Personel eklenemedi.',
-        };
+        return handleApiError(error);
     }
 }
 
@@ -116,12 +119,7 @@ export const updateStaffMuni = async (formData: FormData) => {
             ...payload,
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Personel bilgileri güncellenemedi.',
-        };
+        return handleApiError(error);
     }
 }
 
@@ -139,26 +137,23 @@ export const updateStaffStatusMuni = async (id: string, status: boolean) => {
         };
     }
     catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Personel durumu güncellenemedi.',
-        };
+        return handleApiError(error);
     }
 }
 
-export const getStaffPWResetRequestMuni = async (body: PaginationBody) => {
+export const getStaffPWResetRequestMuni = async (body: PaginationBody): Promise<ApiResponseT<PasswordResetResponse>> => {
     try {
         const response = await axiosInstance.post('municipality/municipalitystaffresetrequestlist', {
             pageNumber: body.pageNumber - 1,
             pageSize: body.pageSize
         });
 
-        return response.data as PasswordResetResponse
+        return {
+            success: true,
+            data: response.data as PasswordResetResponse
+        }
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
@@ -174,16 +169,11 @@ export const sendStaffPWMuni = async (id: string) => {
             errors: [],
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Yeni şifre gönderilemedi.',
-        };
+        return handleApiError(error);
     }
 }
 
-export const getStaffComplaintsMuni = async (body: StaffAttendedComplaintsPaginationBody) => {
+export const getStaffComplaintsMuni = async (body: StaffAttendedComplaintsPaginationBody): Promise<ApiResponseT<ComplaintsResponse>> => {
     try {
         const response = await axiosInstance.post('municipality/getstaffcomplaints', {
             municipalityStaffId: body.municipalityStaffId || undefined,
@@ -195,14 +185,16 @@ export const getStaffComplaintsMuni = async (body: StaffAttendedComplaintsPagina
             endDate: body.endDate || undefined,
         });
 
-        return response.data as ComplaintsResponse
+        return {
+            success: true,
+            data: response.data as ComplaintsResponse
+        }
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
-export const getCitizenMuni = async (body: PaginationBody) => {
+export const getCitizenMuni = async (body: PaginationBody): Promise<ApiResponseT<CitizenUserResponse>> => {
     try {
         const response = await axiosInstance.post('municipality/citizenlist', {
             pageNumber: body.pageNumber - 1,
@@ -210,20 +202,25 @@ export const getCitizenMuni = async (body: PaginationBody) => {
             searchText: body.searchText || '',
         });
 
-        return response.data as CitizenUserResponse
+        return {
+            success: true,
+            data: response.data as CitizenUserResponse
+        }
+
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
-export const getCitizenByIdMuni = async (id: string) => {
+export const getCitizenByIdMuni = async (id: string): Promise<ApiResponseT<CitizenUserDetailResponse>> => {
     try {
         const response = await axiosInstance.get(`municipality/citizendetail?citizenid=${id}`);
 
-        return response.data as CitizenUserDetailResponse
+        return {
+            success: true,
+            data: response.data as CitizenUserDetailResponse
+        }
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }

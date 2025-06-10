@@ -4,6 +4,7 @@ import { generatePageMetadata } from '@/lib/metadata';
 import { getSlidersMuni } from '@/app/actions';
 import SlaytList from '@/components/slider/list';
 import { PaginationBody } from '@/types';
+import AuthErrorHandler from '@/components/AuthErrorHandler';
 
 export const dynamic = 'force-dynamic';
 
@@ -24,16 +25,19 @@ export default async function Page({
         pageNumber,
         pageSize,
     };
-    
+
     const response = await getSlidersMuni(paginationBody);
 
     const breadcrumb = [{ label: 'Slayt Listesi' }];
 
     return (
         <PageContainer>
-            {response && (
+            <AuthErrorHandler
+                error={!response?.success ? response : undefined}
+            />
+            {response?.success && response.data && (
                 <SlaytList
-                    sliders={response || []}
+                    sliders={response.data}
                     type="municipality"
                     breadcrumb={breadcrumb}
                 />

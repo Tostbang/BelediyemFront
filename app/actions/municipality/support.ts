@@ -1,9 +1,10 @@
 "use server"
 
-import { PaginationBody, SupportDetailResponse, SupportResponse } from "@/types";
+import { ApiResponseT, PaginationBody, SupportDetailResponse, SupportResponse } from "@/types";
 import axiosInstance from "@/utils/axios";
+import { handleApiError } from "@/utils/errorHandler";
 
-export const getSupportsMuni = async (body: PaginationBody) => {
+export const getSupportsMuni = async (body: PaginationBody): Promise<ApiResponseT<SupportResponse>> => {
     try {
         const response = await axiosInstance.post('municipality/municipalitygetsupports', {
             pageNumber: body.pageNumber - 1,
@@ -11,21 +12,25 @@ export const getSupportsMuni = async (body: PaginationBody) => {
             searchText: body.searchText || ''
         });
 
-        return response.data as SupportResponse
+        return {
+            success: true,
+            data: response.data as SupportResponse
+        }
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
-export const getSupporByIdMuni = async (id: string) => {
+export const getSupporByIdMuni = async (id: string): Promise<ApiResponseT<SupportDetailResponse>> => {
     try {
         const response = await axiosInstance.get(`municipality/municipalitygetsupportdetail?supportId=${id}`);
 
-        return response.data as SupportDetailResponse;
+        return {
+            success: true,
+            data: response.data as SupportDetailResponse
+        };
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
@@ -41,8 +46,7 @@ export const answerToSupportMuni = async (id: string, message: string) => {
             message: response.data.message || 'Destek talebine cevap verildi.'
         };
     } catch (error) {
-        console.error(error);
-        return { success: false, message: 'Cevap verilirken bir hata oluştu.' };
+        return handleApiError(error);
     }
 }
 
@@ -55,8 +59,7 @@ export const forwardSupportToAdminMuni = async (id: string) => {
             message: response.data.message || 'Destek talebi admine başarıyla yönlendirildi.'
         };
     } catch (error) {
-        console.error(error);
-        return { success: false, message: 'Destek talebi admine yönlendirilirken bir hata oluştu.' };
+        return handleApiError(error);
     }
 }
 
@@ -69,7 +72,6 @@ export const rejecetSupportMuni = async (id: string) => {
             message: response.data.message || 'Destek talebi reddedildi.'
         };
     } catch (error) {
-        console.error(error);
-        return { success: false, message: 'Destek talebi reddedilirken bir hata oluştu.' };
+        return handleApiError(error);
     }
 }

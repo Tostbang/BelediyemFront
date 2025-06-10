@@ -5,6 +5,7 @@ import { isPositiveNumber } from '@/utils';
 import { getFAQByIdMuni } from '@/app/actions';
 import AlertMessage from '@/components/ui/AlertMessage';
 import FaqForm from '@/components/faq/form';
+import AuthErrorHandler from '@/components/AuthErrorHandler';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,6 +31,7 @@ export default async function Page({
     let id = null;
     let isNewRecord = true;
     let errorMessage = null;
+    let response = null;
 
     if (resolvedParams.id !== 'new' && isPositiveNumber(resolvedParams.id)) {
         id = resolvedParams.id;
@@ -39,16 +41,29 @@ export default async function Page({
     let detail = null;
     if (id) {
         try {
-            detail = await getFAQByIdMuni(id);
-            if (!detail) {
-                errorMessage = `SSS bulunamadı: #${id} ID'li kayıt mevcut değil veya erişim yetkiniz yok.`;
-                isNewRecord = true;
+            response = await getFAQByIdMuni(id);
+            if (response.success) {
+                detail = response.data;
+                if (
+                    detail?.code === 'NOT_FOUND' ||
+                    detail?.code === '400' ||
+                    detail?.code === '404'
+                ) {
+                    errorMessage = `SSS bulunamadı: #${id} ID'li kayıt mevcut değil veya erişim yetkiniz yok.`;
+                }
+            } else {
                 id = null;
+                if (response.status === 'UNAUTHORIZED') {
+                    return (
+                        <AuthErrorHandler
+                            error={!response?.success ? response : undefined}
+                        />
+                    );
+                }
             }
         } catch (error) {
             console.log('SSS detayı alınamadı:', error);
             errorMessage = `SSS detayı alınamadı: ${error instanceof Error ? error.message : 'Bilinmeyen bir hata oluştu'}`;
-            isNewRecord = true;
             id = null;
         }
     }

@@ -4,6 +4,7 @@ import { generatePageMetadata } from '@/lib/metadata';
 import { getSupportsMuni } from '@/app/actions';
 import { PaginationBody } from '@/types';
 import SupportList from '@/components/support/list';
+import AuthErrorHandler from '@/components/AuthErrorHandler';
 
 export const dynamic = 'force-dynamic';
 
@@ -37,9 +38,12 @@ export default async function Page({
 
     return (
         <PageContainer>
-            {response && (
+            <AuthErrorHandler
+                error={!response?.success ? response : undefined}
+            />
+            {response?.success && response.data && (
                 <SupportList
-                    supports={response || []}
+                    supports={response.data}
                     type="municipality"
                     breadcrumb={breadcrumb}
                 />

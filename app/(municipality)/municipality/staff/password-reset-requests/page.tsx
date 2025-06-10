@@ -4,6 +4,7 @@ import { generatePageMetadata } from '@/lib/metadata';
 import { getStaffPWResetRequestMuni } from '@/app/actions';
 import { PaginationBody } from '@/types';
 import PWResetList from '@/components/muni/resetPwList';
+import AuthErrorHandler from '@/components/AuthErrorHandler';
 
 export const dynamic = 'force-dynamic';
 
@@ -33,9 +34,12 @@ export default async function Page({
 
     return (
         <PageContainer>
-            {response && (
+            <AuthErrorHandler
+                error={!response?.success ? response : undefined}
+            />
+            {response?.success && response.data && (
                 <PWResetList
-                    requests={response || []}
+                    requests={response.data}
                     type="municipality"
                     breadcrumb={breadcrumb}
                 />

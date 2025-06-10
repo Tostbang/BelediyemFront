@@ -5,6 +5,7 @@ import { isPositiveNumber } from '@/utils';
 import { getStaffByIdMuni } from '@/app/actions';
 import AlertMessage from '@/components/ui/AlertMessage';
 import StaffDetail from '@/components/staff/detail';
+import AuthErrorHandler from '@/components/AuthErrorHandler';
 
 export const dynamic = 'force-dynamic';
 
@@ -29,6 +30,7 @@ export default async function Page({
 
     let id = null;
     let errorMessage = null;
+    let response = null;
 
     if (resolvedParams.id !== 'new' && isPositiveNumber(resolvedParams.id)) {
         id = resolvedParams.id;
@@ -37,10 +39,25 @@ export default async function Page({
     let detail = null;
     if (id) {
         try {
-            detail = await getStaffByIdMuni(id);
-            if (!detail) {
-                errorMessage = `Personel bulunamadı: #${id} ID'li kayıt mevcut değil veya erişim yetkiniz yok.`;
+            response = await getStaffByIdMuni(id);
+            if (response.success) {
+                detail = response.data;
+                if (
+                    detail?.code === 'NOT_FOUND' ||
+                    detail?.code === '400' ||
+                    detail?.code === '404'
+                ) {
+                    errorMessage = `Personel bulunamadı: #${id} ID'li kayıt mevcut değil veya erişim yetkiniz yok.`;
+                }
+            } else {
                 id = null;
+                if (response.status === 'UNAUTHORIZED') {
+                    return (
+                        <AuthErrorHandler
+                            error={!response?.success ? response : undefined}
+                        />
+                    );
+                }
             }
         } catch (error) {
             console.log('Personel detayı alınamadı:', error);

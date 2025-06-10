@@ -1,32 +1,37 @@
 "use server"
 
-import { PaginationBody, FacilityDetailResponse, FacilityResponse } from "@/types";
+import { PaginationBody, FacilityDetailResponse, FacilityResponse, ApiResponseT } from "@/types";
 import axiosInstance from "@/utils/axios";
 import { validateBase64Size } from "@/utils/fileUtils";
 import { uploadImage } from "../file";
+import { handleApiError } from "@/utils/errorHandler";
 
-export const getFacilitiesMuni = async (body: PaginationBody) => {
+export const getFacilitiesMuni = async (body: PaginationBody): Promise<ApiResponseT<FacilityResponse>> => {
     try {
         const response = await axiosInstance.post('municipality/listmunicipalityfacility', {
             pageNumber: body.pageNumber - 1,
             pageSize: body.pageSize
         });
 
-        return response.data as FacilityResponse
+        return {
+            success: true,
+            data: response.data as FacilityResponse
+        }
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
-export const getFacilityByIdMuni = async (id: string) => {
+export const getFacilityByIdMuni = async (id: string): Promise<ApiResponseT<FacilityDetailResponse>> => {
     try {
         const response = await axiosInstance.get(`municipality/getfacilitydetail?facilityId=${id}`);
 
-        return response.data as FacilityDetailResponse
+        return {
+            success: true,
+            data: response.data as FacilityDetailResponse
+        }
     } catch (error) {
-        console.error(error);
-        return null;
+        return handleApiError(error);
     }
 }
 
@@ -86,12 +91,7 @@ export const addFacilityMuni = async (formData: FormData) => {
             ...payload,
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Tesis içeriği eklenemedi.',
-        };
+        return handleApiError(error);
     }
 }
 
@@ -155,12 +155,7 @@ export const updateFacilityMuni = async (formData: FormData) => {
             ...payload,
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Tesis içeriği güncellenemedi.',
-        };
+        return handleApiError(error);
     }
 }
 
@@ -174,11 +169,6 @@ export const deleteFacilityMuni = async (id: string) => {
             errors: [],
         };
     } catch (error) {
-        console.error(error);
-        return {
-            success: false,
-            message: "",
-            errors: error instanceof Error ? error.message : 'Tesis içeriği silinemedi.',
-        };
+        return handleApiError(error);
     }
 }

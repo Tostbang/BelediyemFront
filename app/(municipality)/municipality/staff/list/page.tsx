@@ -4,6 +4,7 @@ import { generatePageMetadata } from '@/lib/metadata';
 import { getStaffsMuni } from '@/app/actions';
 import { StaffPaginationBody } from '@/types';
 import StaffList from '@/components/staff/list';
+import AuthErrorHandler from '@/components/AuthErrorHandler';
 
 export const dynamic = 'force-dynamic';
 
@@ -40,8 +41,11 @@ export default async function Page({
 
     return (
         <PageContainer>
-            {response && (
-                <StaffList staffList={response} breadcrumb={breadcrumb} />
+            <AuthErrorHandler
+                error={!response?.success ? response : undefined}
+            />
+            {response?.success && response.data && (
+                <StaffList staffList={response.data} breadcrumb={breadcrumb} />
             )}
         </PageContainer>
     );

@@ -4,6 +4,7 @@ import { generatePageMetadata } from '@/lib/metadata';
 import { getVenuesMuni } from '@/app/actions';
 import { PaginationBody } from '@/types';
 import VenueList from '@/components/venue/list';
+import AuthErrorHandler from '@/components/AuthErrorHandler';
 
 export const dynamic = 'force-dynamic';
 
@@ -31,9 +32,12 @@ export default async function Page({
 
     return (
         <PageContainer>
-            {response && (
+            <AuthErrorHandler
+                error={!response?.success ? response : undefined}
+            />
+            {response?.success && response.data && (
                 <VenueList
-                    venues={response || []}
+                    venues={response.data}
                     type="municipality"
                     breadcrumb={breadcrumb}
                 />

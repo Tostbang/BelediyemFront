@@ -5,6 +5,7 @@ import { isPositiveNumber } from '@/utils';
 import { getVenueByIdMuni } from '@/app/actions';
 import AlertMessage from '@/components/ui/AlertMessage';
 import VenueForm from '@/components/venue/form';
+import AuthErrorHandler from '@/components/AuthErrorHandler';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,6 +31,7 @@ export default async function Page({
     let id = null;
     let isNewRecord = true;
     let errorMessage = null;
+    let response = null;
 
     if (resolvedParams.id !== 'new' && isPositiveNumber(resolvedParams.id)) {
         id = resolvedParams.id;
@@ -39,16 +41,29 @@ export default async function Page({
     let detail = null;
     if (id) {
         try {
-            detail = await getVenueByIdMuni(id);
-            if (!detail) {
-                errorMessage = `Mekan bulunamadı: #${id} ID'li kayıt mevcut değil veya erişim yetkiniz yok.`;
-                isNewRecord = true;
+            response = await getVenueByIdMuni(id);
+            if (response.success) {
+                detail = response.data;
+                if (
+                    detail?.code === 'NOT_FOUND' ||
+                    detail?.code === '400' ||
+                    detail?.code === '404'
+                ) {
+                    errorMessage = `Mekan bulunamadı: #${id} ID'li kayıt mevcut değil veya erişim yetkiniz yok.`;
+                }
+            } else {
                 id = null;
+                if (response.status === 'UNAUTHORIZED') {
+                    return (
+                        <AuthErrorHandler
+                            error={!response?.success ? response : undefined}
+                        />
+                    );
+                }
             }
         } catch (error) {
             console.log('Mekan detayı alınamadı:', error);
             errorMessage = `Mekan detayı alınamadı: ${error instanceof Error ? error.message : 'Bilinmeyen bir hata oluştu'}`;
-            isNewRecord = true;
             id = null;
         }
     }
