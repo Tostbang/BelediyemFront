@@ -59,7 +59,7 @@ export default async function Page({
     }
 
     const breadcrumb = [
-        { label: 'Destek Talebi Listesi', href: '/municipality/support' },
+        { label: 'Destek Talebi Listesi', href: '/adminmunicipality/support' },
         {
             label: 'Destek Talep Detayı',
         },
