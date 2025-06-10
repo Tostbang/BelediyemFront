@@ -2,7 +2,11 @@
 import React, { useState } from 'react';
 import { BreadcrumbItem, FAQResponse, RoleType } from '@/types';
 import ConfirmModal from '../modals/confirmModal';
-import { deleteFAQAdmin, deleteFAQMuni } from '@/app/actions';
+import {
+    deleteFAQAdmin,
+    deleteFAQMuni,
+    deleteFAQMuniAdmin,
+} from '@/app/actions';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import { useRouter } from 'next/navigation';
 import { Collapse } from 'antd';
@@ -40,6 +44,9 @@ export default function FaqList({
                 case 'municipality':
                     result = await deleteFAQMuni(selectedItem);
                     break;
+                case 'admin-muni':
+                    result = await deleteFAQMuniAdmin(selectedItem);
+                    break;
                 default:
                     result = {
                         success: false,
@@ -65,6 +72,8 @@ export default function FaqList({
             break;
         case 'municipality':
             url = '/municipality/faq';
+        case 'admin-muni':
+            url = '/adminmunicipality/faq';
             break;
         default:
             url = '';

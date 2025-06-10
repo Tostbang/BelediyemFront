@@ -27,3 +27,4 @@ export * from '@/app/actions/staff/complaints';
 
 // admin municipality
 export * from '@/app/actions/adminmunicipality/settings';
+export * from '@/app/actions/adminmunicipality/faq';

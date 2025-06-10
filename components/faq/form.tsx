@@ -6,8 +6,10 @@ import { BreadcrumbItem, FAQDetail, RoleType } from '@/types';
 import {
     addFAQAdmin,
     addFAQMuni,
+    addFAQMuniAdmin,
     updateFAQAdmin,
     updateFAQMuni,
+    updateFAQMuniAdmin,
 } from '@/app/actions';
 import Breadcrumb from '../common/breadCrumb';
 
@@ -43,6 +45,9 @@ export default function FaqForm({
                 break;
             case 'municipality':
                 actionFunction = isEditing ? updateFAQMuni : addFAQMuni;
+                break;
+            case 'admin-muni':
+                actionFunction = isEditing ? updateFAQMuniAdmin : addFAQMuniAdmin;
                 break;
             default:
                 return {
