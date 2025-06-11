@@ -163,6 +163,18 @@ export default function ComplaintDetail({
         };
     }, []);
 
+    let url;
+    switch (type) {
+        case 'municipality':
+            url = '/municipality/complaint-request';
+            break;
+        case 'admin-muni':
+            url = '/adminmunicipality/complaint-request';
+            break;
+        default:
+            url = '';
+    }
+
     return (
         <>
             <Breadcrumb breadcrumb={breadcrumb} />
@@ -363,10 +375,10 @@ export default function ComplaintDetail({
                                 className="px-4 py-2 min-w-[200px] bg-blue-600 text-white rounded-lg hover:bg-blue-700 w-full md:w-auto cursor-pointer">
                                 Durum Değiştir
                             </button>
-                            {type === 'municipality' && (
+                            {type !== 'staff' && (
                                 <LinkButton
                                     title="Tüm Durumları Göster"
-                                    href={`/municipality/complaint-request/${id}/statuses`}
+                                    href={`${url}/${id}/statuses`}
                                     className="min-w-[200px]"
                                 />
                             )}
@@ -450,7 +462,7 @@ export default function ComplaintDetail({
                         <h2 className="text-xl font-semibold mb-6">
                             Personel Bilgileri
                         </h2>
-                        {type === 'municipality' && (
+                        {type !== 'staff' && (
                             <>
                                 <button
                                     onClick={() => setStaffModal(true)}

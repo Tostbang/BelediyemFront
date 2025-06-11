@@ -69,6 +69,9 @@ export default function ComplaintList({
         case 'staff':
             url = '/staff/complaint-request';
             break;
+        case 'admin-muni':
+            url = '/adminmunicipality/complaint-request';
+            break;
         default:
             url = '';
     }
@@ -131,7 +134,6 @@ export default function ComplaintList({
                 const status = complaintStatusType.find(
                     (item) => item.id === value
                 );
-
                 return (
                     <span
                         className={`${status ? status.bgColor : 'bg-gray-500'} p-1 px-4 rounded-2xl  text-white text-center w-fit`}>

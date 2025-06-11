@@ -96,7 +96,6 @@ export default function ComplaintStatusList({
     return (
         <>
             <Breadcrumb breadcrumb={breadcrumb} />
-
             <div className="flex flex-col items-center w-full mb-6">
                 <div className="w-full overflow-hidden bg-white rounded-lg p-6">
                     <div className="overflow-x-auto">
