@@ -1,8 +1,8 @@
 'use client';
 import React, { useState } from 'react';
-import { Ratings, RatingResponse, BreadcrumbItem } from '@/types';
+import { Ratings, RatingResponse, BreadcrumbItem, RoleType } from '@/types';
 import ConfirmModal from '../modals/confirmModal';
-import { approvedRatingMuni } from '@/app/actions';
+import { approvedRatingMuni, approvedRatingMuniAdmin } from '@/app/actions';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import { useRouter } from 'next/navigation';
 import { formatDateTime } from '@/utils';
@@ -15,9 +15,11 @@ import StatusBadge from '../common/StatusBadge';
 export default function RatingList({
     ratings,
     breadcrumb,
+    type,
 }: {
     ratings: RatingResponse;
     breadcrumb: BreadcrumbItem[];
+    type: RoleType;
 }) {
     const { pageNumber, pageSize, handlePageChange, handlePageSizeChange } =
         usePagination();
@@ -33,7 +35,21 @@ export default function RatingList({
 
     const handleConfirm = async () => {
         if (selectedItem) {
-            const result = await approvedRatingMuni(selectedItem);
+            let result;
+
+            switch (type) {
+                case 'municipality':
+                    result = await approvedRatingMuni(selectedItem);
+                    break;
+                case 'admin-muni':
+                    result = await approvedRatingMuniAdmin(selectedItem);
+                    break;
+                default:
+                    result = {
+                        success: false,
+                        message: 'Unsupported role type',
+                    };
+            }
 
             if (result.success) {
                 handleSuccess(result.message);

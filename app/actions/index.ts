@@ -29,3 +29,4 @@ export * from '@/app/actions/staff/complaints';
 export * from '@/app/actions/adminmunicipality/settings';
 export * from '@/app/actions/adminmunicipality/faq';
 export * from '@/app/actions/adminmunicipality/support';
+export * from '@/app/actions/adminmunicipality/ratings';

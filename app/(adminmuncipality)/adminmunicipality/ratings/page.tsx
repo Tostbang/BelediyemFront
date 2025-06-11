@@ -1,7 +1,7 @@
 import React from 'react';
 import PageContainer from '@/components/pageContainer';
 import { generatePageMetadata } from '@/lib/metadata';
-import { getRatingsMuni } from '@/app/actions';
+import { getRatingsMuniAdmin } from '@/app/actions';
 import { PaginationBody } from '@/types';
 import RatingList from '@/components/ratings/list';
 import AuthErrorHandler from '@/components/AuthErrorHandler';
@@ -25,7 +25,7 @@ export default async function Page({
         pageNumber,
         pageSize,
     };
-    const response = await getRatingsMuni(paginationBody);
+    const response = await getRatingsMuniAdmin(paginationBody);
 
     const breadcrumb = [{ label: 'Değerlendirme' }];
 
@@ -38,7 +38,7 @@ export default async function Page({
                 <RatingList
                     ratings={response.data}
                     breadcrumb={breadcrumb}
-                    type="municipality"
+                    type="admin-muni"
                 />
             )}
         </PageContainer>
