@@ -63,3 +63,19 @@ export const getChatHistyory = async (body: PaginationBody): Promise<ApiResponse
         return handleApiError(error);
     }
 }
+
+export const getChatHistyoryStaff = async (body: PaginationBody): Promise<ApiResponseT<ChatHistoryResponse>> => {
+    try {
+        const response = await axiosInstance.post('message/staffgetcomplaintsummaries', {
+            pageNumber: body.pageNumber - 1,
+            pageSize: body.pageSize,
+        });
+
+        return {
+            success: true,
+            data: response.data as ChatHistoryResponse
+        }
+    } catch (error) {
+        return handleApiError(error);
+    }
+}

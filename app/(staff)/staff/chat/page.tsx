@@ -1,7 +1,7 @@
 import React from 'react';
 import PageContainer from '@/components/pageContainer';
 import { generatePageMetadata } from '@/lib/metadata';
-import { getChatHistyory, getMessages } from '@/app/actions';
+import { getChatHistyoryStaff, getMessages } from '@/app/actions';
 import { ComplaintsPaginationBody } from '@/types';
 import ChatList from '@/components/chat/list';
 import AuthErrorHandler from '@/components/AuthErrorHandler';
@@ -31,7 +31,7 @@ export default async function Page({
         pageSize,
     };
 
-    const response = await getChatHistyory(paginationBody);
+    const response = await getChatHistyoryStaff(paginationBody);
 
     const messagesResponse = await getMessages(chatId?.toString() || '');
 
