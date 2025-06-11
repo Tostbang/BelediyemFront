@@ -189,23 +189,3 @@ export const getStaffComplaintsMuniAdmin = async (body: StaffAttendedComplaintsP
         return handleApiError(error);
     }
 }
-
-export const updateStaffStatusMuniAdmin = async (id: string, status: boolean) => {
-    try {
-        const response = await axiosInstance.put('adminmunicipalitypanel/staffupdatestatus', {
-            staffId: id,
-            status
-        });
-
-        return {
-            success: true,
-            message: response.data.message || 'Personel durumu başarıyla güncellendi.',
-            errors: [],
-        };
-    }
-    catch (error) {
-        return handleApiError(error);
-    }
-}
-
-

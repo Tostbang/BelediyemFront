@@ -75,8 +75,6 @@ export default function StaffList({
             );
             let result;
 
-            console.log('foundItem', foundItem);
-
             switch (type) {
                 case 'municipality':
                     result = await updateStaffStatusMuni(
