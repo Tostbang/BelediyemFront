@@ -8,7 +8,7 @@ import {
 } from '@/types';
 import DynamicTable from '../dynamic/table';
 import ConfirmModal from '../modals/confirmModal';
-import { sendMunisPWAdmin, sendStaffPWMuni } from '@/app/actions';
+import { sendMunisPWAdmin, sendStaffPWMuni, sendStaffPWMuniAdmin } from '@/app/actions';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import { useRouter } from 'next/navigation';
 import { usePagination } from '@/hooks/usePagination';
@@ -45,6 +45,8 @@ export default function PWResetList({
                     break;
                 case 'municipality':
                     result = await sendStaffPWMuni(selectedItem);
+                case 'admin-muni':
+                    result = await sendStaffPWMuniAdmin(selectedItem);
                     break;
                 default:
                     result = {
@@ -68,15 +70,15 @@ export default function PWResetList({
         {
             title: 'Id',
             dataIndex: 'id',
-            width: 180,
+            width: 100,
         },
         {
             title: 'Kullanıcı Id',
             dataIndex: 'userId',
-            width: 180,
+            width: 100,
+            fixed: 'left' as const,
         },
         {
-            fixed: 'left' as const,
             title: type === 'admin' ? 'Belediye Adı' : 'Personel Adı',
             dataIndex: 'name',
             width: 180,

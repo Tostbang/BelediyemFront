@@ -1,7 +1,7 @@
 import React from 'react';
 import PageContainer from '@/components/pageContainer';
 import { generatePageMetadata } from '@/lib/metadata';
-import { getStaffsMuni } from '@/app/actions';
+import { getStaffsMuniAdmin } from '@/app/actions';
 import { StaffPaginationBody } from '@/types';
 import StaffList from '@/components/staff/list';
 import AuthErrorHandler from '@/components/AuthErrorHandler';
@@ -35,7 +35,7 @@ export default async function Page({
         municipalStaffType,
     };
 
-    const response = await getStaffsMuni(paginationBody);
+    const response = await getStaffsMuniAdmin(paginationBody);
 
     const breadcrumb = [{ label: 'Personel Listesi' }];
 
@@ -45,7 +45,7 @@ export default async function Page({
                 error={!response?.success ? response : undefined}
             />
             {response?.success && response.data && (
-                <StaffList staffList={response.data} breadcrumb={breadcrumb} type='municipality'/>
+                <StaffList staffList={response.data} breadcrumb={breadcrumb} type='admin-muni'/>
             )}
         </PageContainer>
     );

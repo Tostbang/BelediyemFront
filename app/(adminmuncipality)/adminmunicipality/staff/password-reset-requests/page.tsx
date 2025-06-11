@@ -1,43 +1,36 @@
 import React from 'react';
 import PageContainer from '@/components/pageContainer';
 import { generatePageMetadata } from '@/lib/metadata';
-import { getStaffsMuni } from '@/app/actions';
-import { StaffPaginationBody } from '@/types';
-import StaffList from '@/components/staff/list';
+import { getStaffPWResetRequestMuniAdmin } from '@/app/actions';
+import { PaginationBody } from '@/types';
+import PWResetList from '@/components/muni/resetPwList';
 import AuthErrorHandler from '@/components/AuthErrorHandler';
 
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata() {
-    return generatePageMetadata('Personel Listesi');
+    return generatePageMetadata('Personel Şifre Sıfırlama Talepleri');
 }
 
 export default async function Page({
     searchParams,
 }: {
-    searchParams: Promise<{
-        page?: string;
-        pageSize?: string;
-        searchText?: string;
-        municipalStaffType?: string;
-    }>;
+    searchParams: Promise<{ page?: string; pageSize?: string }>;
 }) {
     const params = await searchParams;
     const pageNumber = Number(params.page) || 1;
     const pageSize = Number(params.pageSize) || 20;
-    const searchText = params.searchText || '';
-    const municipalStaffType = Number(params.municipalStaffType) || 0;
 
-    const paginationBody: StaffPaginationBody = {
+    const paginationBody: PaginationBody = {
         pageNumber,
         pageSize,
-        searchText,
-        municipalStaffType,
     };
+    const response = await getStaffPWResetRequestMuniAdmin(paginationBody);
 
-    const response = await getStaffsMuni(paginationBody);
-
-    const breadcrumb = [{ label: 'Personel Listesi' }];
+    const breadcrumb = [
+        { label: 'Personel Listesi', href: '/adminmunicipality/staff/list' },
+        { label: 'Personel Şifre Sıfırlama Talepleri' },
+    ];
 
     return (
         <PageContainer>
@@ -45,7 +38,11 @@ export default async function Page({
                 error={!response?.success ? response : undefined}
             />
             {response?.success && response.data && (
-                <StaffList staffList={response.data} breadcrumb={breadcrumb} type='municipality'/>
+                <PWResetList
+                    requests={response.data}
+                    type="admin-muni"
+                    breadcrumb={breadcrumb}
+                />
             )}
         </PageContainer>
     );

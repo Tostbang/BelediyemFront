@@ -1,7 +1,17 @@
 'use client';
 import React, { useState, useRef } from 'react';
-import { BreadcrumbItem, StaffUser, StaffUserListResponse } from '@/types';
-import { sendStaffPWMuni, updateStaffStatusMuni } from '@/app/actions';
+import {
+    BreadcrumbItem,
+    RoleType,
+    StaffUser,
+    StaffUserListResponse,
+} from '@/types';
+import {
+    sendStaffPWMuni,
+    sendStaffPWMuniAdmin,
+    updateStaffMuniAdmin,
+    updateStaffStatusMuni,
+} from '@/app/actions';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -20,9 +30,11 @@ import DynamicDropdown from '../common/DynamicDropdown';
 export default function StaffList({
     staffList,
     breadcrumb,
+    type,
 }: {
     staffList: StaffUserListResponse;
     breadcrumb: BreadcrumbItem[];
+    type: RoleType;
 }) {
     const filterParams = ['searchText', 'municipalStaffType'];
     const searchInputRef = useRef<HTMLInputElement>(
@@ -58,7 +70,47 @@ export default function StaffList({
 
     const handleConfirm = async () => {
         if (selectedItem) {
-            const result = await updateStaffStatusMuni(selectedItem, false);
+            const foundItem = staffList.municipalStaff.find(
+                (item) => item.id.toString() === selectedItem
+            );
+            let result;
+
+            console.log('foundItem', foundItem);
+
+            switch (type) {
+                case 'municipality':
+                    result = await updateStaffStatusMuni(
+                        selectedItem,
+                        !foundItem?.status
+                    );
+                    break;
+                case 'admin-muni':
+                    if (foundItem) {
+                        const formData = new FormData();
+                        formData.append('id', foundItem.id.toString());
+                        formData.append('name', foundItem.name);
+                        formData.append('surname', foundItem.surname);
+                        formData.append('email', foundItem.email);
+                        formData.append('phone', foundItem.phone);
+                        formData.append('role', foundItem.role.toString());
+                        formData.append(
+                            'status',
+                            !foundItem.status ? 'on' : 'false'
+                        );
+                        result = await updateStaffMuniAdmin(formData);
+                    } else {
+                        result = {
+                            success: false,
+                            message: 'Staff member not found',
+                        };
+                    }
+                    break;
+                default:
+                    result = {
+                        success: false,
+                        message: 'Unsupported role type',
+                    };
+            }
             if (result.success) {
                 handleSuccess(result.message);
                 setModal(false);
@@ -72,7 +124,22 @@ export default function StaffList({
 
     const handleConfirmReset = async () => {
         if (selectedItem) {
-            const result = await sendStaffPWMuni(selectedItem);
+            let result;
+
+            switch (type) {
+                case 'municipality':
+                    result = await sendStaffPWMuni(selectedItem);
+                    break;
+                case 'admin-muni':
+                    result = await sendStaffPWMuniAdmin(selectedItem);
+                    break;
+                default:
+                    result = {
+                        success: false,
+                        message: 'Unsupported role type',
+                    };
+            }
+
             if (result.success) {
                 handleSuccess(result.message);
                 setModalReset(false);
@@ -83,6 +150,18 @@ export default function StaffList({
             }
         }
     };
+
+    let url;
+    switch (type) {
+        case 'municipality':
+            url = '/municipality/staff';
+            break;
+        case 'admin-muni':
+            url = '/adminmunicipality/staff';
+            break;
+        default:
+            url = '';
+    }
 
     const columns = [
         {
@@ -132,8 +211,8 @@ export default function StaffList({
                         onClick={() =>
                             handleResetPassword(record.id.toString())
                         }
-                        className="text-red-500 hover:text-red-700 cursor-pointer">
-                        Sıfırla
+                        className="text-blue-500 hover:text-blue-700 cursor-pointer">
+                        Mail Gönder
                     </button>
                 </div>
             ),
@@ -148,8 +227,7 @@ export default function StaffList({
                     {
                         key: 'detail',
                         label: (
-                            <Link
-                                href={`/municipality/staff/${record.id}/detail`}>
+                            <Link href={`${url}/${record.id}/detail`}>
                                 Detay
                             </Link>
                         ),
@@ -157,14 +235,12 @@ export default function StaffList({
                     {
                         key: 'edit',
                         label: (
-                            <Link href={`/municipality/staff/${record.id}`}>
-                                Düzenle
-                            </Link>
+                            <Link href={`${url}/${record.id}`}>Düzenle</Link>
                         ),
                     },
                     {
                         key: 'delete',
-                        label: 'Sil',
+                        label: 'Durum Değiştir',
                         danger: true,
                         onClick: () => handleDeleteClick(record.id.toString()),
                     },
@@ -181,7 +257,7 @@ export default function StaffList({
                 breadcrumb={breadcrumb}
                 buttonComponent={
                     <LinkButton
-                        href="/municipality/staff/new"
+                        href={`${url}/new`}
                         title="Yeni Personel Ekle"
                     />
                 }
@@ -216,7 +292,7 @@ export default function StaffList({
                     <div className="block sm:hidden w-full h-px bg-gray-300"></div>
                 </div>
                 <LinkButton
-                    href="/municipality/staff/password-reset-requests"
+                    href={`${url}/password-reset-requests`}
                     title="Şifre Sıfırlama Talepleri"
                     className="w-full sm:w-auto mb-4 lg:mb-0"
                 />
@@ -244,8 +320,8 @@ export default function StaffList({
                 <ConfirmModal
                     isOpen={modal}
                     onClose={() => setModal(false)}
-                    title="Personel Sil"
-                    message="Bu kaydı silmek istediğinize emin misiniz? Bu işlem geri alınamaz."
+                    title="Personel Durum Değiştir"
+                    message="Bu kaydın durmunu değiştirmek istediğinize emin misiniz?"
                     onConfirm={handleConfirm}
                 />
                 <ConfirmModal

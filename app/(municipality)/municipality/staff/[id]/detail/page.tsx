@@ -83,6 +83,7 @@ export default async function Page({
                 <StaffDetail
                     detail={detail || null}
                     id={id}
+                    type="municipality"
                     breadcrumb={breadcrumb}
                 />
             )}

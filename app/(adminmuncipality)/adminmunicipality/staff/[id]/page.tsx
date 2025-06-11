@@ -2,7 +2,7 @@ import React from 'react';
 import PageContainer from '@/components/pageContainer';
 import { generatePageMetadata } from '@/lib/metadata';
 import { isPositiveNumber } from '@/utils';
-import { getStaffByIdMuni } from '@/app/actions';
+import { getStaffByIdMuniAdmin } from '@/app/actions';
 import AlertMessage from '@/components/ui/AlertMessage';
 import StaffForm from '@/components/staff/staffForm';
 import AuthErrorHandler from '@/components/AuthErrorHandler';
@@ -41,7 +41,7 @@ export default async function Page({
     let detail = null;
     if (id) {
         try {
-            response = await getStaffByIdMuni(id);
+            response = await getStaffByIdMuniAdmin(id);
             if (response.success) {
                 detail = response.data;
                 if (
@@ -69,7 +69,7 @@ export default async function Page({
     }
 
     const breadcrumb = [
-        { label: 'Personel Listesi', href: '/municipality/staff/list' },
+        { label: 'Personel Listesi', href: '/adminmunicipality/staff/list' },
         {
             label: isNewRecord
                 ? 'Yeni Personel Ekle'
@@ -87,7 +87,7 @@ export default async function Page({
                 />
             ) : (
                 <StaffForm
-                    type="municipality"
+                    type="admin-muni"
                     id={id}
                     detail={detail || null}
                     breadcrumb={breadcrumb}

@@ -2,9 +2,9 @@ import React from 'react';
 import PageContainer from '@/components/pageContainer';
 import { generatePageMetadata } from '@/lib/metadata';
 import { isPositiveNumber } from '@/utils';
-import { getStaffByIdMuni } from '@/app/actions';
+import { getStaffByIdMuniAdmin } from '@/app/actions';
 import AlertMessage from '@/components/ui/AlertMessage';
-import StaffForm from '@/components/staff/staffForm';
+import StaffDetail from '@/components/staff/detail';
 import AuthErrorHandler from '@/components/AuthErrorHandler';
 
 export const dynamic = 'force-dynamic';
@@ -17,7 +17,7 @@ export async function generateMetadata({
     const resolvedParams = await params;
     const isEditing = resolvedParams.id !== 'new';
     return generatePageMetadata(
-        isEditing ? 'Personel Düzenle / Görüntüle' : 'Yeni Personel Ekle'
+        isEditing ? 'Personel Detay' : 'Yeni Personel Ekle'
     );
 }
 
@@ -29,19 +29,17 @@ export default async function Page({
     const resolvedParams = await params;
 
     let id = null;
-    let isNewRecord = true;
     let errorMessage = null;
     let response = null;
 
     if (resolvedParams.id !== 'new' && isPositiveNumber(resolvedParams.id)) {
         id = resolvedParams.id;
-        isNewRecord = false;
     }
 
     let detail = null;
     if (id) {
         try {
-            response = await getStaffByIdMuni(id);
+            response = await getStaffByIdMuniAdmin(id);
             if (response.success) {
                 detail = response.data;
                 if (
@@ -69,12 +67,8 @@ export default async function Page({
     }
 
     const breadcrumb = [
-        { label: 'Personel Listesi', href: '/municipality/staff/list' },
-        {
-            label: isNewRecord
-                ? 'Yeni Personel Ekle'
-                : 'Personel Düzenle / Görüntüle',
-        },
+        { label: 'Personel Listesi', href: '/adminmunicipality/staff/list' },
+        { label: 'Personel Detay' },
     ];
 
     return (
@@ -86,10 +80,10 @@ export default async function Page({
                     title="Hata"
                 />
             ) : (
-                <StaffForm
-                    type="municipality"
-                    id={id}
+                <StaffDetail
                     detail={detail || null}
+                    id={id}
+                    type='admin-muni'
                     breadcrumb={breadcrumb}
                 />
             )}

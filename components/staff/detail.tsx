@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { BreadcrumbItem, StaffUserDetailResponse } from '@/types';
+import { BreadcrumbItem, RoleType, StaffUserDetailResponse } from '@/types';
 import { departmans } from '@/data/departmans';
 import { formatDate } from '@/utils';
 import LinkButton from '../common/LinkButton';
@@ -18,18 +18,32 @@ export default function StaffDetail({
     id,
     detail,
     breadcrumb,
+    type,
 }: {
     id: string | null;
     detail?: StaffUserDetailResponse | null;
     breadcrumb: BreadcrumbItem[];
+    type: RoleType;
 }) {
+    let url;
+    switch (type) {
+        case 'municipality':
+            url = '/municipality/staff';
+            break;
+        case 'admin-muni':
+            url = '/adminmunicipality/staff';
+            break;
+        default:
+            url = '';
+    }
+
     return (
         <>
             <Breadcrumb
                 breadcrumb={breadcrumb}
                 buttonComponent={
                     <LinkButton
-                        href={`/municipality/staff/${id}/attended-complaints`}
+                        href={`${url}/${id}/attended-complaints`}
                         title="Atanan Şikayetler"
                     />
                 }

@@ -2,8 +2,13 @@
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import SubmitButton from '@/components/common/submitButton';
 import React, { useActionState } from 'react';
-import { BreadcrumbItem, StaffUserDetailResponse } from '@/types';
-import { addStaffMuni, updateStaffMuni } from '@/app/actions';
+import { BreadcrumbItem, RoleType, StaffUserDetailResponse } from '@/types';
+import {
+    addStaffMuni,
+    addStaffMuniAdmin,
+    updateStaffMuni,
+    updateStaffMuniAdmin,
+} from '@/app/actions';
 import { departmans } from '@/data/departmans';
 import Breadcrumb from '../common/breadCrumb';
 
@@ -11,10 +16,12 @@ export default function StaffForm({
     id,
     detail,
     breadcrumb,
+    type,
 }: {
     id?: string | null;
     detail?: StaffUserDetailResponse | null;
     breadcrumb: BreadcrumbItem[];
+    type: RoleType;
 }) {
     const { handleResult } = useNotificationHandler();
     const isEditing = !!id;
@@ -34,7 +41,30 @@ export default function StaffForm({
             formData.append('id', id);
         }
 
-        const actionFunction = isEditing ? updateStaffMuni : addStaffMuni;
+        let actionFunction;
+
+        switch (type) {
+            case 'municipality':
+                actionFunction = isEditing ? updateStaffMuni : addStaffMuni;
+                break;
+            case 'admin-muni':
+                actionFunction = isEditing
+                    ? updateStaffMuniAdmin
+                    : addStaffMuniAdmin;
+                break;
+            default:
+                return {
+                    success: false,
+                    message: 'Unsupported role type',
+                    name: '',
+                    surname: '',
+                    email: '',
+                    password: '',
+                    phone: '',
+                    role: '',
+                    status: true,
+                };
+        }
 
         // Execute action and handle result
         const result = await actionFunction(formData);

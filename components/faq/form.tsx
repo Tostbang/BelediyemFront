@@ -47,7 +47,9 @@ export default function FaqForm({
                 actionFunction = isEditing ? updateFAQMuni : addFAQMuni;
                 break;
             case 'admin-muni':
-                actionFunction = isEditing ? updateFAQMuniAdmin : addFAQMuniAdmin;
+                actionFunction = isEditing
+                    ? updateFAQMuniAdmin
+                    : addFAQMuniAdmin;
                 break;
             default:
                 return {
