@@ -35,3 +35,4 @@ export * from '@/app/actions/adminmunicipality/staff';
 export * from '@/app/actions/adminmunicipality/complaints';
 export * from '@/app/actions/adminmunicipality/ann';
 export * from '@/app/actions/adminmunicipality/slider';
+export * from '@/app/actions/adminmunicipality/venue';
