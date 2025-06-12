@@ -5,7 +5,7 @@ import React, { useActionState } from 'react';
 import { AnnouncementDetailResponse, BreadcrumbItem } from '@/types';
 import { annType } from '@/data/annType';
 import ImageUploader from '../dynamic/imageUploader';
-import { addAnnfMuni, updateAnnMuni } from '@/app/actions/municipality/ann';
+import { addAnnfMuni, updateAnnMuni } from '@/app/actions';
 import Breadcrumb from '../common/breadCrumb';
 
 export default function EventForm({

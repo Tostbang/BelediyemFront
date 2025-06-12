@@ -10,7 +10,7 @@ import DynamicTable from '@/components/dynamic/table';
 import ConfirmModal from '@/components/modals/confirmModal';
 import { FilterIcon, PersonIcon } from '../icons';
 import ImageWithSkeleton from '../common/imageSkeleton';
-import { deleteAnnMuni } from '@/app/actions/municipality/ann';
+import { deleteAnnMuni } from '@/app/actions';
 import { annType } from '@/data/annType';
 import { formatDateTime } from '@/utils';
 import Breadcrumb from '../common/breadCrumb';

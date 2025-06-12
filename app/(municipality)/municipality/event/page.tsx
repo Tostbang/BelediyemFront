@@ -2,9 +2,9 @@ import React from 'react';
 import PageContainer from '@/components/pageContainer';
 import { generatePageMetadata } from '@/lib/metadata';
 import { AnnouncementPaginationBody } from '@/types';
-import { getAnnsMuni } from '@/app/actions/municipality/ann';
 import EventList from '@/components/event/list';
 import AuthErrorHandler from '@/components/AuthErrorHandler';
+import { getAnnsMuni } from '@/app/actions';
 
 export const dynamic = 'force-dynamic';
 

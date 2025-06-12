@@ -19,6 +19,7 @@ export * from '@/app/actions/municipality/facility';
 export * from '@/app/actions/municipality/assembly';
 export * from '@/app/actions/municipality/support';
 export * from '@/app/actions/municipality/complaints';
+export * from '@/app/actions/municipality/ann';
 
 // staff
 export * from '@/app/actions/staff/auth';
@@ -32,3 +33,4 @@ export * from '@/app/actions/adminmunicipality/support';
 export * from '@/app/actions/adminmunicipality/ratings';
 export * from '@/app/actions/adminmunicipality/staff';
 export * from '@/app/actions/adminmunicipality/complaints';
+export * from '@/app/actions/adminmunicipality/ann';

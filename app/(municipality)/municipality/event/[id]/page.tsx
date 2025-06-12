@@ -4,7 +4,7 @@ import { generatePageMetadata } from '@/lib/metadata';
 import { isPositiveNumber } from '@/utils';
 import AlertMessage from '@/components/ui/AlertMessage';
 import EventForm from '@/components/event/form';
-import { getAnnByIdMuni } from '@/app/actions/municipality/ann';
+import { getAnnByIdMuni } from '@/app/actions';
 import AuthErrorHandler from '@/components/AuthErrorHandler';
 
 export const dynamic = 'force-dynamic';
