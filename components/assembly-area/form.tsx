@@ -3,7 +3,12 @@ import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import SubmitButton from '@/components/common/submitButton';
 import React, { useActionState } from 'react';
 import { AssemblyDetailResponse, BreadcrumbItem, RoleType } from '@/types';
-import { addAssemblyMuni, updateAssemblyMuni } from '@/app/actions';
+import {
+    addAssemblyMuni,
+    addAssemblyMuniAdmin,
+    updateAssemblyMuni,
+    updateAssemblyMuniAdmin,
+} from '@/app/actions';
 import Breadcrumb from '../common/breadCrumb';
 import MapModal from '../modals/mapModal';
 
@@ -43,6 +48,11 @@ export default function AssemblyForm({
                 actionFunction = isEditing
                     ? updateAssemblyMuni
                     : addAssemblyMuni;
+                break;
+            case 'admin-muni':
+                actionFunction = isEditing
+                    ? updateAssemblyMuniAdmin
+                    : addAssemblyMuniAdmin;
                 break;
             default:
                 return {

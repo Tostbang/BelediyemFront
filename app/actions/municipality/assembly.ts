@@ -81,7 +81,7 @@ export const updateAssemblyMuni = async (formData: FormData) => {
         }
 
         const payload = {
-            facilityId: id,
+            assemblyAreasId: id,
             title,
             status,
             latitude,

@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Assembly, AssemblyResponse, BreadcrumbItem, RoleType } from '@/types';
 import ConfirmModal from '../modals/confirmModal';
-import { deleteAssemblyMuni } from '@/app/actions';
+import { deleteAssemblyMuni, deleteAssemblyMuniAdmin } from '@/app/actions';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -49,6 +49,9 @@ export default function AssemblyList({
                 case 'municipality':
                     result = await deleteAssemblyMuni(selectedItem);
                     break;
+                case 'admin-muni':
+                    result = await deleteAssemblyMuniAdmin(selectedItem);
+                    break;
                 default:
                     result = {
                         success: false,
@@ -71,6 +74,9 @@ export default function AssemblyList({
     switch (type) {
         case 'municipality':
             url = '/municipality/assembly-area';
+            break;
+        case 'admin-muni':
+            url = '/adminmunicipality/assembly-area';
             break;
         default:
             url = '';
@@ -121,7 +127,7 @@ export default function AssemblyList({
                     {
                         key: 'edit',
                         label: (
-                            <Link href={`/municipality/assembly-area/${record.id}`}>
+                            <Link href={`${url}/${record.id}`}>
                                 Düzenle
                             </Link>
                         ),

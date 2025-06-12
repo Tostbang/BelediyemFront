@@ -9,7 +9,7 @@ export const getAssembliesMuniAdmin = async (body: PaginationBody): Promise<ApiR
     const municipalityId = await getCookie('municipalityId');
 
     try {
-        const response = await axiosInstance.post(`adminmunicipalitypanel/listadminmunicipalitypanelassemblyarea?municipalityId=${municipalityId}`, {
+        const response = await axiosInstance.post(`adminmunicipalitypanel/listmunicipalityassemblyarea?municipalityId=${municipalityId}`, {
             pageNumber: body.pageNumber - 1,
             pageSize: body.pageSize
         });
@@ -88,14 +88,14 @@ export const updateAssemblyMuniAdmin = async (formData: FormData) => {
         }
 
         const payload = {
-            facilityId: id,
+            assemblyAreasId: id,
             title,
             status,
             latitude,
             longitude,
         };
 
-        const response = await axiosInstance.put(`adminmunicipalitypanel/updatessemblyareas?municipalityId=${municipalityId}`, payload);
+        const response = await axiosInstance.put(`adminmunicipalitypanel/updateassemblyareas?municipalityId=${municipalityId}`, payload);
 
         return {
             success: true,
