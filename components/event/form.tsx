@@ -24,7 +24,7 @@ export default function EventForm({
     breadcrumb: BreadcrumbItem[];
     type: RoleType;
 }) {
-    const { handleResult, handleError } = useNotificationHandler();
+    const { handleResult } = useNotificationHandler();
     const isEditing = !!id;
 
     const initialState = {
@@ -49,11 +49,14 @@ export default function EventForm({
                     : addAnnfMuniAdmin;
                 break;
             default:
-                handleError({
+                return {
                     success: false,
                     message: 'Geçersiz işlem türü',
-                });
-                return;
+                    image: '',
+                    title: '',
+                    description: '',
+                    announcementsType: '',
+                };
         }
 
         // Execute action and handle result
