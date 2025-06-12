@@ -3,7 +3,12 @@ import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import SubmitButton from '@/components/common/submitButton';
 import React, { useActionState } from 'react';
 import { BreadcrumbItem, RoleType, VenueDetailResponse } from '@/types';
-import { addVenueMuni, updateVenueMuni } from '@/app/actions';
+import {
+    addVenueMuni,
+    addVenueMuniAdmin,
+    updateVenueMuni,
+    updateVenueMuniAdmin,
+} from '@/app/actions';
 import Breadcrumb from '../common/breadCrumb';
 import ImageUploader from '../dynamic/imageUploader';
 import MapModal from '../modals/mapModal';
@@ -44,6 +49,11 @@ export default function VenueForm({
         switch (type) {
             case 'municipality':
                 actionFunction = isEditing ? updateVenueMuni : addVenueMuni;
+                break;
+            case 'admin-muni':
+                actionFunction = isEditing
+                    ? updateVenueMuniAdmin
+                    : addVenueMuniAdmin;
                 break;
             default:
                 return {

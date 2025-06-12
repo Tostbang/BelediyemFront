@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { BreadcrumbItem, RoleType, Venue, VenueResponse } from '@/types';
 import ConfirmModal from '../modals/confirmModal';
-import { deleteVenueMuni } from '@/app/actions';
+import { deleteVenueMuni, deleteVenueMuniAdmin } from '@/app/actions';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -50,6 +50,9 @@ export default function VenueList({
                 case 'municipality':
                     result = await deleteVenueMuni(selectedItem);
                     break;
+                case 'admin-muni':
+                    result = await deleteVenueMuniAdmin(selectedItem);
+                    break;
                 default:
                     result = {
                         success: false,
@@ -72,6 +75,9 @@ export default function VenueList({
     switch (type) {
         case 'municipality':
             url = '/municipality/venue';
+            break;
+        case 'admin-muni':
+            url = '/adminmunicipality/venue';
             break;
         default:
             url = '';
@@ -142,7 +148,7 @@ export default function VenueList({
                     {
                         key: 'edit',
                         label: (
-                            <Link href={`/municipality/venue/${record.id}`}>
+                            <Link href={`${url}/${record.id}`}>
                                 Düzenle
                             </Link>
                         ),
