@@ -37,3 +37,4 @@ export * from '@/app/actions/adminmunicipality/ann';
 export * from '@/app/actions/adminmunicipality/slider';
 export * from '@/app/actions/adminmunicipality/venue';
 export * from '@/app/actions/adminmunicipality/assembly';
+export * from '@/app/actions/adminmunicipality/facility';

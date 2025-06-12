@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { BreadcrumbItem, Facility, FacilityResponse, RoleType } from '@/types';
 import ConfirmModal from '../modals/confirmModal';
-import { deleteFacilityMuni } from '@/app/actions';
+import { deleteFacilityMuni, deleteFacilityMuniAdmin } from '@/app/actions';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -50,6 +50,9 @@ export default function FacilityList({
                 case 'municipality':
                     result = await deleteFacilityMuni(selectedItem);
                     break;
+                case 'admin-muni':
+                    result = await deleteFacilityMuniAdmin(selectedItem);
+                    break;
                 default:
                     result = {
                         success: false,
@@ -72,6 +75,9 @@ export default function FacilityList({
     switch (type) {
         case 'municipality':
             url = '/municipality/facility';
+            break;
+        case 'admin-muni':
+            url = '/adminmunicipality/facility';
             break;
         default:
             url = '';
@@ -142,7 +148,7 @@ export default function FacilityList({
                     {
                         key: 'edit',
                         label: (
-                            <Link href={`/municipality/facility/${record.id}`}>
+                            <Link href={`${url}/${record.id}`}>
                                 Düzenle
                             </Link>
                         ),
