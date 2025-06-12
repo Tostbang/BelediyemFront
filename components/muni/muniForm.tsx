@@ -57,7 +57,10 @@ export default function MuniForm({
         city: detail?.municipality.city || '',
         discrit: detail?.municipality.discrit || '',
         adressline: detail?.municipality.adressline || '',
-        status: detail?.municipality.status || false,
+        status: detail?.municipality.status || true,
+        success: true,
+        message: '',
+        errors: undefined,
     };
 
     const clientAction = async (_prevState: unknown, formData: FormData) => {

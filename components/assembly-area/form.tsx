@@ -23,9 +23,12 @@ export default function AssemblyForm({
 
     const initialState = {
         title: detail?.assemblyArea.title || '',
-        status: detail?.assemblyArea.status || false,
         latitude: detail?.assemblyArea.latitude || '',
         longitude: detail?.assemblyArea.longitude || '',
+        status: detail?.assemblyArea.status || true,
+        success: true,
+        message: '',
+        errors: undefined,
     };
 
     const clientAction = async (_prevState: unknown, formData: FormData) => {
@@ -57,7 +60,7 @@ export default function AssemblyForm({
         handleResult({
             success: result.success,
             message: result.message,
-            errors: result.errors || []
+            errors: result.errors || [],
         });
         return {
             ...result,

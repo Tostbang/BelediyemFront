@@ -26,9 +26,12 @@ export default function VenueForm({
         title: detail?.venue.title || '',
         description: detail?.venue.description || '',
         image: detail?.venue.image || '',
-        status: detail?.venue.status || false,
         latitude: detail?.venue.latitude || '',
         longitude: detail?.venue.longitude || '',
+        status: detail?.venue.status || true,
+        success: true,
+        message: '',
+        errors: undefined,
     };
 
     const clientAction = async (_prevState: unknown, formData: FormData) => {
@@ -51,7 +54,7 @@ export default function VenueForm({
                     latitude: '',
                     longitude: '',
                     description: '',
-                    status: false,
+                    status: true,
                 };
         }
 

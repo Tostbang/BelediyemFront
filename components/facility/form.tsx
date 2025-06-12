@@ -26,10 +26,13 @@ export default function FacilityForm({
         title: detail?.facility.title || '',
         description: detail?.facility.description || '',
         image: detail?.facility.image || '',
-        status: detail?.facility.status || false,
         latitude: detail?.facility.latitude || '',
         longitude: detail?.facility.longitude || '',
         address: detail?.facility.address || '',
+        status: detail?.facility.status || true,
+        success: true,
+        message: '',
+        errors: undefined,
     };
 
     const clientAction = async (_prevState: unknown, formData: FormData) => {
@@ -55,7 +58,7 @@ export default function FacilityForm({
                     longitude: '',
                     description: '',
                     address: '',
-                    status: false,
+                    status: true,
                 };
         }
 
