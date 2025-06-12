@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { BreadcrumbItem, RoleType, Slider, SliderResponse } from '@/types';
 import ConfirmModal from '../modals/confirmModal';
-import { deleteSliderMuni } from '@/app/actions';
+import { deleteSliderMuni, deleteSliderMuniAdmin } from '@/app/actions';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -51,6 +51,9 @@ export default function SlaytList({
                 case 'municipality':
                     result = await deleteSliderMuni(selectedItem);
                     break;
+                case 'admin-muni':
+                    result = await deleteSliderMuniAdmin(selectedItem);
+                    break;
                 default:
                     result = {
                         success: false,
@@ -73,6 +76,9 @@ export default function SlaytList({
     switch (type) {
         case 'municipality':
             url = '/municipality/slider';
+            break;
+        case 'admin-muni':
+            url = '/adminmunicipality/slider';
             break;
         default:
             url = '';
@@ -139,9 +145,7 @@ export default function SlaytList({
                     {
                         key: 'edit',
                         label: (
-                            <Link href={`/municipality/slider/${record.id}`}>
-                                Düzenle
-                            </Link>
+                            <Link href={`${url}/${record.id}`}>Düzenle</Link>
                         ),
                     },
                     {

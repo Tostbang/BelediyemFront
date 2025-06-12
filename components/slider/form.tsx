@@ -3,7 +3,7 @@ import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import SubmitButton from '@/components/common/submitButton';
 import React, { useActionState } from 'react';
 import { BreadcrumbItem, RoleType, SliderDetailResponse } from '@/types';
-import { addSliderMuni, updateSliderMuni } from '@/app/actions';
+import { addSliderMuni, addSliderMuniAdmin, updateSliderMuni, updateSliderMuniAdmin } from '@/app/actions';
 import Breadcrumb from '../common/breadCrumb';
 import ImageUploader from '../dynamic/imageUploader';
 
@@ -37,6 +37,9 @@ export default function SliderForm({
         switch (type) {
             case 'municipality':
                 actionFunction = isEditing ? updateSliderMuni : addSliderMuni;
+                break;
+            case 'municipality':
+                actionFunction = isEditing ? updateSliderMuniAdmin : addSliderMuniAdmin;
                 break;
             default:
                 return {
