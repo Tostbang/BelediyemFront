@@ -156,7 +156,7 @@ export default function ChangePasswordForm({
             default:
                 result = {
                     success: false,
-                    message: 'Unsupported role type',
+                    message: 'Geçersiz işlem türü',
                 };
         }
 
@@ -185,7 +185,7 @@ export default function ChangePasswordForm({
             default:
                 result = {
                     success: false,
-                    message: 'Unsupported role type',
+                    message: 'Geçersiz işlem türü',
                 };
         }
         handleResult(result);

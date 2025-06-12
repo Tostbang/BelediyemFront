@@ -48,7 +48,7 @@ export default function FacilityForm({
             default:
                 return {
                     success: false,
-                    message: 'Unsupported role type',
+                    message: 'Geçersiz işlem türü',
                     title: '',
                     image: '',
                     latitude: '',

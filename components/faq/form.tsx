@@ -54,7 +54,7 @@ export default function FaqForm({
             default:
                 return {
                     success: false,
-                    message: 'Unsupported role type',
+                    message: 'Geçersiz işlem türü',
                     title: formData.get('title') as string,
                     description: formData.get('description') as string,
                 };

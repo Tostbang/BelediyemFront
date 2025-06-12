@@ -106,7 +106,7 @@ export default function StaffList({
                 default:
                     result = {
                         success: false,
-                        message: 'Unsupported role type',
+                        message: 'Geçersiz işlem türü',
                     };
             }
             if (result.success) {
@@ -134,7 +134,7 @@ export default function StaffList({
                 default:
                     result = {
                         success: false,
-                        message: 'Unsupported role type',
+                        message: 'Geçersiz işlem türü',
                     };
             }
 

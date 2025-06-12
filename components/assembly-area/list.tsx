@@ -52,7 +52,7 @@ export default function AssemblyList({
                 default:
                     result = {
                         success: false,
-                        message: 'Unsupported role type',
+                        message: 'Geçersiz işlem türü',
                     };
             }
 

@@ -48,7 +48,7 @@ export default function SupportDetail({
                 default:
                     result = {
                         success: false,
-                        message: 'Unsupported role type',
+                        message: 'Geçersiz işlem türü',
                     };
             }
 
@@ -73,7 +73,7 @@ export default function SupportDetail({
                 default:
                     result = {
                         success: false,
-                        message: 'Unsupported role type',
+                        message: 'Geçersiz işlem türü',
                     };
             }
 

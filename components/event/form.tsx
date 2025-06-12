@@ -2,22 +2,29 @@
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import SubmitButton from '@/components/common/submitButton';
 import React, { useActionState } from 'react';
-import { AnnouncementDetailResponse, BreadcrumbItem } from '@/types';
+import { AnnouncementDetailResponse, BreadcrumbItem, RoleType } from '@/types';
 import { annType } from '@/data/annType';
 import ImageUploader from '../dynamic/imageUploader';
-import { addAnnfMuni, updateAnnMuni } from '@/app/actions';
+import {
+    addAnnfMuni,
+    addAnnfMuniAdmin,
+    updateAnnMuni,
+    updateAnnMuniAdmin,
+} from '@/app/actions';
 import Breadcrumb from '../common/breadCrumb';
 
 export default function EventForm({
     id,
     detail,
     breadcrumb,
+    type,
 }: {
     id?: string | null;
     detail?: AnnouncementDetailResponse | null;
     breadcrumb: BreadcrumbItem[];
+    type: RoleType;
 }) {
-    const { handleResult } = useNotificationHandler();
+    const { handleResult, handleError } = useNotificationHandler();
     const isEditing = !!id;
 
     const initialState = {
@@ -31,8 +38,23 @@ export default function EventForm({
         if (isEditing && id) {
             formData.append('id', id);
         }
-
-        const actionFunction = isEditing ? updateAnnMuni : addAnnfMuni;
+        let actionFunction;
+        switch (type) {
+            case 'municipality':
+                actionFunction = isEditing ? updateAnnMuni : addAnnfMuni;
+                break;
+            case 'admin-muni':
+                actionFunction = isEditing
+                    ? updateAnnMuniAdmin
+                    : addAnnfMuniAdmin;
+                break;
+            default:
+                handleError({
+                    success: false,
+                    message: 'Geçersiz işlem türü',
+                });
+                return;
+        }
 
         // Execute action and handle result
         const result = await actionFunction(formData);

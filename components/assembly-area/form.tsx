@@ -44,7 +44,7 @@ export default function AssemblyForm({
             default:
                 return {
                     success: false,
-                    message: 'Unsupported role type',
+                    message: 'Geçersiz işlem türü',
                     title: '',
                     latitude: '',
                     longitude: '',

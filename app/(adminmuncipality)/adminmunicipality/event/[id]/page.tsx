@@ -4,7 +4,7 @@ import { generatePageMetadata } from '@/lib/metadata';
 import { isPositiveNumber } from '@/utils';
 import AlertMessage from '@/components/ui/AlertMessage';
 import EventForm from '@/components/event/form';
-import { getAnnByIdMuni } from '@/app/actions';
+import { getAnnByIdMuniAdmin } from '@/app/actions';
 import AuthErrorHandler from '@/components/AuthErrorHandler';
 
 export const dynamic = 'force-dynamic';
@@ -43,7 +43,7 @@ export default async function Page({
     let detail = null;
     if (id) {
         try {
-            response = await getAnnByIdMuni(id);
+            response = await getAnnByIdMuniAdmin(id);
             if (response.success) {
                 detail = response.data;
                 if (
@@ -73,7 +73,7 @@ export default async function Page({
     const breadcrumb = [
         {
             label: 'Etkinlik / Duyuru Listesi',
-            href: '/municipality/event',
+            href: '/adminmunicipality/event',
         },
         {
             label: isNewRecord
@@ -95,7 +95,7 @@ export default async function Page({
                     id={id}
                     detail={detail || null}
                     breadcrumb={breadcrumb}
-                    type="municipality"
+                    type="admin-muni"
                 />
             )}
         </PageContainer>

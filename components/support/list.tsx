@@ -75,7 +75,7 @@ export default function SupportList({
                 default:
                     result = {
                         success: false,
-                        message: 'Unsupported role type',
+                        message: 'Geçersiz işlem türü',
                     };
             }
 
@@ -103,7 +103,7 @@ export default function SupportList({
                 default:
                     result = {
                         success: false,
-                        message: 'Unsupported role type',
+                        message: 'Geçersiz işlem türü',
                     };
             }
 

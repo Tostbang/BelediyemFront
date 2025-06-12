@@ -41,7 +41,7 @@ export default function SliderForm({
             default:
                 return {
                     success: false,
-                    message: 'Unsupported role type',
+                    message: 'Geçersiz işlem türü',
                     url: '',
                     image: '',
                     status: false,

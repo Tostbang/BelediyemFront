@@ -131,7 +131,7 @@ export default function LoginForm({
             default:
                 result = {
                     success: false,
-                    message: 'Unsupported role type',
+                    message: 'Geçersiz işlem türü',
                 };
                 redirectPath = '/';
         }

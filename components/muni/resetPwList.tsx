@@ -51,7 +51,7 @@ export default function PWResetList({
                 default:
                     result = {
                         success: false,
-                        message: 'Unsupported role type',
+                        message: 'Geçersiz işlem türü',
                     };
             }
 

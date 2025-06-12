@@ -62,7 +62,7 @@ export default function StatusModal({
             } else {
                 result = {
                     success: false,
-                    message: 'Unsupported role type',
+                    message: 'Geçersiz işlem türü',
                 };
             }
         } else {
@@ -79,7 +79,7 @@ export default function StatusModal({
             } else {
                 result = {
                     success: false,
-                    message: 'Unsupported role type',
+                    message: 'Geçersiz işlem türü',
                 };
             }
         }

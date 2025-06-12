@@ -4,7 +4,7 @@ import { generatePageMetadata } from '@/lib/metadata';
 import { AnnouncementPaginationBody } from '@/types';
 import EventList from '@/components/event/list';
 import AuthErrorHandler from '@/components/AuthErrorHandler';
-import { getAnnsMuni } from '@/app/actions';
+import { getAnnsMuniAdmin } from '@/app/actions';
 
 export const dynamic = 'force-dynamic';
 
@@ -38,7 +38,7 @@ export default async function Page({
         endDate,
     };
 
-    const response = await getAnnsMuni(paginationBody);
+    const response = await getAnnsMuniAdmin(paginationBody);
 
     const breadcrumb = [{ label: 'Etkinlik / Duyuru Listesi' }];
 
@@ -51,7 +51,7 @@ export default async function Page({
                 <EventList
                     events={response.data}
                     breadcrumb={breadcrumb}
-                    type="municipality"
+                    type="admin-muni"
                 />
             )}
         </PageContainer>

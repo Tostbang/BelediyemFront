@@ -1,6 +1,11 @@
 'use client';
 import React, { useState, useRef } from 'react';
-import { Announcement, AnnouncementResponse, BreadcrumbItem } from '@/types';
+import {
+    Announcement,
+    AnnouncementResponse,
+    BreadcrumbItem,
+    RoleType,
+} from '@/types';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -10,7 +15,7 @@ import DynamicTable from '@/components/dynamic/table';
 import ConfirmModal from '@/components/modals/confirmModal';
 import { FilterIcon, PersonIcon } from '../icons';
 import ImageWithSkeleton from '../common/imageSkeleton';
-import { deleteAnnMuni } from '@/app/actions';
+import { deleteAnnMuni, deleteAnnMuniAdmin } from '@/app/actions';
 import { annType } from '@/data/annType';
 import { formatDateTime } from '@/utils';
 import Breadcrumb from '../common/breadCrumb';
@@ -23,9 +28,11 @@ import AnnDetail from './detail';
 export default function EventList({
     events,
     breadcrumb,
+    type,
 }: {
     events: AnnouncementResponse;
     breadcrumb: BreadcrumbItem[];
+    type: RoleType;
 }) {
     const filterParams = ['startDate', 'endDate', 'announcementsType'];
 
@@ -68,7 +75,22 @@ export default function EventList({
 
     const handleConfirm = async () => {
         if (selectedItem) {
-            const result = await deleteAnnMuni(selectedItem);
+            let result;
+            switch (type) {
+                case 'municipality':
+                    result = await deleteAnnMuni(selectedItem);
+                    break;
+                case 'admin-muni':
+                    result = await deleteAnnMuniAdmin(selectedItem);
+                    break;
+                default:
+                    result = {
+                        success: false,
+                        message: 'Geçersiz işlem türü',
+                    };
+            }
+
+            result = await deleteAnnMuni(selectedItem);
             if (result.success) {
                 handleSuccess(result.message);
                 setModal(false);
@@ -79,6 +101,18 @@ export default function EventList({
             }
         }
     };
+
+    let url;
+    switch (type) {
+        case 'municipality':
+            url = '/municipality/event';
+            break;
+        case 'admin-muni':
+            url = '/adminmunicipality/event';
+            break;
+        default:
+            url = '';
+    }
 
     const columns = [
         {
@@ -140,9 +174,7 @@ export default function EventList({
                     {
                         key: 'edit',
                         label: (
-                            <Link href={`/municipality/event/${record.id}`}>
-                                Düzenle
-                            </Link>
+                            <Link href={`${url}/${record.id}`}>Düzenle</Link>
                         ),
                     },
                     {
@@ -169,7 +201,7 @@ export default function EventList({
                 breadcrumb={breadcrumb}
                 buttonComponent={
                     <LinkButton
-                        href="/municipality/event/new"
+                        href={`${url}/new`}
                         title="Yeni Etkinlik Ekle"
                     />
                 }
@@ -245,7 +277,7 @@ export default function EventList({
                 <ConfirmModal
                     isOpen={modal}
                     onClose={() => setModal(false)}
-                    title="Personel Sil"
+                    title="Etkinliği Sil"
                     message="Bu kaydı silmek istediğinize emin misiniz? Bu işlem geri alınamaz."
                     onConfirm={handleConfirm}
                 />

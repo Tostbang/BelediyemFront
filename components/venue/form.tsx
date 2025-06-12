@@ -45,7 +45,7 @@ export default function VenueForm({
             default:
                 return {
                     success: false,
-                    message: 'Unsupported role type',
+                    message: 'Geçersiz işlem türü',
                     title: '',
                     image: '',
                     latitude: '',

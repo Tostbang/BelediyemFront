@@ -220,7 +220,7 @@ export default function DashboardMuni({
             default:
                 handleError({
                     success: false,
-                    message: 'Unsupported role type',
+                    message: 'Geçersiz işlem türü',
                 });
                 return;
         }
