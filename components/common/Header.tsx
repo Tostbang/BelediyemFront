@@ -1,6 +1,5 @@
 'use client';
 import { useEffect, useMemo, useState } from 'react';
-import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Popover } from 'antd';
 import { getClientCookie, logout, safelyParseJSON } from '@/utils/auth';
@@ -103,18 +102,29 @@ export default function Header() {
         }
     };
 
+    let url;
+    if (userDetails?.role === 2) {
+        url = '/admin/settings/profile';
+    } else if (userDetails?.role === 3) {
+        url = '/municipality/settings/profile';
+    } else if (userDetails?.role === 4) {
+        url = '/staff/settings/profile';
+    } else {
+        url = '/';
+    }
+
+    const handleProfileClick = () => {
+        router.push(url);
+        setIsProfileOpen(false);
+    };
+
     const profileContent = (
         <div className="w-48 py-1">
-            <Link
-                href="/admin/profile"
-                className="block px-4 py-2 text-sm text-gray-700! hover:bg-gray-100!">
+            <button
+                onClick={handleProfileClick}
+                className="w-full cursor-pointer text-left block px-4 py-2 text-sm text-gray-700! hover:bg-gray-100!">
                 Profil
-            </Link>
-            <Link
-                href="/admin/settings"
-                className="block px-4 py-2 text-sm text-gray-700! hover:bg-gray-100!">
-                Ayarlar
-            </Link>
+            </button>
             <hr className="my-1" />
             <button
                 className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
@@ -161,6 +171,7 @@ export default function Header() {
             <Popover
                 content={profileContent}
                 trigger="click"
+                className='w-full flex items-center justify-end'
                 open={isProfileOpen}
                 onOpenChange={setIsProfileOpen}
                 placement="bottomRight">
@@ -180,7 +191,7 @@ export default function Header() {
                                     alt="Profile"
                                     width={40}
                                     height={40}
-                                    className="object-cover"
+                                    className="w-full h-full object-cover"
                                 />
                             </div>
                         ) : null}
