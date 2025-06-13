@@ -28,6 +28,7 @@ import { complaintStatusType } from '@/data/complaintStatus';
 import { Timeline, Rate } from 'antd';
 import LinkButton from '../common/LinkButton';
 import StatusModal from './statusModal';
+import { departmans } from '@/data/departmans';
 
 // Dynamically import MapPicker with no SSR to avoid leaflet issues
 const DynamicMapPicker = dynamic(() => import('../common/mapPicker'), {
@@ -536,7 +537,7 @@ export default function ComplaintDetail({
                                         </div>
                                         <span className="text-gray-700 break-all">
                                             {
-                                                categoryType.find(
+                                                departmans.find(
                                                     (item) =>
                                                         item.id ===
                                                         detail?.complaint
