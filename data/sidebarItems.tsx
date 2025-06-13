@@ -160,7 +160,7 @@ export const sidebarItemsMuni: SidebarItem[] = [
     },
     {
         title: 'Sözleşmeler',
-        icon: <HornIcon />,
+        icon: <ListIcon />,
         path: '/municipality/contract',
     },
     {
