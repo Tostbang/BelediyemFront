@@ -159,6 +159,11 @@ export const sidebarItemsMuni: SidebarItem[] = [
         path: '/municipality/help',
     },
     {
+        title: 'Sözleşmeler',
+        icon: <HornIcon />,
+        path: '/municipality/contract',
+    },
+    {
         title: 'Ayarlar',
         icon: <SettingsIcon />,
         children: [
