@@ -154,6 +154,11 @@ export const sidebarItemsMuni: SidebarItem[] = [
         path: '/municipality/faq',
     },
     {
+        title: 'Yardım',
+        icon: <HornIcon />,
+        path: '/municipality/help',
+    },
+    {
         title: 'Ayarlar',
         icon: <SettingsIcon />,
         children: [

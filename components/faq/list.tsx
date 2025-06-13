@@ -19,10 +19,12 @@ export default function FaqList({
     faqs,
     type,
     breadcrumb,
+    showActions = true,
 }: {
     faqs: FAQResponse;
     type: RoleType;
     breadcrumb: BreadcrumbItem[];
+    showActions?: boolean;
 }) {
     const [modal, setModal] = useState(false);
     const [selectedItem, setSelectedItem] = useState<string | null>(null);
@@ -72,6 +74,7 @@ export default function FaqList({
             break;
         case 'municipality':
             url = '/municipality/faq';
+            break;
         case 'admin-muni':
             url = '/adminmunicipality/faq';
             break;
@@ -87,7 +90,7 @@ export default function FaqList({
                 <div className="flex flex-col gap-2">
                     <div className="text-xl opacity-90">{item.description}</div>
                 </div>
-                {type !== 'staff' && (
+                {type !== 'staff' && showActions && (
                     <div className="flex justify-end mt-4">
                         <Link
                             href={`${url}/${item.id}`}
@@ -112,7 +115,8 @@ export default function FaqList({
             <Breadcrumb
                 breadcrumb={breadcrumb}
                 buttonComponent={
-                    type !== 'staff' && (
+                    type !== 'staff' &&
+                    showActions && (
                         <LinkButton href={`${url}/new`} title="Yeni SSS Ekle" />
                     )
                 }

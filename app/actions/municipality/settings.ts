@@ -253,3 +253,17 @@ export const deleteFAQMuni = async (id: string) => {
         return handleApiError(error);
     }
 }
+
+export const getAdminFAQsMuni = async (): Promise<ApiResponseT<FAQResponse>> => {
+    try {
+        const response = await axiosInstance.get('municipality/getadminfrequentlyaskedquestions');
+
+        return {
+            success: true,
+            data: response.data as FAQResponse
+        };
+
+    } catch (error) {
+        return handleApiError(error);
+    }
+}
