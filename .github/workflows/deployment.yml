@@ -1,0 +1,66 @@
+name: Build & Deploy to Azure Container Registry
+on:
+    push:
+        branches: deployment
+    workflow_dispatch:
+
+permissions:
+    id-token: write
+    contents: read
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Azure Login
+              uses: azure/login@v2
+              with:
+                  client-id: ${{ secrets.AZUREAPPSERVICE_CLIENT_ID }}
+                  tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANT_ID }}
+                  subscription-id:
+                      ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTION_ID }}
+
+            - name: Clean up repository
+              run: |
+                  if az acr repository show --name ${{ secrets.ACR_NAME }} --repository ${{ secrets.ACR_NAME }} &> /dev/null; then
+                      az acr repository delete --name ${{ secrets.ACR_NAME }} --repository ${{ secrets.ACR_NAME }} --yes
+                  else
+                      echo "Repository does not exist, skipping deletion."
+                  fi
+
+            - name: Login to Azure Container Registry
+              uses: azure/docker-login@v2
+              with:
+                  login-server: ${{ secrets.ACR_ENDPOINT }}
+                  username: ${{ secrets.ACR_USERNAME }}
+                  password: ${{ secrets.ACR_PASSWORD }}
+
+            - name: Build and push Docker image
+              uses: docker/build-push-action@v6
+              with:
+                  push: true
+                  file: ./Dockerfile
+                  tags:
+                      ${{ secrets.ACR_ENDPOINT }}/${{ secrets.ACR_NAME }}:latest
+                  build-args: |
+                      NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
+
+    deploy:
+        runs-on: ubuntu-latest
+        needs: build
+
+        steps:
+            - name: Azure Login
+              uses: azure/login@v2
+              with:
+                  client-id: ${{ secrets.AZUREAPPSERVICE_CLIENT_ID }}
+                  tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANT_ID }}
+                  subscription-id:
+                      ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTION_ID }}
+
+            - name: Deploy to Azure Web App
+              run: |
+                  az webapp config container set --name ${{ secrets.WEBAPP_NAME }} --resource-group ${{ secrets.WEBAPP_RESOURCE_GROUP }} --docker-custom-image-name ${{ secrets.ACR_ENDPOINT }}/${{ secrets.ACR_NAME }}:latest --docker-registry-server-url https://${{ secrets.ACR_ENDPOINT }} --docker-registry-server-user ${{ secrets.ACR_USERNAME }} --docker-registry-server-password ${{ secrets.ACR_PASSWORD }}
