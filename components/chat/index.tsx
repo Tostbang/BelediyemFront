@@ -30,6 +30,7 @@ export default function ChatArea({ chatId, messageGroups }: ChatAreaProps) {
     const [senderColorMap, setSenderColorMap] = useState<
         Record<number, string>
     >({});
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const router = useRouter();
 
     const initialState = {
@@ -37,11 +38,15 @@ export default function ChatArea({ chatId, messageGroups }: ChatAreaProps) {
     };
 
     useEffect(() => {
+        setIsLoading(true);
+        const timer = setTimeout(() => {
+            setIsLoading(false);
+        }, 800);
+
         const userData = getClientCookie('user');
         const parsedUser = safelyParseJSON<User>(userData);
         setUserDetails(parsedUser);
 
-        // Initialize color map for senders when messages load
         if (messageGroups && messageGroups.length > 0) {
             const uniqueSenderIds = new Set<number>();
             const colorMap: Record<number, string> = {};
@@ -57,7 +62,6 @@ export default function ChatArea({ chatId, messageGroups }: ChatAreaProps) {
                 });
             });
 
-            // Assign colors to unique sender IDs
             Array.from(uniqueSenderIds).forEach((senderId, index) => {
                 colorMap[senderId] =
                     SENDER_COLORS[index % SENDER_COLORS.length];
@@ -65,7 +69,9 @@ export default function ChatArea({ chatId, messageGroups }: ChatAreaProps) {
 
             setSenderColorMap(colorMap);
         }
-    }, [messageGroups]);
+
+        return () => clearTimeout(timer);
+    }, [messageGroups, chatId]);
 
     const clientAction = async (_prevState: unknown, formData: FormData) => {
         if (chatId) {
@@ -119,15 +125,23 @@ export default function ChatArea({ chatId, messageGroups }: ChatAreaProps) {
                     onScroll={handleScroll}
                     className="overflow-y-auto pr-2"
                     style={{
-                        height: '70vh' /* Increased height to fill available space */,
+                        height: '70vh',
                         scrollBehavior: 'smooth',
                     }}>
-                    {(!messageGroups || messageGroups.length === 0) && (
+                    {isLoading ? (
+                        <div className="flex flex-col space-y-4 h-full justify-center items-center">
+                            <div className="loader">
+                                <div className="spinner"></div>
+                            </div>
+                            <p className="text-gray-500">
+                                Mesajlar yükleniyor...
+                            </p>
+                        </div>
+                    ) : !messageGroups || messageGroups.length === 0 ? (
                         <div className="flex items-center justify-center h-full text-gray-500 gap-2">
                             Henüz mesaj yok
                         </div>
-                    )}
-                    {messageGroups &&
+                    ) : (
                         messageGroups.map((group, groupIndex) => (
                             <div key={groupIndex}>
                                 <div className="flex justify-center gap-1.5">
@@ -159,7 +173,8 @@ export default function ChatArea({ chatId, messageGroups }: ChatAreaProps) {
                                         )
                                 )}
                             </div>
-                        ))}
+                        ))
+                    )}
                 </div>
 
                 {showScrollButton && (
@@ -177,6 +192,27 @@ export default function ChatArea({ chatId, messageGroups }: ChatAreaProps) {
                     </div>
                 )}
             </div>
+
+            <style jsx>{`
+                .loader {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+                .spinner {
+                    width: 40px;
+                    height: 40px;
+                    border: 4px solid rgba(0, 0, 0, 0.1);
+                    border-radius: 50%;
+                    border-top-color: #3b82f6;
+                    animation: spin 1s ease-in-out infinite;
+                }
+                @keyframes spin {
+                    to {
+                        transform: rotate(360deg);
+                    }
+                }
+            `}</style>
 
             <form action={formAction} className="flex gap-2 items-center">
                 <input

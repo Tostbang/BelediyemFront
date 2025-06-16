@@ -22,6 +22,7 @@ export default function ChatList({
 }) {
     const { pageNumber, handlePageChange } = usePagination();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [clickedChatId, setClickedChatId] = useState<number | null>(null);
 
     const router = useRouter();
     const pathname = usePathname();
@@ -30,6 +31,9 @@ export default function ChatList({
     const currentChatId = searchParams.get('chatId');
 
     const handleChatClick = (chatId: number) => {
+        setClickedChatId(chatId); // Set the clicked chat for animation
+
+        // After animation completes, navigate to the chat
         const params = new URLSearchParams(searchParams.toString());
         params.set('chatId', chatId.toString());
         router.push(`${pathname}?${params.toString()}`);
@@ -63,7 +67,8 @@ export default function ChatList({
                             currentChatId === chat.complaintId.toString()
                                 ? 'border-blue-500 bg-blue-50'
                                 : 'border-transparent hover:border-gray-300'
-                        } p-4 border-b cursor-pointer hover:bg-gray-50 transition-colors`}>
+                        } p-4 border-b cursor-pointer hover:bg-gray-50 transition-colors
+                        ${clickedChatId === chat.complaintId ? 'animate-chat-click' : ''}`}>
                         {/* Status indicator and title */}
                         <div className="flex items-center justify-between">
                             <div className="flex items-center space-x-2">
@@ -127,6 +132,16 @@ export default function ChatList({
 
     return (
         <>
+            {/* Add style tag for animation */}
+            <style jsx global>{`
+                @keyframes chatClick {
+                    0% { background-color: rgba(59, 130, 246, 0.5); }
+                    100% { background-color: transparent; }
+                }
+                .animate-chat-click {
+                    animation: chatClick 0.5s ease-out;
+                }
+            `}</style>
             <Breadcrumb breadcrumb={breadcrumb} />
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-4 bg-white rounded-lg p-4 shadow-sm">
                 <h2 className="text-xl font-semibold">Şikayetler</h2>
