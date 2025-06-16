@@ -57,7 +57,7 @@ export default function MuniForm({
         city: detail?.municipality.city || '',
         discrit: detail?.municipality.discrit || '',
         adressline: detail?.municipality.adressline || '',
-        status: detail?.municipality.status || true,
+        status: isEditing ? (detail?.municipality.status ?? true) : true,
         success: true,
         message: '',
         errors: undefined,

@@ -33,7 +33,7 @@ export default function VenueForm({
         image: detail?.venue.image || '',
         latitude: detail?.venue.latitude || '',
         longitude: detail?.venue.longitude || '',
-        status: detail?.venue.status || true,
+        status: isEditing ? (detail?.venue.status ?? true) : true,
         success: true,
         message: '',
         errors: undefined,

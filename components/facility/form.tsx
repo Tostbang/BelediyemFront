@@ -3,7 +3,12 @@ import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import SubmitButton from '@/components/common/submitButton';
 import React, { useActionState } from 'react';
 import { BreadcrumbItem, FacilityDetailResponse, RoleType } from '@/types';
-import { addFacilityMuni, addFacilityMuniAdmin, updateFacilityMuni, updateFacilityMuniAdmin } from '@/app/actions';
+import {
+    addFacilityMuni,
+    addFacilityMuniAdmin,
+    updateFacilityMuni,
+    updateFacilityMuniAdmin,
+} from '@/app/actions';
 import Breadcrumb from '../common/breadCrumb';
 import ImageUploader from '../dynamic/imageUploader';
 import MapModal from '../modals/mapModal';
@@ -29,7 +34,7 @@ export default function FacilityForm({
         latitude: detail?.facility.latitude || '',
         longitude: detail?.facility.longitude || '',
         address: detail?.facility.address || '',
-        status: detail?.facility.status || true,
+        status: isEditing ? (detail?.facility.status ?? true) : true,
         success: true,
         message: '',
         errors: undefined,

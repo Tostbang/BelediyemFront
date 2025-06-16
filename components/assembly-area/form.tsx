@@ -30,7 +30,7 @@ export default function AssemblyForm({
         title: detail?.assemblyArea.title || '',
         latitude: detail?.assemblyArea.latitude || '',
         longitude: detail?.assemblyArea.longitude || '',
-        status: detail?.assemblyArea.status || true,
+        status: isEditing ? (detail?.assemblyArea.status ?? true) : true,
         success: true,
         message: '',
         errors: undefined,
@@ -61,7 +61,7 @@ export default function AssemblyForm({
                     title: '',
                     latitude: '',
                     longitude: '',
-                    status: false,
+                    status: true,
                 };
         }
 

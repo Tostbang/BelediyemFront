@@ -33,7 +33,7 @@ export default function StaffForm({
         role: detail?.municipalityStaff.role?.toString() || '',
         phone: detail?.municipalityStaff.phone || '',
         password: '',
-        status: detail?.municipalityStaff.status || true,
+        status: isEditing ? (detail?.municipalityStaff.status ?? true) : true,
         success: true,
         message: '',
         errors: undefined,

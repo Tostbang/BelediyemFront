@@ -29,10 +29,10 @@ export default function SliderForm({
     const initialState = {
         url: detail?.slider.url || '',
         image: detail?.slider.image || '',
-        status: detail?.slider.status || true,
+        status: isEditing ? (detail?.slider.status ?? true) : true,
         success: true,
         message: '',
-        errors: undefined
+        errors: undefined,
     };
 
     const clientAction = async (_prevState: unknown, formData: FormData) => {
