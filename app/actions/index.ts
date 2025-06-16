@@ -20,6 +20,7 @@ export * from '@/app/actions/municipality/assembly';
 export * from '@/app/actions/municipality/support';
 export * from '@/app/actions/municipality/complaints';
 export * from '@/app/actions/municipality/ann';
+export * from '@/app/actions/municipality/contract';
 
 // staff
 export * from '@/app/actions/staff/auth';

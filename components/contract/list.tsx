@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { BreadcrumbItem, Contract, ContractsResponse } from '@/types';
+import { BreadcrumbItem, Contract, ContractsResponse, RoleType } from '@/types';
 import DynamicTable from '../dynamic/table';
 import Link from 'next/link';
 import { contractTypes } from '@/data/contractTypes';
@@ -9,10 +9,25 @@ import Breadcrumb from '../common/breadCrumb';
 export default function ContractList({
     contracts,
     breadcrumb,
+    type,
 }: {
     contracts: ContractsResponse;
     breadcrumb: BreadcrumbItem[];
+    type: RoleType;
 }) {
+    let url;
+    switch (type) {
+        case 'admin':
+            url = '/admin/contract';
+            break;
+        case 'municipality':
+            url = '/municipality/contract';
+            break;
+        default:
+            url = '';
+            break;
+    }
+
     const columns = [
         {
             title: 'Id',
@@ -45,7 +60,7 @@ export default function ContractList({
             render: (_: unknown, record: Contract) => (
                 <div>
                     <Link
-                        href={`/admin/contract/${record.id}`}
+                        href={`${url}/${record.id}`}
                         className="text-blue-500 hover:underline">
                         Düzenle / Görüntüle
                     </Link>

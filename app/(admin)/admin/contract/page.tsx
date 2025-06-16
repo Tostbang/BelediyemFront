@@ -25,6 +25,7 @@ export default async function Page() {
                 <ContractList
                     contracts={response.data}
                     breadcrumb={breadcrumb}
+                    type="admin"
                 />
             )}
         </PageContainer>
