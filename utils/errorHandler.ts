@@ -11,12 +11,32 @@ export type ErrorResponse = {
  * Processes API errors and returns standardized error responses
  */
 export async function handleApiError(error: unknown): Promise<ErrorResponse> {
-    // Check for type-based errors
+
     if (error && typeof error === 'object' && 'type' in error) {
         const errorType = (error as { type: string }).type;
 
-        // Handle different error types
         switch (errorType) {
+            case 'ERROR_IN_RESPONSE':
+                const errorData = error as unknown as {
+                    errors: string[] | string,
+                    message: string
+                };
+
+                let errorMessage = '';
+                if (Array.isArray(errorData.errors) && errorData.errors.length > 0) {
+                    errorMessage = errorData.errors.join(', ');
+                } else if (typeof errorData.errors === 'string') {
+                    errorMessage = errorData.errors;
+                } else {
+                    errorMessage = errorData.message || 'Bir hata oluştu.';
+                }
+
+                return {
+                    success: false,
+                    message: errorData.message || '',
+                    errors: errorMessage,
+                };
+
             case 'NOT_FOUND':
                 return {
                     success: false,

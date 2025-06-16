@@ -40,6 +40,21 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
     (response: AxiosResponse) => {
         if (response.status >= 200 && response.status < 300) {
+            if (response.data && response.data.code &&
+                (response.data.code === '400' || response.data.code === '401' ||
+                    response.data.code === '403' || response.data.code === '404' ||
+                    response.data.code === '500')) {
+
+                const formattedError = {
+                    type: "ERROR_IN_RESPONSE",
+                    code: response.data.code,
+                    message: response.data.message || 'Bir hata oluştu.',
+                    errors: response.data.errors || [],
+                    originalResponse: response
+                };
+
+                return Promise.reject(formattedError);
+            }
             return response;
         }
 

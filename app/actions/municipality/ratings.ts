@@ -36,6 +36,7 @@ export const getRatingByIdMuni = async (id: string): Promise<ApiResponseT<Rating
 export const approvedRatingMuni = async (id: string) => {
     try {
         const response = await axiosInstance.get(`municipality/approvedrating?ratingId=${id}`);
+
         return {
             success: true,
             message: response.data.message || 'Değerlendirme başarıyla onaylandı.',
