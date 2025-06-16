@@ -21,30 +21,38 @@ export const handleLoginAdmin = async (formData: FormData) => {
         const response = await axiosInstance.post('admin/login', payload);
         const data = response.data as LoginResponse;
 
-        const token = data.token;
-        const decoded = jwtDecode<CustomJwtPayload>(token);
-        const expirationDate = new Date(decoded?.exp * 1000);
+        if (data.code === "200" && data.token) {
+            const token = data.token;
+            try {
+                const decoded = jwtDecode<CustomJwtPayload>(token);
+                const expirationDate = new Date(decoded?.exp * 1000);
 
-        (await cookies()).set('token', `Bearer ${token}`, {
-            expires: expirationDate,
-            path: '/'
-        });
-        (await cookies()).set('user', JSON.stringify({
-            userId: data.userId,
-            email: data.email,
-            name: data.name,
-            surname: data.surname,
-            role: data.role,
-            profileImage: data.profileImage
-        }), {
-            expires: expirationDate,
-            path: '/'
-        });
+                (await cookies()).set('token', `Bearer ${token}`, {
+                    expires: expirationDate,
+                    path: '/'
+                });
+                (await cookies()).set('user', JSON.stringify({
+                    userId: data.userId,
+                    email: data.email,
+                    name: data.name,
+                    surname: data.surname,
+                    role: data.role,
+                    profileImage: data.profileImage
+                }), {
+                    expires: expirationDate,
+                    path: '/'
+                });
 
-        return { success: true, message: data.message || 'Giriş başarılı, yönlendiriliyorsunuz.', errors: [], email, password };
+                return { success: true, message: data.message || 'Giriş başarılı, yönlendiriliyorsunuz.', errors: [], email, password };
+            } catch (decodeError) {
+                console.error("Error decoding token:", decodeError);
+                return { success: false, message: "", errors: 'Token çözümleme hatası!' };
+            }
+        } else {
+            return { success: false, message: "", errors: data.errors || data.message || 'Giriş başarısız!' };
+        }
     } catch (error) {
         return handleApiError(error);
-
     }
 }
 

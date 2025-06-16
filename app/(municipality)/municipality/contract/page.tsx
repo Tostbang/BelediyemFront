@@ -2,8 +2,8 @@ import React from 'react';
 import PageContainer from '@/components/pageContainer';
 import { generatePageMetadata } from '@/lib/metadata';
 import { getContractsMuni } from '@/app/actions';
-import ContractList from '@/components/contract/list';
 import AuthErrorHandler from '@/components/AuthErrorHandler';
+import ContractListCollapse from '@/components/contract/collapse';
 
 export const dynamic = 'force-dynamic';
 
@@ -22,10 +22,9 @@ export default async function Page() {
                 error={!response?.success ? response : undefined}
             />
             {response?.success && response.data && (
-                <ContractList
+                <ContractListCollapse
                     contracts={response.data}
                     breadcrumb={breadcrumb}
-                    type="municipality"
                 />
             )}
         </PageContainer>

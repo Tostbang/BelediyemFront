@@ -31,7 +31,7 @@ export default function FaqList({
     const { handleSuccess, handleError } = useNotificationHandler();
     const router = useRouter();
 
-    const handleCloseDevice = (id: string) => {
+    const handleDeleteClick = (id: string) => {
         setSelectedItem(id);
         setModal(true);
     };
@@ -99,7 +99,7 @@ export default function FaqList({
                         </Link>
                         <button
                             onClick={() =>
-                                handleCloseDevice(item.id.toString())
+                                handleDeleteClick(item.id.toString())
                             }
                             className="flex items-center text-red-500 hover:text-red-700 cursor-pointer w-6 h6">
                             <TrashIcon />
