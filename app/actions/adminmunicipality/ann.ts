@@ -154,11 +154,7 @@ export const updateAnnMuniAdmin = async (formData: FormData) => {
 
 export const deleteAnnMuniAdmin = async (id: string) => {
     try {
-        const response = await axiosInstance.delete('adminmunicipalitypanel/deleteannouncement', {
-            data: {
-                announcementId: id
-            }
-        });
+        const response = await axiosInstance.delete(`adminmunicipalitypanel/deleteannouncement?announcementId=${id}`);
 
         return {
             success: true,
