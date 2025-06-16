@@ -88,7 +88,7 @@ export const updateAssemblyMuni = async (formData: FormData) => {
             longitude,
         };
 
-        const response = await axiosInstance.put('municipality/updatessemblyareas', payload);
+        const response = await axiosInstance.put('municipality/updateassemblyareas', payload);
 
         return {
             success: true,
