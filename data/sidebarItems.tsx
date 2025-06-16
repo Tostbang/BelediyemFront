@@ -34,7 +34,7 @@ export const sidebarItemsAdmin: SidebarItem[] = [
             {
                 title: 'Belediye Listesi',
                 icon: <ListIcon />,
-                path: '/admin/municipality/list',
+                path: '/admin/municipality',
             },
             {
                 title: 'Şifre Sıfırlma Talepleri',
@@ -51,7 +51,7 @@ export const sidebarItemsAdmin: SidebarItem[] = [
     {
         title: 'Sözleşmeler',
         icon: <ListIcon />,
-        path: '/admin/contract/list',
+        path: '/admin/contract',
     },
     {
         title: 'Ayarlar',
@@ -131,7 +131,7 @@ export const sidebarItemsMuni: SidebarItem[] = [
     {
         title: 'Personel',
         icon: <PeopleIcon />,
-        path: '/municipality/staff/list',
+        path: '/municipality/staff',
     },
     {
         title: 'Vatandaş',
@@ -236,7 +236,7 @@ export const sidebarItemsMuniAdmin: SidebarItem[] = [
     {
         title: 'Personel',
         icon: <PeopleIcon />,
-        path: '/adminmunicipality/staff/list',
+        path: '/adminmunicipality/staff',
     },
     {
         title: 'Vatandaş',
