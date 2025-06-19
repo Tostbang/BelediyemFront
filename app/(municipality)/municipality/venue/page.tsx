@@ -35,13 +35,11 @@ export default async function Page({
             <AuthErrorHandler
                 error={!response?.success ? response : undefined}
             />
-            {response?.success && response.data && (
-                <VenueList
-                    venues={response.data}
-                    type="municipality"
-                    breadcrumb={breadcrumb}
-                />
-            )}
+            <VenueList
+                venues={response.data || null}
+                type="municipality"
+                breadcrumb={breadcrumb}
+            />
         </PageContainer>
     );
 }

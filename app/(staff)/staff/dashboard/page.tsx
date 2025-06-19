@@ -21,12 +21,10 @@ export default async function Page() {
             <AuthErrorHandler
                 error={!response?.success ? response : undefined}
             />
-            {response?.success && response.data && (
-                <DashboardStaff
-                    dashboard={response.data}
-                    breadcrumb={breadcrumb}
-                />
-            )}
+            <DashboardStaff
+                dashboard={response.data || null}
+                breadcrumb={breadcrumb}
+            />
         </PageContainer>
     );
 }

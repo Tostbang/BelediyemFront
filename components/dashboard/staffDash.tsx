@@ -17,7 +17,7 @@ export default function DashboardStaff({
     dashboard,
     breadcrumb,
 }: {
-    dashboard: DashboardStatisticsStaff;
+    dashboard: DashboardStatisticsStaff | null;
     breadcrumb: BreadcrumbItem[];
 }) {
     const cardsData = [
@@ -105,7 +105,7 @@ export default function DashboardStaff({
                 </div>
 
                 <ComplaintChart
-                    monthlyStatistics={dashboard.monthlyStatistics || []}
+                    monthlyStatistics={dashboard?.monthlyStatistics || []}
                 />
             </div>
         </>

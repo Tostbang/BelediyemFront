@@ -37,13 +37,11 @@ export default async function Page({
             <AuthErrorHandler
                 error={!response?.success ? response : undefined}
             />
-            {response?.success && response.data && (
-                <PWResetList
-                    requests={response.data}
-                    type="municipality"
-                    breadcrumb={breadcrumb}
-                />
-            )}
+            <PWResetList
+                requests={response.data || null}
+                type="municipality"
+                breadcrumb={breadcrumb}
+            />
         </PageContainer>
     );
 }

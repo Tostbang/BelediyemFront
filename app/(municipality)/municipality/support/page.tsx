@@ -41,13 +41,11 @@ export default async function Page({
             <AuthErrorHandler
                 error={!response?.success ? response : undefined}
             />
-            {response?.success && response.data && (
-                <SupportList
-                    supports={response.data}
-                    type="municipality"
-                    breadcrumb={breadcrumb}
-                />
-            )}
+            <SupportList
+                supports={response.data || null}
+                type="municipality"
+                breadcrumb={breadcrumb}
+            />
         </PageContainer>
     );
 }

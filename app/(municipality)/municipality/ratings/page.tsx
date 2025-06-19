@@ -34,13 +34,11 @@ export default async function Page({
             <AuthErrorHandler
                 error={!response?.success ? response : undefined}
             />
-            {response?.success && response.data && (
-                <RatingList
-                    ratings={response.data}
-                    breadcrumb={breadcrumb}
-                    type="municipality"
-                />
-            )}
+            <RatingList
+                ratings={response.data || null}
+                breadcrumb={breadcrumb}
+                type="municipality"
+            />
         </PageContainer>
     );
 }

@@ -53,14 +53,12 @@ export default async function Page({
             <AuthErrorHandler
                 error={!response?.success ? response : undefined}
             />
-            {response?.success && response.data && (
-                <ComplaintList
-                    complaints={response.data}
-                    breadcrumb={breadcrumb}
-                    type="staff"
-                    isDepartment={true}
-                />
-            )}
+            <ComplaintList
+                complaints={response.data || null}
+                breadcrumb={breadcrumb}
+                type="staff"
+                isDepartment={true}
+            />
         </PageContainer>
     );
 }
