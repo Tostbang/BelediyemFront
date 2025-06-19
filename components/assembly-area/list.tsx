@@ -20,7 +20,7 @@ export default function AssemblyList({
     type,
     breadcrumb,
 }: {
-    assemblies: AssemblyResponse;
+    assemblies: AssemblyResponse | null;
     type: RoleType;
     breadcrumb: BreadcrumbItem[];
 }) {
@@ -127,9 +127,7 @@ export default function AssemblyList({
                     {
                         key: 'edit',
                         label: (
-                            <Link href={`${url}/${record.id}`}>
-                                Düzenle
-                            </Link>
+                            <Link href={`${url}/${record.id}`}>Düzenle</Link>
                         ),
                     },
                     {
@@ -161,14 +159,14 @@ export default function AssemblyList({
                     <div className="w-full overflow-hidden bg-white rounded-lg p-6">
                         <div className="overflow-x-auto">
                             <DynamicTable<Assembly>
-                                data={assemblies.assemblyAreas}
+                                data={assemblies?.assemblyAreas || []}
                                 columns={columns}
                                 rowKey="id"
                                 showControls={false}
                                 pagination={{
                                     pageSize: pageSize,
                                     current: pageNumber,
-                                    total: assemblies.totalCount || 0,
+                                    total: assemblies?.totalCount || 0,
                                     onChange: handlePageChange,
                                     onShowSizeChange: handlePageSizeChange,
                                     responsive: true,
@@ -187,7 +185,7 @@ export default function AssemblyList({
                     <AssemblyDetail
                         isOpen={detailsModal}
                         onClose={() => setDetailsModal(false)}
-                        detail={assemblies.assemblyAreas.find(
+                        detail={assemblies?.assemblyAreas.find(
                             (item) => item.id.toString() === selectedItem
                         )}
                     />

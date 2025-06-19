@@ -47,13 +47,11 @@ export default async function Page({
             <AuthErrorHandler
                 error={!response?.success ? response : undefined}
             />
-            {response?.success && response.data && (
-                <EventList
-                    events={response.data}
-                    breadcrumb={breadcrumb}
-                    type="admin-muni"
-                />
-            )}
+            <EventList
+                events={response.data || null}
+                breadcrumb={breadcrumb}
+                type="admin-muni"
+            />
         </PageContainer>
     );
 }

@@ -27,7 +27,7 @@ export default function ComplaintList({
     type,
     isDepartment = false,
 }: {
-    complaints: ComplaintsResponse;
+    complaints: ComplaintsResponse | null;
     breadcrumb: BreadcrumbItem[];
     type: RoleType;
     isDepartment?: boolean;
@@ -249,14 +249,14 @@ export default function ComplaintList({
                 <div className="w-full overflow-hidden bg-white rounded-lg p-6">
                     <div className="overflow-x-auto">
                         <DynamicTable<Complaints>
-                            data={complaints.complaints}
+                            data={complaints?.complaints || []}
                             columns={columns}
                             rowKey="id"
                             showControls={false}
                             pagination={{
                                 pageSize: pageSize,
                                 current: pageNumber,
-                                total: complaints.totalCount || 0,
+                                total: complaints?.totalCount || 0,
                                 onChange: handlePageChange,
                                 onShowSizeChange: handlePageSizeChange,
                                 responsive: true,

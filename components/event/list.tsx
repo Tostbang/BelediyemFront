@@ -30,7 +30,7 @@ export default function EventList({
     breadcrumb,
     type,
 }: {
-    events: AnnouncementResponse;
+    events: AnnouncementResponse | null;
     breadcrumb: BreadcrumbItem[];
     type: RoleType;
 }) {
@@ -258,14 +258,14 @@ export default function EventList({
                 <div className="w-full overflow-hidden bg-white rounded-lg p-6">
                     <div className="overflow-x-auto">
                         <DynamicTable<Announcement>
-                            data={events.announcements}
+                            data={events?.announcements || []}
                             columns={columns}
                             rowKey="id"
                             showControls={false}
                             pagination={{
                                 pageSize: pageSize,
                                 current: pageNumber,
-                                total: events.totalCount || 0,
+                                total: events?.totalCount || 0,
                                 onChange: handlePageChange,
                                 onShowSizeChange: handlePageSizeChange,
                                 responsive: true,
@@ -284,7 +284,7 @@ export default function EventList({
                 <AnnDetail
                     isOpen={detailsModal}
                     onClose={() => setDetailsModal(false)}
-                    detail={events.announcements.find(
+                    detail={events?.announcements.find(
                         (item) => item.id.toString() === selectedItem
                     )}
                 />

@@ -19,7 +19,7 @@ export default function DevicesList({
     type,
     breadcrumb,
 }: {
-    devices: DevicesResponse;
+    devices: DevicesResponse | null;
     type: RoleType;
     breadcrumb: BreadcrumbItem[];
 }) {
@@ -114,7 +114,7 @@ export default function DevicesList({
                 <div className="w-full overflow-hidden bg-white rounded-lg p-6">
                     <div className="overflow-x-auto">
                         <DynamicTable<Devices>
-                            data={devices.devices}
+                            data={devices?.devices || []}
                             columns={columns}
                             rowKey="id"
                             showControls={false}

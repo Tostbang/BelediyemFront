@@ -17,7 +17,7 @@ export default function ComplaintStatusList({
     statuses,
     breadcrumb,
 }: {
-    statuses: ComplaintStatusesResponse;
+    statuses: ComplaintStatusesResponse | null;
     breadcrumb: BreadcrumbItem[];
 }) {
     const { pageNumber, pageSize, handlePageChange, handlePageSizeChange } =
@@ -100,14 +100,14 @@ export default function ComplaintStatusList({
                 <div className="w-full overflow-hidden bg-white rounded-lg p-6">
                     <div className="overflow-x-auto">
                         <DynamicTable<ComplaintStatuses>
-                            data={statuses.complaintsStatuses}
+                            data={statuses?.complaintsStatuses || []}
                             columns={columns}
                             rowKey="id"
                             showControls={false}
                             pagination={{
                                 pageSize: pageSize,
                                 current: pageNumber,
-                                total: statuses.totalCount || 0,
+                                total: statuses?.totalCount || 0,
                                 onChange: handlePageChange,
                                 onShowSizeChange: handlePageSizeChange,
                                 responsive: true,

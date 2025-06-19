@@ -35,13 +35,11 @@ export default async function Page({
             <AuthErrorHandler
                 error={!response?.success ? response : undefined}
             />
-            {response?.success && response.data && (
-                <AssemblyList
-                    assemblies={response.data}
-                    type="admin-muni"
-                    breadcrumb={breadcrumb}
-                />
-            )}
+            <AssemblyList
+                assemblies={response.data || null}
+                type="admin-muni"
+                breadcrumb={breadcrumb}
+            />
         </PageContainer>
     );
 }

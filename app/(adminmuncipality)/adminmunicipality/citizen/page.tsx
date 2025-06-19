@@ -42,9 +42,10 @@ export default async function Page({
             <AuthErrorHandler
                 error={!response?.success ? response : undefined}
             />
-            {response?.success && response.data && (
-                <CitizenList users={response.data} breadcrumb={breadcrumb} />
-            )}
+            <CitizenList
+                users={response.data || null}
+                breadcrumb={breadcrumb}
+            />
         </PageContainer>
     );
 }

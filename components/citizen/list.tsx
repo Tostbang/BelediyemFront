@@ -13,7 +13,7 @@ export default function CitizenList({
     users,
     breadcrumb,
 }: {
-    users: CitizenUserResponse;
+    users: CitizenUserResponse | null;
     breadcrumb: BreadcrumbItem[];
 }) {
     const filterParams = ['searchText'];
@@ -122,14 +122,14 @@ export default function CitizenList({
                     </div>
                     <div className="overflow-x-auto">
                         <DynamicTable<CitezenUser>
-                            data={users.users}
+                            data={users?.users || []}
                             columns={columns}
                             rowKey="userId"
                             showControls={false}
                             pagination={{
                                 pageSize: pageSize,
                                 current: pageNumber,
-                                total: users.totalCount || 0,
+                                total: users?.totalCount || 0,
                                 onChange: handlePageChange,
                                 onShowSizeChange: handlePageSizeChange,
                                 responsive: true,

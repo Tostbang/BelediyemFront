@@ -36,14 +36,12 @@ export default async function Page({
             <AuthErrorHandler
                 error={!response?.success ? response : undefined}
             />
-            {response?.success && response.data && (
-                <DashboardMuni
-                    dashboard={response.data}
-                    reports={reportsData.data}
-                    breadcrumb={breadcrumb}
-                    type="admin-muni"
-                />
-            )}
+            <DashboardMuni
+                dashboard={response.data || null}
+                reports={reportsData.data || null}
+                breadcrumb={breadcrumb}
+                type="admin-muni"
+            />
         </PageContainer>
     );
 }

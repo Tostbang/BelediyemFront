@@ -35,8 +35,8 @@ export default function DashboardMuni({
     breadcrumb,
     type,
 }: {
-    dashboard: DashboardStatisticsMuni;
-    reports?: ReportsMuniResponse | null;
+    dashboard: DashboardStatisticsMuni | null;
+    reports: ReportsMuniResponse | null;
     breadcrumb: BreadcrumbItem[];
     type: RoleType;
 }) {
@@ -252,7 +252,7 @@ export default function DashboardMuni({
                     </div>
 
                     <ComplaintChart
-                        monthlyStatistics={dashboard.monthlyStatistics || []}
+                        monthlyStatistics={dashboard?.monthlyStatistics || []}
                     />
 
                     <div className="w-full overflow-hidden mt-6 bg-white rounded-lg p-6">
@@ -298,7 +298,7 @@ export default function DashboardMuni({
                         </h2>
                         <div className="overflow-x-auto">
                             <DynamicTable<DepartmentStatistics>
-                                data={dashboard.departmentStatistics}
+                                data={dashboard?.departmentStatistics || []}
                                 columns={columns2}
                                 rowKey="departmentName"
                                 showControls={false}

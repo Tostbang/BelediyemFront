@@ -20,13 +20,11 @@ export default async function Page() {
             <AuthErrorHandler
                 error={!response?.success ? response : undefined}
             />
-            {response?.success && response.data && (
-                <DevicesList
-                    devices={response?.data || []}
-                    type="admin"
-                    breadcrumb={breadcrumb}
-                />
-            )}
+            <DevicesList
+                devices={response?.data || null}
+                type="admin"
+                breadcrumb={breadcrumb}
+            />
         </PageContainer>
     );
 }
