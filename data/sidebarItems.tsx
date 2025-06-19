@@ -15,7 +15,7 @@ import {
     ChatIcon,
     StarIcon,
     SupportIcon,
-    MoneyIcon,
+    // MoneyIcon,
     HornIcon,
     EnvelopeIcon,
     ExitIcon,
