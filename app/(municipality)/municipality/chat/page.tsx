@@ -42,14 +42,12 @@ export default async function Page({
             <AuthErrorHandler
                 error={!response?.success ? response : undefined}
             />
-            {response?.success && response.data && (
-                <ChatList
-                    chats={response.data}
-                    messages={messagesResponse?.data?.messageGroups || []}
-                    breadcrumb={breadcrumb}
-                    chatId={chatId}
-                />
-            )}
+            <ChatList
+                chats={response.data || null}
+                messages={messagesResponse?.data?.messageGroups || []}
+                breadcrumb={breadcrumb}
+                chatId={chatId}
+            />
         </PageContainer>
     );
 }

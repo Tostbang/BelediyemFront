@@ -15,7 +15,7 @@ export default function ChatList({
     chatId,
     breadcrumb,
 }: {
-    chats: ChatHistoryResponse;
+    chats: ChatHistoryResponse | null;
     messages: MessageGroup[];
     chatId?: string;
     breadcrumb: BreadcrumbItem[];
@@ -54,67 +54,71 @@ export default function ChatList({
         <>
             <div className="p-3 bg-gray-50 border-b">
                 <h3 className="text-md font-medium text-gray-700">
-                    Tüm Şikayetler ({chats.totalCount})
+                    Tüm Şikayetler ({chats?.totalCount})
                 </h3>
             </div>
 
             <div className="overflow-y-auto" style={{ maxHeight: '70vh' }}>
-                {chats.complaintWithLastMessages.map((chat) => (
-                    <div
-                        key={chat.complaintId}
-                        onClick={() => handleChatClick(chat.complaintId)}
-                        className={`border-l-4 ${
-                            currentChatId === chat.complaintId.toString()
-                                ? 'border-blue-500 bg-blue-50'
-                                : 'border-transparent hover:border-gray-300'
-                        } p-4 border-b cursor-pointer hover:bg-gray-50 transition-colors
+                {chats &&
+                    chats.complaintWithLastMessages.map((chat) => (
+                        <div
+                            key={chat.complaintId}
+                            onClick={() => handleChatClick(chat.complaintId)}
+                            className={`border-l-4 ${
+                                currentChatId === chat.complaintId.toString()
+                                    ? 'border-blue-500 bg-blue-50'
+                                    : 'border-transparent hover:border-gray-300'
+                            } p-4 border-b cursor-pointer hover:bg-gray-50 transition-colors
                         ${clickedChatId === chat.complaintId ? 'animate-chat-click' : ''}`}>
-                        {/* Status indicator and title */}
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-center space-x-2">
-                                <div
-                                    className={`w-2 h-2 rounded-full ${getStatusColor(chat.lastMessageDate)}`}></div>
-                                <h3 className="font-medium text-gray-800 truncate max-w-xs">
-                                    {chat.complaintTitle}
-                                </h3>
-                            </div>
-                            <span className="text-xs text-gray-500 whitespace-nowrap">
-                                {formatDate(chat.complaintCreatedDate)}
-                            </span>
-                        </div>
-
-                        {/* Complaint Owner */}
-                        <div className="text-xs text-gray-500 mt-1">
-                            <span className="font-medium">Şikayet Sahibi:</span>{' '}
-                            {chat.complaintOwnerName}
-                        </div>
-
-                        {/* Last Message Preview */}
-                        <p className="text-sm text-gray-600 mt-2 line-clamp-1">
-                            {chat.lastMessageContent}
-                        </p>
-
-                        {/* Last Message Info */}
-                        <div className="flex justify-between mt-2 text-xs text-gray-500">
-                            <div>
-                                <span className="font-medium">
-                                    {chat.lastMessageSenderName}
+                            {/* Status indicator and title */}
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center space-x-2">
+                                    <div
+                                        className={`w-2 h-2 rounded-full ${getStatusColor(chat.lastMessageDate)}`}></div>
+                                    <h3 className="font-medium text-gray-800 truncate max-w-xs">
+                                        {chat.complaintTitle}
+                                    </h3>
+                                </div>
+                                <span className="text-xs text-gray-500 whitespace-nowrap">
+                                    {formatDate(chat.complaintCreatedDate)}
                                 </span>
                             </div>
-                            <div>{formatDate(chat.lastMessageDate)}</div>
-                        </div>
-                    </div>
-                ))}
 
-                {chats.complaintWithLastMessages.length === 0 && (
-                    <div className="p-8 text-center text-gray-500">
-                        Henüz şikayet bulunmuyor.
-                    </div>
-                )}
+                            {/* Complaint Owner */}
+                            <div className="text-xs text-gray-500 mt-1">
+                                <span className="font-medium">
+                                    Şikayet Sahibi:
+                                </span>{' '}
+                                {chat.complaintOwnerName}
+                            </div>
+
+                            {/* Last Message Preview */}
+                            <p className="text-sm text-gray-600 mt-2 line-clamp-1">
+                                {chat.lastMessageContent}
+                            </p>
+
+                            {/* Last Message Info */}
+                            <div className="flex justify-between mt-2 text-xs text-gray-500">
+                                <div>
+                                    <span className="font-medium">
+                                        {chat.lastMessageSenderName}
+                                    </span>
+                                </div>
+                                <div>{formatDate(chat.lastMessageDate)}</div>
+                            </div>
+                        </div>
+                    ))}
+
+                {!chats ||
+                    (chats?.complaintWithLastMessages.length === 0 && (
+                        <div className="p-8 text-center text-gray-500">
+                            Henüz şikayet bulunmuyor.
+                        </div>
+                    ))}
             </div>
 
             {/* Pagination */}
-            {chats.totalCount > 1 && (
+            {chats && chats?.totalCount > 1 && (
                 <div className="flex justify-center p-4 border-t">
                     <Pagination
                         current={pageNumber}
@@ -135,8 +139,12 @@ export default function ChatList({
             {/* Add style tag for animation */}
             <style jsx global>{`
                 @keyframes chatClick {
-                    0% { background-color: rgba(59, 130, 246, 0.5); }
-                    100% { background-color: transparent; }
+                    0% {
+                        background-color: rgba(59, 130, 246, 0.5);
+                    }
+                    100% {
+                        background-color: transparent;
+                    }
                 }
                 .animate-chat-click {
                     animation: chatClick 0.5s ease-out;
