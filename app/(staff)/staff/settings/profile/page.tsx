@@ -20,9 +20,7 @@ export default async function Page() {
             <AuthErrorHandler
                 error={!response?.success ? response : undefined}
             />
-            {response?.success && response.data && (
-                <InfoFormStaff detail={response.data} breadcrumb={breadcrumb} />
-            )}
+                <InfoFormStaff detail={response.data ||null} breadcrumb={breadcrumb} />
         </PageContainer>
     );
 }

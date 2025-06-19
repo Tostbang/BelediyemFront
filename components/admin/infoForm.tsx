@@ -11,7 +11,7 @@ export default function InfoFormAdmin({
     detail,
     breadcrumb,
 }: {
-    detail?: InfoAdmin | null;
+    detail: InfoAdmin | null;
     breadcrumb: BreadcrumbItem[];
 }) {
     const { handleResult } = useNotificationHandler();

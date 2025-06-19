@@ -11,7 +11,7 @@ export default function InfoFormStaff({
     detail,
     breadcrumb,
 }: {
-    detail?: InfoStaff | null;
+    detail: InfoStaff | null;
     breadcrumb: BreadcrumbItem[];
 }) {
     const { handleResult } = useNotificationHandler();

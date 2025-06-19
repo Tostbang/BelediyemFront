@@ -11,7 +11,7 @@ export default function InfoFormMuni({
     detail,
     breadcrumb,
 }: {
-    detail?: InfoMuni | null;
+    detail: InfoMuni | null;
     breadcrumb: BreadcrumbItem[];
 }) {
     const { handleResult } = useNotificationHandler();
