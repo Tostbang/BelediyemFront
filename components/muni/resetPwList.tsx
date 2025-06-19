@@ -8,7 +8,11 @@ import {
 } from '@/types';
 import DynamicTable from '../dynamic/table';
 import ConfirmModal from '../modals/confirmModal';
-import { sendMunisPWAdmin, sendStaffPWMuni, sendStaffPWMuniAdmin } from '@/app/actions';
+import {
+    sendMunisPWAdmin,
+    sendStaffPWMuni,
+    sendStaffPWMuniAdmin,
+} from '@/app/actions';
 import { useNotificationHandler } from '@/hooks/useNotificationHandler';
 import { useRouter } from 'next/navigation';
 import { usePagination } from '@/hooks/usePagination';
@@ -20,7 +24,7 @@ export default function PWResetList({
     type,
     breadcrumb,
 }: {
-    requests: PasswordResetResponse;
+    requests: PasswordResetResponse | null;
     type: RoleType;
     breadcrumb: BreadcrumbItem[];
 }) {
@@ -143,14 +147,14 @@ export default function PWResetList({
                 <div className="w-full overflow-hidden bg-white rounded-lg p-6">
                     <div className="overflow-x-auto">
                         <DynamicTable<PasswordReset>
-                            data={requests.requests}
+                            data={requests?.requests || []}
                             columns={columns}
                             rowKey="id"
                             showControls={false}
                             pagination={{
                                 pageSize: pageSize,
                                 current: pageNumber,
-                                total: requests.totalCount || 0,
+                                total: requests?.totalCount || 0,
                                 onChange: handlePageChange,
                                 onShowSizeChange: handlePageSizeChange,
                                 responsive: true,
