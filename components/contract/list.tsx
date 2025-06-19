@@ -11,7 +11,7 @@ export default function ContractList({
     breadcrumb,
     type,
 }: {
-    contracts: ContractsResponse;
+    contracts: ContractsResponse | null;
     breadcrumb: BreadcrumbItem[];
     type: RoleType;
 }) {
@@ -76,7 +76,7 @@ export default function ContractList({
                 <div className="w-full overflow-hidden bg-white rounded-lg p-6">
                     <div className="overflow-x-auto">
                         <DynamicTable<Contract>
-                            data={contracts.contract}
+                            data={contracts?.contract || []}
                             columns={columns}
                             rowKey="id"
                             showControls={false}

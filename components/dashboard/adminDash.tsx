@@ -25,7 +25,7 @@ export default function DashboardAdmin({
     dashboard,
     breadcrumb,
 }: {
-    dashboard: DashboardStatisticsAdmin;
+    dashboard: DashboardStatisticsAdmin | null;
     breadcrumb: BreadcrumbItem[];
 }) {
     const cardsData = [
@@ -182,7 +182,7 @@ export default function DashboardAdmin({
                 </div>
 
                 <ComplaintChart
-                    monthlyStatistics={dashboard.monthlyStatistics || []}
+                    monthlyStatistics={dashboard?.monthlyStatistics || []}
                 />
 
                 <div className="w-full overflow-hidden mt-6 bg-white rounded-lg p-6">
@@ -191,7 +191,7 @@ export default function DashboardAdmin({
                     </h2>
                     <div className="overflow-x-auto">
                         <DynamicTable<DepartmentStatistics>
-                            data={dashboard.departmentStatistics}
+                            data={dashboard?.departmentStatistics || []}
                             columns={columns}
                             rowKey="departmentName"
                             showControls={false}
@@ -205,7 +205,7 @@ export default function DashboardAdmin({
                     </h2>
                     <div className="overflow-x-auto">
                         <DynamicTable<TopMunicipalities>
-                            data={dashboard.topMunicipalities}
+                            data={dashboard?.topMunicipalities || []}
                             columns={column2}
                             rowKey="municipalityName"
                             showControls={false}
@@ -220,7 +220,7 @@ export default function DashboardAdmin({
                     </h2>
                     <div className="overflow-x-auto">
                         <DynamicTable<TopComplaintCategories>
-                            data={dashboard.topComplaintCategories}
+                            data={dashboard?.topComplaintCategories || []}
                             columns={column3}
                             rowKey="categoryName"
                             showControls={false}

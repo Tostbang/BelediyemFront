@@ -19,7 +19,7 @@ export default function MuniList({
     munilist,
     breadcrumb,
 }: {
-    munilist: MuniListResponse;
+    munilist: MuniListResponse | null;
     breadcrumb: BreadcrumbItem[];
 }) {
     const { pageNumber, pageSize, handlePageChange, handlePageSizeChange } =
@@ -152,14 +152,14 @@ export default function MuniList({
                 <div className="w-full overflow-hidden bg-white rounded-lg p-6">
                     <div className="overflow-x-auto">
                         <DynamicTable<Municipalities>
-                            data={munilist.municipalLists}
+                            data={munilist?.municipalLists || []}
                             columns={columns}
                             rowKey="id"
                             showControls={false}
                             pagination={{
                                 pageSize: pageSize,
                                 current: pageNumber,
-                                total: munilist.totalCount || 0,
+                                total: munilist?.totalCount || 0,
                                 onChange: handlePageChange,
                                 onShowSizeChange: handlePageSizeChange,
                                 responsive: true,
