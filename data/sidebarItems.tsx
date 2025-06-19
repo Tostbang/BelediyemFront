@@ -118,11 +118,11 @@ export const sidebarItemsMuni: SidebarItem[] = [
         icon: <EnvelopeIcon />,
         path: '/municipality/complaint-request',
     },
-    {
-        title: 'Ödeme',
-        icon: <MoneyIcon />,
-        path: '/municipality/payment',
-    },
+    // {
+    //     title: 'Ödeme',
+    //     icon: <MoneyIcon />,
+    //     path: '/municipality/payment',
+    // },
     {
         title: 'Sohbet',
         icon: <ChatIcon />,
@@ -228,11 +228,11 @@ export const sidebarItemsMuniAdmin: SidebarItem[] = [
         icon: <EnvelopeIcon />,
         path: '/adminmunicipality/complaint-request',
     },
-    {
-        title: 'Ödeme',
-        icon: <MoneyIcon />,
-        path: '/adminmunicipality/payment',
-    },
+    // {
+    //     title: 'Ödeme',
+    //     icon: <MoneyIcon />,
+    //     path: '/adminmunicipality/payment',
+    // },
     {
         title: 'Personel',
         icon: <PeopleIcon />,
