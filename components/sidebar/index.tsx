@@ -31,7 +31,6 @@ const SideBar = ({ items }: { items: SidebarItem[] }) => {
         const handleStorageChange = (event: StorageEvent) => {
             if (event.key === 'logout' && event.newValue === 'true') {
                 if (!adminAuthPaths.includes(pathname || '')) {
-                    //   logout();
                     router.push('/admin/login');
                 }
             }
@@ -45,7 +44,6 @@ const SideBar = ({ items }: { items: SidebarItem[] }) => {
     }, [adminAuthPaths, pathname, router]);
 
     const handleLogout = () => {
-        // logout();
         localStorage.setItem('logout', 'true');
         setTimeout(() => {
             localStorage.removeItem('logout');
@@ -55,10 +53,10 @@ const SideBar = ({ items }: { items: SidebarItem[] }) => {
 
     const handleLeaveMuniPanel = async () => {
         setIsTransitioning(true);
-        await deleteCookie('municipalityId');
         setTimeout(() => {
             router.push('/admin/dashboard');
         }, 1000);
+        await deleteCookie('municipalityId');
     };
 
     const toggleSidebar = () => {

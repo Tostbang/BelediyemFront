@@ -14,6 +14,7 @@ import Link from 'next/link';
 import { PencilIcon, TrashIcon } from '../icons';
 import LinkButton from '../common/LinkButton';
 import Breadcrumb from '../common/breadCrumb';
+import NoContent from '../common/noContent';
 
 export default function FaqList({
     faqs,
@@ -21,7 +22,7 @@ export default function FaqList({
     breadcrumb,
     showActions = true,
 }: {
-    faqs: FAQResponse;
+    faqs: FAQResponse | null;
     type: RoleType;
     breadcrumb: BreadcrumbItem[];
     showActions?: boolean;
@@ -122,18 +123,29 @@ export default function FaqList({
                 }
             />
             <div className="flex flex-col items-center w-full mb-6">
+                {' '}
                 <div className="w-full overflow-hidden">
                     <div className="overflow-x-auto">
-                        <Collapse
-                            items={editedItems}
-                            className="faq-collapse"
-                            bordered={false}
-                            expandIconPosition="end"
-                            style={{
-                                backgroundColor: 'white',
-                                borderRadius: '8px',
-                            }}
-                        />
+                        {faqs?.frequentlyAskedQuestions &&
+                        faqs.frequentlyAskedQuestions.length > 0 ? (
+                            <Collapse
+                                items={editedItems}
+                                className="faq-collapse"
+                                bordered={false}
+                                expandIconPosition="end"
+                                style={{
+                                    backgroundColor: 'white',
+                                    borderRadius: '8px',
+                                }}
+                            />
+                        ) : (
+                            <div className="bg-white rounded-lg shadow-sm">
+                                <NoContent
+                                    message="Sık Sorulan Soru Bulunamadı"
+                                    className="py-16"
+                                />
+                            </div>
+                        )}
                     </div>
                 </div>
                 <ConfirmModal

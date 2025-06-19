@@ -21,14 +21,12 @@ export default async function Page() {
             <AuthErrorHandler
                 error={!response?.success ? response : undefined}
             />
-            {response?.success && response.data && (
-                <FaqList
-                    faqs={response?.data || []}
-                    type="municipality"
-                    showActions={false}
-                    breadcrumb={breadcrumb}
-                />
-            )}
+            <FaqList
+                faqs={response?.data || null}
+                type="municipality"
+                showActions={false}
+                breadcrumb={breadcrumb}
+            />
         </PageContainer>
     );
 }
