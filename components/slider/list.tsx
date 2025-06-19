@@ -22,7 +22,7 @@ export default function SlaytList({
     type,
     breadcrumb,
 }: {
-    sliders: SliderResponse;
+    sliders: SliderResponse | null;
     type: RoleType;
     breadcrumb: BreadcrumbItem[];
 }) {
@@ -173,14 +173,14 @@ export default function SlaytList({
                 <div className="w-full overflow-hidden bg-white rounded-lg p-6">
                     <div className="overflow-x-auto">
                         <DynamicTable<Slider>
-                            data={sliders.sliders}
+                            data={sliders?.sliders || []}
                             columns={columns}
                             rowKey="id"
                             showControls={false}
                             pagination={{
                                 pageSize: pageSize,
                                 current: pageNumber,
-                                total: sliders.totalCount || 0,
+                                total: sliders?.totalCount || 0,
                                 onChange: handlePageChange,
                                 onShowSizeChange: handlePageSizeChange,
                                 responsive: true,
@@ -199,7 +199,7 @@ export default function SlaytList({
                 <SliderDetail
                     isOpen={detailsModal}
                     onClose={() => setDetailsModal(false)}
-                    detail={sliders.sliders.find(
+                    detail={sliders?.sliders.find(
                         (item) => item.id.toString() === selectedItem
                     )}
                 />

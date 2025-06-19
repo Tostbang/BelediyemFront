@@ -44,9 +44,11 @@ export default async function Page({
             <AuthErrorHandler
                 error={!response?.success ? response : undefined}
             />
-            {response?.success && response.data && (
-                <StaffList staffList={response.data} breadcrumb={breadcrumb} type='admin-muni'/>
-            )}
+            <StaffList
+                staffList={response.data || null}
+                breadcrumb={breadcrumb}
+                type="admin-muni"
+            />
         </PageContainer>
     );
 }

@@ -21,7 +21,7 @@ export default function FacilityList({
     type,
     breadcrumb,
 }: {
-    facilities: FacilityResponse;
+    facilities: FacilityResponse | null;
     type: RoleType;
     breadcrumb: BreadcrumbItem[];
 }) {
@@ -148,9 +148,7 @@ export default function FacilityList({
                     {
                         key: 'edit',
                         label: (
-                            <Link href={`${url}/${record.id}`}>
-                                Düzenle
-                            </Link>
+                            <Link href={`${url}/${record.id}`}>Düzenle</Link>
                         ),
                     },
                     {
@@ -179,14 +177,14 @@ export default function FacilityList({
                     <div className="w-full overflow-hidden bg-white rounded-lg p-6">
                         <div className="overflow-x-auto">
                             <DynamicTable<Facility>
-                                data={facilities.facilities}
+                                data={facilities?.facilities || []}
                                 columns={columns}
                                 rowKey="id"
                                 showControls={false}
                                 pagination={{
                                     pageSize: pageSize,
                                     current: pageNumber,
-                                    total: facilities.totalCount || 0,
+                                    total: facilities?.totalCount || 0,
                                     onChange: handlePageChange,
                                     onShowSizeChange: handlePageSizeChange,
                                     responsive: true,
@@ -205,7 +203,7 @@ export default function FacilityList({
                     <FacilityDetail
                         isOpen={detailsModal}
                         onClose={() => setDetailsModal(false)}
-                        detail={facilities.facilities.find(
+                        detail={facilities?.facilities.find(
                             (item) => item.id.toString() === selectedItem
                         )}
                     />

@@ -35,13 +35,11 @@ export default async function Page({
             <AuthErrorHandler
                 error={!response?.success ? response : undefined}
             />
-            {response?.success && response.data && (
-                <SlaytList
-                    sliders={response.data}
-                    type="admin-muni"
-                    breadcrumb={breadcrumb}
-                />
-            )}
+            <SlaytList
+                sliders={response.data || null}
+                type="admin-muni"
+                breadcrumb={breadcrumb}
+            />
         </PageContainer>
     );
 }

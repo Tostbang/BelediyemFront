@@ -387,7 +387,7 @@ export type Complaints = {
 export type ComplaintsResponse = ApiResponse & {
     complaints: Complaints[];
     name: string;
-    surname: string;
+    surName: string;
     totalCount: number;
     pageNumber: number;
     pageSize: number;

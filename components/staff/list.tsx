@@ -32,7 +32,7 @@ export default function StaffList({
     breadcrumb,
     type,
 }: {
-    staffList: StaffUserListResponse;
+    staffList: StaffUserListResponse | null;
     breadcrumb: BreadcrumbItem[];
     type: RoleType;
 }) {
@@ -70,7 +70,7 @@ export default function StaffList({
 
     const handleConfirm = async () => {
         if (selectedItem) {
-            const foundItem = staffList.municipalStaff.find(
+            const foundItem = staffList?.municipalStaff.find(
                 (item) => item.id.toString() === selectedItem
             );
             let result;
@@ -299,14 +299,14 @@ export default function StaffList({
                 <div className="w-full overflow-hidden bg-white rounded-lg p-6">
                     <div className="overflow-x-auto">
                         <DynamicTable<StaffUser>
-                            data={staffList.municipalStaff}
+                            data={staffList?.municipalStaff || []}
                             columns={columns}
                             rowKey="id"
                             showControls={false}
                             pagination={{
                                 pageSize: pageSize,
                                 current: pageNumber,
-                                total: staffList.totalCount || 0,
+                                total: staffList?.totalCount || 0,
                                 onChange: handlePageChange,
                                 onShowSizeChange: handlePageSizeChange,
                                 responsive: true,

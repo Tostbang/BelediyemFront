@@ -16,7 +16,7 @@ export default function AttendedList({
     complaints,
     breadcrumb,
 }: {
-    complaints: ComplaintsResponse;
+    complaints: ComplaintsResponse | null;
     breadcrumb: BreadcrumbItem[];
 }) {
     const filterParams = [
@@ -108,6 +108,8 @@ export default function AttendedList({
         setShowDateFilter(false);
     };
 
+    console.log("complaints", complaints);
+
     return (
         <>
             <Breadcrumb breadcrumb={breadcrumb} />
@@ -172,19 +174,19 @@ export default function AttendedList({
             <div className="flex flex-col items-center w-full mb-6">
                 <div className="w-full overflow-hidden bg-white rounded-lg p-6">
                     <h2 className="text-2xl font-semibold text-gray-800 mb-2">
-                        {complaints.name} {complaints.surname}
+                        {complaints?.name} {complaints?.surName}
                     </h2>
 
                     <div className="overflow-x-auto">
                         <DynamicTable<Complaints>
-                            data={complaints.complaints}
+                            data={complaints?.complaints || []}
                             columns={columns}
                             rowKey="id"
                             showControls={false}
                             pagination={{
                                 pageSize: pageSize,
                                 current: pageNumber,
-                                total: complaints.totalCount || 0,
+                                total: complaints?.totalCount || 0,
                                 onChange: handlePageChange,
                                 onShowSizeChange: handlePageSizeChange,
                                 responsive: true,

@@ -51,7 +51,7 @@ export default function StaffDetail({
             <div className="w-full bg-white shadow-lg rounded-xl p-8 border border-gray-100">
                 <div className="space-y-6">
                     <h1 className="mb-4 text-2xl font-semibold">
-                        {detail?.municipalityStaff.name}
+                        {detail?.municipalityStaff.name} {detail?.municipalityStaff.surname}
                     </h1>
                     <div className="flex flex-col gap-6">
                         <div className="flex justify-center mb-6 md:mb-0">

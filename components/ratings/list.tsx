@@ -17,7 +17,7 @@ export default function RatingList({
     breadcrumb,
     type,
 }: {
-    ratings: RatingResponse;
+    ratings: RatingResponse | null;
     breadcrumb: BreadcrumbItem[];
     type: RoleType;
 }) {
@@ -127,14 +127,14 @@ export default function RatingList({
             <div className="flex flex-col items-center w-full mb-6">
                 <div className="w-full overflow-hidden">
                     <DynamicTable<Ratings>
-                        data={ratings.ratings}
+                        data={ratings?.ratings || []}
                         columns={columns}
                         rowKey="id"
                         showControls={false}
                         pagination={{
                             pageSize: pageSize,
                             current: pageNumber,
-                            total: ratings.totalCount || 0,
+                            total: ratings?.totalCount || 0,
                             onChange: handlePageChange,
                             onShowSizeChange: handlePageSizeChange,
                             responsive: true,

@@ -24,7 +24,7 @@ export default function SupportList({
     type,
     breadcrumb,
 }: {
-    supports: SupportResponse;
+    supports: SupportResponse | null;
     type: RoleType;
     breadcrumb: BreadcrumbItem[];
 }) {
@@ -235,14 +235,14 @@ export default function SupportList({
                         </div>
                         <div className="overflow-x-auto">
                             <DynamicTable<Support>
-                                data={supports.supports}
+                                data={supports?.supports || []}
                                 columns={columns}
                                 rowKey="id"
                                 showControls={false}
                                 pagination={{
                                     pageSize: pageSize,
                                     current: pageNumber,
-                                    total: supports.totalCount || 0,
+                                    total: supports?.totalCount || 0,
                                     onChange: handlePageChange,
                                     onShowSizeChange: handlePageSizeChange,
                                     responsive: true,

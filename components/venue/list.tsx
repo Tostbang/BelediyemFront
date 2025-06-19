@@ -21,7 +21,7 @@ export default function VenueList({
     type,
     breadcrumb,
 }: {
-    venues: VenueResponse;
+    venues: VenueResponse | null;
     type: RoleType;
     breadcrumb: BreadcrumbItem[];
 }) {
@@ -179,14 +179,14 @@ export default function VenueList({
                     <div className="w-full overflow-hidden bg-white rounded-lg p-6">
                         <div className="overflow-x-auto">
                             <DynamicTable<Venue>
-                                data={venues.venues}
+                                data={venues?.venues || []}
                                 columns={columns}
                                 rowKey="id"
                                 showControls={false}
                                 pagination={{
                                     pageSize: pageSize,
                                     current: pageNumber,
-                                    total: venues.totalCount || 0,
+                                    total: venues?.totalCount || 0,
                                     onChange: handlePageChange,
                                     onShowSizeChange: handlePageSizeChange,
                                     responsive: true,
@@ -205,7 +205,7 @@ export default function VenueList({
                     <VenueDetail
                         isOpen={detailsModal}
                         onClose={() => setDetailsModal(false)}
-                        detail={venues.venues.find(
+                        detail={venues?.venues.find(
                             (item) => item.id.toString() === selectedItem
                         )}
                     />
