@@ -61,7 +61,7 @@ export default async function Page({
     }
 
     const breadcrumb = [
-        { label: 'Sözleşme Listesi', href: '/admin/contract/list' },
+        { label: 'Sözleşme Listesi', href: '/admin/contract' },
         { label: 'Sözleşme Düzenle / Görüntüle' },
     ];
 

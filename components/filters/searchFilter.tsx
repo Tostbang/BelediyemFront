@@ -34,6 +34,13 @@ const SearchFilter: React.FC<SearchFilter> = ({
         setHasText(!!searchInputRef.current?.value);
     };
 
+    const handleKeyDown = (e: { key: string; preventDefault: () => void }) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            onFilter();
+        }
+    };
+
     return (
         <div className="flex items-center w-full md:w-auto">
             <div className="relative w-full flex-grow">
@@ -51,6 +58,7 @@ const SearchFilter: React.FC<SearchFilter> = ({
                         placeholder="Arama..."
                         defaultValue={searchText || ''}
                         ref={searchInputRef}
+                        onKeyDown={handleKeyDown}
                         onInput={handleInput}
                         className="h-10 lg:h-12 w-full outline-none px-2 text-sm sm:text-base"
                     />

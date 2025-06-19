@@ -67,7 +67,7 @@ export default async function Page({
     }
 
     const breadcrumb = [
-        { label: 'Personel Listesi', href: '/municipality/staff/list' },
+        { label: 'Personel Listesi', href: '/municipality/staff' },
         { label: 'Personel Detay' },
     ];
 

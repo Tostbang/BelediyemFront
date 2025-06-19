@@ -69,7 +69,7 @@ export default async function Page({
     }
 
     const breadcrumb = [
-        { label: 'Belediye Listesi', href: '/admin/municipality/list' },
+        { label: 'Belediye Listesi', href: '/admin/municipality' },
         {
             label: isNewRecord
                 ? 'Yeni Belediye Ekle'

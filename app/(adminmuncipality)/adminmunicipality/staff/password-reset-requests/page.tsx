@@ -28,7 +28,7 @@ export default async function Page({
     const response = await getStaffPWResetRequestMuniAdmin(paginationBody);
 
     const breadcrumb = [
-        { label: 'Personel Listesi', href: '/adminmunicipality/staff/list' },
+        { label: 'Personel Listesi', href: '/adminmunicipality/staff' },
         { label: 'Personel Şifre Sıfırlama Talepleri' },
     ];
 
