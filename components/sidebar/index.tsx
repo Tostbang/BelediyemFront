@@ -53,10 +53,10 @@ const SideBar = ({ items }: { items: SidebarItem[] }) => {
 
     const handleLeaveMuniPanel = async () => {
         setIsTransitioning(true);
-        setTimeout(() => {
-            router.push('/admin/dashboard');
-        }, 1000);
-        await deleteCookie('municipalityId');
+        router.push('/admin/dashboard');
+        setTimeout(async () => {
+            await deleteCookie('municipalityId');
+        }, 500);
     };
 
     const toggleSidebar = () => {
