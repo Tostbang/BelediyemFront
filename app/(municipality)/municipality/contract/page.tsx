@@ -21,12 +21,10 @@ export default async function Page() {
             <AuthErrorHandler
                 error={!response?.success ? response : undefined}
             />
-            {response?.success && response.data && (
-                <ContractListCollapse
-                    contracts={response.data}
-                    breadcrumb={breadcrumb}
-                />
-            )}
+            <ContractListCollapse
+                contracts={response.data || null}
+                breadcrumb={breadcrumb}
+            />
         </PageContainer>
     );
 }
