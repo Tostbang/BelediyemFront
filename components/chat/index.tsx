@@ -25,7 +25,7 @@ interface ChatAreaProps {
 export default function ChatArea({ chatId, messageGroups }: ChatAreaProps) {
     const [showScrollButton, setShowScrollButton] = useState<boolean>(false);
     const scrollbarRef = useRef<HTMLDivElement>(null);
-    const { handleSuccess, handleError } = useNotificationHandler();
+    const { handleError } = useNotificationHandler();
     const [userDetails, setUserDetails] = useState<User | null>(null);
     const [senderColorMap, setSenderColorMap] = useState<
         Record<number, string>
@@ -37,24 +37,33 @@ export default function ChatArea({ chatId, messageGroups }: ChatAreaProps) {
         content: '',
     };
 
+    // Load user details once
+    useEffect(() => {
+        const userData = getClientCookie('user');
+        const parsedUser = safelyParseJSON<User>(userData);
+        setUserDetails(parsedUser);
+    }, []);
+
+    // Only show loading when chatId changes
     useEffect(() => {
         setIsLoading(true);
         const timer = setTimeout(() => {
             setIsLoading(false);
         }, 800);
 
-        const userData = getClientCookie('user');
-        const parsedUser = safelyParseJSON<User>(userData);
-        setUserDetails(parsedUser);
+        return () => clearTimeout(timer);
+    }, [chatId]);
 
-        if (messageGroups && messageGroups.length > 0) {
+    // Process message groups to set sender colors (without loading)
+    useEffect(() => {
+        if (messageGroups && messageGroups.length > 0 && userDetails) {
             const uniqueSenderIds = new Set<number>();
             const colorMap: Record<number, string> = {};
 
             messageGroups.forEach((group) => {
                 group.messages.forEach((msg) => {
                     if (
-                        msg.senderId !== parsedUser?.userId &&
+                        msg.senderId !== userDetails?.userId &&
                         !uniqueSenderIds.has(msg.senderId)
                     ) {
                         uniqueSenderIds.add(msg.senderId);
@@ -69,9 +78,7 @@ export default function ChatArea({ chatId, messageGroups }: ChatAreaProps) {
 
             setSenderColorMap(colorMap);
         }
-
-        return () => clearTimeout(timer);
-    }, [messageGroups, chatId]);
+    }, [messageGroups, userDetails]);
 
     const clientAction = async (_prevState: unknown, formData: FormData) => {
         if (chatId) {
@@ -81,7 +88,7 @@ export default function ChatArea({ chatId, messageGroups }: ChatAreaProps) {
         const result = await sendMessage(formData);
 
         if (result.success) {
-            handleSuccess(result.message);
+            // handleSuccess(result.message);
             router.refresh();
         } else {
             handleError(result);
